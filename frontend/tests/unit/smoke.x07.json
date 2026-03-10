@@ -1,0 +1,1 @@
+{"decls":[{"kind":"export","names":["unit.smoke.pass"]},{"body":["std.test.pass"],"kind":"defn","name":"unit.smoke.pass","params":[],"result":"result_i32"}],"imports":["std.test"],"kind":"module","module_id":"unit.smoke","schema_version":"x07.x07ast@0.5.0"}

@@ -3,6 +3,9 @@
 CrewOps is a full-stack x07 showcase for field-service operations. The frontend reducer drives technician, dispatcher, and manager views, the backend serves deterministic demo data over `/api`, and the same UI is packaged for desktop, iOS, and Android device profiles.
 
 - Prompt: [`PROMPT.md`](PROMPT.md)
+- Architecture: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+- Data model: [`docs/DATA_MODEL.md`](docs/DATA_MODEL.md)
+- Mobile packaging: [`docs/MOBILE_BUILD.md`](docs/MOBILE_BUILD.md)
 - Frontend entry: [`frontend/src/app.x07.json`](frontend/src/app.x07.json)
 - Backend entry: [`backend/src/app.x07.json`](backend/src/app.x07.json)
 - Demo seed generator: [`scripts/ci/seed_demo.sh`](scripts/ci/seed_demo.sh)
@@ -75,6 +78,8 @@ x07-wasm app test --dir dist/app/crewops_dev --trace tests/regress/bootstrap_api
 ```
 
 [`scripts/ci/seed_demo.sh`](scripts/ci/seed_demo.sh) regenerates [`tests/fixtures/demo_org.json`](tests/fixtures/demo_org.json) and [`backend/src/demo_seed.x07.json`](backend/src/demo_seed.x07.json). The generated regression snapshot lives under [`tests/regress`](tests/regress), including `bootstrap_api_error.final.ui.json`.
+
+Frontend reducer unit harness files live under [`frontend/tests/unit`](frontend/tests/unit). The current manifest is [`frontend/tests/tests.json`](frontend/tests/tests.json).
 
 ## Device Packaging
 
