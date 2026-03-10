@@ -1,0 +1,1 @@
+{"decls":[{"kind":"export","names":["shell_technician.headline_v1"]},{"body":["bytes.lit","\"Today queue\""],"kind":"defn","name":"shell_technician.headline_v1","params":[],"result":"bytes"}],"imports":[],"kind":"module","module_id":"shell_technician","schema_version":"x07.x07ast@0.5.0"}

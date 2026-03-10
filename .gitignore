@@ -1,0 +1,7 @@
+build/
+dist/
+.x07-wasm/
+frontend/.x07/
+target/
+frontend/target/
+.DS_Store
