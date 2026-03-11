@@ -1,13 +1,15 @@
 # CrewOps Data Model
 
-CrewOps now ships the M4 multi-role demo seed. The handwritten generator is [`scripts/ci/seed_demo.sh`](../scripts/ci/seed_demo.sh). It regenerates the canonical fixture [`tests/fixtures/demo_org.json`](../tests/fixtures/demo_org.json) and mirrors the same tenant shape into [`backend/src/demo_seed.x07.json`](../backend/src/demo_seed.x07.json) for deterministic backend bootstrap and replay flows.
+CrewOps `v0.4.0` ships an M5 seed that keeps the operations graph and adds commercial billing and finance entities. The canonical source is [`tests/fixtures/demo_org.json`](../tests/fixtures/demo_org.json), mirrored into deterministic backend payloads under [`backend/src/demo_seed.x07.json`](../backend/src/demo_seed.x07.json).
 
 ## Seed Scope
 
-- `1` organization: `org_demo`
-- `2` branches: `branch_north`, `branch_south`
-- `3` teams: `team_north_alpha`, `team_north_beta`, `team_south_gamma`
-- `11` users: `8` technicians, `1` dispatcher, `1` supervisor, `1` manager
+Core operations:
+
+- `1` organization
+- `2` branches
+- `3` teams
+- `11` users across technician, dispatcher, supervisor, and manager roles
 - `20` customers
 - `30` sites
 - `60` assets
@@ -21,193 +23,134 @@ CrewOps now ships the M4 multi-role demo seed. The handwritten generator is [`sc
 - `1` correction response
 - `25` activity events
 - `4` alerts
-- `1` SLA policy bundle
 - `2` branch summaries
 - `3` team summaries
 - `1` dashboard rollup
 - `3` workload snapshots
-- `1` dispatch filter profile
-- `3` checklist templates
-- `3` catalog parts
 
-The generated fixture top level now includes:
+Commercial M5:
 
-- `organization`
-- `branches`
-- `teams`
-- `users`
-- `customers`
-- `sites`
-- `assets`
-- `work_orders`
-- `visits`
-- `assignments`
-- `schedule_windows`
-- `templates`
-- `parts_catalog`
-- `review_queue_items`
-- `review_decisions`
-- `correction_tasks`
-- `correction_responses`
-- `activity_events`
-- `alerts`
-- `sla_policies`
-- `dispatch_filters`
-- `branch_summaries`
-- `team_summaries`
-- `dashboard_rollups`
-- `workload_snapshots`
-- `indexes`
-- `summary`
+- `3` price books
+- `6` price book items
+- `3` billing policies
+- `2` labor rate policies
+- `6` part rate policies
+- `2` tax rules
+- `3` discount rules
+- `9` invoices
+- `36` invoice lines
+- `7` invoice adjustments
+- `9` invoice artifacts
+- `9` service summary artifacts
+- `6` customer statements
+- `3` payment records
+- `3` payment allocations
+- `8` receivable summaries
+- `3` export jobs
+- `6` finance rollups
+- `6` profitability snapshots
 
-## Roles And Ownership
+## Top-Level Entity Families
 
-- One organization owns all branches.
-- Each branch owns teams, customers, sites, and primary branch assignment for users.
-- Technician users belong to one team.
-- Dispatcher, supervisor, and manager demo users span the full seeded organization so the same dataset drives all role shells.
+The generated fixture now includes:
 
-The seeded role set is:
+- organization, branches, teams, users
+- customers, sites, assets
+- work_orders, visits, templates, parts_catalog
+- assignments, schedule_windows
+- review_queue_items, review_decisions, correction_tasks, correction_responses
+- activity_events, alerts, sla_policies, dispatch_filters
+- branch_summaries, team_summaries, dashboard_rollups, workload_snapshots
+- price_books, price_book_items
+- labor_rate_policies, part_rate_policies, billing_policies
+- tax_rules, discount_rules
+- invoices, invoice_lines, invoice_adjustments
+- invoice_artifacts, service_summary_artifacts
+- payment_records, payment_allocations
+- customer_statements, receivable_summaries
+- export_jobs, finance_rollups, profitability_snapshots
+- indexes, summary
 
-- `technician`
-- `dispatcher`
-- `supervisor`
-- `manager`
+## Commercial Entity Shape
 
-## Core Operational Entities
+Pricing is normalized rather than embedded on work orders:
 
-### Work orders and visits
+- `price_books` and `price_book_items`
+- `billing_policies`
+- `labor_rate_policies`
+- `part_rate_policies`
+- `tax_rules`
+- `discount_rules`
 
-Work orders remain the primary operational envelope. In M4 they carry both technician execution context and dispatcher or supervisor control fields:
+Invoicing is modeled as separate commercial records:
 
-- identity: `id`, `number`, `title`
-- ownership: `branch_id`, `team_id`, `assignee_user_id`
-- customer context: `customer_id`, `site_id`, `asset_id`
-- scheduling: `scheduled_day`, `window`
-- status and priority: `status`, `priority`, `sla_bucket`
-- execution binding: `template_id`, `completion_policy`, `allowed_part_ids`
-- M4 control state: `assignment_revision`, `latest_assignment_id`, review-state indexes, and summary rollup participation
+- `invoices`
+- `invoice_lines`
+- `invoice_adjustments`
+- `invoice_artifacts`
+- `service_summary_artifacts`
+- `payment_records`
+- `payment_allocations`
 
-Visits remain the technician execution records attached to work orders. They still own the nested execution payload, but they now also participate in review, correction, activity, and alert flows.
+Accounts receivable and finance views are read from:
 
-### Assignments and schedule windows
+- `customer_statements`
+- `receivable_summaries`
+- `export_jobs`
+- `finance_rollups`
+- `profitability_snapshots`
 
-Assignments are first-class M4 records rather than implicit work-order fields. Each assignment captures:
+## Indexes And Summaries
 
-- `id`
-- `work_order_id`
-- `assignee_user_id`
-- `team_id`
-- `branch_id`
-- `revision`
-- `scheduled_day`
-- `window`
-- `priority`
-- `changed_at`
+The reducer continues to read normalized entities through precomputed indexes. M5 adds commercial index families alongside the existing work-order and review indexes.
 
-Schedule windows keep the dispatcher-facing planning window normalized separately from visit execution.
+Current commercial indexes include:
 
-### Review and correction loop
+- `invoices_by_status`
+- `invoices_by_customer`
+- `invoices_by_branch`
+- `invoices_by_team`
+- `invoices_by_aging_bucket`
+- `invoices_by_work_order`
+- `payments_by_invoice`
+- `payments_by_customer`
+- `price_books_by_branch`
+- `price_books_by_customer`
+- `statements_by_customer`
+- `receivables_by_branch`
+- `export_jobs_by_status`
 
-Supervisor review is modeled by four connected entity families:
+The `summary` branch now carries both operations and commercial rollups:
 
-- `review_queue_items`
-- `review_decisions`
-- `correction_tasks`
-- `correction_responses`
-
-These records let the app represent:
-
-- awaiting-review submissions
-- approval or rejection decisions
-- correction requests with reason codes and supervisor notes
-- technician resubmission back to the queue
-
-The current seeded review-state families in indexes are:
-
-- `not_ready`
-- `not_required`
-- `awaiting_review`
-- `approved`
-- `correction_requested`
-- `resubmitted`
-
-### Activity and alerts
-
-`activity_events` model role-visible operational feed items such as assignment, dispatch readiness, arrival, blocked work, submit, awaiting review, approval, and intake creation.
-
-`alerts` model higher-signal role-aware exceptions:
-
-- dispatcher overdue or SLA risk
-- supervisor review backlog
-- manager branch risk
-- technician reassignment
-
-Unread rollups are summarized under `summary.activity_unread` and mirrored into sync metadata.
-
-### Rollups and summaries
-
-M4 adds normalized management views rather than ad hoc joined blobs:
-
-- `branch_summaries`
-- `team_summaries`
-- `dashboard_rollups`
-- `workload_snapshots`
-- `sla_policies`
-- `dispatch_filters`
-
-The `summary` branch exposes shell-facing aggregates:
-
-- `counts`
-- `status_counts`
-- `attention_work_orders`
-- `dispatcher_focus`
 - `manager_metrics`
-- `supervisor_metrics`
-- `technician_today`
-- `activity_unread`
 - `branch_rollups`
 - `team_rollups`
 - `dashboard_rollup`
+- `finance_metrics`
+- `invoice_status_counts`
+- `aging_buckets`
+- `receivables_overview`
+- `export_job_counts`
+- `profitability_summary`
 
-## Reducer Maps And Indexes
+## Reducer Draft And Sync State
 
-The reducer normalizes seeded entities under `entities.*`. M4 requires more read-optimized indexes than the earlier technician-only flow.
+The reducer keeps user-editable commercial inputs in `drafts`, including pricing labels, invoice dates and memo, invoice line fields, payment fields, statement filters, receivable filters, and export filters.
 
-Current index families:
+The `sync` branch now includes:
 
-- `work_orders_by_status`
-- `work_orders_by_assignee`
-- `work_orders_by_branch`
-- `work_orders_by_team`
-- `work_orders_by_day`
-- `work_orders_by_priority`
-- `work_orders_by_review_state`
-- `review_queue_by_status`
-- `alerts_by_role`
-- `activity_by_role`
-- `assets_by_site`
-- `sites_by_customer`
-
-These indexes let dispatcher, supervisor, manager, and technician shells read the same normalized source of truth without per-view scanning logic.
-
-## Execution, Drafts, And Sync
-
-Technician execution still lives in the nested `execution` branch and selected visit state. M4 keeps that execution model but adds operational overlays rather than replacing it.
-
-Reducer-only operational state now includes:
-
-- intake and correction drafts
-- review selection state
-- activity and alert selection state
-- unread counters
-- sync conflict fields such as `conflict_status`, `conflict_code`, and `conflict_entity_id`
-
-Pending client ops still live in `sync.pending_ops`. They remain deterministic envelopes, but the release bar now includes dispatch-related state changes, correction resubmission, and alert or activity propagation alongside technician offline work.
+- generic `conflict_status`, `conflict_code`, `conflict_entity_id`
+- `invoice_lock_status` and `invoice_lock_message`
+- `stale_invoice_id`
+- `payment_revision_status`
+- `pricing_revision_status`
+- `stale_price_book_id`
+- `export_status`
+- `finance_revision`
 
 ## Lifecycle Enums
 
-### Work-order status line
+Work-order statuses in the seed:
 
 - `draft`
 - `scheduled`
@@ -221,21 +164,14 @@ Pending client ops still live in `sync.pending_ops`. They remain deterministic e
 - `closed`
 - `canceled`
 
-### Role surface routing
+Invoice statuses in the seed:
 
-- `technician` defaults to `today`
-- `dispatcher` defaults to `dispatch`
-- `supervisor` defaults to `review`
-- `manager` defaults to `manager`
-
-## Relationship Invariants
-
-- IDs are deterministic, ASCII, and stable across regenerated fixtures.
-- Cross-entity references stay normalized by id.
-- Each work order points at exactly one customer, site, asset, assignee, team, branch, and template.
-- Each visit belongs to one work order and one technician assignee.
-- Assignment revisions are explicit and deterministic.
-- Review and correction entities link back to the originating visit or work order.
-- Activity and alerts are role-scoped rather than duplicated per shell.
-- Reducer-only drafts and execution state stay separate from seeded normalized entities.
-- Web, desktop, iOS, Android, and replay flows all consume the same tenant shape.
+- `draft`
+- `pending_review`
+- `issued`
+- `sent`
+- `partially_paid`
+- `paid`
+- `overdue`
+- `voided`
+- `written_off`

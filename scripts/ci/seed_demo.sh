@@ -12,6 +12,7 @@ from collections import defaultdict
 
 root = pathlib.Path(sys.argv[1])
 now = "2026-03-11T00:00:00Z"
+APP_VERSION = "0.4.0"
 
 
 def clone_doc(doc):
@@ -614,6 +615,911 @@ dispatch_filters = {
     }
 }
 
+price_books = {
+    "price_book_branch_north": {
+        "id": "price_book_branch_north",
+        "scope": "branch",
+        "branch_id": "branch_north",
+        "customer_id": None,
+        "name": "North Commercial Standard",
+        "currency": "USD",
+        "revision": 3,
+        "effective_at": "2026-03-01T00:00:00Z",
+        "tax_rule_id": "tax_rule_wa",
+        "billing_policy_id": "billing_policy_branch_north",
+    },
+    "price_book_branch_south": {
+        "id": "price_book_branch_south",
+        "scope": "branch",
+        "branch_id": "branch_south",
+        "customer_id": None,
+        "name": "South Commercial Standard",
+        "currency": "USD",
+        "revision": 2,
+        "effective_at": "2026-03-01T00:00:00Z",
+        "tax_rule_id": "tax_rule_or",
+        "billing_policy_id": "billing_policy_branch_south",
+    },
+    "price_book_customer_cust_018": {
+        "id": "price_book_customer_cust_018",
+        "scope": "customer",
+        "branch_id": "branch_south",
+        "customer_id": "cust_018",
+        "name": "Customer 18 Contract Override",
+        "currency": "USD",
+        "revision": 4,
+        "effective_at": "2026-03-05T00:00:00Z",
+        "tax_rule_id": "tax_rule_or",
+        "billing_policy_id": "billing_policy_customer_cust_018",
+    },
+}
+
+price_book_items = {
+    "price_item_service_call_north": {
+        "id": "price_item_service_call_north",
+        "price_book_id": "price_book_branch_north",
+        "kind": "service_fee",
+        "code": "svc-call",
+        "label": "Standard service call",
+        "uom": "visit",
+        "unit_rate": 145.0,
+        "taxable": True,
+    },
+    "price_item_service_call_south": {
+        "id": "price_item_service_call_south",
+        "price_book_id": "price_book_branch_south",
+        "kind": "service_fee",
+        "code": "svc-call",
+        "label": "Standard service call",
+        "uom": "visit",
+        "unit_rate": 135.0,
+        "taxable": True,
+    },
+    "price_item_labor_standard_north": {
+        "id": "price_item_labor_standard_north",
+        "price_book_id": "price_book_branch_north",
+        "kind": "labor",
+        "code": "labor-std",
+        "label": "Standard labor",
+        "uom": "hour",
+        "unit_rate": 96.0,
+        "taxable": True,
+    },
+    "price_item_labor_standard_south": {
+        "id": "price_item_labor_standard_south",
+        "price_book_id": "price_book_branch_south",
+        "kind": "labor",
+        "code": "labor-std",
+        "label": "Standard labor",
+        "uom": "hour",
+        "unit_rate": 92.0,
+        "taxable": True,
+    },
+    "price_item_travel_north": {
+        "id": "price_item_travel_north",
+        "price_book_id": "price_book_branch_north",
+        "kind": "travel",
+        "code": "travel-a",
+        "label": "Zone A travel fee",
+        "uom": "visit",
+        "unit_rate": 28.0,
+        "taxable": True,
+    },
+    "price_item_travel_south": {
+        "id": "price_item_travel_south",
+        "price_book_id": "price_book_branch_south",
+        "kind": "travel",
+        "code": "travel-a",
+        "label": "Zone A travel fee",
+        "uom": "visit",
+        "unit_rate": 24.0,
+        "taxable": True,
+    },
+}
+
+labor_rate_policies = {
+    "labor_policy_branch_north": {
+        "id": "labor_policy_branch_north",
+        "branch_id": "branch_north",
+        "default_category": "standard",
+        "hourly_rate": 96.0,
+        "overtime_hourly_rate": 132.0,
+        "minimum_minutes": 60,
+    },
+    "labor_policy_branch_south": {
+        "id": "labor_policy_branch_south",
+        "branch_id": "branch_south",
+        "default_category": "standard",
+        "hourly_rate": 92.0,
+        "overtime_hourly_rate": 126.0,
+        "minimum_minutes": 60,
+    },
+}
+
+part_rate_policies = {
+    "part_rate_north_filter": {
+        "id": "part_rate_north_filter",
+        "branch_id": "branch_north",
+        "part_id": "part_filter_merv13",
+        "unit_rate": 26.0,
+    },
+    "part_rate_north_belt": {
+        "id": "part_rate_north_belt",
+        "branch_id": "branch_north",
+        "part_id": "part_belt_a42",
+        "unit_rate": 21.0,
+    },
+    "part_rate_north_cleaner": {
+        "id": "part_rate_north_cleaner",
+        "branch_id": "branch_north",
+        "part_id": "part_contact_cleaner",
+        "unit_rate": 12.5,
+    },
+    "part_rate_south_filter": {
+        "id": "part_rate_south_filter",
+        "branch_id": "branch_south",
+        "part_id": "part_filter_merv13",
+        "unit_rate": 24.5,
+    },
+    "part_rate_south_belt": {
+        "id": "part_rate_south_belt",
+        "branch_id": "branch_south",
+        "part_id": "part_belt_a42",
+        "unit_rate": 19.5,
+    },
+    "part_rate_south_cleaner": {
+        "id": "part_rate_south_cleaner",
+        "branch_id": "branch_south",
+        "part_id": "part_contact_cleaner",
+        "unit_rate": 11.5,
+    },
+}
+
+billing_policies = {
+    "billing_policy_branch_north": {
+        "id": "billing_policy_branch_north",
+        "scope": "branch",
+        "branch_id": "branch_north",
+        "customer_id": None,
+        "default_labor_policy_id": "labor_policy_branch_north",
+        "default_price_book_id": "price_book_branch_north",
+        "minimum_charge": 145.0,
+        "travel_fee_behavior": "flat_per_visit",
+        "invoice_terms_days": 15,
+        "currency": "USD",
+        "auto_generate_invoice_on_approval": True,
+    },
+    "billing_policy_branch_south": {
+        "id": "billing_policy_branch_south",
+        "scope": "branch",
+        "branch_id": "branch_south",
+        "customer_id": None,
+        "default_labor_policy_id": "labor_policy_branch_south",
+        "default_price_book_id": "price_book_branch_south",
+        "minimum_charge": 135.0,
+        "travel_fee_behavior": "flat_per_visit",
+        "invoice_terms_days": 21,
+        "currency": "USD",
+        "auto_generate_invoice_on_approval": True,
+    },
+    "billing_policy_customer_cust_018": {
+        "id": "billing_policy_customer_cust_018",
+        "scope": "customer",
+        "branch_id": "branch_south",
+        "customer_id": "cust_018",
+        "default_labor_policy_id": "labor_policy_branch_south",
+        "default_price_book_id": "price_book_customer_cust_018",
+        "minimum_charge": 125.0,
+        "travel_fee_behavior": "waived",
+        "invoice_terms_days": 10,
+        "currency": "USD",
+        "auto_generate_invoice_on_approval": True,
+    },
+}
+
+tax_rules = {
+    "tax_rule_wa": {
+        "id": "tax_rule_wa",
+        "branch_id": "branch_north",
+        "label": "WA sales tax",
+        "rate_pct": 10.1,
+        "inclusive": False,
+    },
+    "tax_rule_or": {
+        "id": "tax_rule_or",
+        "branch_id": "branch_south",
+        "label": "OR sales tax",
+        "rate_pct": 0.0,
+        "inclusive": False,
+    },
+}
+
+discount_rules = {
+    "discount_rule_loyalty": {
+        "id": "discount_rule_loyalty",
+        "kind": "percent",
+        "value": 5.0,
+        "label": "Loyalty discount",
+    },
+    "discount_rule_pm_bundle": {
+        "id": "discount_rule_pm_bundle",
+        "kind": "flat",
+        "value": 18.0,
+        "label": "Bundle credit",
+    },
+    "discount_rule_municipal": {
+        "id": "discount_rule_municipal",
+        "kind": "percent",
+        "value": 7.5,
+        "label": "Municipal services discount",
+    },
+}
+
+invoice_artifacts = {}
+service_summary_artifacts = {}
+invoices = {}
+invoice_lines = {}
+invoice_adjustments = {}
+payment_records = {}
+payment_allocations = {}
+customer_statements = {}
+receivable_summaries = {}
+export_jobs = {}
+finance_rollups = {}
+profitability_snapshots = {}
+
+
+def part_rate_for(branch_id, part_id):
+    for policy in part_rate_policies.values():
+        if policy["branch_id"] == branch_id and policy["part_id"] == part_id:
+            return policy["unit_rate"]
+    return 0.0
+
+
+def tax_rate_for(branch_id):
+    return tax_rules["tax_rule_wa"]["rate_pct"] if branch_id == "branch_north" else tax_rules["tax_rule_or"]["rate_pct"]
+
+
+def discount_amount_for_rule(rule_id, subtotal):
+    if rule_id is None:
+        return 0.0
+    rule = discount_rules[rule_id]
+    if rule["kind"] == "percent":
+        return round(subtotal * rule["value"] / 100.0, 2)
+    return round(rule["value"], 2)
+
+
+def visit_id_for_work_order(work_order_id):
+    return f"visit_{work_order_id.split('_')[1]}"
+
+
+def add_invoice(blueprint):
+    invoice_id = blueprint["id"]
+    work_order_ids = blueprint["work_order_ids"]
+    source_work_order = work_orders[work_order_ids[0]]
+    customer_id = blueprint.get("customer_id", source_work_order["customer_id"])
+    branch_id = blueprint.get("branch_id", source_work_order["branch_id"])
+    team_id = blueprint.get("team_id", source_work_order["team_id"])
+    billing_policy_id = blueprint.get(
+        "billing_policy_id",
+        "billing_policy_branch_north" if branch_id == "branch_north" else "billing_policy_branch_south",
+    )
+    price_book_id = blueprint.get(
+        "price_book_id",
+        "price_book_branch_north" if branch_id == "branch_north" else "price_book_branch_south",
+    )
+    tax_rule_id = blueprint.get(
+        "tax_rule_id",
+        "tax_rule_wa" if branch_id == "branch_north" else "tax_rule_or",
+    )
+    line_ids = []
+    subtotal = 0.0
+    taxable_subtotal = 0.0
+    first_work_order_id = work_order_ids[0]
+    first_visit_id = visit_id_for_work_order(first_work_order_id)
+    line_specs = [
+        {
+            "suffix": "service",
+            "kind": "service_fee",
+            "description": "Standard service call",
+            "quantity": 1.0,
+            "unit_rate": blueprint["service_fee"],
+            "taxable": True,
+            "source_work_order_id": first_work_order_id,
+            "source_visit_id": first_visit_id,
+        },
+        {
+            "suffix": "labor",
+            "kind": "labor",
+            "description": blueprint.get("labor_label", "Standard labor"),
+            "quantity": blueprint["labor_hours"],
+            "unit_rate": blueprint["labor_rate"],
+            "taxable": True,
+            "source_work_order_id": first_work_order_id,
+            "source_visit_id": first_visit_id,
+        },
+        {
+            "suffix": "travel",
+            "kind": "travel",
+            "description": "Zone A travel fee",
+            "quantity": 1.0,
+            "unit_rate": blueprint["travel_fee"],
+            "taxable": True,
+            "source_work_order_id": first_work_order_id,
+            "source_visit_id": first_visit_id,
+        },
+    ]
+    for index, part_usage in enumerate(blueprint.get("parts", []), start=1):
+        line_specs.append(
+            {
+                "suffix": f"part_{index}",
+                "kind": "part",
+                "description": parts_catalog[part_usage["part_id"]]["name"],
+                "quantity": float(part_usage["qty"]),
+                "unit_rate": float(part_usage["unit_rate"]),
+                "taxable": True,
+                "source_work_order_id": part_usage.get("source_work_order_id", first_work_order_id),
+                "source_visit_id": visit_id_for_work_order(
+                    part_usage.get("source_work_order_id", first_work_order_id)
+                ),
+            }
+        )
+    for line_spec in line_specs:
+        line_id = f"invoice_line_{invoice_id}_{line_spec['suffix']}"
+        amount = round(line_spec["quantity"] * line_spec["unit_rate"], 2)
+        invoice_lines[line_id] = {
+            "id": line_id,
+            "invoice_id": invoice_id,
+            "kind": line_spec["kind"],
+            "description": line_spec["description"],
+            "quantity": line_spec["quantity"],
+            "unit_rate": line_spec["unit_rate"],
+            "amount": amount,
+            "taxable": line_spec["taxable"],
+            "source_work_order_id": line_spec["source_work_order_id"],
+            "source_visit_id": line_spec["source_visit_id"],
+        }
+        line_ids.append(line_id)
+        subtotal = round(subtotal + amount, 2)
+        if line_spec["taxable"]:
+            taxable_subtotal = round(taxable_subtotal + amount, 2)
+
+    adjustment_ids = []
+    discount_total = discount_amount_for_rule(blueprint.get("discount_rule_id"), subtotal)
+    if discount_total:
+        discount_id = f"invoice_adjustment_{invoice_id}_discount"
+        invoice_adjustments[discount_id] = {
+            "id": discount_id,
+            "invoice_id": invoice_id,
+            "kind": "discount",
+            "label": discount_rules[blueprint["discount_rule_id"]]["label"],
+            "amount": discount_total,
+        }
+        adjustment_ids.append(discount_id)
+    manual_credit = round(float(blueprint.get("manual_credit", 0.0)), 2)
+    if manual_credit:
+        credit_id = f"invoice_adjustment_{invoice_id}_credit"
+        invoice_adjustments[credit_id] = {
+            "id": credit_id,
+            "invoice_id": invoice_id,
+            "kind": "credit",
+            "label": "Service recovery credit",
+            "amount": manual_credit,
+        }
+        adjustment_ids.append(credit_id)
+    taxable_after_discount = max(round(taxable_subtotal - discount_total - manual_credit, 2), 0.0)
+    tax_total = round(taxable_after_discount * tax_rate_for(branch_id) / 100.0, 2)
+    if tax_total:
+        tax_id = f"invoice_adjustment_{invoice_id}_tax"
+        invoice_adjustments[tax_id] = {
+            "id": tax_id,
+            "invoice_id": invoice_id,
+            "kind": "tax",
+            "label": tax_rules[tax_rule_id]["label"],
+            "amount": tax_total,
+        }
+        adjustment_ids.append(tax_id)
+    total = round(subtotal - discount_total - manual_credit + tax_total, 2)
+    aging_bucket = blueprint.get("aging_bucket", "current")
+    issue_date = blueprint["issue_date"]
+    sent_at = blueprint.get("sent_at")
+    invoice_artifact_id = f"invoice_artifact_{invoice_id}"
+    service_summary_artifact_id = f"service_summary_{invoice_id}"
+    invoice_artifacts[invoice_artifact_id] = {
+        "id": invoice_artifact_id,
+        "invoice_id": invoice_id,
+        "status": blueprint.get("invoice_artifact_status", "ready"),
+        "format": "pdf",
+        "file_name": f"{blueprint['number'].lower()}.pdf",
+        "download_path": f"/artifacts/invoices/{invoice_id}.pdf",
+        "render_input_hash": f"hash_{invoice_id}",
+        "generated_at": blueprint.get("artifact_generated_at", now),
+        "retryable": blueprint.get("invoice_artifact_status", "ready") != "ready",
+        "error_code": blueprint.get("invoice_artifact_error_code"),
+        "error_message": blueprint.get("invoice_artifact_error_message"),
+    }
+    service_summary_artifacts[service_summary_artifact_id] = {
+        "id": service_summary_artifact_id,
+        "invoice_id": invoice_id,
+        "work_order_ids": work_order_ids,
+        "status": blueprint.get("service_summary_status", "ready"),
+        "format": "pdf",
+        "file_name": f"{invoice_id}_service_summary.pdf",
+        "download_path": f"/artifacts/service-summaries/{invoice_id}.pdf",
+        "generated_at": blueprint.get("service_summary_generated_at", now),
+        "retryable": blueprint.get("service_summary_status", "ready") != "ready",
+        "error_code": blueprint.get("service_summary_error_code"),
+        "error_message": blueprint.get("service_summary_error_message"),
+    }
+    invoices[invoice_id] = {
+        "id": invoice_id,
+        "number": blueprint["number"],
+        "status": blueprint["status"],
+        "revision": blueprint.get("revision", 1),
+        "lock_status": blueprint.get(
+            "lock_status",
+            "editable" if blueprint["status"] in {"draft", "pending_review"} else "locked",
+        ),
+        "lock_reason": blueprint.get("lock_reason"),
+        "branch_id": branch_id,
+        "team_id": team_id,
+        "customer_id": customer_id,
+        "currency": "USD",
+        "price_book_id": price_book_id,
+        "billing_policy_id": billing_policy_id,
+        "tax_rule_id": tax_rule_id,
+        "discount_rule_id": blueprint.get("discount_rule_id"),
+        "issue_date": issue_date,
+        "due_date": blueprint["due_date"],
+        "sent_at": sent_at,
+        "paid_at": blueprint.get("paid_at"),
+        "voided_at": blueprint.get("voided_at"),
+        "written_off_at": blueprint.get("written_off_at"),
+        "source_work_order_ids": work_order_ids,
+        "source_visit_ids": [visit_id_for_work_order(work_order_id) for work_order_id in work_order_ids],
+        "memo": blueprint["memo"],
+        "line_ids": line_ids,
+        "adjustment_ids": adjustment_ids,
+        "payment_ids": [],
+        "invoice_artifact_id": invoice_artifact_id,
+        "service_summary_artifact_id": service_summary_artifact_id,
+        "subtotal": subtotal,
+        "discount_total": round(discount_total + manual_credit, 2),
+        "tax_total": tax_total,
+        "total": total,
+        "paid_total": 0.0,
+        "balance_due": total,
+        "aging_bucket": aging_bucket,
+    }
+    return invoice_id
+
+
+invoice_blueprints = [
+    {
+        "id": "inv_001",
+        "number": "INV-4001",
+        "status": "draft",
+        "work_order_ids": ["wo_013"],
+        "issue_date": "2026-03-15",
+        "due_date": "2026-03-30",
+        "service_fee": 145.0,
+        "labor_hours": 1.75,
+        "labor_rate": 96.0,
+        "travel_fee": 28.0,
+        "parts": [{"part_id": "part_filter_merv13", "qty": 1, "unit_rate": 26.0}],
+        "memo": "Drafted from approved PM visit pending office review.",
+        "aging_bucket": "current",
+    },
+    {
+        "id": "inv_002",
+        "number": "INV-4002",
+        "status": "pending_review",
+        "work_order_ids": ["wo_014"],
+        "issue_date": "2026-03-16",
+        "due_date": "2026-03-31",
+        "service_fee": 145.0,
+        "labor_hours": 2.25,
+        "labor_rate": 96.0,
+        "travel_fee": 28.0,
+        "parts": [{"part_id": "part_belt_a42", "qty": 1, "unit_rate": 21.0}],
+        "discount_rule_id": "discount_rule_pm_bundle",
+        "memo": "Awaiting billing supervisor review after technician correction notes.",
+        "aging_bucket": "current",
+    },
+    {
+        "id": "inv_003",
+        "number": "INV-4003",
+        "status": "issued",
+        "work_order_ids": ["wo_015"],
+        "issue_date": "2026-03-10",
+        "due_date": "2026-03-25",
+        "service_fee": 135.0,
+        "labor_hours": 2.0,
+        "labor_rate": 92.0,
+        "travel_fee": 24.0,
+        "parts": [{"part_id": "part_filter_merv13", "qty": 2, "unit_rate": 24.5}],
+        "memo": "Issued and ready to send to customer.",
+        "aging_bucket": "current",
+        "lock_status": "revision_sensitive",
+    },
+    {
+        "id": "inv_004",
+        "number": "INV-4004",
+        "status": "sent",
+        "work_order_ids": ["wo_018"],
+        "issue_date": "2026-03-13",
+        "due_date": "2026-03-23",
+        "sent_at": "2026-03-13T16:30:00Z",
+        "service_fee": 125.0,
+        "labor_hours": 1.5,
+        "labor_rate": 88.0,
+        "travel_fee": 0.0,
+        "parts": [{"part_id": "part_filter_merv13", "qty": 1, "unit_rate": 23.0}],
+        "price_book_id": "price_book_customer_cust_018",
+        "billing_policy_id": "billing_policy_customer_cust_018",
+        "memo": "Sent under contracted South branch customer override.",
+        "aging_bucket": "current",
+        "lock_status": "revision_sensitive",
+    },
+    {
+        "id": "inv_005",
+        "number": "INV-4005",
+        "status": "partially_paid",
+        "work_order_ids": ["wo_019"],
+        "issue_date": "2026-03-14",
+        "due_date": "2026-03-29",
+        "sent_at": "2026-03-14T18:00:00Z",
+        "service_fee": 145.0,
+        "labor_hours": 2.5,
+        "labor_rate": 96.0,
+        "travel_fee": 28.0,
+        "parts": [{"part_id": "part_belt_a42", "qty": 1, "unit_rate": 21.0}],
+        "discount_rule_id": "discount_rule_loyalty",
+        "memo": "Customer submitted deposit; remainder still outstanding.",
+        "aging_bucket": "1_30",
+        "lock_status": "locked",
+    },
+    {
+        "id": "inv_006",
+        "number": "INV-4006",
+        "status": "paid",
+        "work_order_ids": ["wo_024"],
+        "issue_date": "2026-03-12",
+        "due_date": "2026-03-27",
+        "sent_at": "2026-03-12T17:10:00Z",
+        "paid_at": "2026-03-17T14:45:00Z",
+        "service_fee": 135.0,
+        "labor_hours": 2.0,
+        "labor_rate": 92.0,
+        "travel_fee": 24.0,
+        "parts": [{"part_id": "part_filter_merv13", "qty": 1, "unit_rate": 24.5}],
+        "memo": "Paid in full by branch procurement card.",
+        "aging_bucket": "current",
+        "lock_status": "locked",
+    },
+    {
+        "id": "inv_007",
+        "number": "INV-4007",
+        "status": "overdue",
+        "work_order_ids": ["wo_013", "wo_019"],
+        "customer_id": "cust_013",
+        "team_id": "team_north_alpha",
+        "issue_date": "2026-02-05",
+        "due_date": "2026-02-20",
+        "sent_at": "2026-02-05T15:30:00Z",
+        "service_fee": 145.0,
+        "labor_hours": 3.0,
+        "labor_rate": 96.0,
+        "travel_fee": 28.0,
+        "parts": [
+            {"part_id": "part_filter_merv13", "qty": 2, "unit_rate": 26.0},
+            {"part_id": "part_contact_cleaner", "qty": 1, "unit_rate": 12.5},
+        ],
+        "memo": "Past due balance driving the North branch aging bucket.",
+        "aging_bucket": "31_60",
+        "lock_status": "locked",
+        "invoice_artifact_status": "failed",
+        "invoice_artifact_error_code": "render_template_missing",
+        "invoice_artifact_error_message": "Invoice PDF render template was unavailable.",
+    },
+    {
+        "id": "inv_008",
+        "number": "INV-4008",
+        "status": "voided",
+        "work_order_ids": ["wo_015"],
+        "issue_date": "2026-02-18",
+        "due_date": "2026-03-04",
+        "sent_at": "2026-02-18T12:10:00Z",
+        "voided_at": "2026-02-19T09:00:00Z",
+        "service_fee": 135.0,
+        "labor_hours": 1.0,
+        "labor_rate": 92.0,
+        "travel_fee": 24.0,
+        "parts": [],
+        "manual_credit": 24.0,
+        "memo": "Voided after duplicate issue and reopened under a corrected draft.",
+        "aging_bucket": "current",
+        "lock_status": "locked",
+    },
+    {
+        "id": "inv_009",
+        "number": "INV-4009",
+        "status": "written_off",
+        "work_order_ids": ["wo_024"],
+        "customer_id": "cust_004",
+        "branch_id": "branch_south",
+        "team_id": "team_south_gamma",
+        "issue_date": "2026-01-10",
+        "due_date": "2026-01-31",
+        "sent_at": "2026-01-10T11:20:00Z",
+        "written_off_at": "2026-03-01T08:30:00Z",
+        "service_fee": 135.0,
+        "labor_hours": 1.5,
+        "labor_rate": 92.0,
+        "travel_fee": 24.0,
+        "parts": [{"part_id": "part_belt_a42", "qty": 1, "unit_rate": 19.5}],
+        "memo": "Legacy balance written off after approved service credit.",
+        "aging_bucket": "61_plus",
+        "lock_status": "locked",
+    },
+]
+
+for blueprint in invoice_blueprints:
+    add_invoice(blueprint)
+
+
+def add_payment(payment_id, invoice_id, amount, method, received_at, external_ref, unapplied_amount=0.0, reversal_of=None):
+    invoice = invoices[invoice_id]
+    allocation_id = f"payment_allocation_{payment_id}"
+    applied_amount = round(float(amount) - float(unapplied_amount), 2)
+    payment_records[payment_id] = {
+        "id": payment_id,
+        "invoice_id": invoice_id,
+        "customer_id": invoice["customer_id"],
+        "branch_id": invoice["branch_id"],
+        "amount": round(float(amount), 2),
+        "applied_amount": applied_amount,
+        "unapplied_amount": round(float(unapplied_amount), 2),
+        "method": method,
+        "received_at": received_at,
+        "external_ref": external_ref,
+        "status": "posted" if reversal_of is None else "reversal",
+        "reversal_of": reversal_of,
+    }
+    if applied_amount > 0:
+        payment_allocations[allocation_id] = {
+            "id": allocation_id,
+            "payment_id": payment_id,
+            "invoice_id": invoice_id,
+            "amount": applied_amount,
+            "applied_at": received_at,
+        }
+    invoice["payment_ids"].append(payment_id)
+    invoice["paid_total"] = round(invoice["paid_total"] + applied_amount, 2)
+    invoice["balance_due"] = round(max(invoice["total"] - invoice["paid_total"], 0.0), 2)
+
+
+add_payment(
+    "payment_005_a",
+    "inv_005",
+    220.0,
+    "ach",
+    "2026-03-16T14:10:00Z",
+    "ACH-55201",
+)
+add_payment(
+    "payment_006_a",
+    "inv_006",
+    invoices["inv_006"]["total"],
+    "card",
+    "2026-03-17T14:45:00Z",
+    "CARD-99021",
+)
+add_payment(
+    "payment_007_a",
+    "inv_007",
+    90.0,
+    "check",
+    "2026-02-10T17:00:00Z",
+    "CHK-4420",
+)
+
+for invoice in invoices.values():
+    if invoice["status"] == "partially_paid" and invoice["balance_due"] <= 0:
+        invoice["status"] = "paid"
+    if invoice["status"] == "paid" and invoice["paid_total"] <= 0:
+        invoice["paid_total"] = invoice["total"]
+        invoice["balance_due"] = 0.0
+
+for invoice in invoices.values():
+    customer_id = invoice["customer_id"]
+    statement_id = f"statement_{customer_id}"
+    statement = customer_statements.setdefault(
+        statement_id,
+        {
+            "id": statement_id,
+            "customer_id": customer_id,
+            "currency": "USD",
+            "statement_date": now,
+            "invoice_ids": [],
+            "payment_ids": [],
+            "current_balance": 0.0,
+            "overdue_balance": 0.0,
+            "aging_buckets": {"current": 0.0, "1_30": 0.0, "31_60": 0.0, "61_plus": 0.0},
+        },
+    )
+    statement["invoice_ids"].append(invoice["id"])
+    statement["current_balance"] = round(statement["current_balance"] + invoice["balance_due"], 2)
+    statement["aging_buckets"][invoice["aging_bucket"]] = round(
+        statement["aging_buckets"][invoice["aging_bucket"]] + invoice["balance_due"], 2
+    )
+    if invoice["aging_bucket"] != "current":
+        statement["overdue_balance"] = round(statement["overdue_balance"] + invoice["balance_due"], 2)
+for payment in payment_records.values():
+    statement_id = f"statement_{payment['customer_id']}"
+    if statement_id in customer_statements:
+        customer_statements[statement_id]["payment_ids"].append(payment["id"])
+
+for branch in branches:
+    branch_invoices = [invoice for invoice in invoices.values() if invoice["branch_id"] == branch["id"]]
+    summary_id = f"receivable_{branch['id']}"
+    receivable_summaries[summary_id] = {
+        "id": summary_id,
+        "scope": "branch",
+        "branch_id": branch["id"],
+        "customer_id": None,
+        "open_invoice_count": len([invoice for invoice in branch_invoices if invoice["balance_due"] > 0]),
+        "overdue_invoice_count": len(
+            [invoice for invoice in branch_invoices if invoice["status"] in {"overdue", "written_off"}]
+        ),
+        "current_balance": round(sum(invoice["balance_due"] for invoice in branch_invoices), 2),
+        "overdue_balance": round(
+            sum(
+                invoice["balance_due"]
+                for invoice in branch_invoices
+                if invoice["aging_bucket"] in {"1_30", "31_60", "61_plus"}
+            ),
+            2,
+        ),
+    }
+for statement in customer_statements.values():
+    receivable_summaries[f"receivable_{statement['customer_id']}"] = {
+        "id": f"receivable_{statement['customer_id']}",
+        "scope": "customer",
+        "branch_id": customers[statement["customer_id"]]["branch_id"],
+        "customer_id": statement["customer_id"],
+        "open_invoice_count": len(statement["invoice_ids"]),
+        "overdue_invoice_count": len(
+            [
+                invoice_id
+                for invoice_id in statement["invoice_ids"]
+                if invoices[invoice_id]["aging_bucket"] in {"1_30", "31_60", "61_plus"}
+            ]
+        ),
+        "current_balance": statement["current_balance"],
+        "overdue_balance": statement["overdue_balance"],
+    }
+
+
+def line_totals_for_invoice(invoice_id):
+    totals = {"labor": 0.0, "parts": 0.0, "service_fee": 0.0, "travel": 0.0}
+    for line_id in invoices[invoice_id]["line_ids"]:
+        line = invoice_lines[line_id]
+        kind = "parts" if line["kind"] == "part" else line["kind"]
+        totals[kind] = round(totals.get(kind, 0.0) + line["amount"], 2)
+    return totals
+
+
+def add_finance_rollup(rollup_id, scope, branch_id=None, team_id=None):
+    selected = [
+        invoice
+        for invoice in invoices.values()
+        if (branch_id is None or invoice["branch_id"] == branch_id)
+        and (team_id is None or invoice["team_id"] == team_id)
+    ]
+    if not selected:
+        return
+    revenue_total = round(
+        sum(invoice["total"] for invoice in selected if invoice["status"] not in {"voided", "written_off"}),
+        2,
+    )
+    paid_total = round(sum(invoice["paid_total"] for invoice in selected), 2)
+    receivable_total = round(sum(invoice["balance_due"] for invoice in selected), 2)
+    overdue_total = round(
+        sum(
+            invoice["balance_due"]
+            for invoice in selected
+            if invoice["aging_bucket"] in {"1_30", "31_60", "61_plus"}
+        ),
+        2,
+    )
+    status_counts = {}
+    totals_by_kind = {"labor": 0.0, "parts": 0.0, "service_fee": 0.0, "travel": 0.0}
+    for invoice in selected:
+        status_counts[invoice["status"]] = status_counts.get(invoice["status"], 0) + 1
+        for kind, amount in line_totals_for_invoice(invoice["id"]).items():
+            totals_by_kind[kind] = round(totals_by_kind.get(kind, 0.0) + amount, 2)
+    average_ticket = round(revenue_total / max(len(selected), 1), 2)
+    finance_rollups[rollup_id] = {
+        "id": rollup_id,
+        "scope": scope,
+        "branch_id": branch_id,
+        "team_id": team_id,
+        "revenue_total": revenue_total,
+        "paid_total": paid_total,
+        "receivable_total": receivable_total,
+        "overdue_total": overdue_total,
+        "average_ticket": average_ticket,
+        "invoice_status_counts": status_counts,
+        "revenue_breakdown": totals_by_kind,
+    }
+    estimated_cost = round(totals_by_kind["labor"] * 0.52 + totals_by_kind["parts"] * 0.64 + totals_by_kind["travel"] * 0.35, 2)
+    gross_margin = round(revenue_total - estimated_cost, 2)
+    profitability_snapshots[rollup_id] = {
+        "id": rollup_id,
+        "scope": scope,
+        "branch_id": branch_id,
+        "team_id": team_id,
+        "revenue_total": revenue_total,
+        "estimated_cost_total": estimated_cost,
+        "gross_margin_total": gross_margin,
+        "gross_margin_pct": round((gross_margin / revenue_total) * 100.0, 2) if revenue_total else 0.0,
+    }
+
+
+add_finance_rollup("finance_global", "global")
+for branch in branches:
+    add_finance_rollup(f"finance_{branch['id']}", "branch", branch_id=branch["id"])
+for team in teams:
+    add_finance_rollup(f"finance_{team['id']}", "team", branch_id=team["branch_id"], team_id=team["id"])
+
+export_jobs = {
+    "export_job_001": {
+        "id": "export_job_001",
+        "kind": "invoices",
+        "format": "csv",
+        "status": "completed",
+        "requested_by_user_id": "user_manager_jonas",
+        "requested_at": "2026-03-11T08:15:00Z",
+        "completed_at": "2026-03-11T08:16:00Z",
+        "filters": {"branch_id": "branch_north", "status": "open", "date_from": "2026-03-01", "date_to": "2026-03-31"},
+        "artifact_path": "/exports/export_job_001.csv",
+        "record_count": 5,
+        "data_revision": "finance_rev_2026_03_11_001",
+        "retry_count": 0,
+    },
+    "export_job_002": {
+        "id": "export_job_002",
+        "kind": "receivables",
+        "format": "json",
+        "status": "failed",
+        "requested_by_user_id": "user_manager_jonas",
+        "requested_at": "2026-03-11T08:30:00Z",
+        "completed_at": "2026-03-11T08:31:00Z",
+        "filters": {"branch_id": "branch_south", "aging_bucket": "31_60", "status": "open"},
+        "artifact_path": None,
+        "record_count": 0,
+        "data_revision": "finance_rev_2026_03_11_001",
+        "retry_count": 1,
+        "error_code": "export_render_failed",
+        "error_message": "CSV writer exhausted the attachment manifest buffer.",
+    },
+    "export_job_003": {
+        "id": "export_job_003",
+        "kind": "profitability",
+        "format": "json",
+        "status": "running",
+        "requested_by_user_id": "user_manager_jonas",
+        "requested_at": "2026-03-11T08:45:00Z",
+        "completed_at": None,
+        "filters": {"scope": "global", "status": "all"},
+        "artifact_path": None,
+        "record_count": 0,
+        "data_revision": "finance_rev_2026_03_11_002",
+        "retry_count": 0,
+    },
+}
+
 indexes = {
     "work_orders_by_status": {
         key: []
@@ -642,6 +1548,21 @@ indexes = {
     "activity_by_role": defaultdict(list),
     "assets_by_site": defaultdict(list),
     "sites_by_customer": defaultdict(list),
+    "teams_by_branch": defaultdict(list),
+    "users_by_role": defaultdict(list),
+    "invoices_by_status": defaultdict(list),
+    "invoices_by_customer": defaultdict(list),
+    "invoices_by_branch": defaultdict(list),
+    "invoices_by_team": defaultdict(list),
+    "invoices_by_aging_bucket": defaultdict(list),
+    "invoices_by_work_order": defaultdict(list),
+    "payments_by_invoice": defaultdict(list),
+    "payments_by_customer": defaultdict(list),
+    "export_jobs_by_status": defaultdict(list),
+    "price_books_by_branch": defaultdict(list),
+    "price_books_by_customer": defaultdict(list),
+    "statements_by_customer": defaultdict(list),
+    "receivables_by_branch": defaultdict(list),
 }
 for work_order_id, work_order in work_orders.items():
     indexes["work_orders_by_status"][work_order["status"]].append(work_order_id)
@@ -661,6 +1582,33 @@ for asset_id, asset in assets.items():
     indexes["assets_by_site"][asset["site_id"]].append(asset_id)
 for site_id, site in sites.items():
     indexes["sites_by_customer"][site["customer_id"]].append(site_id)
+for team in teams:
+    indexes["teams_by_branch"][team["branch_id"]].append(team["id"])
+for user in users.values():
+    indexes["users_by_role"][user["role"]].append(user["id"])
+for invoice_id, invoice in invoices.items():
+    indexes["invoices_by_status"][invoice["status"]].append(invoice_id)
+    indexes["invoices_by_customer"][invoice["customer_id"]].append(invoice_id)
+    indexes["invoices_by_branch"][invoice["branch_id"]].append(invoice_id)
+    indexes["invoices_by_team"][invoice["team_id"]].append(invoice_id)
+    indexes["invoices_by_aging_bucket"][invoice["aging_bucket"]].append(invoice_id)
+    for work_order_id in invoice["source_work_order_ids"]:
+        indexes["invoices_by_work_order"][work_order_id].append(invoice_id)
+for payment_id, payment in payment_records.items():
+    indexes["payments_by_invoice"][payment["invoice_id"]].append(payment_id)
+    indexes["payments_by_customer"][payment["customer_id"]].append(payment_id)
+for export_job_id, export_job in export_jobs.items():
+    indexes["export_jobs_by_status"][export_job["status"]].append(export_job_id)
+for price_book_id, price_book in price_books.items():
+    if price_book["branch_id"] is not None:
+        indexes["price_books_by_branch"][price_book["branch_id"]].append(price_book_id)
+    if price_book["customer_id"] is not None:
+        indexes["price_books_by_customer"][price_book["customer_id"]].append(price_book_id)
+for statement_id, statement in customer_statements.items():
+    indexes["statements_by_customer"][statement["customer_id"]].append(statement_id)
+for receivable_id, receivable in receivable_summaries.items():
+    if receivable["branch_id"] is not None:
+        indexes["receivables_by_branch"][receivable["branch_id"]].append(receivable_id)
 indexes = {
     key: {
         inner_key: value
@@ -676,10 +1624,18 @@ summary = {
         "branches": len(branches),
         "teams": len(teams),
         "technicians": len(technicians),
+        "dispatchers": 1,
+        "supervisors": 1,
+        "managers": 1,
         "customers": len(customers),
         "sites": len(sites),
         "assets": len(assets),
         "work_orders": len(work_orders),
+        "visits": len(visits),
+        "assignments": len(assignments),
+        "invoices": len(invoices),
+        "payments": len(payment_records),
+        "export_jobs": len(export_jobs),
     },
     "status_counts": {
         key: len(value) for key, value in indexes["work_orders_by_status"].items()
@@ -714,9 +1670,42 @@ summary = {
         "supervisor": 1,
         "manager": 1,
     },
+    "alert_unread": {
+        "technician": 1,
+        "dispatcher": 1,
+        "supervisor": 1,
+        "manager": 1,
+    },
     "branch_rollups": list(branch_summaries.values()),
     "team_rollups": list(team_summaries.values()),
     "dashboard_rollup": dashboard_rollups["dashboard_default"],
+    "workload_summary": workload_snapshots,
+    "finance_metrics": finance_rollups["finance_global"],
+    "invoice_status_counts": {
+        key: len(value) for key, value in indexes["invoices_by_status"].items()
+    },
+    "aging_buckets": {
+        key: len(value) for key, value in indexes["invoices_by_aging_bucket"].items()
+    },
+    "receivables_overview": {
+        "total_open_balance": round(
+            sum(invoice["balance_due"] for invoice in invoices.values()),
+            2,
+        ),
+        "overdue_balance": round(
+            sum(
+                invoice["balance_due"]
+                for invoice in invoices.values()
+                if invoice["aging_bucket"] in {"1_30", "31_60", "61_plus"}
+            ),
+            2,
+        ),
+        "customer_count": len(customer_statements),
+    },
+    "export_job_counts": {
+        key: len(value) for key, value in indexes["export_jobs_by_status"].items()
+    },
+    "profitability_summary": profitability_snapshots["finance_global"],
 }
 
 fixture = {
@@ -745,6 +1734,25 @@ fixture = {
     "branch_summaries": branch_summaries,
     "team_summaries": team_summaries,
     "dispatch_filters": dispatch_filters,
+    "price_books": price_books,
+    "price_book_items": price_book_items,
+    "labor_rate_policies": labor_rate_policies,
+    "part_rate_policies": part_rate_policies,
+    "billing_policies": billing_policies,
+    "tax_rules": tax_rules,
+    "discount_rules": discount_rules,
+    "invoices": invoices,
+    "invoice_lines": invoice_lines,
+    "invoice_adjustments": invoice_adjustments,
+    "invoice_artifacts": invoice_artifacts,
+    "service_summary_artifacts": service_summary_artifacts,
+    "payment_records": payment_records,
+    "payment_allocations": payment_allocations,
+    "customer_statements": customer_statements,
+    "receivable_summaries": receivable_summaries,
+    "export_jobs": export_jobs,
+    "finance_rollups": finance_rollups,
+    "profitability_snapshots": profitability_snapshots,
     "indexes": indexes,
     "summary": summary,
 }
@@ -775,6 +1783,25 @@ base_entities = {
     "branch_summaries": branch_summaries,
     "team_summaries": team_summaries,
     "dispatch_filters": dispatch_filters,
+    "price_books": price_books,
+    "price_book_items": price_book_items,
+    "labor_rate_policies": labor_rate_policies,
+    "part_rate_policies": part_rate_policies,
+    "billing_policies": billing_policies,
+    "tax_rules": tax_rules,
+    "discount_rules": discount_rules,
+    "invoices": invoices,
+    "invoice_lines": invoice_lines,
+    "invoice_adjustments": invoice_adjustments,
+    "invoice_artifacts": invoice_artifacts,
+    "service_summary_artifacts": service_summary_artifacts,
+    "payment_records": payment_records,
+    "payment_allocations": payment_allocations,
+    "customer_statements": customer_statements,
+    "receivable_summaries": receivable_summaries,
+    "export_jobs": export_jobs,
+    "finance_rollups": finance_rollups,
+    "profitability_snapshots": profitability_snapshots,
 }
 bootstrap_work_order_ids = [
     "wo_001",
@@ -818,17 +1845,7 @@ def compact_template_doc(template):
     }
 
 
-bootstrap_entities = {
-    "work_orders": {
-        work_order_id: compact_work_order_doc(work_orders[work_order_id])
-        for work_order_id in bootstrap_work_order_ids
-    },
-    "templates": {
-        template_id: compact_template_doc(templates[template_id])
-        for template_id in bootstrap_template_ids
-    },
-    "parts_catalog": clone_doc(parts_catalog),
-}
+bootstrap_entities = clone_doc(base_entities)
 review_entities = {
     "users": users,
     "branches": fixture["branches"],
@@ -857,7 +1874,23 @@ review_summary = {
 }
 
 
-def sync_doc(cursor, status):
+def sync_doc(
+    cursor,
+    status,
+    *,
+    conflict_status="idle",
+    conflict_message="",
+    conflict_code=None,
+    conflict_entity_id=None,
+    invoice_lock_status="idle",
+    invoice_lock_message="",
+    stale_invoice_id=None,
+    payment_revision_status="idle",
+    pricing_revision_status="idle",
+    stale_price_book_id=None,
+    export_status="idle",
+    finance_revision="finance_rev_2026_03_11_001",
+):
     return {
         "cursor": cursor,
         "pending_ops": [],
@@ -866,32 +1899,25 @@ def sync_doc(cursor, status):
         "last_server_event_at": now,
         "status": status,
         "last_error": None,
-        "conflict_status": "idle",
-        "conflict_message": "",
-        "conflict_code": None,
-        "conflict_entity_id": None,
+        "conflict_status": conflict_status,
+        "conflict_message": conflict_message,
+        "conflict_code": conflict_code,
+        "conflict_entity_id": conflict_entity_id,
+        "invoice_lock_status": invoice_lock_status,
+        "invoice_lock_message": invoice_lock_message,
+        "stale_invoice_id": stale_invoice_id,
+        "payment_revision_status": payment_revision_status,
+        "pricing_revision_status": pricing_revision_status,
+        "stale_price_book_id": stale_price_book_id,
+        "export_status": export_status,
+        "finance_revision": finance_revision,
         "unread_alerts": 4,
         "unread_activity": 6,
     }
 
 
 def compact_entity_snapshot(source_entities, extra_work_order_ids=None):
-    work_order_ids = list(
-        dict.fromkeys(bootstrap_work_order_ids + list(extra_work_order_ids or []))
-    )
-    return {
-        "work_orders": {
-            work_order_id: compact_work_order_doc(source_entities["work_orders"][work_order_id])
-            for work_order_id in work_order_ids
-            if work_order_id in source_entities["work_orders"]
-        },
-        "templates": {
-            template_id: compact_template_doc(source_entities["templates"][template_id])
-            for template_id in bootstrap_template_ids
-            if template_id in source_entities["templates"]
-        },
-        "parts_catalog": clone_doc(source_entities.get("parts_catalog", parts_catalog)),
-    }
+    return clone_doc(source_entities)
 
 
 def payload_with_snapshot(extra, extra_work_order_ids=None):
@@ -904,7 +1930,7 @@ def payload_with_snapshot(extra, extra_work_order_ids=None):
 
 meta_doc = {
     "app_name": "CrewOps",
-    "app_version": "0.3.0",
+    "app_version": APP_VERSION,
     "build_profile": "dev",
     "environment": "local",
     "generated_at": now,
@@ -959,7 +1985,7 @@ bootstrap_doc = {
     "summary": summary,
     "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
     "diagnostics": {
-        "app_version": "0.3.0",
+        "app_version": APP_VERSION,
         "target_kind": "web",
         "build_profile": "dev",
     },
@@ -1009,6 +2035,333 @@ activity_feed_doc = payload_with_snapshot(
         "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
     },
 )
+
+pricing_config_doc = payload_with_snapshot(
+    {
+        "pricing": {
+            "price_book_ids": list(price_books),
+            "billing_policy_ids": list(billing_policies),
+            "tax_rule_ids": list(tax_rules),
+            "discount_rule_ids": list(discount_rules),
+            "revision": "pricing_rev_2026_03_11_001",
+            "default_branch_price_books": {
+                "branch_north": "price_book_branch_north",
+                "branch_south": "price_book_branch_south",
+            },
+        },
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+pricing_update_doc = payload_with_snapshot(
+    {
+        "status": "updated",
+        "message": "Saved pricing and billing policy changes.",
+        "price_book_id": "price_book_branch_north",
+        "billing_policy_id": "billing_policy_branch_north",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "accepted",
+            finance_revision="finance_rev_2026_03_11_002",
+        ),
+    }
+)
+
+pricing_update_conflict_doc = payload_with_snapshot(
+    {
+        "status": "conflict",
+        "message": "Pricing revision changed while the draft invoice was open.",
+        "price_book_id": "price_book_customer_cust_018",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "conflict",
+            conflict_status="stale",
+            conflict_message="Pricing revision mismatch; refresh before saving.",
+            conflict_code="pricing_revision_mismatch",
+            conflict_entity_id="price_book_customer_cust_018",
+            pricing_revision_status="mismatch",
+            stale_price_book_id="price_book_customer_cust_018",
+            finance_revision="finance_rev_2026_03_11_003",
+        ),
+    }
+)
+
+invoice_list_doc = payload_with_snapshot(
+    {
+        "invoice_ids": list(invoices),
+        "open_invoice_ids": [
+            invoice_id
+            for invoice_id, invoice in invoices.items()
+            if invoice["status"] not in {"paid", "voided", "written_off"}
+        ],
+        "receivable_summary_ids": list(receivable_summaries),
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+invoice_detail_map = {
+    invoice_id: payload_with_snapshot(
+        {
+            "invoice_id": invoice_id,
+            "invoice": invoice,
+            "line_items": {
+                line_id: invoice_lines[line_id]
+                for line_id in invoice["line_ids"]
+            },
+            "adjustments": {
+                adjustment_id: invoice_adjustments[adjustment_id]
+                for adjustment_id in invoice["adjustment_ids"]
+            },
+            "payments": {
+                payment_id: payment_records[payment_id]
+                for payment_id in invoice["payment_ids"]
+            },
+            "statement": customer_statements[f"statement_{invoice['customer_id']}"],
+            "artifacts": {
+                invoice["invoice_artifact_id"]: invoice_artifacts[invoice["invoice_artifact_id"]],
+                invoice["service_summary_artifact_id"]: service_summary_artifacts[
+                    invoice["service_summary_artifact_id"]
+                ],
+            },
+            "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+        }
+    )
+    for invoice_id, invoice in invoices.items()
+}
+
+invoice_generate_doc = payload_with_snapshot(
+    {
+        "status": "generated",
+        "message": "Generated an invoice draft from approved work.",
+        "invoice_id": "inv_001",
+        "source_work_order_ids": invoices["inv_001"]["source_work_order_ids"],
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "accepted",
+            finance_revision="finance_rev_2026_03_11_002",
+        ),
+    }
+)
+
+invoice_patch_doc = payload_with_snapshot(
+    {
+        "status": "updated",
+        "message": "Updated invoice draft totals and memo.",
+        "invoice_id": "inv_001",
+        "revision": 2,
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "accepted",
+            finance_revision="finance_rev_2026_03_11_002",
+        ),
+    }
+)
+
+invoice_issue_map = {
+    invoice_id: payload_with_snapshot(
+        {
+            "status": "issued",
+            "message": "Issued invoice and locked revision-sensitive fields.",
+            "invoice_id": invoice_id,
+            "sync": sync_doc(
+                "sync_cursor_2026_03_11_103",
+                "accepted",
+                invoice_lock_status="revision_sensitive",
+                finance_revision="finance_rev_2026_03_11_002",
+            ),
+        }
+    )
+    for invoice_id in invoices
+}
+
+invoice_lock_conflict_doc = payload_with_snapshot(
+    {
+        "status": "conflict",
+        "message": "Invoice is locked because a newer issued revision already exists.",
+        "invoice_id": "inv_007",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "conflict",
+            conflict_status="locked",
+            conflict_message="Refresh invoice data before editing or issuing.",
+            conflict_code="invoice_locked",
+            conflict_entity_id="inv_007",
+            invoice_lock_status="locked",
+            invoice_lock_message="Invoice is already overdue and locked to receivables controls.",
+            stale_invoice_id="inv_007",
+            finance_revision="finance_rev_2026_03_11_003",
+        ),
+    }
+)
+
+invoice_void_map = {
+    invoice_id: payload_with_snapshot(
+        {
+            "status": "voided",
+            "message": "Voided invoice and recorded a credit note.",
+            "invoice_id": invoice_id,
+            "sync": sync_doc(
+                "sync_cursor_2026_03_11_103",
+                "accepted",
+                invoice_lock_status="locked",
+                finance_revision="finance_rev_2026_03_11_002",
+            ),
+        }
+    )
+    for invoice_id in invoices
+}
+
+invoice_payment_map = {
+    invoice_id: payload_with_snapshot(
+        {
+            "status": "recorded",
+            "message": "Recorded payment allocation against invoice.",
+            "invoice_id": invoice_id,
+            "payment_id": f"payment_recorded_{invoice_id}",
+            "sync": sync_doc(
+                "sync_cursor_2026_03_11_103",
+                "accepted",
+                payment_revision_status="accepted",
+                finance_revision="finance_rev_2026_03_11_002",
+            ),
+        }
+    )
+    for invoice_id in invoices
+}
+
+payment_revision_conflict_doc = payload_with_snapshot(
+    {
+        "status": "conflict",
+        "message": "Payment revision mismatched the latest invoice balance.",
+        "invoice_id": "inv_005",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "conflict",
+            conflict_status="stale",
+            conflict_message="Payment allocation was based on a stale invoice balance.",
+            conflict_code="payment_revision_mismatch",
+            conflict_entity_id="inv_005",
+            payment_revision_status="mismatch",
+            stale_invoice_id="inv_005",
+            finance_revision="finance_rev_2026_03_11_003",
+        ),
+    }
+)
+
+finance_summary_doc = payload_with_snapshot(
+    {
+        "rollup": finance_rollups["finance_global"],
+        "branch_rollups": {
+            rollup_id: rollup
+            for rollup_id, rollup in finance_rollups.items()
+            if rollup["scope"] == "branch"
+        },
+        "team_rollups": {
+            rollup_id: rollup
+            for rollup_id, rollup in finance_rollups.items()
+            if rollup["scope"] == "team"
+        },
+        "profitability": profitability_snapshots,
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+finance_receivables_doc = payload_with_snapshot(
+    {
+        "receivable_ids": list(receivable_summaries),
+        "receivables": receivable_summaries,
+        "statements": customer_statements,
+        "overdue_invoice_ids": indexes["invoices_by_aging_bucket"]["31_60"]
+        + indexes["invoices_by_aging_bucket"]["61_plus"],
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+customer_account_map = {
+    customer_id: payload_with_snapshot(
+        {
+            "customer_id": customer_id,
+            "customer": customers[customer_id],
+            "statement": customer_statements[statement_id],
+            "invoice_ids": indexes["invoices_by_customer"].get(customer_id, []),
+            "payment_ids": indexes["payments_by_customer"].get(customer_id, []),
+            "receivable_summary": receivable_summaries[f"receivable_{customer_id}"],
+            "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+        }
+    )
+    for statement_id, statement in customer_statements.items()
+    for customer_id in [statement["customer_id"]]
+}
+
+export_center_doc = payload_with_snapshot(
+    {
+        "export_job_ids": list(export_jobs),
+        "jobs": export_jobs,
+        "filters": {
+            "formats": ["csv", "json"],
+            "kinds": ["invoices", "receivables", "profitability"],
+            "branch_ids": [branch["id"] for branch in branches],
+        },
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle", export_status="idle"),
+    }
+)
+
+export_create_doc = payload_with_snapshot(
+    {
+        "status": "queued",
+        "message": "Queued export job and snapshotted finance revision.",
+        "export_job_id": "export_job_003",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "accepted",
+            export_status="running",
+            finance_revision="finance_rev_2026_03_11_002",
+        ),
+    }
+)
+
+export_retry_map = {
+    export_job_id: payload_with_snapshot(
+        {
+            "status": "retried",
+            "message": "Retried export job with a fresh finance snapshot.",
+            "export_job_id": export_job_id,
+            "sync": sync_doc(
+                "sync_cursor_2026_03_11_103",
+                "accepted",
+                export_status="running",
+                finance_revision="finance_rev_2026_03_11_002",
+            ),
+        }
+    )
+    for export_job_id in export_jobs
+}
+
+invoice_artifact_map = {
+    invoice_id: payload_with_snapshot(
+        {
+            "invoice_id": invoice_id,
+            "artifact": invoice_artifacts[invoice["invoice_artifact_id"]],
+            "sync": sync_doc(
+                "sync_cursor_2026_03_11_101",
+                "idle",
+                export_status=invoice_artifacts[invoice["invoice_artifact_id"]]["status"],
+            ),
+        }
+    )
+    for invoice_id, invoice in invoices.items()
+}
+
+service_summary_map = {
+    invoice_id: payload_with_snapshot(
+        {
+            "invoice_id": invoice_id,
+            "artifact": service_summary_artifacts[invoice["service_summary_artifact_id"]],
+            "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+        }
+    )
+    for invoice_id, invoice in invoices.items()
+}
 
 created_entities = clone_doc(base_entities)
 created_indexes = clone_doc(indexes)
@@ -1290,6 +2643,21 @@ sync_pull_doc = {
             "entity_id": "review_queue_017",
             "work_order_id": "wo_017",
         },
+        {
+            "kind": "invoice",
+            "entity_id": "inv_005",
+            "work_order_id": "wo_019",
+        },
+        {
+            "kind": "pricing_policy",
+            "entity_id": "price_book_customer_cust_018",
+            "work_order_id": "wo_018",
+        },
+        {
+            "kind": "export_job",
+            "entity_id": "export_job_002",
+            "work_order_id": "wo_024",
+        },
     ],
     "status": "idle",
     "received_at": now,
@@ -1297,6 +2665,8 @@ sync_pull_doc = {
         "signature_required_on_complete": True,
         "location_capture_optional": True,
         "offline_queue_mode": "client_ops_v1",
+        "invoice_lock_mode": "revision_sensitive",
+        "payment_record_mode": "append_only",
     },
     "entities": {
         "assignments": assignments,
@@ -1304,6 +2674,14 @@ sync_pull_doc = {
         "correction_tasks": correction_tasks,
         "activity_events": activity_events,
         "alerts": alerts,
+        "price_books": price_books,
+        "billing_policies": billing_policies,
+        "invoices": invoices,
+        "invoice_artifacts": invoice_artifacts,
+        "payment_records": payment_records,
+        "payment_allocations": payment_allocations,
+        "export_jobs": export_jobs,
+        "receivable_summaries": receivable_summaries,
     },
     "indexes": indexes,
     "summary": summary,
@@ -1316,6 +2694,9 @@ sync_push_doc = {
         "op_save_draft_visit_001",
         "op_submit_visit_001",
         "op_reassign_wo_006",
+        "op_invoice_patch_inv_001",
+        "op_payment_record_inv_004",
+        "op_export_retry_002",
     ],
     "conflicts": [],
     "status": "accepted",
@@ -1326,10 +2707,21 @@ sync_push_doc = {
         "correction_tasks": correction_tasks,
         "activity_events": activity_events,
         "alerts": alerts,
+        "invoices": invoices,
+        "payment_records": payment_records,
+        "payment_allocations": payment_allocations,
+        "export_jobs": export_jobs,
+        "receivable_summaries": receivable_summaries,
     },
     "indexes": indexes,
     "summary": summary,
-    "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+    "sync": sync_doc(
+        "sync_cursor_2026_03_11_103",
+        "accepted",
+        payment_revision_status="accepted",
+        export_status="running",
+        finance_revision="finance_rev_2026_03_11_002",
+    ),
 }
 
 check_in_doc = {
@@ -1410,6 +2802,26 @@ module = {
                 "demo_seed.review_queue_body_v1",
                 "demo_seed.manager_summary_body_v1",
                 "demo_seed.activity_feed_body_v1",
+                "demo_seed.pricing_config_body_v1",
+                "demo_seed.pricing_update_body_v1",
+                "demo_seed.pricing_update_conflict_body_v1",
+                "demo_seed.invoice_list_body_v1",
+                "demo_seed.invoice_detail_map_body_v1",
+                "demo_seed.invoice_generate_body_v1",
+                "demo_seed.invoice_patch_body_v1",
+                "demo_seed.invoice_issue_map_body_v1",
+                "demo_seed.invoice_lock_conflict_body_v1",
+                "demo_seed.invoice_void_map_body_v1",
+                "demo_seed.invoice_payment_map_body_v1",
+                "demo_seed.payment_revision_conflict_body_v1",
+                "demo_seed.finance_summary_body_v1",
+                "demo_seed.finance_receivables_body_v1",
+                "demo_seed.customer_account_map_body_v1",
+                "demo_seed.export_center_body_v1",
+                "demo_seed.export_create_body_v1",
+                "demo_seed.export_retry_map_body_v1",
+                "demo_seed.invoice_artifact_map_body_v1",
+                "demo_seed.service_summary_map_body_v1",
                 "demo_seed.work_order_create_body_v1",
                 "demo_seed.work_order_patch_body_v1",
                 "demo_seed.work_order_patch_map_body_v1",
@@ -1490,6 +2902,47 @@ module = {
         bytes_defn("demo_seed.review_queue_body_v1", review_queue_doc),
         bytes_defn("demo_seed.manager_summary_body_v1", manager_summary_doc),
         bytes_defn("demo_seed.activity_feed_body_v1", activity_feed_doc),
+        bytes_defn("demo_seed.pricing_config_body_v1", pricing_config_doc),
+        bytes_defn("demo_seed.pricing_update_body_v1", pricing_update_doc),
+        bytes_defn(
+            "demo_seed.pricing_update_conflict_body_v1",
+            pricing_update_conflict_doc,
+        ),
+        bytes_defn("demo_seed.invoice_list_body_v1", invoice_list_doc),
+        bytes_defn("demo_seed.invoice_detail_map_body_v1", invoice_detail_map),
+        bytes_defn("demo_seed.invoice_generate_body_v1", invoice_generate_doc),
+        bytes_defn("demo_seed.invoice_patch_body_v1", invoice_patch_doc),
+        bytes_defn("demo_seed.invoice_issue_map_body_v1", invoice_issue_map),
+        bytes_defn(
+            "demo_seed.invoice_lock_conflict_body_v1",
+            invoice_lock_conflict_doc,
+        ),
+        bytes_defn("demo_seed.invoice_void_map_body_v1", invoice_void_map),
+        bytes_defn("demo_seed.invoice_payment_map_body_v1", invoice_payment_map),
+        bytes_defn(
+            "demo_seed.payment_revision_conflict_body_v1",
+            payment_revision_conflict_doc,
+        ),
+        bytes_defn("demo_seed.finance_summary_body_v1", finance_summary_doc),
+        bytes_defn(
+            "demo_seed.finance_receivables_body_v1",
+            finance_receivables_doc,
+        ),
+        bytes_defn(
+            "demo_seed.customer_account_map_body_v1",
+            customer_account_map,
+        ),
+        bytes_defn("demo_seed.export_center_body_v1", export_center_doc),
+        bytes_defn("demo_seed.export_create_body_v1", export_create_doc),
+        bytes_defn("demo_seed.export_retry_map_body_v1", export_retry_map),
+        bytes_defn(
+            "demo_seed.invoice_artifact_map_body_v1",
+            invoice_artifact_map,
+        ),
+        bytes_defn(
+            "demo_seed.service_summary_map_body_v1",
+            service_summary_map,
+        ),
         bytes_defn("demo_seed.work_order_create_body_v1", work_order_create_doc),
         bytes_defn("demo_seed.work_order_patch_body_v1", work_order_patch_doc),
         bytes_defn("demo_seed.work_order_patch_map_body_v1", work_order_patch_map),

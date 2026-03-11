@@ -10,7 +10,7 @@
     {
       "body": [
         "bytes.lit",
-        "{\"customer_name\":\"\",\"site_name\":\"\",\"asset_name\":\"\",\"work_order_title\":\"\",\"dispatch_note\":\"\",\"review_note\":\"\",\"response_note\":\"\",\"schedule_window\":\"10:00-12:00\",\"priority\":\"medium\",\"location_policy\":\"optional\",\"signature_policy\":\"required\",\"review_policy\":\"required\",\"expected_duration\":\"90\",\"branch_id\":\"branch_north\",\"team_id\":\"team_north_alpha\",\"activity_scope\":\"all\"}"
+        "{\"customer_name\":\"\",\"site_name\":\"\",\"asset_name\":\"\",\"work_order_title\":\"\",\"dispatch_note\":\"\",\"review_note\":\"\",\"response_note\":\"\",\"schedule_window\":\"10:00-12:00\",\"priority\":\"medium\",\"location_policy\":\"optional\",\"signature_policy\":\"required\",\"review_policy\":\"required\",\"expected_duration\":\"90\",\"branch_id\":\"branch_north\",\"team_id\":\"team_north_alpha\",\"activity_scope\":\"all\",\"price_book_name\":\"North Commercial Standard\",\"labor_rate_hourly\":\"96.00\",\"travel_fee\":\"28.00\",\"tax_rule_label\":\"WA sales tax\",\"discount_rule_label\":\"Loyalty discount\",\"invoice_memo\":\"Drafted from approved work.\",\"invoice_issue_date\":\"2026-03-15\",\"invoice_due_date\":\"2026-03-30\",\"invoice_line_description\":\"Standard service call\",\"invoice_line_quantity\":\"1\",\"invoice_line_rate\":\"145.00\",\"payment_amount\":\"220.00\",\"payment_method\":\"ach\",\"payment_reference\":\"ACH-55201\",\"customer_statement_date\":\"2026-03-11\",\"customer_branch_id\":\"branch_north\",\"customer_balance_filter\":\"open\",\"receivable_scope\":\"branch\",\"receivable_aging_bucket\":\"all\",\"export_date_from\":\"2026-03-01\",\"export_date_to\":\"2026-03-31\",\"export_branch_id\":\"branch_north\",\"export_status_filter\":\"open\",\"export_kind\":\"invoices\",\"export_format\":\"csv\"}"
       ],
       "kind": "defn",
       "name": "drafts.default_json_v1",
@@ -25,7 +25,7 @@
           "out",
           [
             "std.vec.with_capacity",
-            1024
+            4096
           ]
         ],
         [
@@ -372,6 +372,531 @@
             "out",
             [
               "bytes.view_lit",
+              ",\"price_book_name\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "price_book_name_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"labor_rate_hourly\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "labor_rate_hourly_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"travel_fee\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "travel_fee_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"tax_rule_label\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "tax_rule_label_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"discount_rule_label\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "discount_rule_label_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"invoice_memo\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "invoice_memo_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"invoice_issue_date\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "invoice_issue_date_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"invoice_due_date\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "invoice_due_date_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"invoice_line_description\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "invoice_line_description_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"invoice_line_quantity\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "invoice_line_quantity_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"invoice_line_rate\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "invoice_line_rate_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"payment_amount\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "payment_amount_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"payment_method\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "payment_method_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"payment_reference\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "payment_reference_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"customer_statement_date\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "customer_statement_date_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"customer_branch_id\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "customer_branch_id_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"customer_balance_filter\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "customer_balance_filter_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"receivable_scope\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "receivable_scope_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"receivable_aging_bucket\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "receivable_aging_bucket_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"export_date_from\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "export_date_from_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"export_date_to\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "export_date_to_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"export_branch_id\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "export_branch_id_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"export_status_filter\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "export_status_filter_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"export_kind\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "export_kind_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"export_format\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "export_format_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
               "}"
             ]
           ]
@@ -446,6 +971,106 @@
         },
         {
           "name": "activity_scope_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "price_book_name_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "labor_rate_hourly_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "travel_fee_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "tax_rule_label_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "discount_rule_label_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "invoice_memo_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "invoice_issue_date_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "invoice_due_date_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "invoice_line_description_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "invoice_line_quantity_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "invoice_line_rate_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "payment_amount_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "payment_method_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "payment_reference_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "customer_statement_date_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "customer_branch_id_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "customer_balance_filter_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "receivable_scope_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "receivable_aging_bucket_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "export_date_from_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "export_date_to_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "export_branch_id_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "export_status_filter_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "export_kind_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "export_format_json",
           "ty": "bytes_view"
         }
       ],

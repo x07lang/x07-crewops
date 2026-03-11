@@ -1,0 +1,255 @@
+{
+  "schema_version": "x07.x07ast@0.5.0",
+  "module_id": "frontend_tests",
+  "kind": "module",
+  "imports": [
+    "app",
+    "std.json",
+    "std.test",
+    "std.vec",
+    "std.web_ui.test"
+  ],
+  "decls": [
+    {
+      "kind": "export",
+      "names": [
+        "frontend_tests.test_route_request_helpers_v1",
+        "frontend_tests.test_invoice_artifact_ids_v1",
+        "frontend_tests.test_customer_account_ids_v1",
+        "frontend_tests.test_selection_snapshot_doc_v1",
+        "frontend_tests.test_toggle_helpers_v1",
+        "frontend_tests.test_invoice_rate_reducer_v1",
+        "frontend_tests.test_payment_amount_reducer_v1",
+        "frontend_tests.test_export_format_reducer_v1",
+        "frontend_tests.test_receivable_aging_reducer_v1"
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "frontend_tests._extract_v1",
+      "params": [
+        { "name": "doc_json", "ty": "bytes_view" },
+        { "name": "path_json", "ty": "bytes_view" }
+      ],
+      "result": "bytes",
+      "body": [
+        "begin",
+        ["let", "qv", ["std.vec.with_capacity", ["+", ["+", ["view.len", "doc_json"], ["view.len", "path_json"]], 8]]],
+        ["set", "qv", ["std.vec.extend_bytes", "qv", "doc_json"]],
+        ["set", "qv", ["std.vec.push", "qv", 0]],
+        ["set", "qv", ["std.vec.extend_bytes", "qv", "path_json"]],
+        ["let", "query", ["std.vec.as_bytes", "qv"]],
+        ["std.json.extract_path_canon_or_err", ["bytes.view", "query"]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "frontend_tests._dispatch_v1",
+      "params": [
+        { "name": "state_json", "ty": "bytes_view" },
+        { "name": "event_type_json", "ty": "bytes_view" },
+        { "name": "target_json", "ty": "bytes_view" },
+        { "name": "value_json", "ty": "bytes_view" }
+      ],
+      "result": "bytes",
+      "body": [
+        "bytes.concat",
+        [
+          "bytes.concat",
+          [
+            "bytes.concat",
+            [
+              "bytes.concat",
+              [
+                "bytes.concat",
+                [
+                  "bytes.concat",
+                  [
+                    "bytes.concat",
+                    ["bytes.lit", "{\"v\":1,\"kind\":\"x07.web_ui.dispatch\",\"state\":"],
+                    ["view.to_bytes", "state_json"]
+                  ],
+                  ["bytes.lit", ",\"event\":{\"type\":"]
+                ],
+                ["view.to_bytes", "event_type_json"]
+              ],
+              ["bytes.lit", ",\"target\":"]
+            ],
+            ["view.to_bytes", "target_json"]
+          ],
+          ["bytes.lit", ",\"value\":"]
+        ],
+        [
+          "bytes.concat",
+          ["view.to_bytes", "value_json"],
+          ["bytes.lit", "}}"]
+        ]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "frontend_tests._assert_frame_path_eq_v1",
+      "params": [
+        { "name": "frame_json", "ty": "bytes_view" },
+        { "name": "path_json", "ty": "bytes_view" },
+        { "name": "want_json", "ty": "bytes_view" }
+      ],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "got_json", ["std.web_ui.test.extract_path_canon_or_err_v1", "frame_json", "path_json"]],
+        ["try", ["std.test.assert_bytes_eq", "got_json", ["view.to_bytes", "want_json"], ["std.test.code_assert_bytes_eq"]]],
+        ["std.test.pass"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "frontend_tests._assert_doc_path_eq_v1",
+      "params": [
+        { "name": "doc_json", "ty": "bytes_view" },
+        { "name": "path_json", "ty": "bytes_view" },
+        { "name": "want_json", "ty": "bytes_view" }
+      ],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "got_json", ["frontend_tests._extract_v1", "doc_json", "path_json"]],
+        ["try", ["std.test.assert_bytes_eq", "got_json", ["view.to_bytes", "want_json"], ["std.test.code_assert_bytes_eq"]]],
+        ["std.test.pass"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "frontend_tests.test_route_request_helpers_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "finance_id_json", ["app.route_request_id_v1", ["bytes.view_lit", "\"finance\""]]],
+        ["let", "finance_path_json", ["app.route_request_path_v1", ["bytes.view_lit", "\"finance\""], ["bytes.view_lit", "\"cust_019\""]]],
+        ["let", "customer_id_json", ["app.route_request_id_v1", ["bytes.view_lit", "\"customers\""]]],
+        ["let", "customer_path_json", ["app.route_request_path_v1", ["bytes.view_lit", "\"customers\""], ["bytes.view_lit", "\"cust_019\""]]],
+        ["let", "export_id_json", ["app.route_request_id_v1", ["bytes.view_lit", "\"exports\""]]],
+        ["let", "export_path_json", ["app.route_request_path_v1", ["bytes.view_lit", "\"exports\""], ["bytes.view_lit", "\"cust_019\""]]],
+        ["try", ["std.test.assert_bytes_eq", "finance_id_json", ["bytes.lit", "\"req_finance_summary\""], ["std.test.code_assert_bytes_eq"]]],
+        ["try", ["std.test.assert_bytes_eq", "finance_path_json", ["bytes.lit", "\"/api/finance/summary\""], ["std.test.code_assert_bytes_eq"]]],
+        ["try", ["std.test.assert_bytes_eq", "customer_id_json", ["bytes.lit", "\"req_customer_account\""], ["std.test.code_assert_bytes_eq"]]],
+        ["try", ["std.test.assert_bytes_eq", "customer_path_json", ["bytes.lit", "\"/api/customers/cust_019/account\""], ["std.test.code_assert_bytes_eq"]]],
+        ["try", ["std.test.assert_bytes_eq", "export_id_json", ["bytes.lit", "\"req_export_center\""], ["std.test.code_assert_bytes_eq"]]],
+        ["try", ["std.test.assert_bytes_eq", "export_path_json", ["bytes.lit", "\"/api/exports/jobs\""], ["std.test.code_assert_bytes_eq"]]],
+        ["std.test.pass"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "frontend_tests.test_invoice_artifact_ids_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "artifact_id_json", ["app.invoice_artifact_id_for_invoice_v1", ["bytes.view_lit", "\"inv_007\""]]],
+        ["let", "summary_id_json", ["app.service_summary_id_for_invoice_v1", ["bytes.view_lit", "\"inv_007\""]]],
+        ["try", ["std.test.assert_bytes_eq", "artifact_id_json", ["bytes.lit", "\"invoice_artifact_inv_007\""], ["std.test.code_assert_bytes_eq"]]],
+        ["try", ["std.test.assert_bytes_eq", "summary_id_json", ["bytes.lit", "\"service_summary_inv_007\""], ["std.test.code_assert_bytes_eq"]]],
+        ["std.test.pass"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "frontend_tests.test_customer_account_ids_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "statement_id_json", ["app.statement_id_for_customer_v1", ["bytes.view_lit", "\"cust_019\""]]],
+        ["let", "receivable_id_json", ["app.receivable_id_for_customer_v1", ["bytes.view_lit", "\"cust_019\""]]],
+        ["try", ["std.test.assert_bytes_eq", "statement_id_json", ["bytes.lit", "\"statement_cust_019\""], ["std.test.code_assert_bytes_eq"]]],
+        ["try", ["std.test.assert_bytes_eq", "receivable_id_json", ["bytes.lit", "\"receivable_cust_019\""], ["std.test.code_assert_bytes_eq"]]],
+        ["std.test.pass"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "frontend_tests.test_selection_snapshot_doc_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "snapshot_json", ["app.selection_snapshot_doc_v1", ["bytes.view_lit", "{\"id\":\"wo_013\",\"number\":\"WO-1213\"}"], ["bytes.view_lit", "{\"id\":\"tmpl_pm\",\"name\":\"Preventive Maintenance\"}"], ["bytes.view_lit", "\"MERV 13 Filter\""], ["bytes.view_lit", "\"Drive Belt A42\""]]],
+        ["try", ["frontend_tests._assert_doc_path_eq_v1", ["bytes.view", "snapshot_json"], ["bytes.view_lit", "work_order.id"], ["bytes.view_lit", "\"wo_013\""]]],
+        ["try", ["frontend_tests._assert_doc_path_eq_v1", ["bytes.view", "snapshot_json"], ["bytes.view_lit", "template.name"], ["bytes.view_lit", "\"Preventive Maintenance\""]]],
+        ["try", ["frontend_tests._assert_doc_path_eq_v1", ["bytes.view", "snapshot_json"], ["bytes.view_lit", "part_one_name"], ["bytes.view_lit", "\"MERV 13 Filter\""]]],
+        ["try", ["frontend_tests._assert_doc_path_eq_v1", ["bytes.view", "snapshot_json"], ["bytes.view_lit", "part_two_name"], ["bytes.view_lit", "\"Drive Belt A42\""]]],
+        ["std.test.pass"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "frontend_tests.test_toggle_helpers_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "next_export_format_json", ["app.toggle_export_format_v1", ["bytes.view_lit", "\"csv\""]]],
+        ["let", "next_aging_bucket_json", ["app.toggle_receivable_aging_bucket_v1", ["bytes.view_lit", "\"all\""]]],
+        ["let", "reset_aging_bucket_json", ["app.toggle_receivable_aging_bucket_v1", ["bytes.view_lit", "\"31_60\""]]],
+        ["try", ["std.test.assert_bytes_eq", "next_export_format_json", ["bytes.lit", "\"json\""], ["std.test.code_assert_bytes_eq"]]],
+        ["try", ["std.test.assert_bytes_eq", "next_aging_bucket_json", ["bytes.lit", "\"31_60\""], ["std.test.code_assert_bytes_eq"]]],
+        ["try", ["std.test.assert_bytes_eq", "reset_aging_bucket_json", ["bytes.lit", "\"all\""], ["std.test.code_assert_bytes_eq"]]],
+        ["std.test.pass"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "frontend_tests.test_invoice_rate_reducer_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "state_json", ["bytes.view_lit", "{\"ui\":{\"route\":\"invoices\",\"selected_invoice_id\":\"inv_001\"},\"drafts\":{\"invoice_line_rate\":\"145.00\"}}"]],
+        ["let", "dispatch_json", ["frontend_tests._dispatch_v1", "state_json", ["bytes.view_lit", "\"input\""], ["bytes.view_lit", "\"input_invoice_line_rate\""], ["bytes.view_lit", "\"152.00\""]]],
+        ["let", "frame_json", ["app.step_v1", ["bytes.view", "dispatch_json"]]],
+        ["frontend_tests._assert_frame_path_eq_v1", ["bytes.view", "frame_json"], ["bytes.view_lit", "state.drafts.invoice_line_rate"], ["bytes.view_lit", "\"152.00\""]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "frontend_tests.test_payment_amount_reducer_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "state_json", ["bytes.view_lit", "{\"ui\":{\"route\":\"invoices\",\"selected_invoice_id\":\"inv_005\"},\"drafts\":{\"payment_amount\":\"220.00\"}}"]],
+        ["let", "dispatch_json", ["frontend_tests._dispatch_v1", "state_json", ["bytes.view_lit", "\"input\""], ["bytes.view_lit", "\"input_payment_amount\""], ["bytes.view_lit", "\"90.00\""]]],
+        ["let", "frame_json", ["app.step_v1", ["bytes.view", "dispatch_json"]]],
+        ["frontend_tests._assert_frame_path_eq_v1", ["bytes.view", "frame_json"], ["bytes.view_lit", "state.drafts.payment_amount"], ["bytes.view_lit", "\"90.00\""]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "frontend_tests.test_export_format_reducer_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "state_json", ["bytes.view_lit", "{\"ui\":{\"route\":\"exports\"},\"drafts\":{\"export_format\":\"csv\"}}"]],
+        ["let", "dispatch_json", ["frontend_tests._dispatch_v1", "state_json", ["bytes.view_lit", "\"click\""], ["bytes.view_lit", "\"action_export_format_toggle\""], ["bytes.view_lit", "\"\""]]],
+        ["let", "frame_json", ["app.step_v1", ["bytes.view", "dispatch_json"]]],
+        ["frontend_tests._assert_frame_path_eq_v1", ["bytes.view", "frame_json"], ["bytes.view_lit", "state.drafts.export_format"], ["bytes.view_lit", "\"json\""]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "frontend_tests.test_receivable_aging_reducer_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "state_json", ["bytes.view_lit", "{\"ui\":{\"route\":\"receivables\"},\"drafts\":{\"receivable_aging_bucket\":\"all\"}}"]],
+        ["let", "dispatch_json", ["frontend_tests._dispatch_v1", "state_json", ["bytes.view_lit", "\"click\""], ["bytes.view_lit", "\"action_receivable_aging_toggle\""], ["bytes.view_lit", "\"\""]]],
+        ["let", "frame_json", ["app.step_v1", ["bytes.view", "dispatch_json"]]],
+        ["frontend_tests._assert_frame_path_eq_v1", ["bytes.view", "frame_json"], ["bytes.view_lit", "state.drafts.receivable_aging_bucket"], ["bytes.view_lit", "\"31_60\""]]
+      ]
+    }
+  ]
+}

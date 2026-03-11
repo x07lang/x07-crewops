@@ -1,30 +1,27 @@
 # Dispatch And Review
 
-CrewOps M4 turns the earlier technician-only execution flow into a multi-role operations loop. Dispatcher, supervisor, and technician now work against the same normalized seed, the same reducer, and the same deterministic backend.
+CrewOps `v0.4.0` keeps dispatch and supervisor review as the front-line operational loop, then hands approved and completed work into the M5 commercial surface without switching apps or data models.
 
 ## Dispatcher Surface
 
-Dispatcher work centers on the `dispatch` route and the dispatch board snapshot from `GET /api/dispatch/board`.
+Dispatcher work centers on the `dispatch` route and `GET /api/dispatch/board`.
 
-The board is driven by:
+The board is still driven by:
 
 - work orders
-- assignments and assignment revisions
-- schedule windows
-- branch, team, day, status, and priority indexes
-- dispatcher alerts
-- shared summary rollups
+- assignments and schedule windows
+- branch, team, day, status, priority, and review-state indexes
+- dispatcher alerts and shared activity
 
-Dispatcher responsibilities in the current app:
+Dispatcher actions remain:
 
 - create work orders
 - edit work-order metadata
-- assign or reassign technicians
+- assign and reassign technicians
 - filter by branch, team, day, status, and priority
-- track review-state exceptions without leaving the board
-- monitor role-specific activity and alert state
+- track review-state exceptions from the same board
 
-Backend routes for dispatcher control:
+Backend routes:
 
 - `GET /api/dispatch/board`
 - `POST /api/work-orders`
@@ -34,7 +31,7 @@ Backend routes for dispatcher control:
 
 ## Supervisor Review Queue
 
-Supervisor work centers on the `review` route and the review snapshot from `GET /api/review/queue`.
+Supervisor work centers on the `review` route and `GET /api/review/queue`.
 
 The review queue reads:
 
@@ -45,72 +42,62 @@ The review queue reads:
 - `work_orders_by_review_state`
 - `review_queue_by_status`
 
-Supervisor actions:
+Supervisor actions remain:
 
 - approve a completed visit
-- reject a visit outright
-- request correction with a reason code and supervisor note
-- review resubmitted work after correction
+- reject a visit
+- request correction with reason and note
+- review resubmitted work
 
-Backend routes for supervisor control:
+Backend routes:
 
 - `GET /api/review/queue`
 - `POST /api/review/:visit_id/approve`
 - `POST /api/review/:visit_id/reject`
 - `POST /api/review/:visit_id/request-correction`
+- `POST /api/corrections/:id/resubmit`
 
-## Correction Loop
+## Handoff To Commercial M5
 
-The correction loop keeps technician execution and supervisor review connected without introducing separate ad hoc state.
+M5 does not replace dispatch or review. It extends the same workflow after work is completed or approved.
 
-Current correction model:
+Downstream commercial surfaces read the same normalized tenant and snapshot updates through:
 
-- a supervisor creates a `correction_task`
-- the technician sees the correction context in the same reducer-backed workflow
-- the technician resubmits through `POST /api/corrections/:id/resubmit`
-- the queue records the item as `resubmitted`
-- the supervisor can then close the loop with a new review decision
+- `POST /api/invoices/generate`
+- `GET /api/invoices`
+- `GET /api/invoices/:id`
+- `GET /api/customers/:id/account`
+- `GET /api/finance/summary`
+- `GET /api/finance/receivables`
+- `GET /api/exports/jobs`
 
-The current seeded review-state families are:
+That keeps dispatch, review, invoicing, receivables, and finance aligned to one deterministic seed and one reducer state tree.
 
-- `awaiting_review`
-- `approved`
-- `correction_requested`
-- `resubmitted`
-- `rejected`
-- `not_required`
-- `not_ready`
+## Shared Activity And Sync
 
-## Shared Activity And Alerts
-
-Dispatch and review are not isolated side panels. They share one role-aware activity center and one normalized alert model.
-
-Current shared activity inputs:
+Dispatch and review still share one activity and alert model:
 
 - `activity_events`
 - `alerts`
 - `activity_by_role`
 - `alerts_by_role`
-- unread counts in `summary.activity_unread`
-- unread counts in sync metadata
+- unread counts in `summary.activity_unread` and `summary.alert_unread`
 
-Role-aware alert examples in the seed:
+The sync branch now also surfaces commercial conflict state that operators can see after dispatch or review actions feed billing:
 
-- dispatcher overdue or SLA warning
-- supervisor review backlog
-- manager branch risk
-- technician reassignment notice
+- `invoice_lock_status`
+- `payment_revision_status`
+- `pricing_revision_status`
+- `export_status`
+- `finance_revision`
 
 ## Release Coverage
 
-The `v0.3.0` release bar for dispatch and review covers:
+The `v0.4.0` dispatch and review release bar covers:
 
-- dispatcher filtering and board scanning
-- create, assign, and reassign operations
-- supervisor queue filtering
-- approve or reject decisions
-- correction request and technician resubmission
-- role-aware activity or alert delivery
-- sync conflict and stale assignment handling
-
-CrewOps keeps these flows inside the same reducer and deterministic backend rather than splitting them into separate admin apps.
+- dispatcher filtering, intake, assign, and reassign flows
+- supervisor approve, reject, and correction loops
+- technician resubmission after correction
+- activity and alert propagation
+- downstream handoff into invoice generation and commercial summaries
+- deterministic stale-lock and conflict responses

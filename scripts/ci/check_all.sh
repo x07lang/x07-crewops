@@ -16,8 +16,10 @@ ANDROID_BUNDLE_DIR="$DIST_DIR/device_android_dev_bundle"
 IOS_PACKAGE_DIR="$DIST_DIR/device_ios_dev_package"
 ANDROID_PACKAGE_DIR="$DIST_DIR/device_android_dev_package"
 INCIDENTS_ROOT="$ROOT/.x07-wasm/incidents"
-GENERATED_REGRESSION_TRACE="$ROOT/tests/regress/bootstrap_api_error.trace.json"
-GENERATED_REGRESSION_UI="$ROOT/tests/regress/bootstrap_api_error.final.ui.json"
+GENERATED_BOOTSTRAP_REGRESSION_TRACE="$ROOT/tests/regress/bootstrap_api_error.trace.json"
+GENERATED_BOOTSTRAP_REGRESSION_UI="$ROOT/tests/regress/bootstrap_api_error.final.ui.json"
+GENERATED_PAYMENT_CONFLICT_REGRESSION_TRACE="$ROOT/tests/regress/payment_revision_conflict.trace.json"
+GENERATED_PAYMENT_CONFLICT_REGRESSION_UI="$ROOT/tests/regress/payment_revision_conflict.final.ui.json"
 PLATFORM_STATE_DIR="$BUILD_DIR/platform_state"
 PLATFORM_METRICS_DIR="$BUILD_DIR/platform_metrics"
 PLATFORM_TODO_REPORT="$REPORT_DIR/platform.smoke.todo.txt"
@@ -36,6 +38,17 @@ TRACE_FIXTURES=(
   "$ROOT/tests/traces/manager_dashboard_rollup.trace.json"
   "$ROOT/tests/traces/local_notification_assignment_alert.trace.json"
   "$ROOT/tests/traces/conflict_reassign_vs_local_submit.trace.json"
+  "$ROOT/tests/traces/invoice_generate_happy.trace.json"
+  "$ROOT/tests/traces/invoice_edit_and_issue.trace.json"
+  "$ROOT/tests/traces/partial_payment_record.trace.json"
+  "$ROOT/tests/traces/overdue_aging_view.trace.json"
+  "$ROOT/tests/traces/customer_statement_view.trace.json"
+  "$ROOT/tests/traces/finance_export_happy.trace.json"
+  "$ROOT/tests/traces/finance_export_retry.trace.json"
+  "$ROOT/tests/traces/invoice_lock_conflict.trace.json"
+  "$ROOT/tests/traces/pricing_revision_mismatch.trace.json"
+  "$ROOT/tests/traces/manager_finance_dashboard.trace.json"
+  "$ROOT/tests/traces/payment_revision_conflict.trace.json"
   "$ROOT/tests/traces/bootstrap_api_error.trace.json"
 )
 
@@ -43,7 +56,7 @@ APP_SMOKE_TRACES=(
   "$ROOT/tests/traces/bootstrap_demo_happy.trace.json"
 )
 
-APP_M4_REQUIRED_TRACES=(
+APP_REQUIRED_TRACES=(
   "$ROOT/tests/traces/dispatch_assign_happy.trace.json"
   "$ROOT/tests/traces/dispatch_reassign_happy.trace.json"
   "$ROOT/tests/traces/technician_reassigned_mid_draft.trace.json"
@@ -53,8 +66,19 @@ APP_M4_REQUIRED_TRACES=(
   "$ROOT/tests/traces/manager_dashboard_rollup.trace.json"
   "$ROOT/tests/traces/local_notification_assignment_alert.trace.json"
   "$ROOT/tests/traces/conflict_reassign_vs_local_submit.trace.json"
+  "$ROOT/tests/traces/invoice_generate_happy.trace.json"
+  "$ROOT/tests/traces/invoice_edit_and_issue.trace.json"
+  "$ROOT/tests/traces/partial_payment_record.trace.json"
+  "$ROOT/tests/traces/overdue_aging_view.trace.json"
+  "$ROOT/tests/traces/customer_statement_view.trace.json"
+  "$ROOT/tests/traces/finance_export_happy.trace.json"
+  "$ROOT/tests/traces/finance_export_retry.trace.json"
+  "$ROOT/tests/traces/invoice_lock_conflict.trace.json"
+  "$ROOT/tests/traces/pricing_revision_mismatch.trace.json"
+  "$ROOT/tests/traces/manager_finance_dashboard.trace.json"
+  "$ROOT/tests/traces/payment_revision_conflict.trace.json"
 )
-EXPECTED_FAILURE_TRACE="$ROOT/tests/traces/bootstrap_api_error.trace.json"
+EXPECTED_BOOTSTRAP_FAILURE_TRACE="$ROOT/tests/traces/bootstrap_api_error.trace.json"
 
 cd "$ROOT"
 
@@ -270,6 +294,10 @@ PY
     candidates+=("${X07_DEVICE_HOST_DESKTOP}")
   fi
 
+  if command -v x07-device-host-desktop >/dev/null 2>&1; then
+    candidates+=("$(command -v x07-device-host-desktop)")
+  fi
+
   for candidate in \
     "${repo_root}/../x07-device-host/target/debug/x07-device-host-desktop" \
     "${repo_root}/../x07-device-host/target/release/x07-device-host-desktop"
@@ -278,10 +306,6 @@ PY
       candidates+=("${candidate}")
     fi
   done
-
-  if command -v x07-device-host-desktop >/dev/null 2>&1; then
-    candidates+=("$(command -v x07-device-host-desktop)")
-  fi
 
   for candidate in "${candidates[@]}"; do
     if ! abi_hash="$("${candidate}" --host-abi-hash 2>/dev/null)"; then
@@ -647,10 +671,10 @@ run_step "x07-wasm app serve smoke crewops_dev" \
     --mode smoke \
     --strict
 
-run_step "generate M4 app traces" \
-  "$NODE_BIN" "$TRACE_GENERATOR"
+run_step "generate M5 app traces" \
+  "$NODE_BIN" "$TRACE_GENERATOR" --update-golden
 
-run_step "validate M4 trace JSON fixtures" \
+run_step "validate M5 trace JSON fixtures" \
   validate_json_files \
     "${TRACE_FIXTURES[@]}"
 
@@ -665,7 +689,7 @@ for trace_path in "${APP_SMOKE_TRACES[@]}"; do
       --strict
 done
 
-for trace_path in "${APP_M4_REQUIRED_TRACES[@]}"; do
+for trace_path in "${APP_REQUIRED_TRACES[@]}"; do
   trace_name="$(basename "$trace_path" .trace.json)"
   run_step "x07-wasm app test ${trace_name}" \
     run_json \
@@ -684,13 +708,13 @@ run_expect_failure_with_incident \
     "$EXPECTED_FAILURE_REPORT" \
     "$X07_WASM_BIN" app test \
     --dir "$APP_DEV_DIR" \
-    --trace "$EXPECTED_FAILURE_TRACE" \
+    --trace "$EXPECTED_BOOTSTRAP_FAILURE_TRACE" \
     --strict
 
 INCIDENT_DIR="$(report_incident_dir "$EXPECTED_FAILURE_REPORT" || true)"
 if [ -n "$INCIDENT_DIR" ]; then
   INCIDENT_DIR="$(resolve_path "$INCIDENT_DIR")"
-  rm -f "$GENERATED_REGRESSION_TRACE" "$GENERATED_REGRESSION_UI"
+  rm -f "$GENERATED_BOOTSTRAP_REGRESSION_TRACE" "$GENERATED_BOOTSTRAP_REGRESSION_UI"
   run_step "x07-wasm app regress from-incident bootstrap_api_error" \
     run_json \
       "$REPORT_DIR/app.regress.from_incident.bootstrap_api_error.json" \
@@ -699,19 +723,31 @@ if [ -n "$INCIDENT_DIR" ]; then
       --out-dir "$ROOT/tests/regress" \
       --name bootstrap_api_error \
       --strict
-  require_path "$GENERATED_REGRESSION_TRACE" "generated bootstrap_api_error regression trace"
-  require_path "$GENERATED_REGRESSION_UI" "generated bootstrap_api_error final UI"
-  if [ -f "$GENERATED_REGRESSION_TRACE" ]; then
+  require_path "$GENERATED_BOOTSTRAP_REGRESSION_TRACE" "generated bootstrap_api_error regression trace"
+  require_path "$GENERATED_BOOTSTRAP_REGRESSION_UI" "generated bootstrap_api_error final UI"
+  if [ -f "$GENERATED_BOOTSTRAP_REGRESSION_TRACE" ]; then
     run_step "x07-wasm app test generated bootstrap_api_error regression" \
       run_json \
         "$REPORT_DIR/app.test.regress.bootstrap_api_error.json" \
         "$X07_WASM_BIN" app test \
         --dir "$APP_DEV_DIR" \
-        --trace "$GENERATED_REGRESSION_TRACE" \
+        --trace "$GENERATED_BOOTSTRAP_REGRESSION_TRACE" \
         --strict
   fi
 else
   note "skipping bootstrap_api_error regression replay: incident bundle unavailable"
+fi
+
+require_path "$GENERATED_PAYMENT_CONFLICT_REGRESSION_TRACE" "generated payment_revision_conflict regression trace"
+require_path "$GENERATED_PAYMENT_CONFLICT_REGRESSION_UI" "generated payment_revision_conflict final UI"
+if [ -f "$GENERATED_PAYMENT_CONFLICT_REGRESSION_TRACE" ]; then
+  run_step "x07-wasm app test generated payment_revision_conflict regression" \
+    run_json \
+      "$REPORT_DIR/app.test.regress.payment_revision_conflict.json" \
+      "$X07_WASM_BIN" app test \
+      --dir "$APP_DEV_DIR" \
+      --trace "$GENERATED_PAYMENT_CONFLICT_REGRESSION_TRACE" \
+      --strict
 fi
 
 require_path "$APP_RELEASE_DIR/app.bundle.json" "crewops_release app bundle manifest"

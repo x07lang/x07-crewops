@@ -1,0 +1,434 @@
+{
+  "schema_version": "x07.x07ast@0.5.0",
+  "kind": "module",
+  "module_id": "exports",
+  "imports": [
+    "backend_helpers",
+    "demo_seed",
+    "errors"
+  ],
+  "decls": [
+    {
+      "kind": "export",
+      "names": [
+        "exports.can_handle_v1",
+        "exports.handle_v1"
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "exports._matches_retry_v1",
+      "params": [
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "i32",
+      "body": [
+        "begin",
+        [
+          "let",
+          "prefix_json",
+          [
+            "bytes.view_lit",
+            "\"/api/exports/jobs/"
+          ]
+        ],
+        [
+          "let",
+          "suffix_json",
+          [
+            "bytes.view_lit",
+            "/retry\""
+          ]
+        ],
+        [
+          "let",
+          "prefix_len",
+          [
+            "view.len",
+            "prefix_json"
+          ]
+        ],
+        [
+          "let",
+          "suffix_len",
+          [
+            "view.len",
+            "suffix_json"
+          ]
+        ],
+        [
+          "let",
+          "path_len",
+          [
+            "view.len",
+            "path_json"
+          ]
+        ],
+        [
+          "if",
+          [
+            ">=",
+            "path_len",
+            [
+              "+",
+              [
+                "+",
+                "prefix_len",
+                "suffix_len"
+              ],
+              2
+            ]
+          ],
+          [
+            "if",
+            [
+              "view.eq",
+              [
+                "view.slice",
+                "path_json",
+                0,
+                "prefix_len"
+              ],
+              "prefix_json"
+            ],
+            [
+              "view.eq",
+              [
+                "view.slice",
+                "path_json",
+                [
+                  "-",
+                  "path_len",
+                  "suffix_len"
+                ],
+                "suffix_len"
+              ],
+              "suffix_json"
+            ],
+            0
+          ],
+          0
+        ]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "exports._extract_job_id_v1",
+      "params": [
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes",
+      "body": [
+        "begin",
+        [
+          "let",
+          "prefix_json",
+          [
+            "bytes.view_lit",
+            "\"/api/exports/jobs/"
+          ]
+        ],
+        [
+          "let",
+          "suffix_json",
+          [
+            "bytes.view_lit",
+            "/retry\""
+          ]
+        ],
+        [
+          "let",
+          "prefix_len",
+          [
+            "view.len",
+            "prefix_json"
+          ]
+        ],
+        [
+          "let",
+          "suffix_len",
+          [
+            "view.len",
+            "suffix_json"
+          ]
+        ],
+        [
+          "let",
+          "path_len",
+          [
+            "view.len",
+            "path_json"
+          ]
+        ],
+        [
+          "view.to_bytes",
+          [
+            "view.slice",
+            "path_json",
+            "prefix_len",
+            [
+              "-",
+              [
+                "-",
+                "path_len",
+                "prefix_len"
+              ],
+              "suffix_len"
+            ]
+          ]
+        ]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "exports.can_handle_v1",
+      "params": [
+        {
+          "name": "method_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "i32",
+      "body": [
+        "if",
+        [
+          "view.eq",
+          "path_json",
+          [
+            "bytes.view_lit",
+            "\"/api/exports/jobs\""
+          ]
+        ],
+        [
+          "if",
+          [
+            "view.eq",
+            "method_json",
+            [
+              "bytes.view_lit",
+              "\"GET\""
+            ]
+          ],
+          1,
+          [
+            "if",
+            [
+              "view.eq",
+              "method_json",
+              [
+                "bytes.view_lit",
+                "\"POST\""
+              ]
+            ],
+            1,
+            0
+          ]
+        ],
+        [
+          "if",
+          [
+            "view.eq",
+            "method_json",
+            [
+              "bytes.view_lit",
+              "\"POST\""
+            ]
+          ],
+          [
+            "exports._matches_retry_v1",
+            "path_json"
+          ],
+          0
+        ]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "exports.handle_v1",
+      "params": [
+        {
+          "name": "req_id_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "method_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes",
+      "body": [
+        "if",
+        [
+          "view.eq",
+          "path_json",
+          [
+            "bytes.view_lit",
+            "\"/api/exports/jobs\""
+          ]
+        ],
+        [
+          "if",
+          [
+            "view.eq",
+            "method_json",
+            [
+              "bytes.view_lit",
+              "\"GET\""
+            ]
+          ],
+          [
+            "begin",
+            [
+              "let",
+              "export_center_json",
+              [
+                "demo_seed.export_center_body_v1"
+              ]
+            ],
+            [
+              "errors.response_v1",
+              "req_id_json",
+              [
+                "bytes.view_lit",
+                "200"
+              ],
+              [
+                "bytes.view",
+                "export_center_json"
+              ]
+            ]
+          ],
+          [
+            "begin",
+            [
+              "let",
+              "export_create_json",
+              [
+                "demo_seed.export_create_body_v1"
+              ]
+            ],
+            [
+              "errors.response_v1",
+              "req_id_json",
+              [
+                "bytes.view_lit",
+                "202"
+              ],
+              [
+                "bytes.view",
+                "export_create_json"
+              ]
+            ]
+          ]
+        ],
+        [
+          "begin",
+          [
+            "let",
+            "job_id_raw_json",
+            [
+              "exports._extract_job_id_v1",
+              "path_json"
+            ]
+          ],
+          [
+            "let",
+            "export_retry_map_json",
+            [
+              "demo_seed.export_retry_map_body_v1"
+            ]
+          ],
+          [
+            "let",
+            "body_json",
+            [
+              "backend_helpers.extract_map_entry_v1",
+              [
+                "bytes.view",
+                "export_retry_map_json"
+              ],
+              [
+                "bytes.view",
+                "job_id_raw_json"
+              ]
+            ]
+          ],
+          [
+            "begin",
+            [
+              "let",
+              "_x07_tmp_copy_decls_4_body_3_4",
+              [
+                "view.to_bytes",
+                [
+                  "bytes.view",
+                  "body_json"
+                ]
+              ]
+            ],
+            [
+              "if",
+              [
+                "view.eq",
+                [
+                  "bytes.view",
+                  "_x07_tmp_copy_decls_4_body_3_4"
+                ],
+                [
+                  "bytes.view_lit",
+                  "ERR"
+                ]
+              ],
+              [
+                "errors.error_response_v1",
+                "req_id_json",
+                [
+                  "bytes.view_lit",
+                  "404"
+                ],
+                [
+                  "bytes.view_lit",
+                  "\"export_job_not_found\""
+                ],
+                [
+                  "bytes.view_lit",
+                  "\"Export job was not found\""
+                ],
+                [
+                  "bytes.view_lit",
+                  "\"backend\""
+                ]
+              ],
+              [
+                "errors.response_v1",
+                "req_id_json",
+                [
+                  "bytes.view_lit",
+                  "200"
+                ],
+                [
+                  "bytes.view",
+                  "body_json"
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    }
+  ]
+}

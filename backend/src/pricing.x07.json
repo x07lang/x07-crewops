@@ -1,0 +1,232 @@
+{
+  "schema_version": "x07.x07ast@0.5.0",
+  "kind": "module",
+  "module_id": "pricing",
+  "imports": [
+    "demo_seed",
+    "errors"
+  ],
+  "decls": [
+    {
+      "kind": "export",
+      "names": [
+        "pricing.can_handle_v1",
+        "pricing.handle_v1"
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "pricing.can_handle_v1",
+      "params": [
+        {
+          "name": "method_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "i32",
+      "body": [
+        "if",
+        [
+          "view.eq",
+          "method_json",
+          [
+            "bytes.view_lit",
+            "\"GET\""
+          ]
+        ],
+        [
+          "if",
+          [
+            "view.eq",
+            "path_json",
+            [
+              "bytes.view_lit",
+              "\"/api/pricing/config\""
+            ]
+          ],
+          1,
+          0
+        ],
+        [
+          "if",
+          [
+            "view.eq",
+            "method_json",
+            [
+              "bytes.view_lit",
+              "\"PATCH\""
+            ]
+          ],
+          [
+            "if",
+            [
+              "view.eq",
+              "path_json",
+              [
+                "bytes.view_lit",
+                "\"/api/pricing/config\""
+              ]
+            ],
+            1,
+            [
+              "if",
+              [
+                "view.eq",
+                "path_json",
+                [
+                  "bytes.view_lit",
+                  "\"/api/pricing/config/conflict\""
+                ]
+              ],
+              1,
+              0
+            ]
+          ],
+          0
+        ]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "pricing.handle_v1",
+      "params": [
+        {
+          "name": "req_id_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "method_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes",
+      "body": [
+        "if",
+        [
+          "view.eq",
+          "path_json",
+          [
+            "bytes.view_lit",
+            "\"/api/pricing/config\""
+          ]
+        ],
+        [
+          "if",
+          [
+            "view.eq",
+            "method_json",
+            [
+              "bytes.view_lit",
+              "\"GET\""
+            ]
+          ],
+          [
+            "begin",
+            [
+              "let",
+              "pricing_config_json",
+              [
+                "demo_seed.pricing_config_body_v1"
+              ]
+            ],
+            [
+              "errors.response_v1",
+              "req_id_json",
+              [
+                "bytes.view_lit",
+                "200"
+              ],
+              [
+                "bytes.view",
+                "pricing_config_json"
+              ]
+            ]
+          ],
+          [
+            "begin",
+            [
+              "let",
+              "pricing_update_json",
+              [
+                "demo_seed.pricing_update_body_v1"
+              ]
+            ],
+            [
+              "errors.response_v1",
+              "req_id_json",
+              [
+                "bytes.view_lit",
+                "200"
+              ],
+              [
+                "bytes.view",
+                "pricing_update_json"
+              ]
+            ]
+          ]
+        ],
+        [
+          "if",
+          [
+            "view.eq",
+            "path_json",
+            [
+              "bytes.view_lit",
+              "\"/api/pricing/config/conflict\""
+            ]
+          ],
+          [
+            "begin",
+            [
+              "let",
+              "pricing_update_conflict_json",
+              [
+                "demo_seed.pricing_update_conflict_body_v1"
+              ]
+            ],
+            [
+              "errors.response_v1",
+              "req_id_json",
+              [
+                "bytes.view_lit",
+                "409"
+              ],
+              [
+                "bytes.view",
+                "pricing_update_conflict_json"
+              ]
+            ]
+          ],
+          [
+            "errors.error_response_v1",
+            "req_id_json",
+            [
+              "bytes.view_lit",
+              "404"
+            ],
+            [
+              "bytes.view_lit",
+              "\"pricing_not_found\""
+            ],
+            [
+              "bytes.view_lit",
+              "\"Pricing route not found\""
+            ],
+            [
+              "bytes.view_lit",
+              "\"backend\""
+            ]
+          ]
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+{
+  "schema_version": "x07.x07ast@0.5.0",
+  "kind": "module",
+  "module_id": "commercial_api",
+  "imports": [
+    "customers",
+    "errors",
+    "exports",
+    "finance_summary",
+    "invoices",
+    "pricing"
+  ],
+  "decls": [
+    {
+      "kind": "export",
+      "names": [
+        "commercial_api.can_handle_v1",
+        "commercial_api.handle_v1"
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "commercial_api.can_handle_v1",
+      "params": [
+        {
+          "name": "method_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "i32",
+      "body": [
+        "if",
+        [
+          "pricing.can_handle_v1",
+          "method_json",
+          "path_json"
+        ],
+        1,
+        [
+          "if",
+          [
+            "invoices.can_handle_v1",
+            "method_json",
+            "path_json"
+          ],
+          1,
+          [
+            "if",
+            [
+              "finance_summary.can_handle_v1",
+              "method_json",
+              "path_json"
+            ],
+            1,
+            [
+              "if",
+              [
+                "customers.can_handle_v1",
+                "method_json",
+                "path_json"
+              ],
+              1,
+              [
+                "exports.can_handle_v1",
+                "method_json",
+                "path_json"
+              ]
+            ]
+          ]
+        ]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "commercial_api.handle_v1",
+      "params": [
+        {
+          "name": "req_id_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "method_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes",
+      "body": [
+        "if",
+        [
+          "pricing.can_handle_v1",
+          "method_json",
+          "path_json"
+        ],
+        [
+          "pricing.handle_v1",
+          "req_id_json",
+          "method_json",
+          "path_json"
+        ],
+        [
+          "if",
+          [
+            "invoices.can_handle_v1",
+            "method_json",
+            "path_json"
+          ],
+          [
+            "invoices.handle_v1",
+            "req_id_json",
+            "method_json",
+            "path_json"
+          ],
+          [
+            "if",
+            [
+              "finance_summary.can_handle_v1",
+              "method_json",
+              "path_json"
+            ],
+            [
+              "finance_summary.handle_v1",
+              "req_id_json",
+              "path_json"
+            ],
+            [
+              "if",
+              [
+                "customers.can_handle_v1",
+                "method_json",
+                "path_json"
+              ],
+              [
+                "customers.handle_v1",
+                "req_id_json",
+                "path_json"
+              ],
+              [
+                "if",
+                [
+                  "exports.can_handle_v1",
+                  "method_json",
+                  "path_json"
+                ],
+                [
+                  "exports.handle_v1",
+                  "req_id_json",
+                  "method_json",
+                  "path_json"
+                ],
+                [
+                  "errors.error_response_v1",
+                  "req_id_json",
+                  [
+                    "bytes.view_lit",
+                    "404"
+                  ],
+                  [
+                    "bytes.view_lit",
+                    "\"commercial_route_not_found\""
+                  ],
+                  [
+                    "bytes.view_lit",
+                    "\"Commercial route not found\""
+                  ],
+                  [
+                    "bytes.view_lit",
+                    "\"backend\""
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    }
+  ]
+}

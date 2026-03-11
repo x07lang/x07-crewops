@@ -1,1 +1,592 @@
-{"decls":[{"kind":"export","names":["state.default_diagnostics_json_v1","state.default_doc_v1","state.default_meta_json_v1","state.default_settings_json_v1","state.default_template_json_v1","state.default_ui_json_v1","state.doc_v1"]},{"body":["bytes.lit","null"],"kind":"defn","name":"state.default_diagnostics_json_v1","params":[],"result":"bytes"},{"body":["begin",["let","default_session_json",["session.default_json_v1"]],["let","default_bootstrap_json",["bootstrap.default_json_v1"]],["let","default_ui_json",["state.default_ui_json_v1"]],["let","default_entities_json",["entities.empty_entities_v1"]],["let","default_indexes_json",["entities.empty_indexes_v1"]],["let","default_sync_json",["sync.default_json_v1"]],["let","default_settings_json",["state.default_settings_json_v1"]],["let","default_diagnostics_json",["state.default_diagnostics_json_v1"]],["let","default_summary_json",["entities.empty_summary_v1"]],["let","default_drafts_json",["drafts.default_json_v1"]],["let","default_template_json",["state.default_template_json_v1"]],["let","default_execution_json",["execution.default_json_v1"]],["let","default_meta_json",["state.default_meta_json_v1"]],["state.doc_v1",["bytes.view","default_session_json"],["bytes.view","default_bootstrap_json"],["bytes.view","default_ui_json"],["bytes.view","default_entities_json"],["bytes.view","default_indexes_json"],["bytes.view","default_sync_json"],["bytes.view","default_settings_json"],["bytes.view","default_diagnostics_json"],["bytes.view","default_summary_json"],["bytes.view","default_drafts_json"],["bytes.view","default_template_json"],["bytes.view","default_execution_json"],["bytes.view","default_meta_json"]]],"kind":"defn","name":"state.default_doc_v1","params":[],"result":"bytes"},{"body":["bytes.lit","{\"app_version\":\"0.3.0\",\"target_kind\":\"web\",\"build_profile\":\"dev\",\"last_event\":\"init\"}"],"kind":"defn","name":"state.default_meta_json_v1","params":[],"result":"bytes"},{"body":["bytes.lit","{\"theme\":\"system\",\"density\":\"comfortable\",\"pinned_views\":[],\"dev_flags\":{}}"],"kind":"defn","name":"state.default_settings_json_v1","params":[],"result":"bytes"},{"body":["bytes.lit","null"],"kind":"defn","name":"state.default_template_json_v1","params":[],"result":"bytes"},{"body":["bytes.lit","{\"route\":\"today\",\"selected_work_order_id\":\"wo_001\",\"selected_visit_id\":\"visit_001\",\"selected_customer_id\":null,\"selected_site_id\":null,\"selected_asset_id\":null,\"selected_review_visit_id\":\"visit_001\",\"selected_correction_id\":null,\"selected_activity_id\":null,\"selected_alert_id\":null,\"selected_branch_id\":\"branch_north\",\"selected_team_id\":\"team_north_alpha\",\"network_status\":\"online\",\"dispatch_day\":\"2026-03-11\",\"dispatch_status_filter\":\"all\",\"dispatch_team_filter\":\"all\",\"dispatch_branch_filter\":\"all\",\"review_filter\":\"awaiting_review\",\"activity_filter\":\"all\",\"manager_scope\":\"branch_north\",\"summary_scope\":\"branch\",\"intake_kind\":\"work_order\"}"],"kind":"defn","name":"state.default_ui_json_v1","params":[],"result":"bytes"},{"body":["begin",["let","out",["std.vec.with_capacity",8192]],["set","out",["std.vec.extend_bytes","out",["bytes.view_lit","{\"session\":"]]],["set","out",["std.vec.extend_bytes","out","session_json"]],["set","out",["std.vec.extend_bytes","out",["bytes.view_lit",",\"bootstrap\":"]]],["set","out",["std.vec.extend_bytes","out","bootstrap_json"]],["set","out",["std.vec.extend_bytes","out",["bytes.view_lit",",\"ui\":"]]],["set","out",["std.vec.extend_bytes","out","ui_json"]],["set","out",["std.vec.extend_bytes","out",["bytes.view_lit",",\"entities\":"]]],["set","out",["std.vec.extend_bytes","out","entities_json"]],["set","out",["std.vec.extend_bytes","out",["bytes.view_lit",",\"indexes\":"]]],["set","out",["std.vec.extend_bytes","out","indexes_json"]],["set","out",["std.vec.extend_bytes","out",["bytes.view_lit",",\"sync\":"]]],["set","out",["std.vec.extend_bytes","out","sync_json"]],["set","out",["std.vec.extend_bytes","out",["bytes.view_lit",",\"settings\":"]]],["set","out",["std.vec.extend_bytes","out","settings_json"]],["set","out",["std.vec.extend_bytes","out",["bytes.view_lit",",\"diagnostics\":"]]],["set","out",["std.vec.extend_bytes","out","diagnostics_json"]],["set","out",["std.vec.extend_bytes","out",["bytes.view_lit",",\"summary\":"]]],["set","out",["std.vec.extend_bytes","out","summary_json"]],["set","out",["std.vec.extend_bytes","out",["bytes.view_lit",",\"drafts\":"]]],["set","out",["std.vec.extend_bytes","out","drafts_json"]],["set","out",["std.vec.extend_bytes","out",["bytes.view_lit",",\"template\":"]]],["set","out",["std.vec.extend_bytes","out","template_json"]],["set","out",["std.vec.extend_bytes","out",["bytes.view_lit",",\"execution\":"]]],["set","out",["std.vec.extend_bytes","out","execution_json"]],["set","out",["std.vec.extend_bytes","out",["bytes.view_lit",",\"meta\":"]]],["set","out",["std.vec.extend_bytes","out","meta_json"]],["set","out",["std.vec.extend_bytes","out",["bytes.view_lit","}"]]],["std.vec.as_bytes","out"]],"kind":"defn","name":"state.doc_v1","params":[{"name":"session_json","ty":"bytes_view"},{"name":"bootstrap_json","ty":"bytes_view"},{"name":"ui_json","ty":"bytes_view"},{"name":"entities_json","ty":"bytes_view"},{"name":"indexes_json","ty":"bytes_view"},{"name":"sync_json","ty":"bytes_view"},{"name":"settings_json","ty":"bytes_view"},{"name":"diagnostics_json","ty":"bytes_view"},{"name":"summary_json","ty":"bytes_view"},{"name":"drafts_json","ty":"bytes_view"},{"name":"template_json","ty":"bytes_view"},{"name":"execution_json","ty":"bytes_view"},{"name":"meta_json","ty":"bytes_view"}],"result":"bytes"}],"imports":["bootstrap","drafts","entities","execution","session","std.vec","sync"],"kind":"module","module_id":"state","schema_version":"x07.x07ast@0.5.0"}
+{
+  "decls": [
+    {
+      "kind": "export",
+      "names": [
+        "state.default_diagnostics_json_v1",
+        "state.default_doc_v1",
+        "state.default_meta_json_v1",
+        "state.default_settings_json_v1",
+        "state.default_template_json_v1",
+        "state.default_ui_json_v1",
+        "state.doc_v1"
+      ]
+    },
+    {
+      "body": [
+        "bytes.lit",
+        "null"
+      ],
+      "kind": "defn",
+      "name": "state.default_diagnostics_json_v1",
+      "params": [],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "default_session_json",
+          [
+            "session.default_json_v1"
+          ]
+        ],
+        [
+          "let",
+          "default_bootstrap_json",
+          [
+            "bootstrap.default_json_v1"
+          ]
+        ],
+        [
+          "let",
+          "default_ui_json",
+          [
+            "state.default_ui_json_v1"
+          ]
+        ],
+        [
+          "let",
+          "default_entities_json",
+          [
+            "entities.empty_entities_v1"
+          ]
+        ],
+        [
+          "let",
+          "default_indexes_json",
+          [
+            "entities.empty_indexes_v1"
+          ]
+        ],
+        [
+          "let",
+          "default_sync_json",
+          [
+            "sync.default_json_v1"
+          ]
+        ],
+        [
+          "let",
+          "default_settings_json",
+          [
+            "state.default_settings_json_v1"
+          ]
+        ],
+        [
+          "let",
+          "default_diagnostics_json",
+          [
+            "state.default_diagnostics_json_v1"
+          ]
+        ],
+        [
+          "let",
+          "default_summary_json",
+          [
+            "entities.empty_summary_v1"
+          ]
+        ],
+        [
+          "let",
+          "default_drafts_json",
+          [
+            "drafts.default_json_v1"
+          ]
+        ],
+        [
+          "let",
+          "default_template_json",
+          [
+            "state.default_template_json_v1"
+          ]
+        ],
+        [
+          "let",
+          "default_execution_json",
+          [
+            "execution.default_json_v1"
+          ]
+        ],
+        [
+          "let",
+          "default_meta_json",
+          [
+            "state.default_meta_json_v1"
+          ]
+        ],
+        [
+          "state.doc_v1",
+          [
+            "bytes.view",
+            "default_session_json"
+          ],
+          [
+            "bytes.view",
+            "default_bootstrap_json"
+          ],
+          [
+            "bytes.view",
+            "default_ui_json"
+          ],
+          [
+            "bytes.view",
+            "default_entities_json"
+          ],
+          [
+            "bytes.view",
+            "default_indexes_json"
+          ],
+          [
+            "bytes.view",
+            "default_sync_json"
+          ],
+          [
+            "bytes.view",
+            "default_settings_json"
+          ],
+          [
+            "bytes.view",
+            "default_diagnostics_json"
+          ],
+          [
+            "bytes.view",
+            "default_summary_json"
+          ],
+          [
+            "bytes.view",
+            "default_drafts_json"
+          ],
+          [
+            "bytes.view",
+            "default_template_json"
+          ],
+          [
+            "bytes.view",
+            "default_execution_json"
+          ],
+          [
+            "bytes.view",
+            "default_meta_json"
+          ]
+        ]
+      ],
+      "kind": "defn",
+      "name": "state.default_doc_v1",
+      "params": [],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "bytes.lit",
+        "{\"app_version\":\"0.4.0\",\"target_kind\":\"web\",\"build_profile\":\"dev\",\"last_event\":\"init\"}"
+      ],
+      "kind": "defn",
+      "name": "state.default_meta_json_v1",
+      "params": [],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "bytes.lit",
+        "{\"theme\":\"system\",\"density\":\"comfortable\",\"pinned_views\":[],\"dev_flags\":{}}"
+      ],
+      "kind": "defn",
+      "name": "state.default_settings_json_v1",
+      "params": [],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "bytes.lit",
+        "null"
+      ],
+      "kind": "defn",
+      "name": "state.default_template_json_v1",
+      "params": [],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "bytes.lit",
+        "{\"route\":\"today\",\"selected_work_order_id\":\"wo_001\",\"selected_visit_id\":\"visit_001\",\"selected_customer_id\":\"cust_013\",\"selected_site_id\":\"site_013\",\"selected_asset_id\":\"asset_013\",\"selected_review_visit_id\":\"visit_001\",\"selected_correction_id\":null,\"selected_activity_id\":null,\"selected_alert_id\":null,\"selected_invoice_id\":\"inv_001\",\"selected_payment_id\":null,\"selected_invoice_artifact_id\":\"invoice_artifact_inv_001\",\"selected_service_summary_artifact_id\":\"service_summary_inv_001\",\"selected_customer_statement_id\":\"statement_cust_013\",\"selected_receivable_summary_id\":\"receivable_branch_north\",\"selected_price_book_id\":\"price_book_branch_north\",\"selected_price_book_item_id\":\"price_item_service_call_north\",\"selected_billing_policy_id\":\"billing_policy_branch_north\",\"selected_labor_rate_policy_id\":\"labor_policy_branch_north\",\"selected_part_rate_policy_id\":\"part_rate_north_filter\",\"selected_tax_rule_id\":\"tax_rule_wa\",\"selected_discount_rule_id\":\"discount_rule_loyalty\",\"selected_export_job_id\":\"export_job_003\",\"selected_finance_rollup_id\":\"finance_global\",\"selected_profitability_snapshot_id\":\"finance_global\",\"selected_branch_id\":\"branch_north\",\"selected_team_id\":\"team_north_alpha\",\"network_status\":\"online\",\"dispatch_day\":\"2026-03-11\",\"dispatch_status_filter\":\"all\",\"dispatch_team_filter\":\"all\",\"dispatch_branch_filter\":\"all\",\"review_filter\":\"awaiting_review\",\"activity_filter\":\"all\",\"manager_scope\":\"branch_north\",\"summary_scope\":\"branch\",\"intake_kind\":\"work_order\",\"pricing_scope\":\"branch\",\"invoice_status_filter\":\"all\",\"invoice_branch_filter\":\"all\",\"invoice_customer_filter\":\"all\",\"invoice_aging_filter\":\"all\",\"customer_branch_filter\":\"all\",\"customer_invoice_status_filter\":\"all\",\"customer_balance_filter\":\"open\",\"customer_statement_filter\":\"open\",\"receivables_scope\":\"branch\",\"receivables_branch_filter\":\"all\",\"receivables_aging_filter\":\"all\",\"finance_scope\":\"global\",\"finance_branch_filter\":\"all\",\"export_kind\":\"invoices\",\"export_format\":\"csv\",\"export_status_filter\":\"all\"}"
+      ],
+      "kind": "defn",
+      "name": "state.default_ui_json_v1",
+      "params": [],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "out",
+          [
+            "std.vec.with_capacity",
+            8192
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              "{\"session\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "session_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"bootstrap\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "bootstrap_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"ui\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "ui_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"entities\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "entities_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"indexes\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "indexes_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"sync\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "sync_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"settings\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "settings_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"diagnostics\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "diagnostics_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"summary\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "summary_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"drafts\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "drafts_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"template\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "template_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"execution\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "execution_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"meta\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "meta_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              "}"
+            ]
+          ]
+        ],
+        [
+          "std.vec.as_bytes",
+          "out"
+        ]
+      ],
+      "kind": "defn",
+      "name": "state.doc_v1",
+      "params": [
+        {
+          "name": "session_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "bootstrap_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "ui_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "entities_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "indexes_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "sync_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "settings_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "diagnostics_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "summary_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "drafts_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "template_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "execution_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "meta_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    }
+  ],
+  "imports": [
+    "bootstrap",
+    "drafts",
+    "entities",
+    "execution",
+    "session",
+    "std.vec",
+    "sync"
+  ],
+  "kind": "module",
+  "module_id": "state",
+  "schema_version": "x07.x07ast@0.5.0"
+}

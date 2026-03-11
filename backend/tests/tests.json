@@ -2,10 +2,64 @@
   "schema_version": "x07.tests_manifest@0.2.0",
   "tests": [
     {
+      "entry": "backend_tests.test_invoice_detail_route_v1",
+      "expect": "pass",
+      "id": "backend/invoice-detail-route",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "backend_tests.test_pricing_conflict_route_v1",
+      "expect": "pass",
+      "id": "backend/pricing-conflict-route",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "backend_tests.test_payment_revision_conflict_route_v1",
+      "expect": "pass",
+      "id": "backend/payment-revision-conflict-route",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "backend_tests.test_export_retry_route_v1",
+      "expect": "pass",
+      "id": "backend/export-retry-route",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "backend_tests.test_customer_account_route_v1",
+      "expect": "pass",
+      "id": "backend/customer-account-route",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "backend_tests.test_invoice_totals_seed_v1",
+      "expect": "pass",
+      "id": "backend/invoice-totals-seed",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "backend_tests.test_customer_aging_seed_v1",
+      "expect": "pass",
+      "id": "backend/customer-aging-seed",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "backend_tests.test_export_job_state_seed_v1",
+      "expect": "pass",
+      "id": "backend/export-job-state-seed",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "backend_tests.test_finance_rollup_seed_v1",
+      "expect": "pass",
+      "id": "backend/finance-rollup-seed",
+      "world": "solve-pure"
+    },
+    {
       "entry": "smoke.pass",
       "expect": "pass",
       "id": "smoke/pass",
-      "world": "run-os"
+      "world": "solve-pure"
     }
   ]
 }

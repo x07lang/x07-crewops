@@ -1,0 +1,240 @@
+{
+  "schema_version": "x07.x07ast@0.5.0",
+  "module_id": "backend_tests",
+  "kind": "module",
+  "imports": [
+    "app",
+    "backend_helpers",
+    "demo_seed",
+    "errors",
+    "std.json",
+    "std.test",
+    "std.vec"
+  ],
+  "decls": [
+    {
+      "kind": "export",
+      "names": [
+        "backend_tests.test_invoice_detail_route_v1",
+        "backend_tests.test_pricing_conflict_route_v1",
+        "backend_tests.test_payment_revision_conflict_route_v1",
+        "backend_tests.test_export_retry_route_v1",
+        "backend_tests.test_customer_account_route_v1",
+        "backend_tests.test_invoice_totals_seed_v1",
+        "backend_tests.test_customer_aging_seed_v1",
+        "backend_tests.test_export_job_state_seed_v1",
+        "backend_tests.test_finance_rollup_seed_v1"
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "backend_tests._extract_v1",
+      "params": [
+        { "name": "doc_json", "ty": "bytes_view" },
+        { "name": "path_json", "ty": "bytes_view" }
+      ],
+      "result": "bytes",
+      "body": [
+        "begin",
+        ["let", "qv", ["std.vec.with_capacity", ["+", ["+", ["view.len", "doc_json"], ["view.len", "path_json"]], 8]]],
+        ["set", "qv", ["std.vec.extend_bytes", "qv", "doc_json"]],
+        ["set", "qv", ["std.vec.push", "qv", 0]],
+        ["set", "qv", ["std.vec.extend_bytes", "qv", "path_json"]],
+        ["let", "query", ["std.vec.as_bytes", "qv"]],
+        ["std.json.extract_path_canon_or_err", ["bytes.view", "query"]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "backend_tests._extract_decimal_safe_v1",
+      "params": [
+        { "name": "doc_json", "ty": "bytes_view" },
+        { "name": "path_json", "ty": "bytes_view" }
+      ],
+      "result": "bytes",
+      "body": [
+        "backend_helpers.extract_path_v1",
+        "doc_json",
+        "path_json"
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "backend_tests._request_empty_v1",
+      "params": [
+        { "name": "id_json", "ty": "bytes_view" },
+        { "name": "method_json", "ty": "bytes_view" },
+        { "name": "path_json", "ty": "bytes_view" }
+      ],
+      "result": "bytes",
+      "body": [
+        "begin",
+        ["let", "out", ["std.vec.with_capacity", ["+", ["+", ["+", ["view.len", "id_json"], ["view.len", "method_json"]], ["view.len", "path_json"]], 96]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", "{\"id\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "id_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"method\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "method_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"path\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "path_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"headers\":[],\"body\":{\"bytes_len\":0,\"text\":\"\"}}"]]],
+        ["std.vec.as_bytes", "out"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "backend_tests._assert_path_eq_v1",
+      "params": [
+        { "name": "doc_json", "ty": "bytes_view" },
+        { "name": "path_json", "ty": "bytes_view" },
+        { "name": "want_json", "ty": "bytes_view" }
+      ],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "got_json", ["backend_tests._extract_decimal_safe_v1", "doc_json", "path_json"]],
+        ["try", ["std.test.assert_bytes_eq", "got_json", ["view.to_bytes", "want_json"], ["std.test.code_assert_bytes_eq"]]],
+        ["std.test.pass"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "backend_tests._assert_route_body_v1",
+      "params": [
+        { "name": "request_json", "ty": "bytes_view" },
+        { "name": "status_json", "ty": "bytes_view" },
+        { "name": "body_json", "ty": "bytes_view" }
+      ],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "response_json", ["app.solve", "request_json"]],
+        ["let", "expected_body_text_json", ["errors.json_string_v1", "body_json"]],
+        ["let", "got_status_json", ["backend_tests._extract_v1", ["bytes.view", "response_json"], ["bytes.view_lit", "status"]]],
+        ["let", "got_body_text_json", ["backend_tests._extract_v1", ["bytes.view", "response_json"], ["bytes.view_lit", "body.text"]]],
+        ["try", ["std.test.assert_bytes_eq", "got_status_json", ["view.to_bytes", "status_json"], ["std.test.code_assert_bytes_eq"]]],
+        ["try", ["std.test.assert_bytes_eq", "got_body_text_json", "expected_body_text_json", ["std.test.code_assert_bytes_eq"]]],
+        ["std.test.pass"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "backend_tests.test_invoice_detail_route_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "request_json", ["backend_tests._request_empty_v1", ["bytes.view_lit", "\"req_invoice_detail\""], ["bytes.view_lit", "\"GET\""], ["bytes.view_lit", "\"/api/invoices/inv_005\""]]],
+        ["let", "invoice_map_json", ["demo_seed.invoice_detail_map_body_v1"]],
+        ["let", "invoice_doc_json", ["backend_helpers.extract_map_entry_v1", ["bytes.view", "invoice_map_json"], ["bytes.view_lit", "inv_005"]]],
+        ["backend_tests._assert_route_body_v1", ["bytes.view", "request_json"], ["bytes.view_lit", "200"], ["bytes.view", "invoice_doc_json"]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "backend_tests.test_pricing_conflict_route_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "request_json", ["backend_tests._request_empty_v1", ["bytes.view_lit", "\"req_pricing_conflict\""], ["bytes.view_lit", "\"PATCH\""], ["bytes.view_lit", "\"/api/pricing/config/conflict\""]]],
+        ["let", "body_json", ["demo_seed.pricing_update_conflict_body_v1"]],
+        ["backend_tests._assert_route_body_v1", ["bytes.view", "request_json"], ["bytes.view_lit", "409"], ["bytes.view", "body_json"]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "backend_tests.test_payment_revision_conflict_route_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "request_json", ["backend_tests._request_empty_v1", ["bytes.view_lit", "\"req_payment_conflict\""], ["bytes.view_lit", "\"POST\""], ["bytes.view_lit", "\"/api/invoices/inv_005/payments\""]]],
+        ["let", "body_json", ["demo_seed.payment_revision_conflict_body_v1"]],
+        ["backend_tests._assert_route_body_v1", ["bytes.view", "request_json"], ["bytes.view_lit", "409"], ["bytes.view", "body_json"]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "backend_tests.test_export_retry_route_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "request_json", ["backend_tests._request_empty_v1", ["bytes.view_lit", "\"req_export_retry\""], ["bytes.view_lit", "\"POST\""], ["bytes.view_lit", "\"/api/exports/jobs/export_job_002/retry\""]]],
+        ["let", "retry_map_json", ["demo_seed.export_retry_map_body_v1"]],
+        ["let", "retry_doc_json", ["backend_helpers.extract_map_entry_v1", ["bytes.view", "retry_map_json"], ["bytes.view_lit", "export_job_002"]]],
+        ["backend_tests._assert_route_body_v1", ["bytes.view", "request_json"], ["bytes.view_lit", "200"], ["bytes.view", "retry_doc_json"]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "backend_tests.test_customer_account_route_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "request_json", ["backend_tests._request_empty_v1", ["bytes.view_lit", "\"req_customer_account\""], ["bytes.view_lit", "\"GET\""], ["bytes.view_lit", "\"/api/customers/cust_019/account\""]]],
+        ["let", "account_map_json", ["demo_seed.customer_account_map_body_v1"]],
+        ["let", "account_doc_json", ["backend_helpers.extract_map_entry_v1", ["bytes.view", "account_map_json"], ["bytes.view_lit", "cust_019"]]],
+        ["backend_tests._assert_route_body_v1", ["bytes.view", "request_json"], ["bytes.view_lit", "200"], ["bytes.view", "account_doc_json"]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "backend_tests.test_invoice_totals_seed_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "invoice_map_json", ["demo_seed.invoice_detail_map_body_v1"]],
+        ["let", "invoice_doc_json", ["backend_helpers.extract_map_entry_v1", ["bytes.view", "invoice_map_json"], ["bytes.view_lit", "inv_005"]]],
+        ["try", ["backend_tests._assert_path_eq_v1", ["bytes.view", "invoice_doc_json"], ["bytes.view_lit", "invoice"], ["bytes.view_lit", "{\"id\":\"inv_005\",\"number\":\"INV-4005\",\"status\":\"partially_paid\",\"revision\":1,\"lock_status\":\"locked\",\"lock_reason\":null,\"branch_id\":\"branch_north\",\"team_id\":\"team_north_alpha\",\"customer_id\":\"cust_019\",\"currency\":\"USD\",\"price_book_id\":\"price_book_branch_north\",\"billing_policy_id\":\"billing_policy_branch_north\",\"tax_rule_id\":\"tax_rule_wa\",\"discount_rule_id\":\"discount_rule_loyalty\",\"issue_date\":\"2026-03-14\",\"due_date\":\"2026-03-29\",\"sent_at\":\"2026-03-14T18:00:00Z\",\"paid_at\":null,\"voided_at\":null,\"written_off_at\":null,\"source_work_order_ids\":[\"wo_019\"],\"source_visit_ids\":[\"visit_019\"],\"memo\":\"Customer submitted deposit; remainder still outstanding.\",\"line_ids\":[\"invoice_line_inv_005_service\",\"invoice_line_inv_005_labor\",\"invoice_line_inv_005_travel\",\"invoice_line_inv_005_part_1\"],\"adjustment_ids\":[\"invoice_adjustment_inv_005_discount\",\"invoice_adjustment_inv_005_tax\"],\"payment_ids\":[\"payment_005_a\"],\"invoice_artifact_id\":\"invoice_artifact_inv_005\",\"service_summary_artifact_id\":\"service_summary_inv_005\",\"subtotal\":434.0,\"discount_total\":21.7,\"tax_total\":41.64,\"total\":453.94,\"paid_total\":220.0,\"balance_due\":233.94,\"aging_bucket\":\"1_30\"}"]]],
+        ["std.test.pass"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "backend_tests.test_customer_aging_seed_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "account_map_json", ["demo_seed.customer_account_map_body_v1"]],
+        ["let", "account_doc_json", ["backend_helpers.extract_map_entry_v1", ["bytes.view", "account_map_json"], ["bytes.view_lit", "cust_019"]]],
+        ["try", ["backend_tests._assert_path_eq_v1", ["bytes.view", "account_doc_json"], ["bytes.view_lit", "statement"], ["bytes.view_lit", "{\"id\":\"statement_cust_019\",\"customer_id\":\"cust_019\",\"currency\":\"USD\",\"statement_date\":\"2026-03-11T00:00:00Z\",\"invoice_ids\":[\"inv_005\"],\"payment_ids\":[\"payment_005_a\"],\"current_balance\":233.94,\"overdue_balance\":233.94,\"aging_buckets\":{\"current\":0.0,\"1_30\":233.94,\"31_60\":0.0,\"61_plus\":0.0}}"]]],
+        ["try", ["backend_tests._assert_path_eq_v1", ["bytes.view", "account_doc_json"], ["bytes.view_lit", "receivable_summary"], ["bytes.view_lit", "{\"id\":\"receivable_cust_019\",\"scope\":\"customer\",\"branch_id\":\"branch_north\",\"customer_id\":\"cust_019\",\"open_invoice_count\":1,\"overdue_invoice_count\":1,\"current_balance\":233.94,\"overdue_balance\":233.94}"]]],
+        ["std.test.pass"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "backend_tests.test_export_job_state_seed_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "export_center_json", ["demo_seed.export_center_body_v1"]],
+        ["try", ["backend_tests._assert_path_eq_v1", ["bytes.view", "export_center_json"], ["bytes.view_lit", "jobs.export_job_001"], ["bytes.view_lit", "{\"id\":\"export_job_001\",\"kind\":\"invoices\",\"format\":\"csv\",\"status\":\"completed\",\"requested_by_user_id\":\"user_manager_jonas\",\"requested_at\":\"2026-03-11T08:15:00Z\",\"completed_at\":\"2026-03-11T08:16:00Z\",\"filters\":{\"branch_id\":\"branch_north\",\"status\":\"open\",\"date_from\":\"2026-03-01\",\"date_to\":\"2026-03-31\"},\"artifact_path\":\"/exports/export_job_001.csv\",\"record_count\":5,\"data_revision\":\"finance_rev_2026_03_11_001\",\"retry_count\":0}"]]],
+        ["try", ["backend_tests._assert_path_eq_v1", ["bytes.view", "export_center_json"], ["bytes.view_lit", "jobs.export_job_002"], ["bytes.view_lit", "{\"id\":\"export_job_002\",\"kind\":\"receivables\",\"format\":\"json\",\"status\":\"failed\",\"requested_by_user_id\":\"user_manager_jonas\",\"requested_at\":\"2026-03-11T08:30:00Z\",\"completed_at\":\"2026-03-11T08:31:00Z\",\"filters\":{\"branch_id\":\"branch_south\",\"aging_bucket\":\"31_60\",\"status\":\"open\"},\"artifact_path\":null,\"record_count\":0,\"data_revision\":\"finance_rev_2026_03_11_001\",\"retry_count\":1,\"error_code\":\"export_render_failed\",\"error_message\":\"CSV writer exhausted the attachment manifest buffer.\"}"]]],
+        ["try", ["backend_tests._assert_path_eq_v1", ["bytes.view", "export_center_json"], ["bytes.view_lit", "jobs.export_job_003"], ["bytes.view_lit", "{\"id\":\"export_job_003\",\"kind\":\"profitability\",\"format\":\"json\",\"status\":\"running\",\"requested_by_user_id\":\"user_manager_jonas\",\"requested_at\":\"2026-03-11T08:45:00Z\",\"completed_at\":null,\"filters\":{\"scope\":\"global\",\"status\":\"all\"},\"artifact_path\":null,\"record_count\":0,\"data_revision\":\"finance_rev_2026_03_11_002\",\"retry_count\":0}"]]],
+        ["try", ["backend_tests._assert_path_eq_v1", ["bytes.view", "export_center_json"], ["bytes.view_lit", "sync"], ["bytes.view_lit", "{\"cursor\":\"sync_cursor_2026_03_11_101\",\"pending_ops\":[],\"last_pull_at\":\"2026-03-11T00:00:00Z\",\"last_push_at\":null,\"last_server_event_at\":\"2026-03-11T00:00:00Z\",\"status\":\"idle\",\"last_error\":null,\"conflict_status\":\"idle\",\"conflict_message\":\"\",\"conflict_code\":null,\"conflict_entity_id\":null,\"invoice_lock_status\":\"idle\",\"invoice_lock_message\":\"\",\"stale_invoice_id\":null,\"payment_revision_status\":\"idle\",\"pricing_revision_status\":\"idle\",\"stale_price_book_id\":null,\"export_status\":\"idle\",\"finance_revision\":\"finance_rev_2026_03_11_001\",\"unread_alerts\":4,\"unread_activity\":6}"]]],
+        ["std.test.pass"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "backend_tests.test_finance_rollup_seed_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "finance_json", ["demo_seed.finance_summary_body_v1"]],
+        ["try", ["backend_tests._assert_path_eq_v1", ["bytes.view", "finance_json"], ["bytes.view_lit", "rollup"], ["bytes.view_lit", "{\"id\":\"finance_global\",\"scope\":\"global\",\"branch_id\":null,\"team_id\":null,\"revenue_total\":2907.68,\"paid_total\":677.5,\"receivable_total\":2773.68,\"overdue_total\":1039.02,\"average_ticket\":323.08,\"invoice_status_counts\":{\"draft\":1,\"pending_review\":1,\"issued\":1,\"sent\":1,\"partially_paid\":1,\"paid\":1,\"overdue\":1,\"voided\":1,\"written_off\":1},\"revenue_breakdown\":{\"labor\":1642.0,\"parts\":248.5,\"service_fee\":1245.0,\"travel\":208.0}}"]]],
+        ["try", ["backend_tests._assert_path_eq_v1", ["bytes.view", "finance_json"], ["bytes.view_lit", "branch_rollups.finance_branch_north"], ["bytes.view_lit", "{\"id\":\"finance_branch_north\",\"scope\":\"branch\",\"branch_id\":\"branch_north\",\"team_id\":null,\"revenue_total\":1868.18,\"paid_total\":310.0,\"receivable_total\":1558.18,\"overdue_total\":722.52,\"average_ticket\":467.05,\"invoice_status_counts\":{\"draft\":1,\"pending_review\":1,\"partially_paid\":1,\"overdue\":1},\"revenue_breakdown\":{\"labor\":912.0,\"parts\":132.5,\"service_fee\":580.0,\"travel\":112.0}}"]]],
+        ["try", ["backend_tests._assert_path_eq_v1", ["bytes.view", "finance_json"], ["bytes.view_lit", "team_rollups.finance_team_north_alpha"], ["bytes.view_lit", "{\"id\":\"finance_team_north_alpha\",\"scope\":\"team\",\"branch_id\":\"branch_north\",\"team_id\":\"team_north_alpha\",\"revenue_total\":1436.59,\"paid_total\":310.0,\"receivable_total\":1126.59,\"overdue_total\":722.52,\"average_ticket\":478.86,\"invoice_status_counts\":{\"draft\":1,\"partially_paid\":1,\"overdue\":1},\"revenue_breakdown\":{\"labor\":696.0,\"parts\":111.5,\"service_fee\":435.0,\"travel\":84.0}}"]]],
+        ["try", ["backend_tests._assert_path_eq_v1", ["bytes.view", "finance_json"], ["bytes.view_lit", "profitability.finance_global"], ["bytes.view_lit", "{\"id\":\"finance_global\",\"scope\":\"global\",\"branch_id\":null,\"team_id\":null,\"revenue_total\":2907.68,\"estimated_cost_total\":1085.68,\"gross_margin_total\":1822.0,\"gross_margin_pct\":62.66}"]]],
+        ["std.test.pass"]
+      ]
+    }
+  ]
+}

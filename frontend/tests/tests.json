@@ -2,10 +2,64 @@
   "schema_version": "x07.tests_manifest@0.2.0",
   "tests": [
     {
+      "entry": "frontend_tests.test_route_request_helpers_v1",
+      "expect": "pass",
+      "id": "frontend/route-request-helpers",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "frontend_tests.test_invoice_artifact_ids_v1",
+      "expect": "pass",
+      "id": "frontend/invoice-artifact-ids",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "frontend_tests.test_customer_account_ids_v1",
+      "expect": "pass",
+      "id": "frontend/customer-account-ids",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "frontend_tests.test_selection_snapshot_doc_v1",
+      "expect": "pass",
+      "id": "frontend/selection-snapshot-doc",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "frontend_tests.test_toggle_helpers_v1",
+      "expect": "pass",
+      "id": "frontend/toggle-helpers",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "frontend_tests.test_invoice_rate_reducer_v1",
+      "expect": "pass",
+      "id": "frontend/invoice-rate-reducer",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "frontend_tests.test_payment_amount_reducer_v1",
+      "expect": "pass",
+      "id": "frontend/payment-amount-reducer",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "frontend_tests.test_export_format_reducer_v1",
+      "expect": "pass",
+      "id": "frontend/export-format-reducer",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "frontend_tests.test_receivable_aging_reducer_v1",
+      "expect": "pass",
+      "id": "frontend/receivable-aging-reducer",
+      "world": "solve-pure"
+    },
+    {
       "entry": "unit.smoke.pass",
       "expect": "pass",
       "id": "smoke/pass",
-      "world": "run-os"
+      "world": "solve-pure"
     }
   ]
 }

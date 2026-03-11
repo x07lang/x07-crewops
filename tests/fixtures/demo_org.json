@@ -3418,6 +3418,1948 @@
       "priority": "all"
     }
   },
+  "price_books": {
+    "price_book_branch_north": {
+      "id": "price_book_branch_north",
+      "scope": "branch",
+      "branch_id": "branch_north",
+      "customer_id": null,
+      "name": "North Commercial Standard",
+      "currency": "USD",
+      "revision": 3,
+      "effective_at": "2026-03-01T00:00:00Z",
+      "tax_rule_id": "tax_rule_wa",
+      "billing_policy_id": "billing_policy_branch_north"
+    },
+    "price_book_branch_south": {
+      "id": "price_book_branch_south",
+      "scope": "branch",
+      "branch_id": "branch_south",
+      "customer_id": null,
+      "name": "South Commercial Standard",
+      "currency": "USD",
+      "revision": 2,
+      "effective_at": "2026-03-01T00:00:00Z",
+      "tax_rule_id": "tax_rule_or",
+      "billing_policy_id": "billing_policy_branch_south"
+    },
+    "price_book_customer_cust_018": {
+      "id": "price_book_customer_cust_018",
+      "scope": "customer",
+      "branch_id": "branch_south",
+      "customer_id": "cust_018",
+      "name": "Customer 18 Contract Override",
+      "currency": "USD",
+      "revision": 4,
+      "effective_at": "2026-03-05T00:00:00Z",
+      "tax_rule_id": "tax_rule_or",
+      "billing_policy_id": "billing_policy_customer_cust_018"
+    }
+  },
+  "price_book_items": {
+    "price_item_service_call_north": {
+      "id": "price_item_service_call_north",
+      "price_book_id": "price_book_branch_north",
+      "kind": "service_fee",
+      "code": "svc-call",
+      "label": "Standard service call",
+      "uom": "visit",
+      "unit_rate": 145.0,
+      "taxable": true
+    },
+    "price_item_service_call_south": {
+      "id": "price_item_service_call_south",
+      "price_book_id": "price_book_branch_south",
+      "kind": "service_fee",
+      "code": "svc-call",
+      "label": "Standard service call",
+      "uom": "visit",
+      "unit_rate": 135.0,
+      "taxable": true
+    },
+    "price_item_labor_standard_north": {
+      "id": "price_item_labor_standard_north",
+      "price_book_id": "price_book_branch_north",
+      "kind": "labor",
+      "code": "labor-std",
+      "label": "Standard labor",
+      "uom": "hour",
+      "unit_rate": 96.0,
+      "taxable": true
+    },
+    "price_item_labor_standard_south": {
+      "id": "price_item_labor_standard_south",
+      "price_book_id": "price_book_branch_south",
+      "kind": "labor",
+      "code": "labor-std",
+      "label": "Standard labor",
+      "uom": "hour",
+      "unit_rate": 92.0,
+      "taxable": true
+    },
+    "price_item_travel_north": {
+      "id": "price_item_travel_north",
+      "price_book_id": "price_book_branch_north",
+      "kind": "travel",
+      "code": "travel-a",
+      "label": "Zone A travel fee",
+      "uom": "visit",
+      "unit_rate": 28.0,
+      "taxable": true
+    },
+    "price_item_travel_south": {
+      "id": "price_item_travel_south",
+      "price_book_id": "price_book_branch_south",
+      "kind": "travel",
+      "code": "travel-a",
+      "label": "Zone A travel fee",
+      "uom": "visit",
+      "unit_rate": 24.0,
+      "taxable": true
+    }
+  },
+  "labor_rate_policies": {
+    "labor_policy_branch_north": {
+      "id": "labor_policy_branch_north",
+      "branch_id": "branch_north",
+      "default_category": "standard",
+      "hourly_rate": 96.0,
+      "overtime_hourly_rate": 132.0,
+      "minimum_minutes": 60
+    },
+    "labor_policy_branch_south": {
+      "id": "labor_policy_branch_south",
+      "branch_id": "branch_south",
+      "default_category": "standard",
+      "hourly_rate": 92.0,
+      "overtime_hourly_rate": 126.0,
+      "minimum_minutes": 60
+    }
+  },
+  "part_rate_policies": {
+    "part_rate_north_filter": {
+      "id": "part_rate_north_filter",
+      "branch_id": "branch_north",
+      "part_id": "part_filter_merv13",
+      "unit_rate": 26.0
+    },
+    "part_rate_north_belt": {
+      "id": "part_rate_north_belt",
+      "branch_id": "branch_north",
+      "part_id": "part_belt_a42",
+      "unit_rate": 21.0
+    },
+    "part_rate_north_cleaner": {
+      "id": "part_rate_north_cleaner",
+      "branch_id": "branch_north",
+      "part_id": "part_contact_cleaner",
+      "unit_rate": 12.5
+    },
+    "part_rate_south_filter": {
+      "id": "part_rate_south_filter",
+      "branch_id": "branch_south",
+      "part_id": "part_filter_merv13",
+      "unit_rate": 24.5
+    },
+    "part_rate_south_belt": {
+      "id": "part_rate_south_belt",
+      "branch_id": "branch_south",
+      "part_id": "part_belt_a42",
+      "unit_rate": 19.5
+    },
+    "part_rate_south_cleaner": {
+      "id": "part_rate_south_cleaner",
+      "branch_id": "branch_south",
+      "part_id": "part_contact_cleaner",
+      "unit_rate": 11.5
+    }
+  },
+  "billing_policies": {
+    "billing_policy_branch_north": {
+      "id": "billing_policy_branch_north",
+      "scope": "branch",
+      "branch_id": "branch_north",
+      "customer_id": null,
+      "default_labor_policy_id": "labor_policy_branch_north",
+      "default_price_book_id": "price_book_branch_north",
+      "minimum_charge": 145.0,
+      "travel_fee_behavior": "flat_per_visit",
+      "invoice_terms_days": 15,
+      "currency": "USD",
+      "auto_generate_invoice_on_approval": true
+    },
+    "billing_policy_branch_south": {
+      "id": "billing_policy_branch_south",
+      "scope": "branch",
+      "branch_id": "branch_south",
+      "customer_id": null,
+      "default_labor_policy_id": "labor_policy_branch_south",
+      "default_price_book_id": "price_book_branch_south",
+      "minimum_charge": 135.0,
+      "travel_fee_behavior": "flat_per_visit",
+      "invoice_terms_days": 21,
+      "currency": "USD",
+      "auto_generate_invoice_on_approval": true
+    },
+    "billing_policy_customer_cust_018": {
+      "id": "billing_policy_customer_cust_018",
+      "scope": "customer",
+      "branch_id": "branch_south",
+      "customer_id": "cust_018",
+      "default_labor_policy_id": "labor_policy_branch_south",
+      "default_price_book_id": "price_book_customer_cust_018",
+      "minimum_charge": 125.0,
+      "travel_fee_behavior": "waived",
+      "invoice_terms_days": 10,
+      "currency": "USD",
+      "auto_generate_invoice_on_approval": true
+    }
+  },
+  "tax_rules": {
+    "tax_rule_wa": {
+      "id": "tax_rule_wa",
+      "branch_id": "branch_north",
+      "label": "WA sales tax",
+      "rate_pct": 10.1,
+      "inclusive": false
+    },
+    "tax_rule_or": {
+      "id": "tax_rule_or",
+      "branch_id": "branch_south",
+      "label": "OR sales tax",
+      "rate_pct": 0.0,
+      "inclusive": false
+    }
+  },
+  "discount_rules": {
+    "discount_rule_loyalty": {
+      "id": "discount_rule_loyalty",
+      "kind": "percent",
+      "value": 5.0,
+      "label": "Loyalty discount"
+    },
+    "discount_rule_pm_bundle": {
+      "id": "discount_rule_pm_bundle",
+      "kind": "flat",
+      "value": 18.0,
+      "label": "Bundle credit"
+    },
+    "discount_rule_municipal": {
+      "id": "discount_rule_municipal",
+      "kind": "percent",
+      "value": 7.5,
+      "label": "Municipal services discount"
+    }
+  },
+  "invoices": {
+    "inv_001": {
+      "id": "inv_001",
+      "number": "INV-4001",
+      "status": "draft",
+      "revision": 1,
+      "lock_status": "editable",
+      "lock_reason": null,
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha",
+      "customer_id": "cust_013",
+      "currency": "USD",
+      "price_book_id": "price_book_branch_north",
+      "billing_policy_id": "billing_policy_branch_north",
+      "tax_rule_id": "tax_rule_wa",
+      "discount_rule_id": null,
+      "issue_date": "2026-03-15",
+      "due_date": "2026-03-30",
+      "sent_at": null,
+      "paid_at": null,
+      "voided_at": null,
+      "written_off_at": null,
+      "source_work_order_ids": [
+        "wo_013"
+      ],
+      "source_visit_ids": [
+        "visit_013"
+      ],
+      "memo": "Drafted from approved PM visit pending office review.",
+      "line_ids": [
+        "invoice_line_inv_001_service",
+        "invoice_line_inv_001_labor",
+        "invoice_line_inv_001_travel",
+        "invoice_line_inv_001_part_1"
+      ],
+      "adjustment_ids": [
+        "invoice_adjustment_inv_001_tax"
+      ],
+      "payment_ids": [],
+      "invoice_artifact_id": "invoice_artifact_inv_001",
+      "service_summary_artifact_id": "service_summary_inv_001",
+      "subtotal": 367.0,
+      "discount_total": 0.0,
+      "tax_total": 37.07,
+      "total": 404.07,
+      "paid_total": 0.0,
+      "balance_due": 404.07,
+      "aging_bucket": "current"
+    },
+    "inv_002": {
+      "id": "inv_002",
+      "number": "INV-4002",
+      "status": "pending_review",
+      "revision": 1,
+      "lock_status": "editable",
+      "lock_reason": null,
+      "branch_id": "branch_north",
+      "team_id": "team_north_beta",
+      "customer_id": "cust_014",
+      "currency": "USD",
+      "price_book_id": "price_book_branch_north",
+      "billing_policy_id": "billing_policy_branch_north",
+      "tax_rule_id": "tax_rule_wa",
+      "discount_rule_id": "discount_rule_pm_bundle",
+      "issue_date": "2026-03-16",
+      "due_date": "2026-03-31",
+      "sent_at": null,
+      "paid_at": null,
+      "voided_at": null,
+      "written_off_at": null,
+      "source_work_order_ids": [
+        "wo_014"
+      ],
+      "source_visit_ids": [
+        "visit_014"
+      ],
+      "memo": "Awaiting billing supervisor review after technician correction notes.",
+      "line_ids": [
+        "invoice_line_inv_002_service",
+        "invoice_line_inv_002_labor",
+        "invoice_line_inv_002_travel",
+        "invoice_line_inv_002_part_1"
+      ],
+      "adjustment_ids": [
+        "invoice_adjustment_inv_002_discount",
+        "invoice_adjustment_inv_002_tax"
+      ],
+      "payment_ids": [],
+      "invoice_artifact_id": "invoice_artifact_inv_002",
+      "service_summary_artifact_id": "service_summary_inv_002",
+      "subtotal": 410.0,
+      "discount_total": 18.0,
+      "tax_total": 39.59,
+      "total": 431.59,
+      "paid_total": 0.0,
+      "balance_due": 431.59,
+      "aging_bucket": "current"
+    },
+    "inv_003": {
+      "id": "inv_003",
+      "number": "INV-4003",
+      "status": "issued",
+      "revision": 1,
+      "lock_status": "revision_sensitive",
+      "lock_reason": null,
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma",
+      "customer_id": "cust_015",
+      "currency": "USD",
+      "price_book_id": "price_book_branch_south",
+      "billing_policy_id": "billing_policy_branch_south",
+      "tax_rule_id": "tax_rule_or",
+      "discount_rule_id": null,
+      "issue_date": "2026-03-10",
+      "due_date": "2026-03-25",
+      "sent_at": null,
+      "paid_at": null,
+      "voided_at": null,
+      "written_off_at": null,
+      "source_work_order_ids": [
+        "wo_015"
+      ],
+      "source_visit_ids": [
+        "visit_015"
+      ],
+      "memo": "Issued and ready to send to customer.",
+      "line_ids": [
+        "invoice_line_inv_003_service",
+        "invoice_line_inv_003_labor",
+        "invoice_line_inv_003_travel",
+        "invoice_line_inv_003_part_1"
+      ],
+      "adjustment_ids": [],
+      "payment_ids": [],
+      "invoice_artifact_id": "invoice_artifact_inv_003",
+      "service_summary_artifact_id": "service_summary_inv_003",
+      "subtotal": 392.0,
+      "discount_total": 0.0,
+      "tax_total": 0.0,
+      "total": 392.0,
+      "paid_total": 0.0,
+      "balance_due": 392.0,
+      "aging_bucket": "current"
+    },
+    "inv_004": {
+      "id": "inv_004",
+      "number": "INV-4004",
+      "status": "sent",
+      "revision": 1,
+      "lock_status": "revision_sensitive",
+      "lock_reason": null,
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma",
+      "customer_id": "cust_018",
+      "currency": "USD",
+      "price_book_id": "price_book_customer_cust_018",
+      "billing_policy_id": "billing_policy_customer_cust_018",
+      "tax_rule_id": "tax_rule_or",
+      "discount_rule_id": null,
+      "issue_date": "2026-03-13",
+      "due_date": "2026-03-23",
+      "sent_at": "2026-03-13T16:30:00Z",
+      "paid_at": null,
+      "voided_at": null,
+      "written_off_at": null,
+      "source_work_order_ids": [
+        "wo_018"
+      ],
+      "source_visit_ids": [
+        "visit_018"
+      ],
+      "memo": "Sent under contracted South branch customer override.",
+      "line_ids": [
+        "invoice_line_inv_004_service",
+        "invoice_line_inv_004_labor",
+        "invoice_line_inv_004_travel",
+        "invoice_line_inv_004_part_1"
+      ],
+      "adjustment_ids": [],
+      "payment_ids": [],
+      "invoice_artifact_id": "invoice_artifact_inv_004",
+      "service_summary_artifact_id": "service_summary_inv_004",
+      "subtotal": 280.0,
+      "discount_total": 0.0,
+      "tax_total": 0.0,
+      "total": 280.0,
+      "paid_total": 0.0,
+      "balance_due": 280.0,
+      "aging_bucket": "current"
+    },
+    "inv_005": {
+      "id": "inv_005",
+      "number": "INV-4005",
+      "status": "partially_paid",
+      "revision": 1,
+      "lock_status": "locked",
+      "lock_reason": null,
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha",
+      "customer_id": "cust_019",
+      "currency": "USD",
+      "price_book_id": "price_book_branch_north",
+      "billing_policy_id": "billing_policy_branch_north",
+      "tax_rule_id": "tax_rule_wa",
+      "discount_rule_id": "discount_rule_loyalty",
+      "issue_date": "2026-03-14",
+      "due_date": "2026-03-29",
+      "sent_at": "2026-03-14T18:00:00Z",
+      "paid_at": null,
+      "voided_at": null,
+      "written_off_at": null,
+      "source_work_order_ids": [
+        "wo_019"
+      ],
+      "source_visit_ids": [
+        "visit_019"
+      ],
+      "memo": "Customer submitted deposit; remainder still outstanding.",
+      "line_ids": [
+        "invoice_line_inv_005_service",
+        "invoice_line_inv_005_labor",
+        "invoice_line_inv_005_travel",
+        "invoice_line_inv_005_part_1"
+      ],
+      "adjustment_ids": [
+        "invoice_adjustment_inv_005_discount",
+        "invoice_adjustment_inv_005_tax"
+      ],
+      "payment_ids": [
+        "payment_005_a"
+      ],
+      "invoice_artifact_id": "invoice_artifact_inv_005",
+      "service_summary_artifact_id": "service_summary_inv_005",
+      "subtotal": 434.0,
+      "discount_total": 21.7,
+      "tax_total": 41.64,
+      "total": 453.94,
+      "paid_total": 220.0,
+      "balance_due": 233.94,
+      "aging_bucket": "1_30"
+    },
+    "inv_006": {
+      "id": "inv_006",
+      "number": "INV-4006",
+      "status": "paid",
+      "revision": 1,
+      "lock_status": "locked",
+      "lock_reason": null,
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma",
+      "customer_id": "cust_004",
+      "currency": "USD",
+      "price_book_id": "price_book_branch_south",
+      "billing_policy_id": "billing_policy_branch_south",
+      "tax_rule_id": "tax_rule_or",
+      "discount_rule_id": null,
+      "issue_date": "2026-03-12",
+      "due_date": "2026-03-27",
+      "sent_at": "2026-03-12T17:10:00Z",
+      "paid_at": "2026-03-17T14:45:00Z",
+      "voided_at": null,
+      "written_off_at": null,
+      "source_work_order_ids": [
+        "wo_024"
+      ],
+      "source_visit_ids": [
+        "visit_024"
+      ],
+      "memo": "Paid in full by branch procurement card.",
+      "line_ids": [
+        "invoice_line_inv_006_service",
+        "invoice_line_inv_006_labor",
+        "invoice_line_inv_006_travel",
+        "invoice_line_inv_006_part_1"
+      ],
+      "adjustment_ids": [],
+      "payment_ids": [
+        "payment_006_a"
+      ],
+      "invoice_artifact_id": "invoice_artifact_inv_006",
+      "service_summary_artifact_id": "service_summary_inv_006",
+      "subtotal": 367.5,
+      "discount_total": 0.0,
+      "tax_total": 0.0,
+      "total": 367.5,
+      "paid_total": 367.5,
+      "balance_due": 0.0,
+      "aging_bucket": "current"
+    },
+    "inv_007": {
+      "id": "inv_007",
+      "number": "INV-4007",
+      "status": "overdue",
+      "revision": 1,
+      "lock_status": "locked",
+      "lock_reason": null,
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha",
+      "customer_id": "cust_013",
+      "currency": "USD",
+      "price_book_id": "price_book_branch_north",
+      "billing_policy_id": "billing_policy_branch_north",
+      "tax_rule_id": "tax_rule_wa",
+      "discount_rule_id": null,
+      "issue_date": "2026-02-05",
+      "due_date": "2026-02-20",
+      "sent_at": "2026-02-05T15:30:00Z",
+      "paid_at": null,
+      "voided_at": null,
+      "written_off_at": null,
+      "source_work_order_ids": [
+        "wo_013",
+        "wo_019"
+      ],
+      "source_visit_ids": [
+        "visit_013",
+        "visit_019"
+      ],
+      "memo": "Past due balance driving the North branch aging bucket.",
+      "line_ids": [
+        "invoice_line_inv_007_service",
+        "invoice_line_inv_007_labor",
+        "invoice_line_inv_007_travel",
+        "invoice_line_inv_007_part_1",
+        "invoice_line_inv_007_part_2"
+      ],
+      "adjustment_ids": [
+        "invoice_adjustment_inv_007_tax"
+      ],
+      "payment_ids": [
+        "payment_007_a"
+      ],
+      "invoice_artifact_id": "invoice_artifact_inv_007",
+      "service_summary_artifact_id": "service_summary_inv_007",
+      "subtotal": 525.5,
+      "discount_total": 0.0,
+      "tax_total": 53.08,
+      "total": 578.58,
+      "paid_total": 90.0,
+      "balance_due": 488.58,
+      "aging_bucket": "31_60"
+    },
+    "inv_008": {
+      "id": "inv_008",
+      "number": "INV-4008",
+      "status": "voided",
+      "revision": 1,
+      "lock_status": "locked",
+      "lock_reason": null,
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma",
+      "customer_id": "cust_015",
+      "currency": "USD",
+      "price_book_id": "price_book_branch_south",
+      "billing_policy_id": "billing_policy_branch_south",
+      "tax_rule_id": "tax_rule_or",
+      "discount_rule_id": null,
+      "issue_date": "2026-02-18",
+      "due_date": "2026-03-04",
+      "sent_at": "2026-02-18T12:10:00Z",
+      "paid_at": null,
+      "voided_at": "2026-02-19T09:00:00Z",
+      "written_off_at": null,
+      "source_work_order_ids": [
+        "wo_015"
+      ],
+      "source_visit_ids": [
+        "visit_015"
+      ],
+      "memo": "Voided after duplicate issue and reopened under a corrected draft.",
+      "line_ids": [
+        "invoice_line_inv_008_service",
+        "invoice_line_inv_008_labor",
+        "invoice_line_inv_008_travel"
+      ],
+      "adjustment_ids": [
+        "invoice_adjustment_inv_008_credit"
+      ],
+      "payment_ids": [],
+      "invoice_artifact_id": "invoice_artifact_inv_008",
+      "service_summary_artifact_id": "service_summary_inv_008",
+      "subtotal": 251.0,
+      "discount_total": 24.0,
+      "tax_total": 0.0,
+      "total": 227.0,
+      "paid_total": 0.0,
+      "balance_due": 227.0,
+      "aging_bucket": "current"
+    },
+    "inv_009": {
+      "id": "inv_009",
+      "number": "INV-4009",
+      "status": "written_off",
+      "revision": 1,
+      "lock_status": "locked",
+      "lock_reason": null,
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma",
+      "customer_id": "cust_004",
+      "currency": "USD",
+      "price_book_id": "price_book_branch_south",
+      "billing_policy_id": "billing_policy_branch_south",
+      "tax_rule_id": "tax_rule_or",
+      "discount_rule_id": null,
+      "issue_date": "2026-01-10",
+      "due_date": "2026-01-31",
+      "sent_at": "2026-01-10T11:20:00Z",
+      "paid_at": null,
+      "voided_at": null,
+      "written_off_at": "2026-03-01T08:30:00Z",
+      "source_work_order_ids": [
+        "wo_024"
+      ],
+      "source_visit_ids": [
+        "visit_024"
+      ],
+      "memo": "Legacy balance written off after approved service credit.",
+      "line_ids": [
+        "invoice_line_inv_009_service",
+        "invoice_line_inv_009_labor",
+        "invoice_line_inv_009_travel",
+        "invoice_line_inv_009_part_1"
+      ],
+      "adjustment_ids": [],
+      "payment_ids": [],
+      "invoice_artifact_id": "invoice_artifact_inv_009",
+      "service_summary_artifact_id": "service_summary_inv_009",
+      "subtotal": 316.5,
+      "discount_total": 0.0,
+      "tax_total": 0.0,
+      "total": 316.5,
+      "paid_total": 0.0,
+      "balance_due": 316.5,
+      "aging_bucket": "61_plus"
+    }
+  },
+  "invoice_lines": {
+    "invoice_line_inv_001_service": {
+      "id": "invoice_line_inv_001_service",
+      "invoice_id": "inv_001",
+      "kind": "service_fee",
+      "description": "Standard service call",
+      "quantity": 1.0,
+      "unit_rate": 145.0,
+      "amount": 145.0,
+      "taxable": true,
+      "source_work_order_id": "wo_013",
+      "source_visit_id": "visit_013"
+    },
+    "invoice_line_inv_001_labor": {
+      "id": "invoice_line_inv_001_labor",
+      "invoice_id": "inv_001",
+      "kind": "labor",
+      "description": "Standard labor",
+      "quantity": 1.75,
+      "unit_rate": 96.0,
+      "amount": 168.0,
+      "taxable": true,
+      "source_work_order_id": "wo_013",
+      "source_visit_id": "visit_013"
+    },
+    "invoice_line_inv_001_travel": {
+      "id": "invoice_line_inv_001_travel",
+      "invoice_id": "inv_001",
+      "kind": "travel",
+      "description": "Zone A travel fee",
+      "quantity": 1.0,
+      "unit_rate": 28.0,
+      "amount": 28.0,
+      "taxable": true,
+      "source_work_order_id": "wo_013",
+      "source_visit_id": "visit_013"
+    },
+    "invoice_line_inv_001_part_1": {
+      "id": "invoice_line_inv_001_part_1",
+      "invoice_id": "inv_001",
+      "kind": "part",
+      "description": "MERV 13 Filter",
+      "quantity": 1.0,
+      "unit_rate": 26.0,
+      "amount": 26.0,
+      "taxable": true,
+      "source_work_order_id": "wo_013",
+      "source_visit_id": "visit_013"
+    },
+    "invoice_line_inv_002_service": {
+      "id": "invoice_line_inv_002_service",
+      "invoice_id": "inv_002",
+      "kind": "service_fee",
+      "description": "Standard service call",
+      "quantity": 1.0,
+      "unit_rate": 145.0,
+      "amount": 145.0,
+      "taxable": true,
+      "source_work_order_id": "wo_014",
+      "source_visit_id": "visit_014"
+    },
+    "invoice_line_inv_002_labor": {
+      "id": "invoice_line_inv_002_labor",
+      "invoice_id": "inv_002",
+      "kind": "labor",
+      "description": "Standard labor",
+      "quantity": 2.25,
+      "unit_rate": 96.0,
+      "amount": 216.0,
+      "taxable": true,
+      "source_work_order_id": "wo_014",
+      "source_visit_id": "visit_014"
+    },
+    "invoice_line_inv_002_travel": {
+      "id": "invoice_line_inv_002_travel",
+      "invoice_id": "inv_002",
+      "kind": "travel",
+      "description": "Zone A travel fee",
+      "quantity": 1.0,
+      "unit_rate": 28.0,
+      "amount": 28.0,
+      "taxable": true,
+      "source_work_order_id": "wo_014",
+      "source_visit_id": "visit_014"
+    },
+    "invoice_line_inv_002_part_1": {
+      "id": "invoice_line_inv_002_part_1",
+      "invoice_id": "inv_002",
+      "kind": "part",
+      "description": "Drive Belt A42",
+      "quantity": 1.0,
+      "unit_rate": 21.0,
+      "amount": 21.0,
+      "taxable": true,
+      "source_work_order_id": "wo_014",
+      "source_visit_id": "visit_014"
+    },
+    "invoice_line_inv_003_service": {
+      "id": "invoice_line_inv_003_service",
+      "invoice_id": "inv_003",
+      "kind": "service_fee",
+      "description": "Standard service call",
+      "quantity": 1.0,
+      "unit_rate": 135.0,
+      "amount": 135.0,
+      "taxable": true,
+      "source_work_order_id": "wo_015",
+      "source_visit_id": "visit_015"
+    },
+    "invoice_line_inv_003_labor": {
+      "id": "invoice_line_inv_003_labor",
+      "invoice_id": "inv_003",
+      "kind": "labor",
+      "description": "Standard labor",
+      "quantity": 2.0,
+      "unit_rate": 92.0,
+      "amount": 184.0,
+      "taxable": true,
+      "source_work_order_id": "wo_015",
+      "source_visit_id": "visit_015"
+    },
+    "invoice_line_inv_003_travel": {
+      "id": "invoice_line_inv_003_travel",
+      "invoice_id": "inv_003",
+      "kind": "travel",
+      "description": "Zone A travel fee",
+      "quantity": 1.0,
+      "unit_rate": 24.0,
+      "amount": 24.0,
+      "taxable": true,
+      "source_work_order_id": "wo_015",
+      "source_visit_id": "visit_015"
+    },
+    "invoice_line_inv_003_part_1": {
+      "id": "invoice_line_inv_003_part_1",
+      "invoice_id": "inv_003",
+      "kind": "part",
+      "description": "MERV 13 Filter",
+      "quantity": 2.0,
+      "unit_rate": 24.5,
+      "amount": 49.0,
+      "taxable": true,
+      "source_work_order_id": "wo_015",
+      "source_visit_id": "visit_015"
+    },
+    "invoice_line_inv_004_service": {
+      "id": "invoice_line_inv_004_service",
+      "invoice_id": "inv_004",
+      "kind": "service_fee",
+      "description": "Standard service call",
+      "quantity": 1.0,
+      "unit_rate": 125.0,
+      "amount": 125.0,
+      "taxable": true,
+      "source_work_order_id": "wo_018",
+      "source_visit_id": "visit_018"
+    },
+    "invoice_line_inv_004_labor": {
+      "id": "invoice_line_inv_004_labor",
+      "invoice_id": "inv_004",
+      "kind": "labor",
+      "description": "Standard labor",
+      "quantity": 1.5,
+      "unit_rate": 88.0,
+      "amount": 132.0,
+      "taxable": true,
+      "source_work_order_id": "wo_018",
+      "source_visit_id": "visit_018"
+    },
+    "invoice_line_inv_004_travel": {
+      "id": "invoice_line_inv_004_travel",
+      "invoice_id": "inv_004",
+      "kind": "travel",
+      "description": "Zone A travel fee",
+      "quantity": 1.0,
+      "unit_rate": 0.0,
+      "amount": 0.0,
+      "taxable": true,
+      "source_work_order_id": "wo_018",
+      "source_visit_id": "visit_018"
+    },
+    "invoice_line_inv_004_part_1": {
+      "id": "invoice_line_inv_004_part_1",
+      "invoice_id": "inv_004",
+      "kind": "part",
+      "description": "MERV 13 Filter",
+      "quantity": 1.0,
+      "unit_rate": 23.0,
+      "amount": 23.0,
+      "taxable": true,
+      "source_work_order_id": "wo_018",
+      "source_visit_id": "visit_018"
+    },
+    "invoice_line_inv_005_service": {
+      "id": "invoice_line_inv_005_service",
+      "invoice_id": "inv_005",
+      "kind": "service_fee",
+      "description": "Standard service call",
+      "quantity": 1.0,
+      "unit_rate": 145.0,
+      "amount": 145.0,
+      "taxable": true,
+      "source_work_order_id": "wo_019",
+      "source_visit_id": "visit_019"
+    },
+    "invoice_line_inv_005_labor": {
+      "id": "invoice_line_inv_005_labor",
+      "invoice_id": "inv_005",
+      "kind": "labor",
+      "description": "Standard labor",
+      "quantity": 2.5,
+      "unit_rate": 96.0,
+      "amount": 240.0,
+      "taxable": true,
+      "source_work_order_id": "wo_019",
+      "source_visit_id": "visit_019"
+    },
+    "invoice_line_inv_005_travel": {
+      "id": "invoice_line_inv_005_travel",
+      "invoice_id": "inv_005",
+      "kind": "travel",
+      "description": "Zone A travel fee",
+      "quantity": 1.0,
+      "unit_rate": 28.0,
+      "amount": 28.0,
+      "taxable": true,
+      "source_work_order_id": "wo_019",
+      "source_visit_id": "visit_019"
+    },
+    "invoice_line_inv_005_part_1": {
+      "id": "invoice_line_inv_005_part_1",
+      "invoice_id": "inv_005",
+      "kind": "part",
+      "description": "Drive Belt A42",
+      "quantity": 1.0,
+      "unit_rate": 21.0,
+      "amount": 21.0,
+      "taxable": true,
+      "source_work_order_id": "wo_019",
+      "source_visit_id": "visit_019"
+    },
+    "invoice_line_inv_006_service": {
+      "id": "invoice_line_inv_006_service",
+      "invoice_id": "inv_006",
+      "kind": "service_fee",
+      "description": "Standard service call",
+      "quantity": 1.0,
+      "unit_rate": 135.0,
+      "amount": 135.0,
+      "taxable": true,
+      "source_work_order_id": "wo_024",
+      "source_visit_id": "visit_024"
+    },
+    "invoice_line_inv_006_labor": {
+      "id": "invoice_line_inv_006_labor",
+      "invoice_id": "inv_006",
+      "kind": "labor",
+      "description": "Standard labor",
+      "quantity": 2.0,
+      "unit_rate": 92.0,
+      "amount": 184.0,
+      "taxable": true,
+      "source_work_order_id": "wo_024",
+      "source_visit_id": "visit_024"
+    },
+    "invoice_line_inv_006_travel": {
+      "id": "invoice_line_inv_006_travel",
+      "invoice_id": "inv_006",
+      "kind": "travel",
+      "description": "Zone A travel fee",
+      "quantity": 1.0,
+      "unit_rate": 24.0,
+      "amount": 24.0,
+      "taxable": true,
+      "source_work_order_id": "wo_024",
+      "source_visit_id": "visit_024"
+    },
+    "invoice_line_inv_006_part_1": {
+      "id": "invoice_line_inv_006_part_1",
+      "invoice_id": "inv_006",
+      "kind": "part",
+      "description": "MERV 13 Filter",
+      "quantity": 1.0,
+      "unit_rate": 24.5,
+      "amount": 24.5,
+      "taxable": true,
+      "source_work_order_id": "wo_024",
+      "source_visit_id": "visit_024"
+    },
+    "invoice_line_inv_007_service": {
+      "id": "invoice_line_inv_007_service",
+      "invoice_id": "inv_007",
+      "kind": "service_fee",
+      "description": "Standard service call",
+      "quantity": 1.0,
+      "unit_rate": 145.0,
+      "amount": 145.0,
+      "taxable": true,
+      "source_work_order_id": "wo_013",
+      "source_visit_id": "visit_013"
+    },
+    "invoice_line_inv_007_labor": {
+      "id": "invoice_line_inv_007_labor",
+      "invoice_id": "inv_007",
+      "kind": "labor",
+      "description": "Standard labor",
+      "quantity": 3.0,
+      "unit_rate": 96.0,
+      "amount": 288.0,
+      "taxable": true,
+      "source_work_order_id": "wo_013",
+      "source_visit_id": "visit_013"
+    },
+    "invoice_line_inv_007_travel": {
+      "id": "invoice_line_inv_007_travel",
+      "invoice_id": "inv_007",
+      "kind": "travel",
+      "description": "Zone A travel fee",
+      "quantity": 1.0,
+      "unit_rate": 28.0,
+      "amount": 28.0,
+      "taxable": true,
+      "source_work_order_id": "wo_013",
+      "source_visit_id": "visit_013"
+    },
+    "invoice_line_inv_007_part_1": {
+      "id": "invoice_line_inv_007_part_1",
+      "invoice_id": "inv_007",
+      "kind": "part",
+      "description": "MERV 13 Filter",
+      "quantity": 2.0,
+      "unit_rate": 26.0,
+      "amount": 52.0,
+      "taxable": true,
+      "source_work_order_id": "wo_013",
+      "source_visit_id": "visit_013"
+    },
+    "invoice_line_inv_007_part_2": {
+      "id": "invoice_line_inv_007_part_2",
+      "invoice_id": "inv_007",
+      "kind": "part",
+      "description": "Contact Cleaner",
+      "quantity": 1.0,
+      "unit_rate": 12.5,
+      "amount": 12.5,
+      "taxable": true,
+      "source_work_order_id": "wo_013",
+      "source_visit_id": "visit_013"
+    },
+    "invoice_line_inv_008_service": {
+      "id": "invoice_line_inv_008_service",
+      "invoice_id": "inv_008",
+      "kind": "service_fee",
+      "description": "Standard service call",
+      "quantity": 1.0,
+      "unit_rate": 135.0,
+      "amount": 135.0,
+      "taxable": true,
+      "source_work_order_id": "wo_015",
+      "source_visit_id": "visit_015"
+    },
+    "invoice_line_inv_008_labor": {
+      "id": "invoice_line_inv_008_labor",
+      "invoice_id": "inv_008",
+      "kind": "labor",
+      "description": "Standard labor",
+      "quantity": 1.0,
+      "unit_rate": 92.0,
+      "amount": 92.0,
+      "taxable": true,
+      "source_work_order_id": "wo_015",
+      "source_visit_id": "visit_015"
+    },
+    "invoice_line_inv_008_travel": {
+      "id": "invoice_line_inv_008_travel",
+      "invoice_id": "inv_008",
+      "kind": "travel",
+      "description": "Zone A travel fee",
+      "quantity": 1.0,
+      "unit_rate": 24.0,
+      "amount": 24.0,
+      "taxable": true,
+      "source_work_order_id": "wo_015",
+      "source_visit_id": "visit_015"
+    },
+    "invoice_line_inv_009_service": {
+      "id": "invoice_line_inv_009_service",
+      "invoice_id": "inv_009",
+      "kind": "service_fee",
+      "description": "Standard service call",
+      "quantity": 1.0,
+      "unit_rate": 135.0,
+      "amount": 135.0,
+      "taxable": true,
+      "source_work_order_id": "wo_024",
+      "source_visit_id": "visit_024"
+    },
+    "invoice_line_inv_009_labor": {
+      "id": "invoice_line_inv_009_labor",
+      "invoice_id": "inv_009",
+      "kind": "labor",
+      "description": "Standard labor",
+      "quantity": 1.5,
+      "unit_rate": 92.0,
+      "amount": 138.0,
+      "taxable": true,
+      "source_work_order_id": "wo_024",
+      "source_visit_id": "visit_024"
+    },
+    "invoice_line_inv_009_travel": {
+      "id": "invoice_line_inv_009_travel",
+      "invoice_id": "inv_009",
+      "kind": "travel",
+      "description": "Zone A travel fee",
+      "quantity": 1.0,
+      "unit_rate": 24.0,
+      "amount": 24.0,
+      "taxable": true,
+      "source_work_order_id": "wo_024",
+      "source_visit_id": "visit_024"
+    },
+    "invoice_line_inv_009_part_1": {
+      "id": "invoice_line_inv_009_part_1",
+      "invoice_id": "inv_009",
+      "kind": "part",
+      "description": "Drive Belt A42",
+      "quantity": 1.0,
+      "unit_rate": 19.5,
+      "amount": 19.5,
+      "taxable": true,
+      "source_work_order_id": "wo_024",
+      "source_visit_id": "visit_024"
+    }
+  },
+  "invoice_adjustments": {
+    "invoice_adjustment_inv_001_tax": {
+      "id": "invoice_adjustment_inv_001_tax",
+      "invoice_id": "inv_001",
+      "kind": "tax",
+      "label": "WA sales tax",
+      "amount": 37.07
+    },
+    "invoice_adjustment_inv_002_discount": {
+      "id": "invoice_adjustment_inv_002_discount",
+      "invoice_id": "inv_002",
+      "kind": "discount",
+      "label": "Bundle credit",
+      "amount": 18.0
+    },
+    "invoice_adjustment_inv_002_tax": {
+      "id": "invoice_adjustment_inv_002_tax",
+      "invoice_id": "inv_002",
+      "kind": "tax",
+      "label": "WA sales tax",
+      "amount": 39.59
+    },
+    "invoice_adjustment_inv_005_discount": {
+      "id": "invoice_adjustment_inv_005_discount",
+      "invoice_id": "inv_005",
+      "kind": "discount",
+      "label": "Loyalty discount",
+      "amount": 21.7
+    },
+    "invoice_adjustment_inv_005_tax": {
+      "id": "invoice_adjustment_inv_005_tax",
+      "invoice_id": "inv_005",
+      "kind": "tax",
+      "label": "WA sales tax",
+      "amount": 41.64
+    },
+    "invoice_adjustment_inv_007_tax": {
+      "id": "invoice_adjustment_inv_007_tax",
+      "invoice_id": "inv_007",
+      "kind": "tax",
+      "label": "WA sales tax",
+      "amount": 53.08
+    },
+    "invoice_adjustment_inv_008_credit": {
+      "id": "invoice_adjustment_inv_008_credit",
+      "invoice_id": "inv_008",
+      "kind": "credit",
+      "label": "Service recovery credit",
+      "amount": 24.0
+    }
+  },
+  "invoice_artifacts": {
+    "invoice_artifact_inv_001": {
+      "id": "invoice_artifact_inv_001",
+      "invoice_id": "inv_001",
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv-4001.pdf",
+      "download_path": "/artifacts/invoices/inv_001.pdf",
+      "render_input_hash": "hash_inv_001",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "invoice_artifact_inv_002": {
+      "id": "invoice_artifact_inv_002",
+      "invoice_id": "inv_002",
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv-4002.pdf",
+      "download_path": "/artifacts/invoices/inv_002.pdf",
+      "render_input_hash": "hash_inv_002",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "invoice_artifact_inv_003": {
+      "id": "invoice_artifact_inv_003",
+      "invoice_id": "inv_003",
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv-4003.pdf",
+      "download_path": "/artifacts/invoices/inv_003.pdf",
+      "render_input_hash": "hash_inv_003",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "invoice_artifact_inv_004": {
+      "id": "invoice_artifact_inv_004",
+      "invoice_id": "inv_004",
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv-4004.pdf",
+      "download_path": "/artifacts/invoices/inv_004.pdf",
+      "render_input_hash": "hash_inv_004",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "invoice_artifact_inv_005": {
+      "id": "invoice_artifact_inv_005",
+      "invoice_id": "inv_005",
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv-4005.pdf",
+      "download_path": "/artifacts/invoices/inv_005.pdf",
+      "render_input_hash": "hash_inv_005",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "invoice_artifact_inv_006": {
+      "id": "invoice_artifact_inv_006",
+      "invoice_id": "inv_006",
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv-4006.pdf",
+      "download_path": "/artifacts/invoices/inv_006.pdf",
+      "render_input_hash": "hash_inv_006",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "invoice_artifact_inv_007": {
+      "id": "invoice_artifact_inv_007",
+      "invoice_id": "inv_007",
+      "status": "failed",
+      "format": "pdf",
+      "file_name": "inv-4007.pdf",
+      "download_path": "/artifacts/invoices/inv_007.pdf",
+      "render_input_hash": "hash_inv_007",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": true,
+      "error_code": "render_template_missing",
+      "error_message": "Invoice PDF render template was unavailable."
+    },
+    "invoice_artifact_inv_008": {
+      "id": "invoice_artifact_inv_008",
+      "invoice_id": "inv_008",
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv-4008.pdf",
+      "download_path": "/artifacts/invoices/inv_008.pdf",
+      "render_input_hash": "hash_inv_008",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "invoice_artifact_inv_009": {
+      "id": "invoice_artifact_inv_009",
+      "invoice_id": "inv_009",
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv-4009.pdf",
+      "download_path": "/artifacts/invoices/inv_009.pdf",
+      "render_input_hash": "hash_inv_009",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    }
+  },
+  "service_summary_artifacts": {
+    "service_summary_inv_001": {
+      "id": "service_summary_inv_001",
+      "invoice_id": "inv_001",
+      "work_order_ids": [
+        "wo_013"
+      ],
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv_001_service_summary.pdf",
+      "download_path": "/artifacts/service-summaries/inv_001.pdf",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "service_summary_inv_002": {
+      "id": "service_summary_inv_002",
+      "invoice_id": "inv_002",
+      "work_order_ids": [
+        "wo_014"
+      ],
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv_002_service_summary.pdf",
+      "download_path": "/artifacts/service-summaries/inv_002.pdf",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "service_summary_inv_003": {
+      "id": "service_summary_inv_003",
+      "invoice_id": "inv_003",
+      "work_order_ids": [
+        "wo_015"
+      ],
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv_003_service_summary.pdf",
+      "download_path": "/artifacts/service-summaries/inv_003.pdf",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "service_summary_inv_004": {
+      "id": "service_summary_inv_004",
+      "invoice_id": "inv_004",
+      "work_order_ids": [
+        "wo_018"
+      ],
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv_004_service_summary.pdf",
+      "download_path": "/artifacts/service-summaries/inv_004.pdf",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "service_summary_inv_005": {
+      "id": "service_summary_inv_005",
+      "invoice_id": "inv_005",
+      "work_order_ids": [
+        "wo_019"
+      ],
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv_005_service_summary.pdf",
+      "download_path": "/artifacts/service-summaries/inv_005.pdf",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "service_summary_inv_006": {
+      "id": "service_summary_inv_006",
+      "invoice_id": "inv_006",
+      "work_order_ids": [
+        "wo_024"
+      ],
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv_006_service_summary.pdf",
+      "download_path": "/artifacts/service-summaries/inv_006.pdf",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "service_summary_inv_007": {
+      "id": "service_summary_inv_007",
+      "invoice_id": "inv_007",
+      "work_order_ids": [
+        "wo_013",
+        "wo_019"
+      ],
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv_007_service_summary.pdf",
+      "download_path": "/artifacts/service-summaries/inv_007.pdf",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "service_summary_inv_008": {
+      "id": "service_summary_inv_008",
+      "invoice_id": "inv_008",
+      "work_order_ids": [
+        "wo_015"
+      ],
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv_008_service_summary.pdf",
+      "download_path": "/artifacts/service-summaries/inv_008.pdf",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "service_summary_inv_009": {
+      "id": "service_summary_inv_009",
+      "invoice_id": "inv_009",
+      "work_order_ids": [
+        "wo_024"
+      ],
+      "status": "ready",
+      "format": "pdf",
+      "file_name": "inv_009_service_summary.pdf",
+      "download_path": "/artifacts/service-summaries/inv_009.pdf",
+      "generated_at": "2026-03-11T00:00:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    }
+  },
+  "payment_records": {
+    "payment_005_a": {
+      "id": "payment_005_a",
+      "invoice_id": "inv_005",
+      "customer_id": "cust_019",
+      "branch_id": "branch_north",
+      "amount": 220.0,
+      "applied_amount": 220.0,
+      "unapplied_amount": 0.0,
+      "method": "ach",
+      "received_at": "2026-03-16T14:10:00Z",
+      "external_ref": "ACH-55201",
+      "status": "posted",
+      "reversal_of": null
+    },
+    "payment_006_a": {
+      "id": "payment_006_a",
+      "invoice_id": "inv_006",
+      "customer_id": "cust_004",
+      "branch_id": "branch_south",
+      "amount": 367.5,
+      "applied_amount": 367.5,
+      "unapplied_amount": 0.0,
+      "method": "card",
+      "received_at": "2026-03-17T14:45:00Z",
+      "external_ref": "CARD-99021",
+      "status": "posted",
+      "reversal_of": null
+    },
+    "payment_007_a": {
+      "id": "payment_007_a",
+      "invoice_id": "inv_007",
+      "customer_id": "cust_013",
+      "branch_id": "branch_north",
+      "amount": 90.0,
+      "applied_amount": 90.0,
+      "unapplied_amount": 0.0,
+      "method": "check",
+      "received_at": "2026-02-10T17:00:00Z",
+      "external_ref": "CHK-4420",
+      "status": "posted",
+      "reversal_of": null
+    }
+  },
+  "payment_allocations": {
+    "payment_allocation_payment_005_a": {
+      "id": "payment_allocation_payment_005_a",
+      "payment_id": "payment_005_a",
+      "invoice_id": "inv_005",
+      "amount": 220.0,
+      "applied_at": "2026-03-16T14:10:00Z"
+    },
+    "payment_allocation_payment_006_a": {
+      "id": "payment_allocation_payment_006_a",
+      "payment_id": "payment_006_a",
+      "invoice_id": "inv_006",
+      "amount": 367.5,
+      "applied_at": "2026-03-17T14:45:00Z"
+    },
+    "payment_allocation_payment_007_a": {
+      "id": "payment_allocation_payment_007_a",
+      "payment_id": "payment_007_a",
+      "invoice_id": "inv_007",
+      "amount": 90.0,
+      "applied_at": "2026-02-10T17:00:00Z"
+    }
+  },
+  "customer_statements": {
+    "statement_cust_013": {
+      "id": "statement_cust_013",
+      "customer_id": "cust_013",
+      "currency": "USD",
+      "statement_date": "2026-03-11T00:00:00Z",
+      "invoice_ids": [
+        "inv_001",
+        "inv_007"
+      ],
+      "payment_ids": [
+        "payment_007_a"
+      ],
+      "current_balance": 892.65,
+      "overdue_balance": 488.58,
+      "aging_buckets": {
+        "current": 404.07,
+        "1_30": 0.0,
+        "31_60": 488.58,
+        "61_plus": 0.0
+      }
+    },
+    "statement_cust_014": {
+      "id": "statement_cust_014",
+      "customer_id": "cust_014",
+      "currency": "USD",
+      "statement_date": "2026-03-11T00:00:00Z",
+      "invoice_ids": [
+        "inv_002"
+      ],
+      "payment_ids": [],
+      "current_balance": 431.59,
+      "overdue_balance": 0.0,
+      "aging_buckets": {
+        "current": 431.59,
+        "1_30": 0.0,
+        "31_60": 0.0,
+        "61_plus": 0.0
+      }
+    },
+    "statement_cust_015": {
+      "id": "statement_cust_015",
+      "customer_id": "cust_015",
+      "currency": "USD",
+      "statement_date": "2026-03-11T00:00:00Z",
+      "invoice_ids": [
+        "inv_003",
+        "inv_008"
+      ],
+      "payment_ids": [],
+      "current_balance": 619.0,
+      "overdue_balance": 0.0,
+      "aging_buckets": {
+        "current": 619.0,
+        "1_30": 0.0,
+        "31_60": 0.0,
+        "61_plus": 0.0
+      }
+    },
+    "statement_cust_018": {
+      "id": "statement_cust_018",
+      "customer_id": "cust_018",
+      "currency": "USD",
+      "statement_date": "2026-03-11T00:00:00Z",
+      "invoice_ids": [
+        "inv_004"
+      ],
+      "payment_ids": [],
+      "current_balance": 280.0,
+      "overdue_balance": 0.0,
+      "aging_buckets": {
+        "current": 280.0,
+        "1_30": 0.0,
+        "31_60": 0.0,
+        "61_plus": 0.0
+      }
+    },
+    "statement_cust_019": {
+      "id": "statement_cust_019",
+      "customer_id": "cust_019",
+      "currency": "USD",
+      "statement_date": "2026-03-11T00:00:00Z",
+      "invoice_ids": [
+        "inv_005"
+      ],
+      "payment_ids": [
+        "payment_005_a"
+      ],
+      "current_balance": 233.94,
+      "overdue_balance": 233.94,
+      "aging_buckets": {
+        "current": 0.0,
+        "1_30": 233.94,
+        "31_60": 0.0,
+        "61_plus": 0.0
+      }
+    },
+    "statement_cust_004": {
+      "id": "statement_cust_004",
+      "customer_id": "cust_004",
+      "currency": "USD",
+      "statement_date": "2026-03-11T00:00:00Z",
+      "invoice_ids": [
+        "inv_006",
+        "inv_009"
+      ],
+      "payment_ids": [
+        "payment_006_a"
+      ],
+      "current_balance": 316.5,
+      "overdue_balance": 316.5,
+      "aging_buckets": {
+        "current": 0.0,
+        "1_30": 0.0,
+        "31_60": 0.0,
+        "61_plus": 316.5
+      }
+    }
+  },
+  "receivable_summaries": {
+    "receivable_branch_north": {
+      "id": "receivable_branch_north",
+      "scope": "branch",
+      "branch_id": "branch_north",
+      "customer_id": null,
+      "open_invoice_count": 4,
+      "overdue_invoice_count": 1,
+      "current_balance": 1558.18,
+      "overdue_balance": 722.52
+    },
+    "receivable_branch_south": {
+      "id": "receivable_branch_south",
+      "scope": "branch",
+      "branch_id": "branch_south",
+      "customer_id": null,
+      "open_invoice_count": 4,
+      "overdue_invoice_count": 1,
+      "current_balance": 1215.5,
+      "overdue_balance": 316.5
+    },
+    "receivable_cust_013": {
+      "id": "receivable_cust_013",
+      "scope": "customer",
+      "branch_id": "branch_north",
+      "customer_id": "cust_013",
+      "open_invoice_count": 2,
+      "overdue_invoice_count": 1,
+      "current_balance": 892.65,
+      "overdue_balance": 488.58
+    },
+    "receivable_cust_014": {
+      "id": "receivable_cust_014",
+      "scope": "customer",
+      "branch_id": "branch_south",
+      "customer_id": "cust_014",
+      "open_invoice_count": 1,
+      "overdue_invoice_count": 0,
+      "current_balance": 431.59,
+      "overdue_balance": 0.0
+    },
+    "receivable_cust_015": {
+      "id": "receivable_cust_015",
+      "scope": "customer",
+      "branch_id": "branch_north",
+      "customer_id": "cust_015",
+      "open_invoice_count": 2,
+      "overdue_invoice_count": 0,
+      "current_balance": 619.0,
+      "overdue_balance": 0.0
+    },
+    "receivable_cust_018": {
+      "id": "receivable_cust_018",
+      "scope": "customer",
+      "branch_id": "branch_south",
+      "customer_id": "cust_018",
+      "open_invoice_count": 1,
+      "overdue_invoice_count": 0,
+      "current_balance": 280.0,
+      "overdue_balance": 0.0
+    },
+    "receivable_cust_019": {
+      "id": "receivable_cust_019",
+      "scope": "customer",
+      "branch_id": "branch_north",
+      "customer_id": "cust_019",
+      "open_invoice_count": 1,
+      "overdue_invoice_count": 1,
+      "current_balance": 233.94,
+      "overdue_balance": 233.94
+    },
+    "receivable_cust_004": {
+      "id": "receivable_cust_004",
+      "scope": "customer",
+      "branch_id": "branch_south",
+      "customer_id": "cust_004",
+      "open_invoice_count": 2,
+      "overdue_invoice_count": 1,
+      "current_balance": 316.5,
+      "overdue_balance": 316.5
+    }
+  },
+  "export_jobs": {
+    "export_job_001": {
+      "id": "export_job_001",
+      "kind": "invoices",
+      "format": "csv",
+      "status": "completed",
+      "requested_by_user_id": "user_manager_jonas",
+      "requested_at": "2026-03-11T08:15:00Z",
+      "completed_at": "2026-03-11T08:16:00Z",
+      "filters": {
+        "branch_id": "branch_north",
+        "status": "open",
+        "date_from": "2026-03-01",
+        "date_to": "2026-03-31"
+      },
+      "artifact_path": "/exports/export_job_001.csv",
+      "record_count": 5,
+      "data_revision": "finance_rev_2026_03_11_001",
+      "retry_count": 0
+    },
+    "export_job_002": {
+      "id": "export_job_002",
+      "kind": "receivables",
+      "format": "json",
+      "status": "failed",
+      "requested_by_user_id": "user_manager_jonas",
+      "requested_at": "2026-03-11T08:30:00Z",
+      "completed_at": "2026-03-11T08:31:00Z",
+      "filters": {
+        "branch_id": "branch_south",
+        "aging_bucket": "31_60",
+        "status": "open"
+      },
+      "artifact_path": null,
+      "record_count": 0,
+      "data_revision": "finance_rev_2026_03_11_001",
+      "retry_count": 1,
+      "error_code": "export_render_failed",
+      "error_message": "CSV writer exhausted the attachment manifest buffer."
+    },
+    "export_job_003": {
+      "id": "export_job_003",
+      "kind": "profitability",
+      "format": "json",
+      "status": "running",
+      "requested_by_user_id": "user_manager_jonas",
+      "requested_at": "2026-03-11T08:45:00Z",
+      "completed_at": null,
+      "filters": {
+        "scope": "global",
+        "status": "all"
+      },
+      "artifact_path": null,
+      "record_count": 0,
+      "data_revision": "finance_rev_2026_03_11_002",
+      "retry_count": 0
+    }
+  },
+  "finance_rollups": {
+    "finance_global": {
+      "id": "finance_global",
+      "scope": "global",
+      "branch_id": null,
+      "team_id": null,
+      "revenue_total": 2907.68,
+      "paid_total": 677.5,
+      "receivable_total": 2773.68,
+      "overdue_total": 1039.02,
+      "average_ticket": 323.08,
+      "invoice_status_counts": {
+        "draft": 1,
+        "pending_review": 1,
+        "issued": 1,
+        "sent": 1,
+        "partially_paid": 1,
+        "paid": 1,
+        "overdue": 1,
+        "voided": 1,
+        "written_off": 1
+      },
+      "revenue_breakdown": {
+        "labor": 1642.0,
+        "parts": 248.5,
+        "service_fee": 1245.0,
+        "travel": 208.0
+      }
+    },
+    "finance_branch_north": {
+      "id": "finance_branch_north",
+      "scope": "branch",
+      "branch_id": "branch_north",
+      "team_id": null,
+      "revenue_total": 1868.18,
+      "paid_total": 310.0,
+      "receivable_total": 1558.18,
+      "overdue_total": 722.52,
+      "average_ticket": 467.05,
+      "invoice_status_counts": {
+        "draft": 1,
+        "pending_review": 1,
+        "partially_paid": 1,
+        "overdue": 1
+      },
+      "revenue_breakdown": {
+        "labor": 912.0,
+        "parts": 132.5,
+        "service_fee": 580.0,
+        "travel": 112.0
+      }
+    },
+    "finance_branch_south": {
+      "id": "finance_branch_south",
+      "scope": "branch",
+      "branch_id": "branch_south",
+      "team_id": null,
+      "revenue_total": 1039.5,
+      "paid_total": 367.5,
+      "receivable_total": 1215.5,
+      "overdue_total": 316.5,
+      "average_ticket": 207.9,
+      "invoice_status_counts": {
+        "issued": 1,
+        "sent": 1,
+        "paid": 1,
+        "voided": 1,
+        "written_off": 1
+      },
+      "revenue_breakdown": {
+        "labor": 730.0,
+        "parts": 116.0,
+        "service_fee": 665.0,
+        "travel": 96.0
+      }
+    },
+    "finance_team_north_alpha": {
+      "id": "finance_team_north_alpha",
+      "scope": "team",
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha",
+      "revenue_total": 1436.59,
+      "paid_total": 310.0,
+      "receivable_total": 1126.59,
+      "overdue_total": 722.52,
+      "average_ticket": 478.86,
+      "invoice_status_counts": {
+        "draft": 1,
+        "partially_paid": 1,
+        "overdue": 1
+      },
+      "revenue_breakdown": {
+        "labor": 696.0,
+        "parts": 111.5,
+        "service_fee": 435.0,
+        "travel": 84.0
+      }
+    },
+    "finance_team_north_beta": {
+      "id": "finance_team_north_beta",
+      "scope": "team",
+      "branch_id": "branch_north",
+      "team_id": "team_north_beta",
+      "revenue_total": 431.59,
+      "paid_total": 0.0,
+      "receivable_total": 431.59,
+      "overdue_total": 0,
+      "average_ticket": 431.59,
+      "invoice_status_counts": {
+        "pending_review": 1
+      },
+      "revenue_breakdown": {
+        "labor": 216.0,
+        "parts": 21.0,
+        "service_fee": 145.0,
+        "travel": 28.0
+      }
+    },
+    "finance_team_south_gamma": {
+      "id": "finance_team_south_gamma",
+      "scope": "team",
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma",
+      "revenue_total": 1039.5,
+      "paid_total": 367.5,
+      "receivable_total": 1215.5,
+      "overdue_total": 316.5,
+      "average_ticket": 207.9,
+      "invoice_status_counts": {
+        "issued": 1,
+        "sent": 1,
+        "paid": 1,
+        "voided": 1,
+        "written_off": 1
+      },
+      "revenue_breakdown": {
+        "labor": 730.0,
+        "parts": 116.0,
+        "service_fee": 665.0,
+        "travel": 96.0
+      }
+    }
+  },
+  "profitability_snapshots": {
+    "finance_global": {
+      "id": "finance_global",
+      "scope": "global",
+      "branch_id": null,
+      "team_id": null,
+      "revenue_total": 2907.68,
+      "estimated_cost_total": 1085.68,
+      "gross_margin_total": 1822.0,
+      "gross_margin_pct": 62.66
+    },
+    "finance_branch_north": {
+      "id": "finance_branch_north",
+      "scope": "branch",
+      "branch_id": "branch_north",
+      "team_id": null,
+      "revenue_total": 1868.18,
+      "estimated_cost_total": 598.24,
+      "gross_margin_total": 1269.94,
+      "gross_margin_pct": 67.98
+    },
+    "finance_branch_south": {
+      "id": "finance_branch_south",
+      "scope": "branch",
+      "branch_id": "branch_south",
+      "team_id": null,
+      "revenue_total": 1039.5,
+      "estimated_cost_total": 487.44,
+      "gross_margin_total": 552.06,
+      "gross_margin_pct": 53.11
+    },
+    "finance_team_north_alpha": {
+      "id": "finance_team_north_alpha",
+      "scope": "team",
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha",
+      "revenue_total": 1436.59,
+      "estimated_cost_total": 462.68,
+      "gross_margin_total": 973.91,
+      "gross_margin_pct": 67.79
+    },
+    "finance_team_north_beta": {
+      "id": "finance_team_north_beta",
+      "scope": "team",
+      "branch_id": "branch_north",
+      "team_id": "team_north_beta",
+      "revenue_total": 431.59,
+      "estimated_cost_total": 135.56,
+      "gross_margin_total": 296.03,
+      "gross_margin_pct": 68.59
+    },
+    "finance_team_south_gamma": {
+      "id": "finance_team_south_gamma",
+      "scope": "team",
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma",
+      "revenue_total": 1039.5,
+      "estimated_cost_total": 487.44,
+      "gross_margin_total": 552.06,
+      "gross_margin_pct": 53.11
+    }
+  },
   "indexes": {
     "work_orders_by_status": {
       "draft": [
@@ -3943,6 +5885,244 @@
       "cust_020": [
         "site_020"
       ]
+    },
+    "teams_by_branch": {
+      "branch_north": [
+        "team_north_alpha",
+        "team_north_beta"
+      ],
+      "branch_south": [
+        "team_south_gamma"
+      ]
+    },
+    "users_by_role": {
+      "dispatcher": [
+        "user_dispatch_rhea"
+      ],
+      "manager": [
+        "user_manager_jonas"
+      ],
+      "supervisor": [
+        "user_supervisor_nadia"
+      ],
+      "technician": [
+        "user_tech_ava",
+        "user_tech_noah",
+        "user_tech_zoe",
+        "user_tech_liam",
+        "user_tech_mila",
+        "user_tech_omar",
+        "user_tech_ivy",
+        "user_tech_jude"
+      ]
+    },
+    "invoices_by_status": {
+      "draft": [
+        "inv_001"
+      ],
+      "issued": [
+        "inv_003"
+      ],
+      "overdue": [
+        "inv_007"
+      ],
+      "paid": [
+        "inv_006"
+      ],
+      "partially_paid": [
+        "inv_005"
+      ],
+      "pending_review": [
+        "inv_002"
+      ],
+      "sent": [
+        "inv_004"
+      ],
+      "voided": [
+        "inv_008"
+      ],
+      "written_off": [
+        "inv_009"
+      ]
+    },
+    "invoices_by_customer": {
+      "cust_004": [
+        "inv_006",
+        "inv_009"
+      ],
+      "cust_013": [
+        "inv_001",
+        "inv_007"
+      ],
+      "cust_014": [
+        "inv_002"
+      ],
+      "cust_015": [
+        "inv_003",
+        "inv_008"
+      ],
+      "cust_018": [
+        "inv_004"
+      ],
+      "cust_019": [
+        "inv_005"
+      ]
+    },
+    "invoices_by_branch": {
+      "branch_north": [
+        "inv_001",
+        "inv_002",
+        "inv_005",
+        "inv_007"
+      ],
+      "branch_south": [
+        "inv_003",
+        "inv_004",
+        "inv_006",
+        "inv_008",
+        "inv_009"
+      ]
+    },
+    "invoices_by_team": {
+      "team_north_alpha": [
+        "inv_001",
+        "inv_005",
+        "inv_007"
+      ],
+      "team_north_beta": [
+        "inv_002"
+      ],
+      "team_south_gamma": [
+        "inv_003",
+        "inv_004",
+        "inv_006",
+        "inv_008",
+        "inv_009"
+      ]
+    },
+    "invoices_by_aging_bucket": {
+      "1_30": [
+        "inv_005"
+      ],
+      "31_60": [
+        "inv_007"
+      ],
+      "61_plus": [
+        "inv_009"
+      ],
+      "current": [
+        "inv_001",
+        "inv_002",
+        "inv_003",
+        "inv_004",
+        "inv_006",
+        "inv_008"
+      ]
+    },
+    "invoices_by_work_order": {
+      "wo_013": [
+        "inv_001",
+        "inv_007"
+      ],
+      "wo_014": [
+        "inv_002"
+      ],
+      "wo_015": [
+        "inv_003",
+        "inv_008"
+      ],
+      "wo_018": [
+        "inv_004"
+      ],
+      "wo_019": [
+        "inv_005",
+        "inv_007"
+      ],
+      "wo_024": [
+        "inv_006",
+        "inv_009"
+      ]
+    },
+    "payments_by_invoice": {
+      "inv_005": [
+        "payment_005_a"
+      ],
+      "inv_006": [
+        "payment_006_a"
+      ],
+      "inv_007": [
+        "payment_007_a"
+      ]
+    },
+    "payments_by_customer": {
+      "cust_004": [
+        "payment_006_a"
+      ],
+      "cust_013": [
+        "payment_007_a"
+      ],
+      "cust_019": [
+        "payment_005_a"
+      ]
+    },
+    "export_jobs_by_status": {
+      "completed": [
+        "export_job_001"
+      ],
+      "failed": [
+        "export_job_002"
+      ],
+      "running": [
+        "export_job_003"
+      ]
+    },
+    "price_books_by_branch": {
+      "branch_north": [
+        "price_book_branch_north"
+      ],
+      "branch_south": [
+        "price_book_branch_south",
+        "price_book_customer_cust_018"
+      ]
+    },
+    "price_books_by_customer": {
+      "cust_018": [
+        "price_book_customer_cust_018"
+      ]
+    },
+    "statements_by_customer": {
+      "cust_004": [
+        "statement_cust_004"
+      ],
+      "cust_013": [
+        "statement_cust_013"
+      ],
+      "cust_014": [
+        "statement_cust_014"
+      ],
+      "cust_015": [
+        "statement_cust_015"
+      ],
+      "cust_018": [
+        "statement_cust_018"
+      ],
+      "cust_019": [
+        "statement_cust_019"
+      ]
+    },
+    "receivables_by_branch": {
+      "branch_north": [
+        "receivable_branch_north",
+        "receivable_cust_013",
+        "receivable_cust_015",
+        "receivable_cust_019"
+      ],
+      "branch_south": [
+        "receivable_branch_south",
+        "receivable_cust_014",
+        "receivable_cust_018",
+        "receivable_cust_004"
+      ]
     }
   },
   "summary": {
@@ -3950,10 +6130,18 @@
       "branches": 2,
       "teams": 3,
       "technicians": 8,
+      "dispatchers": 1,
+      "supervisors": 1,
+      "managers": 1,
       "customers": 20,
       "sites": 30,
       "assets": 60,
-      "work_orders": 25
+      "work_orders": 25,
+      "visits": 25,
+      "assignments": 25,
+      "invoices": 9,
+      "payments": 3,
+      "export_jobs": 3
     },
     "status_counts": {
       "draft": 1,
@@ -4046,6 +6234,12 @@
       "supervisor": 1,
       "manager": 1
     },
+    "alert_unread": {
+      "technician": 1,
+      "dispatcher": 1,
+      "supervisor": 1,
+      "manager": 1
+    },
     "branch_rollups": [
       {
         "id": "branch_north",
@@ -4102,6 +6296,94 @@
       "correction_requested": 1,
       "resubmitted": 1,
       "sla_risk": 13
+    },
+    "workload_summary": {
+      "team_north_alpha": {
+        "id": "workload_team_north_alpha",
+        "team_id": "team_north_alpha",
+        "scheduled": 3,
+        "active": 2,
+        "review": 2
+      },
+      "team_north_beta": {
+        "id": "workload_team_north_beta",
+        "team_id": "team_north_beta",
+        "scheduled": 3,
+        "active": 1,
+        "review": 1
+      },
+      "team_south_gamma": {
+        "id": "workload_team_south_gamma",
+        "team_id": "team_south_gamma",
+        "scheduled": 2,
+        "active": 1,
+        "review": 0
+      }
+    },
+    "finance_metrics": {
+      "id": "finance_global",
+      "scope": "global",
+      "branch_id": null,
+      "team_id": null,
+      "revenue_total": 2907.68,
+      "paid_total": 677.5,
+      "receivable_total": 2773.68,
+      "overdue_total": 1039.02,
+      "average_ticket": 323.08,
+      "invoice_status_counts": {
+        "draft": 1,
+        "pending_review": 1,
+        "issued": 1,
+        "sent": 1,
+        "partially_paid": 1,
+        "paid": 1,
+        "overdue": 1,
+        "voided": 1,
+        "written_off": 1
+      },
+      "revenue_breakdown": {
+        "labor": 1642.0,
+        "parts": 248.5,
+        "service_fee": 1245.0,
+        "travel": 208.0
+      }
+    },
+    "invoice_status_counts": {
+      "draft": 1,
+      "issued": 1,
+      "overdue": 1,
+      "paid": 1,
+      "partially_paid": 1,
+      "pending_review": 1,
+      "sent": 1,
+      "voided": 1,
+      "written_off": 1
+    },
+    "aging_buckets": {
+      "1_30": 1,
+      "31_60": 1,
+      "61_plus": 1,
+      "current": 6
+    },
+    "receivables_overview": {
+      "total_open_balance": 2773.68,
+      "overdue_balance": 1039.02,
+      "customer_count": 6
+    },
+    "export_job_counts": {
+      "completed": 1,
+      "failed": 1,
+      "running": 1
+    },
+    "profitability_summary": {
+      "id": "finance_global",
+      "scope": "global",
+      "branch_id": null,
+      "team_id": null,
+      "revenue_total": 2907.68,
+      "estimated_cost_total": 1085.68,
+      "gross_margin_total": 1822.0,
+      "gross_margin_pct": 62.66
     }
   }
 }

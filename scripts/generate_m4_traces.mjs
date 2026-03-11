@@ -11,16 +11,19 @@ const REPORT_DIR = path.join(ROOT, 'build/reports');
 const APP_DIR = path.join(ROOT, 'dist/crewops_gate/app.crewops_dev');
 const X07_WASM = path.join(ROOT, '../x07-wasm-backend/target/debug/x07-wasm');
 const CREATED_UTC = '2026-03-11T00:00:00Z';
-const APP_VERSION = '0.3.0';
-const TOOL_VERSION = '0.2.3';
+const APP_VERSION = '0.4.0';
+const TOOL_VERSION = '0.2.4';
 const NOW = '2026-03-11T00:00:00Z';
 
 const argv = process.argv.slice(2);
 const updateGoldenEnabled = argv.includes('--update-golden');
+const authoredOnly = argv.includes('--authored-only');
 const appDirArg = argv.find((value) => value.startsWith('--app-dir='));
 const x07WasmArg = argv.find((value) => value.startsWith('--x07-wasm='));
+const traceFilterArg = argv.find((value) => value.startsWith('--filter='));
 const appDir = appDirArg ? appDirArg.slice('--app-dir='.length) : APP_DIR;
 const x07Wasm = x07WasmArg ? x07WasmArg.slice('--x07-wasm='.length) : X07_WASM;
+const traceFilter = traceFilterArg ? traceFilterArg.slice('--filter='.length) : null;
 
 const fixture = JSON.parse(fs.readFileSync(FIXTURE_PATH, 'utf8'));
 const baseEntities = {
@@ -49,12 +52,46 @@ const baseEntities = {
   team_summaries: fixture.team_summaries,
   workload_snapshots: fixture.workload_snapshots,
   dispatch_filters: fixture.dispatch_filters,
+  price_books: fixture.price_books,
+  price_book_items: fixture.price_book_items,
+  labor_rate_policies: fixture.labor_rate_policies,
+  part_rate_policies: fixture.part_rate_policies,
+  billing_policies: fixture.billing_policies,
+  tax_rules: fixture.tax_rules,
+  discount_rules: fixture.discount_rules,
+  invoices: fixture.invoices,
+  invoice_lines: fixture.invoice_lines,
+  invoice_adjustments: fixture.invoice_adjustments,
+  invoice_artifacts: fixture.invoice_artifacts,
+  service_summary_artifacts: fixture.service_summary_artifacts,
+  payment_records: fixture.payment_records,
+  payment_allocations: fixture.payment_allocations,
+  customer_statements: fixture.customer_statements,
+  receivable_summaries: fixture.receivable_summaries,
+  export_jobs: fixture.export_jobs,
+  finance_rollups: fixture.finance_rollups,
+  profitability_snapshots: fixture.profitability_snapshots,
 };
 const bootstrapWorkOrderIds = ['wo_001', 'wo_002', 'wo_003', 'wo_004', 'wo_005', 'wo_006'];
 const bootstrapTemplateIds = ['tmpl_arrival', 'tmpl_pm', 'tmpl_closeout'];
 const reviewSnapshotWorkOrderIds = ['wo_016', 'wo_017', 'wo_025'];
 const baseIndexes = fixture.indexes;
 const baseSummary = fixture.summary;
+const priceBooks = fixture.price_books;
+const billingPolicies = fixture.billing_policies;
+const taxRules = fixture.tax_rules;
+const discountRules = fixture.discount_rules;
+const invoices = fixture.invoices;
+const invoiceLines = fixture.invoice_lines;
+const invoiceAdjustments = fixture.invoice_adjustments;
+const invoiceArtifacts = fixture.invoice_artifacts;
+const serviceSummaryArtifacts = fixture.service_summary_artifacts;
+const paymentRecords = fixture.payment_records;
+const customerStatements = fixture.customer_statements;
+const receivableSummaries = fixture.receivable_summaries;
+const exportJobs = fixture.export_jobs;
+const financeRollups = fixture.finance_rollups;
+const profitabilitySnapshots = fixture.profitability_snapshots;
 const sessionDefaults = {
   technician: {
     user_id: 'user_tech_ava',
@@ -86,16 +123,14 @@ const metaDoc = {
 };
 const bootstrapEntities = {
   work_orders: Object.fromEntries(
-    bootstrapWorkOrderIds.map((id) => [
-      id,
-      compactWorkOrder(fixture.work_orders[id]),
-    ]),
+    bootstrapWorkOrderIds
+      .filter((id) => fixture.work_orders[id] != null)
+      .map((id) => [id, compactWorkOrder(fixture.work_orders[id])]),
   ),
   templates: Object.fromEntries(
-    bootstrapTemplateIds.map((id) => [
-      id,
-      compactTemplate(fixture.templates[id]),
-    ]),
+    bootstrapTemplateIds
+      .filter((id) => fixture.templates[id] != null)
+      .map((id) => [id, compactTemplate(fixture.templates[id])]),
   ),
   parts_catalog: fixture.parts_catalog,
 };
@@ -181,13 +216,29 @@ function defaultUi() {
     route: 'today',
     selected_work_order_id: 'wo_001',
     selected_visit_id: 'visit_001',
-    selected_customer_id: null,
-    selected_site_id: null,
-    selected_asset_id: null,
+    selected_customer_id: 'cust_013',
+    selected_site_id: 'site_013',
+    selected_asset_id: 'asset_013',
     selected_review_visit_id: 'visit_001',
     selected_correction_id: null,
     selected_activity_id: null,
     selected_alert_id: null,
+    selected_invoice_id: 'inv_001',
+    selected_payment_id: null,
+    selected_invoice_artifact_id: 'invoice_artifact_inv_001',
+    selected_service_summary_artifact_id: 'service_summary_inv_001',
+    selected_customer_statement_id: 'statement_cust_013',
+    selected_receivable_summary_id: 'receivable_branch_north',
+    selected_price_book_id: 'price_book_branch_north',
+    selected_price_book_item_id: 'price_item_service_call_north',
+    selected_billing_policy_id: 'billing_policy_branch_north',
+    selected_labor_rate_policy_id: 'labor_policy_branch_north',
+    selected_part_rate_policy_id: 'part_rate_north_filter',
+    selected_tax_rule_id: 'tax_rule_wa',
+    selected_discount_rule_id: 'discount_rule_loyalty',
+    selected_export_job_id: 'export_job_003',
+    selected_finance_rollup_id: 'finance_global',
+    selected_profitability_snapshot_id: 'finance_global',
     selected_branch_id: 'branch_north',
     selected_team_id: 'team_north_alpha',
     network_status: 'online',
@@ -200,6 +251,23 @@ function defaultUi() {
     manager_scope: 'branch_north',
     summary_scope: 'branch',
     intake_kind: 'work_order',
+    pricing_scope: 'branch',
+    invoice_status_filter: 'all',
+    invoice_branch_filter: 'all',
+    invoice_customer_filter: 'all',
+    invoice_aging_filter: 'all',
+    customer_branch_filter: 'all',
+    customer_invoice_status_filter: 'all',
+    customer_balance_filter: 'open',
+    customer_statement_filter: 'open',
+    receivables_scope: 'branch',
+    receivables_branch_filter: 'all',
+    receivables_aging_filter: 'all',
+    finance_scope: 'global',
+    finance_branch_filter: 'all',
+    export_kind: 'invoices',
+    export_format: 'csv',
+    export_status_filter: 'all',
   };
 }
 
@@ -221,6 +289,31 @@ function defaultDrafts() {
     branch_id: 'branch_north',
     team_id: 'team_north_alpha',
     activity_scope: 'all',
+    price_book_name: 'North Commercial Standard',
+    labor_rate_hourly: '96.00',
+    travel_fee: '28.00',
+    tax_rule_label: 'WA sales tax',
+    discount_rule_label: 'Loyalty discount',
+    invoice_memo: 'Drafted from approved work.',
+    invoice_issue_date: '2026-03-15',
+    invoice_due_date: '2026-03-30',
+    invoice_line_description: 'Standard service call',
+    invoice_line_quantity: '1',
+    invoice_line_rate: '145.00',
+    payment_amount: '220.00',
+    payment_method: 'ach',
+    payment_reference: 'ACH-55201',
+    customer_statement_date: '2026-03-11',
+    customer_branch_id: 'branch_north',
+    customer_balance_filter: 'open',
+    receivable_scope: 'branch',
+    receivable_aging_bucket: 'all',
+    export_date_from: '2026-03-01',
+    export_date_to: '2026-03-31',
+    export_branch_id: 'branch_north',
+    export_status_filter: 'open',
+    export_kind: 'invoices',
+    export_format: 'csv',
   };
 }
 
@@ -406,6 +499,14 @@ function syncDoc(cursor, status, overrides = {}) {
     conflict_message: '',
     conflict_code: null,
     conflict_entity_id: null,
+    invoice_lock_status: 'idle',
+    invoice_lock_message: '',
+    stale_invoice_id: null,
+    payment_revision_status: 'idle',
+    pricing_revision_status: 'idle',
+    stale_price_book_id: null,
+    export_status: 'idle',
+    finance_revision: 'finance_rev_2026_03_11_001',
     unread_alerts: 4,
     unread_activity: 6,
     ...overrides,
@@ -555,6 +656,340 @@ function activityFeedDoc(snapshot = null) {
     current,
   );
 }
+
+function pricingConfigDoc(snapshot = null) {
+  return payloadWithSnapshot(
+    {
+      pricing: {
+        price_book_ids: Object.keys(priceBooks),
+        billing_policy_ids: Object.keys(billingPolicies),
+        tax_rule_ids: Object.keys(taxRules),
+        discount_rule_ids: Object.keys(discountRules),
+        revision: 'pricing_rev_2026_03_11_001',
+        default_branch_price_books: {
+          branch_north: 'price_book_branch_north',
+          branch_south: 'price_book_branch_south',
+        },
+      },
+      sync: syncDoc('sync_cursor_2026_03_11_101', 'idle'),
+    },
+    snapshot,
+  );
+}
+
+function pricingUpdateDoc(snapshot = null) {
+  return payloadWithSnapshot(
+    {
+      status: 'updated',
+      message: 'Saved pricing and billing policy changes.',
+      price_book_id: 'price_book_branch_north',
+      billing_policy_id: 'billing_policy_branch_north',
+      sync: syncDoc('sync_cursor_2026_03_11_103', 'accepted', {
+        finance_revision: 'finance_rev_2026_03_11_002',
+      }),
+    },
+    snapshot,
+  );
+}
+
+function pricingUpdateConflictDoc(snapshot = null) {
+  return payloadWithSnapshot(
+    {
+      status: 'conflict',
+      message: 'Pricing revision changed while the draft invoice was open.',
+      price_book_id: 'price_book_customer_cust_018',
+      sync: syncDoc('sync_cursor_2026_03_11_103', 'conflict', {
+        conflict_status: 'stale',
+        conflict_message: 'Pricing revision mismatch; refresh before saving.',
+        conflict_code: 'pricing_revision_mismatch',
+        conflict_entity_id: 'price_book_customer_cust_018',
+        pricing_revision_status: 'mismatch',
+        stale_price_book_id: 'price_book_customer_cust_018',
+        finance_revision: 'finance_rev_2026_03_11_003',
+      }),
+    },
+    snapshot,
+  );
+}
+
+function invoiceListDoc(snapshot = null) {
+  return payloadWithSnapshot(
+    {
+      invoice_ids: Object.keys(invoices),
+      open_invoice_ids: Object.entries(invoices)
+        .filter(([, invoice]) => !['paid', 'voided', 'written_off'].includes(invoice.status))
+        .map(([invoiceId]) => invoiceId),
+      receivable_summary_ids: Object.keys(receivableSummaries),
+      sync: syncDoc('sync_cursor_2026_03_11_101', 'idle'),
+    },
+    snapshot,
+  );
+}
+
+const invoiceDetailMap = Object.fromEntries(
+  Object.entries(invoices).map(([invoiceId, invoice]) => [
+    invoiceId,
+    payloadWithSnapshot({
+      invoice_id: invoiceId,
+      invoice,
+      line_items: Object.fromEntries(
+        invoice.line_ids.map((lineId) => [lineId, invoiceLines[lineId]]),
+      ),
+      adjustments: Object.fromEntries(
+        invoice.adjustment_ids.map((adjustmentId) => [adjustmentId, invoiceAdjustments[adjustmentId]]),
+      ),
+      payments: Object.fromEntries(
+        invoice.payment_ids.map((paymentId) => [paymentId, paymentRecords[paymentId]]),
+      ),
+      statement: customerStatements[`statement_${invoice.customer_id}`],
+      artifacts: {
+        [invoice.invoice_artifact_id]: invoiceArtifacts[invoice.invoice_artifact_id],
+        [invoice.service_summary_artifact_id]: serviceSummaryArtifacts[invoice.service_summary_artifact_id],
+      },
+      sync: syncDoc('sync_cursor_2026_03_11_101', 'idle'),
+    }),
+  ]),
+);
+
+function invoiceGenerateDoc(snapshot = null) {
+  return payloadWithSnapshot(
+    {
+      status: 'generated',
+      message: 'Generated an invoice draft from approved work.',
+      invoice_id: 'inv_001',
+      source_work_order_ids: invoices.inv_001.source_work_order_ids,
+      sync: syncDoc('sync_cursor_2026_03_11_103', 'accepted', {
+        finance_revision: 'finance_rev_2026_03_11_002',
+      }),
+    },
+    snapshot,
+  );
+}
+
+function invoicePatchDoc(snapshot = null) {
+  return payloadWithSnapshot(
+    {
+      status: 'updated',
+      message: 'Updated invoice draft totals and memo.',
+      invoice_id: 'inv_001',
+      revision: 2,
+      sync: syncDoc('sync_cursor_2026_03_11_103', 'accepted', {
+        finance_revision: 'finance_rev_2026_03_11_002',
+      }),
+    },
+    snapshot,
+  );
+}
+
+const invoiceIssueMap = Object.fromEntries(
+  Object.keys(invoices).map((invoiceId) => [
+    invoiceId,
+    payloadWithSnapshot({
+      status: 'issued',
+      message: 'Issued invoice and locked revision-sensitive fields.',
+      invoice_id: invoiceId,
+      sync: syncDoc('sync_cursor_2026_03_11_103', 'accepted', {
+        invoice_lock_status: 'revision_sensitive',
+        finance_revision: 'finance_rev_2026_03_11_002',
+      }),
+    }),
+  ]),
+);
+
+function invoiceLockConflictDoc(snapshot = null) {
+  return payloadWithSnapshot(
+    {
+      status: 'conflict',
+      message: 'Invoice is locked because a newer issued revision already exists.',
+      invoice_id: 'inv_007',
+      sync: syncDoc('sync_cursor_2026_03_11_103', 'conflict', {
+        conflict_status: 'locked',
+        conflict_message: 'Refresh invoice data before editing or issuing.',
+        conflict_code: 'invoice_locked',
+        conflict_entity_id: 'inv_007',
+        invoice_lock_status: 'locked',
+        invoice_lock_message: 'Invoice is already overdue and locked to receivables controls.',
+        stale_invoice_id: 'inv_007',
+        finance_revision: 'finance_rev_2026_03_11_003',
+      }),
+    },
+    snapshot,
+  );
+}
+
+const invoiceVoidMap = Object.fromEntries(
+  Object.keys(invoices).map((invoiceId) => [
+    invoiceId,
+    payloadWithSnapshot({
+      status: 'voided',
+      message: 'Voided invoice and recorded a credit note.',
+      invoice_id: invoiceId,
+      sync: syncDoc('sync_cursor_2026_03_11_103', 'accepted', {
+        invoice_lock_status: 'locked',
+        finance_revision: 'finance_rev_2026_03_11_002',
+      }),
+    }),
+  ]),
+);
+
+const invoicePaymentMap = Object.fromEntries(
+  Object.keys(invoices).map((invoiceId) => [
+    invoiceId,
+    payloadWithSnapshot({
+      status: 'recorded',
+      message: 'Recorded payment allocation against invoice.',
+      invoice_id: invoiceId,
+      payment_id: `payment_recorded_${invoiceId}`,
+      sync: syncDoc('sync_cursor_2026_03_11_103', 'accepted', {
+        payment_revision_status: 'accepted',
+        finance_revision: 'finance_rev_2026_03_11_002',
+      }),
+    }),
+  ]),
+);
+
+function paymentRevisionConflictDoc(snapshot = null) {
+  return payloadWithSnapshot(
+    {
+      status: 'conflict',
+      message: 'Payment revision mismatched the latest invoice balance.',
+      invoice_id: 'inv_005',
+      sync: syncDoc('sync_cursor_2026_03_11_103', 'conflict', {
+        conflict_status: 'stale',
+        conflict_message: 'Payment allocation was based on a stale invoice balance.',
+        conflict_code: 'payment_revision_mismatch',
+        conflict_entity_id: 'inv_005',
+        payment_revision_status: 'mismatch',
+        stale_invoice_id: 'inv_005',
+        finance_revision: 'finance_rev_2026_03_11_003',
+      }),
+    },
+    snapshot,
+  );
+}
+
+function financeSummaryDoc(snapshot = null) {
+  return payloadWithSnapshot(
+    {
+      rollup: financeRollups.finance_global,
+      branch_rollups: Object.fromEntries(
+        Object.entries(financeRollups).filter(([, rollup]) => rollup.scope === 'branch'),
+      ),
+      team_rollups: Object.fromEntries(
+        Object.entries(financeRollups).filter(([, rollup]) => rollup.scope === 'team'),
+      ),
+      profitability: profitabilitySnapshots,
+      sync: syncDoc('sync_cursor_2026_03_11_101', 'idle'),
+    },
+    snapshot,
+  );
+}
+
+function financeReceivablesDoc(snapshot = null) {
+  return payloadWithSnapshot(
+    {
+      receivable_ids: Object.keys(receivableSummaries),
+      receivables: receivableSummaries,
+      statements: customerStatements,
+      overdue_invoice_ids: [
+        ...baseIndexes.invoices_by_aging_bucket['31_60'],
+        ...baseIndexes.invoices_by_aging_bucket['61_plus'],
+      ],
+      sync: syncDoc('sync_cursor_2026_03_11_101', 'idle'),
+    },
+    snapshot,
+  );
+}
+
+const customerAccountMap = Object.fromEntries(
+  Object.values(customerStatements).map((statement) => {
+    const customerId = statement.customer_id;
+    return [
+      customerId,
+      payloadWithSnapshot({
+        customer_id: customerId,
+        customer: baseEntities.customers[customerId],
+        statement,
+        invoice_ids: baseIndexes.invoices_by_customer[customerId] ?? [],
+        payment_ids: baseIndexes.payments_by_customer[customerId] ?? [],
+        receivable_summary: receivableSummaries[`receivable_${customerId}`],
+        sync: syncDoc('sync_cursor_2026_03_11_101', 'idle'),
+      }),
+    ];
+  }),
+);
+
+function exportCenterDoc(snapshot = null) {
+  return payloadWithSnapshot(
+    {
+      export_job_ids: Object.keys(exportJobs),
+      jobs: exportJobs,
+      filters: {
+        formats: ['csv', 'json'],
+        kinds: ['invoices', 'receivables', 'profitability'],
+        branch_ids: Object.keys(baseEntities.branches),
+      },
+      sync: syncDoc('sync_cursor_2026_03_11_101', 'idle', {
+        export_status: 'idle',
+      }),
+    },
+    snapshot,
+  );
+}
+
+function exportCreateDoc(snapshot = null) {
+  return payloadWithSnapshot(
+    {
+      status: 'queued',
+      message: 'Queued export job and snapshotted finance revision.',
+      export_job_id: 'export_job_003',
+      sync: syncDoc('sync_cursor_2026_03_11_103', 'accepted', {
+        export_status: 'running',
+        finance_revision: 'finance_rev_2026_03_11_002',
+      }),
+    },
+    snapshot,
+  );
+}
+
+const exportRetryMap = Object.fromEntries(
+  Object.keys(exportJobs).map((exportJobId) => [
+    exportJobId,
+    payloadWithSnapshot({
+      status: 'retried',
+      message: 'Retried export job with a fresh finance snapshot.',
+      export_job_id: exportJobId,
+      sync: syncDoc('sync_cursor_2026_03_11_103', 'accepted', {
+        export_status: 'running',
+        finance_revision: 'finance_rev_2026_03_11_002',
+      }),
+    }),
+  ]),
+);
+
+const invoiceArtifactMap = Object.fromEntries(
+  Object.entries(invoices).map(([invoiceId, invoice]) => [
+    invoiceId,
+    payloadWithSnapshot({
+      invoice_id: invoiceId,
+      artifact: invoiceArtifacts[invoice.invoice_artifact_id],
+      sync: syncDoc('sync_cursor_2026_03_11_101', 'idle', {
+        export_status: invoiceArtifacts[invoice.invoice_artifact_id].status,
+      }),
+    }),
+  ]),
+);
+
+const serviceSummaryMap = Object.fromEntries(
+  Object.entries(invoices).map(([invoiceId, invoice]) => [
+    invoiceId,
+    payloadWithSnapshot({
+      invoice_id: invoiceId,
+      artifact: serviceSummaryArtifacts[invoice.service_summary_artifact_id],
+      sync: syncDoc('sync_cursor_2026_03_11_101', 'idle'),
+    }),
+  ]),
+);
 
 function workOrderAssignDoc(workOrderId) {
   const workOrder = baseEntities.work_orders[workOrderId];
@@ -838,12 +1273,34 @@ function exchange(requestId, method, targetPath, status, responseDoc, requestBod
   };
 }
 
+function emptyUiTree() {
+  return {
+    v: 1,
+    kind: 'x07.web_ui.tree',
+    root: {
+      k: 'el',
+      tag: 'div',
+      key: 'root',
+      props: {
+        attrs: {},
+        class: ['app'],
+        style: {},
+      },
+      on: [],
+      children: [],
+    },
+  };
+}
+
 function emptyFrame(state = null) {
   return {
+    v: 1,
     kind: 'x07.web_ui.frame',
     state: state == null ? null : clone(state),
+    ui: emptyUiTree(),
     effects: [],
     patches: [],
+    telemetry: {},
   };
 }
 
@@ -909,14 +1366,37 @@ function normalizeTraceStates(doc) {
       kind: 'x07.web_ui.dispatch',
       state: nextDispatchState == null ? null : clone(nextDispatchState),
     };
+    const nextUiTree =
+      item?.ui_frame?.ui != null && item.ui_frame.ui.root != null
+        ? clone(item.ui_frame.ui)
+        : emptyUiTree();
     item.ui_frame = {
+      v: 1,
       kind: 'x07.web_ui.frame',
+      state: nextFrameState == null ? null : clone(nextFrameState),
+      ui: nextUiTree,
       effects: Array.isArray(item?.ui_frame?.effects) ? item.ui_frame.effects : [],
       patches: Array.isArray(item?.ui_frame?.patches) ? item.ui_frame.patches : [],
-      state: nextFrameState == null ? null : clone(nextFrameState),
+      telemetry: item?.ui_frame?.telemetry != null ? clone(item.ui_frame.telemetry) : {},
     };
     previousState = nextFrameState == null ? previousState : clone(nextFrameState);
   }
+  return doc;
+}
+
+function clearStepStateAfter(doc, lastStepWithState) {
+  const steps = Array.isArray(doc.steps) ? doc.steps : [];
+  steps.forEach((item, index) => {
+    if (index <= lastStepWithState) {
+      return;
+    }
+    if (item?.ui_dispatch && typeof item.ui_dispatch === 'object') {
+      item.ui_dispatch.state = null;
+    }
+    if (item?.ui_frame && typeof item.ui_frame === 'object') {
+      item.ui_frame.state = null;
+    }
+  });
   return doc;
 }
 
@@ -972,6 +1452,37 @@ function updateGolden(tracePath) {
   );
 }
 
+function pushRoleLogin(doc, role) {
+  doc.steps.push(click(`role_${role}`, {
+    http: [
+      exchange(
+        'req_login',
+        'POST',
+        '/api/session/dev-login',
+        200,
+        loginDoc(role),
+        jsonText({ role, user_id: sessionDefaults[role].user_id }),
+      ),
+    ],
+  }));
+}
+
+function pushNavLoad(doc, target, requestId, targetPath, responseDoc) {
+  doc.steps.push(click(target, {
+    http: [
+      exchange(requestId, 'GET', targetPath, 200, responseDoc),
+    ],
+  }));
+}
+
+function draftsText(mutator = null) {
+  const drafts = defaultDrafts();
+  if (mutator) {
+    mutator(drafts);
+  }
+  return jsonText(drafts);
+}
+
 const traces = [
   {
     path: path.join(ROOT, 'tests/traces/bootstrap_demo_happy.trace.json'),
@@ -982,23 +1493,8 @@ const traces = [
   {
     path: path.join(ROOT, 'tests/traces/dispatch_assign_happy.trace.json'),
     build(doc) {
-      doc.steps.push(click('role_dispatcher', {
-        http: [
-          exchange(
-            'req_login',
-            'POST',
-            '/api/session/dev-login',
-            200,
-            loginDoc('dispatcher'),
-            jsonText({ role: 'dispatcher', user_id: sessionDefaults.dispatcher.user_id }),
-          ),
-        ],
-      }));
-      doc.steps.push(click('nav_dispatch', {
-        http: [
-          exchange('req_dispatch_board', 'GET', '/api/dispatch/board', 200, dispatchBoardDoc()),
-        ],
-      }));
+      pushRoleLogin(doc, 'dispatcher');
+      pushNavLoad(doc, 'nav_dispatch', 'req_dispatch_board', '/api/dispatch/board', dispatchBoardDoc());
       doc.steps.push(click('action_assign', {
         http: [
           exchange('req_assign', 'POST', '/api/work-orders/wo_001/assign', 200, workOrderAssignDoc('wo_001'), '{}'),
@@ -1010,23 +1506,8 @@ const traces = [
   {
     path: path.join(ROOT, 'tests/traces/dispatch_reassign_happy.trace.json'),
     build(doc) {
-      doc.steps.push(click('role_dispatcher', {
-        http: [
-          exchange(
-            'req_login',
-            'POST',
-            '/api/session/dev-login',
-            200,
-            loginDoc('dispatcher'),
-            jsonText({ role: 'dispatcher', user_id: sessionDefaults.dispatcher.user_id }),
-          ),
-        ],
-      }));
-      doc.steps.push(click('nav_dispatch', {
-        http: [
-          exchange('req_dispatch_board', 'GET', '/api/dispatch/board', 200, dispatchBoardDoc()),
-        ],
-      }));
+      pushRoleLogin(doc, 'dispatcher');
+      pushNavLoad(doc, 'nav_dispatch', 'req_dispatch_board', '/api/dispatch/board', dispatchBoardDoc());
       doc.steps.push(click('wo_006'));
       doc.steps.push(click('action_reassign', {
         http: [
@@ -1057,23 +1538,8 @@ const traces = [
   {
     path: path.join(ROOT, 'tests/traces/supervisor_request_correction.trace.json'),
     build(doc) {
-      doc.steps.push(click('role_supervisor', {
-        http: [
-          exchange(
-            'req_login',
-            'POST',
-            '/api/session/dev-login',
-            200,
-            loginDoc('supervisor'),
-            jsonText({ role: 'supervisor', user_id: sessionDefaults.supervisor.user_id }),
-          ),
-        ],
-      }));
-      doc.steps.push(click('nav_review', {
-        http: [
-          exchange('req_review_queue', 'GET', '/api/review/queue', 200, reviewQueueDoc()),
-        ],
-      }));
+      pushRoleLogin(doc, 'supervisor');
+      pushNavLoad(doc, 'nav_review', 'req_review_queue', '/api/review/queue', reviewQueueDoc());
       doc.steps.push(click('wo_016'));
       doc.steps.push(input('review_note', 'Need clearer evidence and a tighter summary.'));
       doc.steps.push(click('action_request_correction', {
@@ -1114,23 +1580,8 @@ const traces = [
   {
     path: path.join(ROOT, 'tests/traces/review_queue_filtering.trace.json'),
     build(doc) {
-      doc.steps.push(click('role_supervisor', {
-        http: [
-          exchange(
-            'req_login',
-            'POST',
-            '/api/session/dev-login',
-            200,
-            loginDoc('supervisor'),
-            jsonText({ role: 'supervisor', user_id: sessionDefaults.supervisor.user_id }),
-          ),
-        ],
-      }));
-      doc.steps.push(click('nav_review', {
-        http: [
-          exchange('req_review_queue', 'GET', '/api/review/queue', 200, reviewQueueDoc()),
-        ],
-      }));
+      pushRoleLogin(doc, 'supervisor');
+      pushNavLoad(doc, 'nav_review', 'req_review_queue', '/api/review/queue', reviewQueueDoc());
       doc.steps.push(click('wo_016', {
         state: runtimeStateForRole('supervisor', { route: 'review', workOrderId: 'wo_016', reviewFilter: 'awaiting_review' }),
       }));
@@ -1146,23 +1597,8 @@ const traces = [
   {
     path: path.join(ROOT, 'tests/traces/manager_dashboard_rollup.trace.json'),
     build(doc) {
-      doc.steps.push(click('role_manager', {
-        http: [
-          exchange(
-            'req_login',
-            'POST',
-            '/api/session/dev-login',
-            200,
-            loginDoc('manager'),
-            jsonText({ role: 'manager', user_id: sessionDefaults.manager.user_id }),
-          ),
-        ],
-      }));
-      doc.steps.push(click('nav_manager', {
-        http: [
-          exchange('req_manager_summary', 'GET', '/api/manager/summary', 200, managerSummaryDoc()),
-        ],
-      }));
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_manager', 'req_manager_summary', '/api/manager/summary', managerSummaryDoc());
       doc.steps.push(click('action_scope_team'));
       doc.steps.push(click('action_scope_branch'));
       return doc;
@@ -1219,25 +1655,324 @@ const traces = [
       }));
       return doc;
     },
+    postprocess(doc) {
+      return clearStepStateAfter(doc, 0);
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/invoice_generate_happy.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_invoices', 'req_invoice_list', '/api/invoices', invoiceListDoc());
+      doc.steps.push(click('action_invoice_generate', {
+        http: [
+          exchange(
+            'req_invoice_generate',
+            'POST',
+            '/api/invoices/generate',
+            200,
+            invoiceGenerateDoc(),
+            draftsText(),
+          ),
+        ],
+      }));
+      doc.steps.push(click('action_select_invoice_inv_001', {
+        http: [
+          exchange('req_invoice_detail', 'GET', '/api/invoices/inv_001', 200, invoiceDetailMap.inv_001),
+        ],
+      }));
+      doc.steps.push(click('action_invoice_artifact', {
+        http: [
+          exchange('req_invoice_artifact', 'GET', '/api/invoices/inv_001/artifact', 200, invoiceArtifactMap.inv_001),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/invoice_edit_and_issue.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_invoices', 'req_invoice_list', '/api/invoices', invoiceListDoc());
+      doc.steps.push(click('action_select_invoice_inv_001', {
+        http: [
+          exchange('req_invoice_detail', 'GET', '/api/invoices/inv_001', 200, invoiceDetailMap.inv_001),
+        ],
+      }));
+      doc.steps.push(input('input_invoice_memo', 'Commercial walkthrough invoice for the approved visit.'));
+      doc.steps.push(input('input_invoice_line_rate', '152.00'));
+      doc.steps.push(input('input_invoice_due_date', '2026-04-02'));
+      doc.steps.push(click('action_invoice_patch', {
+        http: [
+          exchange(
+            'req_invoice_patch',
+            'PATCH',
+            '/api/invoices/inv_001',
+            200,
+            invoicePatchDoc(),
+            draftsText((drafts) => {
+              drafts.invoice_memo = 'Commercial walkthrough invoice for the approved visit.';
+              drafts.invoice_line_rate = '152.00';
+              drafts.invoice_due_date = '2026-04-02';
+            }),
+          ),
+        ],
+      }));
+      doc.steps.push(click('action_invoice_issue', {
+        http: [
+          exchange('req_invoice_issue', 'POST', '/api/invoices/inv_001/issue', 200, invoiceIssueMap.inv_001, '{}'),
+        ],
+      }));
+      doc.steps.push(click('action_service_summary', {
+        http: [
+          exchange('req_service_summary', 'GET', '/api/invoices/inv_001/service-summary', 200, serviceSummaryMap.inv_001),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/partial_payment_record.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_invoices', 'req_invoice_list', '/api/invoices', invoiceListDoc());
+      doc.steps.push(click('action_select_invoice_inv_007', {
+        http: [
+          exchange('req_invoice_detail', 'GET', '/api/invoices/inv_007', 200, invoiceDetailMap.inv_007),
+        ],
+      }));
+      doc.steps.push(input('input_payment_amount', '90.00'));
+      doc.steps.push(input('input_payment_method', 'check'));
+      doc.steps.push(input('input_payment_reference', 'CHK-55209'));
+      doc.steps.push(click('action_invoice_payment', {
+        http: [
+          exchange(
+            'req_invoice_payment',
+            'POST',
+            '/api/invoices/inv_007/payments',
+            200,
+            invoicePaymentMap.inv_007,
+            draftsText((drafts) => {
+              drafts.payment_amount = '90.00';
+              drafts.payment_method = 'check';
+              drafts.payment_reference = 'CHK-55209';
+            }),
+          ),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/overdue_aging_view.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_receivables', 'req_finance_receivables', '/api/finance/receivables', financeReceivablesDoc());
+      doc.steps.push(click('action_select_receivable_branch_north'));
+      doc.steps.push(click('action_receivable_aging_toggle'));
+      doc.steps.push(click('action_receivable_scope_toggle'));
+      doc.steps.push(click('action_finance_receivables_refresh', {
+        http: [
+          exchange('req_finance_receivables', 'GET', '/api/finance/receivables', 200, financeReceivablesDoc()),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/customer_statement_view.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_customers', 'req_customer_account', '/api/customers/cust_013/account', customerAccountMap.cust_013);
+      doc.steps.push(click('action_customer_balance_toggle'));
+      doc.steps.push(click('action_select_customer_cust_019', {
+        http: [
+          exchange('req_customer_account', 'GET', '/api/customers/cust_019/account', 200, customerAccountMap.cust_019),
+        ],
+      }));
+      doc.steps.push(click('action_customer_refresh', {
+        http: [
+          exchange('req_customer_account', 'GET', '/api/customers/cust_019/account', 200, customerAccountMap.cust_019),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/finance_export_happy.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_exports', 'req_export_center', '/api/exports/jobs', exportCenterDoc());
+      doc.steps.push(input('input_export_date_from', '2026-02-01'));
+      doc.steps.push(input('input_export_date_to', '2026-03-31'));
+      doc.steps.push(click('action_export_kind_toggle'));
+      doc.steps.push(click('action_export_format_toggle'));
+      doc.steps.push(click('action_export_status_toggle'));
+      doc.steps.push(click('action_export_create', {
+        http: [
+          exchange(
+            'req_export_create',
+            'POST',
+            '/api/exports/jobs',
+            202,
+            exportCreateDoc(),
+            draftsText((drafts) => {
+              drafts.export_date_from = '2026-02-01';
+              drafts.export_date_to = '2026-03-31';
+              drafts.export_kind = 'receivables';
+              drafts.export_format = 'json';
+              drafts.export_status_filter = 'all';
+            }),
+          ),
+        ],
+      }));
+      doc.steps.push(click('action_select_export_job_003'));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/finance_export_retry.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_exports', 'req_export_center', '/api/exports/jobs', exportCenterDoc());
+      doc.steps.push(click('action_select_export_job_002'));
+      doc.steps.push(click('action_export_retry', {
+        http: [
+          exchange('req_export_retry', 'POST', '/api/exports/jobs/export_job_002/retry', 200, exportRetryMap.export_job_002, '{}'),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/invoice_lock_conflict.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_invoices', 'req_invoice_list', '/api/invoices', invoiceListDoc());
+      doc.steps.push(click('action_select_invoice_inv_007', {
+        http: [
+          exchange('req_invoice_detail', 'GET', '/api/invoices/inv_007', 200, invoiceDetailMap.inv_007),
+        ],
+      }));
+      doc.steps.push(click('action_invoice_issue', {
+        http: [
+          exchange('req_invoice_issue', 'POST', '/api/invoices/inv_007/issue', 409, invoiceLockConflictDoc(), '{}'),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/pricing_revision_mismatch.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_pricing', 'req_pricing_config', '/api/pricing/config', pricingConfigDoc());
+      doc.steps.push(click('action_select_price_book_customer'));
+      doc.steps.push(input('input_price_book_name', 'Customer Override C18'));
+      doc.steps.push(input('input_labor_rate_hourly', '118.00'));
+      doc.steps.push(input('input_travel_fee', '33.00'));
+      doc.steps.push(click('action_pricing_conflict', {
+        http: [
+          exchange(
+            'req_pricing_update_conflict',
+            'PATCH',
+            '/api/pricing/config/conflict',
+            409,
+            pricingUpdateConflictDoc(),
+            draftsText((drafts) => {
+              drafts.price_book_name = 'Customer Override C18';
+              drafts.labor_rate_hourly = '118.00';
+              drafts.travel_fee = '33.00';
+            }),
+          ),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/manager_finance_dashboard.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_finance', 'req_finance_summary', '/api/finance/summary', financeSummaryDoc());
+      doc.steps.push(click('action_select_finance_branch_north'));
+      doc.steps.push(click('action_select_finance_branch_south'));
+      doc.steps.push(click('action_select_finance_global'));
+      doc.steps.push(click('action_finance_receivables_refresh', {
+        http: [
+          exchange('req_finance_receivables', 'GET', '/api/finance/receivables', 200, financeReceivablesDoc()),
+        ],
+      }));
+      doc.steps.push(click('action_finance_refresh', {
+        http: [
+          exchange('req_finance_summary', 'GET', '/api/finance/summary', 200, financeSummaryDoc()),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/payment_revision_conflict.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_invoices', 'req_invoice_list', '/api/invoices', invoiceListDoc());
+      doc.steps.push(click('action_select_invoice_inv_005', {
+        http: [
+          exchange('req_invoice_detail', 'GET', '/api/invoices/inv_005', 200, invoiceDetailMap.inv_005),
+        ],
+      }));
+      doc.steps.push(input('input_payment_amount', '220.00'));
+      doc.steps.push(input('input_payment_method', 'ach'));
+      doc.steps.push(input('input_payment_reference', 'ACH-55201'));
+      doc.steps.push(click('action_invoice_payment', {
+        http: [
+          exchange(
+            'req_invoice_payment',
+            'POST',
+            '/api/invoices/inv_005/payments',
+            409,
+            paymentRevisionConflictDoc(),
+            draftsText((drafts) => {
+              drafts.payment_amount = '220.00';
+              drafts.payment_method = 'ach';
+              drafts.payment_reference = 'ACH-55201';
+            }),
+          ),
+        ],
+      }));
+      return doc;
+    },
   },
 ];
 
+const selectedTraces = traceFilter == null
+  ? traces
+  : traces.filter((trace) => path.basename(trace.path).includes(traceFilter));
+
+if (selectedTraces.length === 0) {
+  process.stderr.write(`no traces matched filter: ${traceFilter}\n`);
+  process.exit(1);
+}
+
 const goldenFailures = [];
-for (const trace of traces) {
+for (const trace of selectedTraces) {
   const existingDoc = fs.existsSync(trace.path)
     ? JSON.parse(fs.readFileSync(trace.path, 'utf8'))
     : null;
-  const doc = updateGoldenEnabled || existingDoc == null
-    ? mergeExistingGoldenFrames(
-        normalizeTraceStates(trace.build(traceDoc())),
-        existingDoc,
-      )
-    : existingDoc;
+  const generatedDoc = trace.postprocess != null
+    ? trace.postprocess(normalizeTraceStates(trace.build(traceDoc())))
+    : normalizeTraceStates(trace.build(traceDoc()));
+  const doc = updateGoldenEnabled || authoredOnly
+    ? generatedDoc
+    : existingDoc == null
+      ? generatedDoc
+      : mergeExistingGoldenFrames(generatedDoc, existingDoc);
   writeTrace(trace.path, doc);
   if (updateGoldenEnabled) {
     try {
       updateGolden(trace.path);
     } catch (error) {
+      writeTrace(trace.path, generatedDoc);
       goldenFailures.push({
         path: trace.path,
         message: error instanceof Error ? error.message : String(error),

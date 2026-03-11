@@ -1,0 +1,171 @@
+{
+  "schema_version": "x07.x07ast@0.5.0",
+  "kind": "module",
+  "module_id": "finance_summary",
+  "imports": [
+    "demo_seed",
+    "errors"
+  ],
+  "decls": [
+    {
+      "kind": "export",
+      "names": [
+        "finance_summary.can_handle_v1",
+        "finance_summary.handle_v1"
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "finance_summary.can_handle_v1",
+      "params": [
+        {
+          "name": "method_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "i32",
+      "body": [
+        "if",
+        [
+          "view.eq",
+          "method_json",
+          [
+            "bytes.view_lit",
+            "\"GET\""
+          ]
+        ],
+        [
+          "if",
+          [
+            "view.eq",
+            "path_json",
+            [
+              "bytes.view_lit",
+              "\"/api/finance/summary\""
+            ]
+          ],
+          1,
+          [
+            "if",
+            [
+              "view.eq",
+              "path_json",
+              [
+                "bytes.view_lit",
+                "\"/api/finance/receivables\""
+              ]
+            ],
+            1,
+            0
+          ]
+        ],
+        0
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "finance_summary.handle_v1",
+      "params": [
+        {
+          "name": "req_id_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes",
+      "body": [
+        "if",
+        [
+          "view.eq",
+          "path_json",
+          [
+            "bytes.view_lit",
+            "\"/api/finance/summary\""
+          ]
+        ],
+        [
+          "begin",
+          [
+            "let",
+            "finance_summary_json",
+            [
+              "demo_seed.finance_summary_body_v1"
+            ]
+          ],
+          [
+            "errors.response_v1",
+            "req_id_json",
+            [
+              "bytes.view_lit",
+              "200"
+            ],
+            [
+              "bytes.view",
+              "finance_summary_json"
+            ]
+          ]
+        ],
+        [
+          "if",
+          [
+            "view.eq",
+            "path_json",
+            [
+              "bytes.view_lit",
+              "\"/api/finance/receivables\""
+            ]
+          ],
+          [
+            "begin",
+            [
+              "let",
+              "finance_receivables_json",
+              [
+                "demo_seed.finance_receivables_body_v1"
+              ]
+            ],
+            [
+              "errors.response_v1",
+              "req_id_json",
+              [
+                "bytes.view_lit",
+                "200"
+              ],
+              [
+                "bytes.view",
+                "finance_receivables_json"
+              ]
+            ]
+          ],
+          [
+            "errors.error_response_v1",
+            "req_id_json",
+            [
+              "bytes.view_lit",
+              "404"
+            ],
+            [
+              "bytes.view_lit",
+              "\"finance_not_found\""
+            ],
+            [
+              "bytes.view_lit",
+              "\"Finance route not found\""
+            ],
+            [
+              "bytes.view_lit",
+              "\"backend\""
+            ]
+          ]
+        ]
+      ]
+    }
+  ]
+}

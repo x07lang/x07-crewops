@@ -35,7 +35,7 @@
                   {
                     "k": "text",
                     "key": "header_work",
-                    "text": "Work Order WO-1201 | Leak follow-up"
+                    "text": "Work Order WO | Work order"
                   }
                 ],
                 "k": "el",
@@ -356,7 +356,7 @@
                   {
                     "k": "text",
                     "key": "nav_card",
-                    "text": "Navigate"
+                    "text": "Workspace"
                   }
                 ],
                 "k": "el",
@@ -382,111 +382,366 @@
                       {
                         "children": [
                           {
-                            "k": "text",
-                            "key": "text",
-                            "text": "Today"
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Today"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_today",
+                            "on": [
+                              {
+                                "target": "nav_today",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
+                          },
+                          {
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Dispatch"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_dispatch",
+                            "on": [
+                              {
+                                "target": "nav_dispatch",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
+                          },
+                          {
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Review"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_review",
+                            "on": [
+                              {
+                                "target": "nav_review",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
                           }
                         ],
                         "k": "el",
-                        "key": "nav_today",
-                        "on": [
-                          {
-                            "target": "nav_today",
-                            "type": "click"
-                          }
-                        ],
+                        "key": "nav_row_one_fragment",
+                        "on": [],
                         "props": {
-                          "attrs": {
-                            "type": "button"
-                          },
-                          "class": [
-                            "button"
-                          ],
+                          "attrs": {},
+                          "class": [],
                           "style": {
-                            "background": "#a04b2f",
-                            "border": "1px solid #7b3017",
-                            "border-radius": "999px",
-                            "color": "#fff8ef",
-                            "margin-bottom": "8px",
-                            "margin-right": "8px",
-                            "padding": "10px 14px"
+                            "display": "contents"
                           }
                         },
-                        "tag": "button"
+                        "tag": "x07-fragment"
                       },
                       {
                         "children": [
                           {
-                            "k": "text",
-                            "key": "text",
-                            "text": "Dispatch"
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Manager"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_manager",
+                            "on": [
+                              {
+                                "target": "nav_manager",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
+                          },
+                          {
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Activity"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_activity",
+                            "on": [
+                              {
+                                "target": "nav_activity",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
+                          },
+                          {
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Customers"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_customers",
+                            "on": [
+                              {
+                                "target": "nav_customers",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
                           }
                         ],
                         "k": "el",
-                        "key": "nav_dispatch",
-                        "on": [
-                          {
-                            "target": "nav_dispatch",
-                            "type": "click"
-                          }
-                        ],
+                        "key": "nav_row_two_fragment",
+                        "on": [],
                         "props": {
-                          "attrs": {
-                            "type": "button"
-                          },
-                          "class": [
-                            "button"
-                          ],
+                          "attrs": {},
+                          "class": [],
                           "style": {
-                            "background": "#a04b2f",
-                            "border": "1px solid #7b3017",
-                            "border-radius": "999px",
-                            "color": "#fff8ef",
-                            "margin-bottom": "8px",
-                            "margin-right": "8px",
-                            "padding": "10px 14px"
+                            "display": "contents"
                           }
                         },
-                        "tag": "button"
+                        "tag": "x07-fragment"
                       },
                       {
                         "children": [
                           {
-                            "k": "text",
-                            "key": "text",
-                            "text": "Review"
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Finance"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_finance",
+                            "on": [
+                              {
+                                "target": "nav_finance",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
+                          },
+                          {
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Pricing"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_pricing",
+                            "on": [
+                              {
+                                "target": "nav_pricing",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
+                          },
+                          {
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Invoices"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_invoices",
+                            "on": [
+                              {
+                                "target": "nav_invoices",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
                           }
                         ],
                         "k": "el",
-                        "key": "nav_review",
-                        "on": [
-                          {
-                            "target": "nav_review",
-                            "type": "click"
-                          }
-                        ],
+                        "key": "nav_row_three_fragment",
+                        "on": [],
                         "props": {
-                          "attrs": {
-                            "type": "button"
-                          },
-                          "class": [
-                            "button"
-                          ],
+                          "attrs": {},
+                          "class": [],
                           "style": {
-                            "background": "#a04b2f",
-                            "border": "1px solid #7b3017",
-                            "border-radius": "999px",
-                            "color": "#fff8ef",
-                            "margin-bottom": "8px",
-                            "margin-right": "8px",
-                            "padding": "10px 14px"
+                            "display": "contents"
                           }
                         },
-                        "tag": "button"
+                        "tag": "x07-fragment"
                       }
                     ],
                     "k": "el",
-                    "key": "nav_row_one_fragment",
+                    "key": "nav_upper_rows_fragment",
                     "on": [],
                     "props": {
                       "attrs": {},
@@ -502,231 +757,211 @@
                       {
                         "children": [
                           {
-                            "k": "text",
-                            "key": "text",
-                            "text": "Manager"
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Receivables"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_receivables",
+                            "on": [
+                              {
+                                "target": "nav_receivables",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
+                          },
+                          {
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Exports"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_exports",
+                            "on": [
+                              {
+                                "target": "nav_exports",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
+                          },
+                          {
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Settings"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_settings",
+                            "on": [
+                              {
+                                "target": "nav_settings",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
                           }
                         ],
                         "k": "el",
-                        "key": "nav_manager",
-                        "on": [
-                          {
-                            "target": "nav_manager",
-                            "type": "click"
-                          }
-                        ],
+                        "key": "nav_row_four_fragment",
+                        "on": [],
                         "props": {
-                          "attrs": {
-                            "type": "button"
-                          },
-                          "class": [
-                            "button"
-                          ],
+                          "attrs": {},
+                          "class": [],
                           "style": {
-                            "background": "#a04b2f",
-                            "border": "1px solid #7b3017",
-                            "border-radius": "999px",
-                            "color": "#fff8ef",
-                            "margin-bottom": "8px",
-                            "margin-right": "8px",
-                            "padding": "10px 14px"
+                            "display": "contents"
                           }
                         },
-                        "tag": "button"
+                        "tag": "x07-fragment"
                       },
                       {
                         "children": [
                           {
-                            "k": "text",
-                            "key": "text",
-                            "text": "Activity"
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Sites"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_sites",
+                            "on": [
+                              {
+                                "target": "nav_sites",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
+                          },
+                          {
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Assets"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_assets",
+                            "on": [
+                              {
+                                "target": "nav_assets",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
                           }
                         ],
                         "k": "el",
-                        "key": "nav_activity",
-                        "on": [
-                          {
-                            "target": "nav_activity",
-                            "type": "click"
-                          }
-                        ],
+                        "key": "nav_row_five_fragment",
+                        "on": [],
                         "props": {
-                          "attrs": {
-                            "type": "button"
-                          },
-                          "class": [
-                            "button"
-                          ],
+                          "attrs": {},
+                          "class": [],
                           "style": {
-                            "background": "#a04b2f",
-                            "border": "1px solid #7b3017",
-                            "border-radius": "999px",
-                            "color": "#fff8ef",
-                            "margin-bottom": "8px",
-                            "margin-right": "8px",
-                            "padding": "10px 14px"
+                            "display": "contents"
                           }
                         },
-                        "tag": "button"
-                      },
-                      {
-                        "children": [
-                          {
-                            "k": "text",
-                            "key": "text",
-                            "text": "Customers"
-                          }
-                        ],
-                        "k": "el",
-                        "key": "nav_customers",
-                        "on": [
-                          {
-                            "target": "nav_customers",
-                            "type": "click"
-                          }
-                        ],
-                        "props": {
-                          "attrs": {
-                            "type": "button"
-                          },
-                          "class": [
-                            "button"
-                          ],
-                          "style": {
-                            "background": "#a04b2f",
-                            "border": "1px solid #7b3017",
-                            "border-radius": "999px",
-                            "color": "#fff8ef",
-                            "margin-bottom": "8px",
-                            "margin-right": "8px",
-                            "padding": "10px 14px"
-                          }
-                        },
-                        "tag": "button"
+                        "tag": "x07-fragment"
                       }
                     ],
                     "k": "el",
-                    "key": "nav_row_two_fragment",
-                    "on": [],
-                    "props": {
-                      "attrs": {},
-                      "class": [],
-                      "style": {
-                        "display": "contents"
-                      }
-                    },
-                    "tag": "x07-fragment"
-                  },
-                  {
-                    "children": [
-                      {
-                        "children": [
-                          {
-                            "k": "text",
-                            "key": "text",
-                            "text": "Sites"
-                          }
-                        ],
-                        "k": "el",
-                        "key": "nav_sites",
-                        "on": [
-                          {
-                            "target": "nav_sites",
-                            "type": "click"
-                          }
-                        ],
-                        "props": {
-                          "attrs": {
-                            "type": "button"
-                          },
-                          "class": [
-                            "button"
-                          ],
-                          "style": {
-                            "background": "#a04b2f",
-                            "border": "1px solid #7b3017",
-                            "border-radius": "999px",
-                            "color": "#fff8ef",
-                            "margin-bottom": "8px",
-                            "margin-right": "8px",
-                            "padding": "10px 14px"
-                          }
-                        },
-                        "tag": "button"
-                      },
-                      {
-                        "children": [
-                          {
-                            "k": "text",
-                            "key": "text",
-                            "text": "Assets"
-                          }
-                        ],
-                        "k": "el",
-                        "key": "nav_assets",
-                        "on": [
-                          {
-                            "target": "nav_assets",
-                            "type": "click"
-                          }
-                        ],
-                        "props": {
-                          "attrs": {
-                            "type": "button"
-                          },
-                          "class": [
-                            "button"
-                          ],
-                          "style": {
-                            "background": "#a04b2f",
-                            "border": "1px solid #7b3017",
-                            "border-radius": "999px",
-                            "color": "#fff8ef",
-                            "margin-bottom": "8px",
-                            "margin-right": "8px",
-                            "padding": "10px 14px"
-                          }
-                        },
-                        "tag": "button"
-                      },
-                      {
-                        "children": [
-                          {
-                            "k": "text",
-                            "key": "text",
-                            "text": "Settings"
-                          }
-                        ],
-                        "k": "el",
-                        "key": "nav_settings",
-                        "on": [
-                          {
-                            "target": "nav_settings",
-                            "type": "click"
-                          }
-                        ],
-                        "props": {
-                          "attrs": {
-                            "type": "button"
-                          },
-                          "class": [
-                            "button"
-                          ],
-                          "style": {
-                            "background": "#a04b2f",
-                            "border": "1px solid #7b3017",
-                            "border-radius": "999px",
-                            "color": "#fff8ef",
-                            "margin-bottom": "8px",
-                            "margin-right": "8px",
-                            "padding": "10px 14px"
-                          }
-                        },
-                        "tag": "button"
-                      }
-                    ],
-                    "k": "el",
-                    "key": "nav_row_three_fragment",
+                    "key": "nav_lower_rows_fragment",
                     "on": [],
                     "props": {
                       "attrs": {},
@@ -1043,7 +1278,7 @@
                           {
                             "k": "text",
                             "key": "wo_priority",
-                            "text": "Priority: medium | Day: 2026-03-10"
+                            "text": "Priority: normal | Day: 2026-03-10"
                           }
                         ],
                         "k": "el",
@@ -1067,7 +1302,7 @@
                           {
                             "k": "text",
                             "key": "wo_template",
-                            "text": "Template: Preventive Maintenance | Window: 10:00-12:00"
+                            "text": "Template: Checklist | Window: Window"
                           }
                         ],
                         "k": "el",
@@ -1785,7 +2020,7 @@
                               {
                                 "k": "text",
                                 "key": "text",
-                                "text": "Add MERV 13 Filter"
+                                "text": "Add Filter"
                               }
                             ],
                             "k": "el",
@@ -1820,7 +2055,7 @@
                               {
                                 "k": "text",
                                 "key": "text",
-                                "text": "Add Drive Belt A42"
+                                "text": "Add Belt"
                               }
                             ],
                             "k": "el",

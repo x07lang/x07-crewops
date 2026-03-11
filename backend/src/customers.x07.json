@@ -1,0 +1,328 @@
+{
+  "schema_version": "x07.x07ast@0.5.0",
+  "kind": "module",
+  "module_id": "customers",
+  "imports": [
+    "backend_helpers",
+    "demo_seed",
+    "errors"
+  ],
+  "decls": [
+    {
+      "kind": "export",
+      "names": [
+        "customers.can_handle_v1",
+        "customers.handle_v1"
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "customers._extract_customer_id_v1",
+      "params": [
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes",
+      "body": [
+        "begin",
+        [
+          "let",
+          "prefix_json",
+          [
+            "bytes.view_lit",
+            "\"/api/customers/"
+          ]
+        ],
+        [
+          "let",
+          "suffix_json",
+          [
+            "bytes.view_lit",
+            "/account\""
+          ]
+        ],
+        [
+          "let",
+          "prefix_len",
+          [
+            "view.len",
+            "prefix_json"
+          ]
+        ],
+        [
+          "let",
+          "suffix_len",
+          [
+            "view.len",
+            "suffix_json"
+          ]
+        ],
+        [
+          "let",
+          "path_len",
+          [
+            "view.len",
+            "path_json"
+          ]
+        ],
+        [
+          "view.to_bytes",
+          [
+            "view.slice",
+            "path_json",
+            "prefix_len",
+            [
+              "-",
+              [
+                "-",
+                "path_len",
+                "prefix_len"
+              ],
+              "suffix_len"
+            ]
+          ]
+        ]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "customers._matches_account_v1",
+      "params": [
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "i32",
+      "body": [
+        "begin",
+        [
+          "let",
+          "prefix_json",
+          [
+            "bytes.view_lit",
+            "\"/api/customers/"
+          ]
+        ],
+        [
+          "let",
+          "suffix_json",
+          [
+            "bytes.view_lit",
+            "/account\""
+          ]
+        ],
+        [
+          "let",
+          "prefix_len",
+          [
+            "view.len",
+            "prefix_json"
+          ]
+        ],
+        [
+          "let",
+          "suffix_len",
+          [
+            "view.len",
+            "suffix_json"
+          ]
+        ],
+        [
+          "let",
+          "path_len",
+          [
+            "view.len",
+            "path_json"
+          ]
+        ],
+        [
+          "if",
+          [
+            ">=",
+            "path_len",
+            [
+              "+",
+              [
+                "+",
+                "prefix_len",
+                "suffix_len"
+              ],
+              2
+            ]
+          ],
+          [
+            "if",
+            [
+              "view.eq",
+              [
+                "view.slice",
+                "path_json",
+                0,
+                "prefix_len"
+              ],
+              "prefix_json"
+            ],
+            [
+              "view.eq",
+              [
+                "view.slice",
+                "path_json",
+                [
+                  "-",
+                  "path_len",
+                  "suffix_len"
+                ],
+                "suffix_len"
+              ],
+              "suffix_json"
+            ],
+            0
+          ],
+          0
+        ]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "customers.can_handle_v1",
+      "params": [
+        {
+          "name": "method_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "i32",
+      "body": [
+        "if",
+        [
+          "view.eq",
+          "method_json",
+          [
+            "bytes.view_lit",
+            "\"GET\""
+          ]
+        ],
+        [
+          "customers._matches_account_v1",
+          "path_json"
+        ],
+        0
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "customers.handle_v1",
+      "params": [
+        {
+          "name": "req_id_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes",
+      "body": [
+        "begin",
+        [
+          "let",
+          "customer_id_raw_json",
+          [
+            "customers._extract_customer_id_v1",
+            "path_json"
+          ]
+        ],
+        [
+          "let",
+          "customer_account_map_json",
+          [
+            "demo_seed.customer_account_map_body_v1"
+          ]
+        ],
+        [
+          "let",
+          "body_json",
+          [
+            "backend_helpers.extract_map_entry_v1",
+            [
+              "bytes.view",
+              "customer_account_map_json"
+            ],
+            [
+              "bytes.view",
+              "customer_id_raw_json"
+            ]
+          ]
+        ],
+        [
+          "begin",
+          [
+            "let",
+            "_x07_tmp_copy_decls_4_body_4",
+            [
+              "view.to_bytes",
+              [
+                "bytes.view",
+                "body_json"
+              ]
+            ]
+          ],
+          [
+            "if",
+            [
+              "view.eq",
+              [
+                "bytes.view",
+                "_x07_tmp_copy_decls_4_body_4"
+              ],
+              [
+                "bytes.view_lit",
+                "ERR"
+              ]
+            ],
+            [
+              "errors.error_response_v1",
+              "req_id_json",
+              [
+                "bytes.view_lit",
+                "404"
+              ],
+              [
+                "bytes.view_lit",
+                "\"customer_account_not_found\""
+              ],
+              [
+                "bytes.view_lit",
+                "\"Customer account was not found\""
+              ],
+              [
+                "bytes.view_lit",
+                "\"backend\""
+              ]
+            ],
+            [
+              "errors.response_v1",
+              "req_id_json",
+              [
+                "bytes.view_lit",
+                "200"
+              ],
+              [
+                "bytes.view",
+                "body_json"
+              ]
+            ]
+          ]
+        ]
+      ]
+    }
+  ]
+}
