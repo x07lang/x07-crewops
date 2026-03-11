@@ -1,0 +1,461 @@
+{
+  "decls": [
+    {
+      "kind": "export",
+      "names": [
+        "drafts.default_json_v1",
+        "drafts.doc_v1"
+      ]
+    },
+    {
+      "body": [
+        "bytes.lit",
+        "{\"customer_name\":\"\",\"site_name\":\"\",\"asset_name\":\"\",\"work_order_title\":\"\",\"dispatch_note\":\"\",\"review_note\":\"\",\"response_note\":\"\",\"schedule_window\":\"10:00-12:00\",\"priority\":\"medium\",\"location_policy\":\"optional\",\"signature_policy\":\"required\",\"review_policy\":\"required\",\"expected_duration\":\"90\",\"branch_id\":\"branch_north\",\"team_id\":\"team_north_alpha\",\"activity_scope\":\"all\"}"
+      ],
+      "kind": "defn",
+      "name": "drafts.default_json_v1",
+      "params": [],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "out",
+          [
+            "std.vec.with_capacity",
+            1024
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              "{\"customer_name\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "customer_name_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"site_name\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "site_name_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"asset_name\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "asset_name_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"work_order_title\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "work_order_title_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"dispatch_note\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "dispatch_note_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"review_note\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "review_note_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"response_note\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "response_note_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"schedule_window\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "schedule_window_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"priority\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "priority_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"location_policy\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "location_policy_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"signature_policy\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "signature_policy_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"review_policy\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "review_policy_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"expected_duration\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "expected_duration_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"branch_id\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "branch_id_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"team_id\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "team_id_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"activity_scope\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "activity_scope_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              "}"
+            ]
+          ]
+        ],
+        [
+          "std.vec.as_bytes",
+          "out"
+        ]
+      ],
+      "kind": "defn",
+      "name": "drafts.doc_v1",
+      "params": [
+        {
+          "name": "customer_name_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "site_name_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "asset_name_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "work_order_title_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "dispatch_note_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "review_note_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "response_note_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "schedule_window_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "priority_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "location_policy_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "signature_policy_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "review_policy_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "expected_duration_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "branch_id_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "team_id_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "activity_scope_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    }
+  ],
+  "imports": [
+    "std.vec"
+  ],
+  "kind": "module",
+  "module_id": "drafts",
+  "schema_version": "x07.x07ast@0.5.0"
+}

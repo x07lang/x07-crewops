@@ -1,42 +1,48 @@
 # CrewOps Architecture
 
-CrewOps is a single-repo showcase app that combines the `x07_atlas` full-stack app shape with the multi-device packaging flow used by `x07_field_notes`. One reducer drives all shells, one deterministic backend serves demo and execution data, and the same app bundle is packaged for desktop, iOS, and Android.
+CrewOps `v0.3.0` is a single-repo, single-reducer, single-backend operations app. The M4 step keeps the same deterministic web or device showcase shape from earlier milestones, but it now exposes four role surfaces, shared activity and alert state, supervisor review and correction loops, and manager rollups on top of the technician execution foundation.
 
 ## Repo Layers
 
 - [`frontend/`](../frontend)
-  - reducer, execution flow, role shells, tests, and the `std-web-ui@0.2.1` dependency
+  - reducer modules, role shells, tests, and the `std-web-ui@0.2.1` dependency
 - [`backend/`](../backend)
-  - deterministic API handlers for the current read-only and execution surfaces
+  - deterministic API handlers for bootstrap, execution, dispatch, review, corrections, activity, manager summary, and sync
 - [`arch/`](../arch)
-  - wasm, web-ui, app, device, SLO, and provenance profiles
+  - web-ui, app, wasm, device, SLO, and provenance profiles
 - [`tests/`](../tests)
-  - trace replay fixtures, generated regressions, and deterministic seed files
-- [`scripts/ci/check_all.sh`](../scripts/ci/check_all.sh)
-  - canonical build, test, pack, provenance, deploy-plan, and device gate
+  - trace replay assets, generated regression artifacts, and deterministic seed files
+- [`scripts/ci/`](../scripts/ci)
+  - seed regeneration and the canonical build or test or package gate
 
 ## Frontend Reducer
 
 The reducer entrypoint is [`frontend/src/app.x07.json`](../frontend/src/app.x07.json).
 
-Primary modules:
+The app still runs one shared state tree instead of one reducer per role. M4 extends that tree with new operational branches rather than duplicating state across shells.
 
-- [`frontend/src/ui.x07.json`](../frontend/src/ui.x07.json)
-  - reusable primitives for buttons, text, inputs, layout boxes, and status presentation
+Primary frontend modules:
+
 - [`frontend/src/routes.x07.json`](../frontend/src/routes.x07.json)
-  - role-aware navigation and route selection
-- [`frontend/src/state.x07.json`](../frontend/src/state.x07.json)
-  - default document shape and reducer-facing state branches
-- [`frontend/src/entities.x07.json`](../frontend/src/entities.x07.json)
-  - normalized maps, selected-record helpers, and summary defaults
-- [`frontend/src/execution.x07.json`](../frontend/src/execution.x07.json)
-  - execution-state document builders for checklist progress, labor, parts, signatures, evidence, location, autosave, and validation
+  - role-aware route selection for dispatcher, supervisor, manager, and technician
 - [`frontend/src/session.x07.json`](../frontend/src/session.x07.json)
-  - dev login payloads and role switching
-- [`frontend/src/bootstrap.x07.json`](../frontend/src/bootstrap.x07.json)
-  - cache key and startup source tracking
+  - dev login payloads and deterministic role switching
+- [`frontend/src/state.x07.json`](../frontend/src/state.x07.json)
+  - default document shape, `0.3.0` app metadata, and M4 route or filter defaults
+- [`frontend/src/entities.x07.json`](../frontend/src/entities.x07.json)
+  - normalized entity maps, indexes, and summary defaults for multi-role views
+- [`frontend/src/drafts.x07.json`](../frontend/src/drafts.x07.json)
+  - intake and correction-related draft documents
+- [`frontend/src/execution.x07.json`](../frontend/src/execution.x07.json)
+  - technician execution state, validation, evidence, location, and submission helpers
 - [`frontend/src/sync.x07.json`](../frontend/src/sync.x07.json)
-  - pending-op queue, pull/push bookkeeping, and conflict banner state
+  - queue state, unread counters, and deterministic conflict banners
+- [`frontend/src/shell_dispatcher.x07.json`](../frontend/src/shell_dispatcher.x07.json)
+  - dispatch board identity and copy
+- [`frontend/src/shell_supervisor.x07.json`](../frontend/src/shell_supervisor.x07.json)
+  - review queue identity and copy
+- [`frontend/src/shell_manager.x07.json`](../frontend/src/shell_manager.x07.json)
+  - manager dashboard identity and copy
 
 The reducer state is organized into:
 
@@ -49,121 +55,116 @@ The reducer state is organized into:
 - `settings`
 - `diagnostics`
 - `summary`
+- `drafts`
 - `template`
 - `execution`
 - `meta`
 
-Technician execution centers the current field workflow:
+## Role Surfaces
 
-- checklist fields are template-driven and validated in the reducer
-- edits queue autosave, offline draft ops, and reconnect sync without duplicating payload builders
-- completion and blocked flows share the same visit state machine, then branch on validation and policy
-- evidence capture/import, attachment registration/upload, and location-assisted check-in/out stay inside the same deterministic state tree
+### Technician
+
+- `today` remains the primary route.
+- Execution still owns checklist progression, evidence capture or import, signatures, check-in or check-out, blocked submission, autosave, offline queueing, and reconnect sync.
+- M4 adds reassignment awareness, correction-task resubmission context, and activity or alert unread state.
+
+### Dispatcher
+
+- `dispatch` is the primary route.
+- The dispatcher board reads normalized work orders, assignments, day filters, branch filters, team filters, priority, review state, and role-specific alerts.
+- Intake and editing flows live alongside assignment and reassignment APIs instead of separate admin tooling.
+
+### Supervisor
+
+- `review` is the primary route.
+- The supervisor surface reads `review_queue_items`, `review_decisions`, `correction_tasks`, and `correction_responses`.
+- Approve, reject, and request-correction actions all use deterministic backend responses with snapshot updates.
+
+### Manager
+
+- `manager` is the primary route.
+- Dashboard cards and drill-down views are driven by normalized summary structures such as `manager_metrics`, `branch_rollups`, `team_rollups`, and `dashboard_rollup`.
+- Managers also consume shared activity and alert state rather than a separate reporting app.
+
+### Shared Activity
+
+- `activity` is a shared route available across roles.
+- The reducer reads `activity_events`, `alerts`, `activity_by_role`, `alerts_by_role`, and unread counts from the same normalized seed snapshot and sync updates.
 
 ## Backend Surface
 
-The backend entrypoint is [`backend/src/app.x07.json`](../backend/src/app.x07.json). It routes deterministic request envelopes to small handlers:
+The backend entrypoint is [`backend/src/app.x07.json`](../backend/src/app.x07.json). It routes deterministic request envelopes to focused handlers:
 
-- [`backend/src/session.x07.json`](../backend/src/session.x07.json)
-  - `POST /api/session/dev-login`
 - [`backend/src/bootstrap.x07.json`](../backend/src/bootstrap.x07.json)
   - `GET /api/bootstrap`
   - `GET /api/meta/app`
-- [`backend/src/sync.x07.json`](../backend/src/sync.x07.json)
-  - `GET /api/sync/pull`
-  - `POST /api/sync/push`
-- [`backend/src/errors.x07.json`](../backend/src/errors.x07.json)
-  - shared error envelope with `code`, `message`, `details.request_id`, and `details.category`
-- [`backend/src/demo_seed.x07.json`](../backend/src/demo_seed.x07.json)
-  - deterministic JSON payloads derived from the checked-in seed fixture
-
-The backend keeps deterministic in-repo state, but it now exposes the full execution surface without adding a live database.
-
+- [`backend/src/session.x07.json`](../backend/src/session.x07.json)
+  - `POST /api/session/dev-login`
+- [`backend/src/work_orders.x07.json`](../backend/src/work_orders.x07.json)
+  - `POST /api/work-orders`
+  - `PATCH /api/work-orders/:id`
+  - `POST /api/work-orders/:id/assign`
+  - `POST /api/work-orders/:id/reassign`
+- [`backend/src/dispatch.x07.json`](../backend/src/dispatch.x07.json)
+  - `GET /api/dispatch/board`
+- [`backend/src/review.x07.json`](../backend/src/review.x07.json)
+  - `GET /api/review/queue`
+  - `POST /api/review/:visit_id/approve`
+  - `POST /api/review/:visit_id/reject`
+  - `POST /api/review/:visit_id/request-correction`
+- [`backend/src/corrections.x07.json`](../backend/src/corrections.x07.json)
+  - `POST /api/corrections/:id/resubmit`
+- [`backend/src/activity.x07.json`](../backend/src/activity.x07.json)
+  - `GET /api/activity/feed`
+- [`backend/src/manager_summary.x07.json`](../backend/src/manager_summary.x07.json)
+  - `GET /api/manager/summary`
 - [`backend/src/templates.x07.json`](../backend/src/templates.x07.json)
   - `GET /api/templates/:id`
 - [`backend/src/visits.x07.json`](../backend/src/visits.x07.json)
-  - `POST /api/visits/:id/check-in`
-  - `POST /api/visits/:id/save-draft`
-  - `POST /api/visits/:id/submit`
-  - `POST /api/visits/:id/block`
-  - `POST /api/visits/:id/check-out`
+  - technician execution routes
 - [`backend/src/attachments.x07.json`](../backend/src/attachments.x07.json)
-  - `POST /api/attachments/register`
-  - `PUT /api/attachments/:id/content`
+  - attachment registration and content upload
 - [`backend/src/sync.x07.json`](../backend/src/sync.x07.json)
   - `GET /api/sync/pull`
   - `POST /api/sync/push`
 
-## Bootstrap And Sync Flow
+The backend remains deterministic and seed-backed. It does not introduce a live database for M4, but it now returns richer role snapshots and operational response envelopes.
 
-Startup and execution sequence:
+## Seed, Bootstrap, And Sync
 
-1. The reducer initializes local defaults.
-2. The web-ui host loads cached bootstrap data from `local_kv` when present.
-3. The shell renders immediately with cached or empty state.
-4. The frontend calls `GET /api/bootstrap`.
-5. Fresh entities, indexes, summaries, templates, and visit execution metadata replace the bootstrap branch.
+The canonical demo data still starts in [`scripts/ci/seed_demo.sh`](../scripts/ci/seed_demo.sh), which regenerates:
 
-Execution sync sequence:
+- [`tests/fixtures/demo_org.json`](../tests/fixtures/demo_org.json)
+- [`backend/src/demo_seed.x07.json`](../backend/src/demo_seed.x07.json)
 
-1. Technician edits mark the execution branch dirty and queue autosave.
-2. Online autosave posts drafts directly; offline autosave writes a deterministic `pending_ops` envelope.
-3. Check-in, complete, blocked, check-out, and attachment ops join the same queue when offline.
-4. `POST /api/sync/push` drains queued visit and attachment ops when connectivity returns.
-5. `GET /api/sync/pull` returns the latest cursor plus any conflict banner metadata.
+M4 expands the generated snapshot to include:
 
-This keeps the execution loop deterministic while preserving the real app shape for later live persistence work.
+- assignments and assignment revisions
+- schedule windows and dispatch filters
+- review queue items and review decisions
+- correction tasks and correction responses
+- role-aware activity events and alerts
+- branch or team summaries, dashboard rollups, and workload snapshots
+- unread counts and conflict metadata under sync and summary branches
 
-## Design System
+Bootstrap still hydrates cache first and then HTTP when available. Sync still uses deterministic pull or push envelopes, but the envelope now carries richer server state such as unread counts, conflict fields, and M4 summaries.
 
-CrewOps uses one shared reducer shell with role-specific panels instead of separate apps.
+## CI And Release Shape
 
-- Technician shell
-  - queue-first layout optimized for smaller screens
-- Dispatcher shell
-  - board-first layout with status and assignment scanning
-- Manager shell
-  - summary cards and exception-focused metrics
-
-The current visual system uses a warm field-service palette with high-contrast action controls. Status styling is intentionally consistent across list rows, execution cards, sync banners, and trace snapshots so replay output stays stable.
-
-## Build And Packaging Pipeline
-
-Profile registries live under [`arch/`](../arch):
-
-- [`arch/web_ui/index.x07webui.json`](../arch/web_ui/index.x07webui.json)
-- [`arch/app/index.x07app.json`](../arch/app/index.x07app.json)
-- [`arch/device/index.x07device.json`](../arch/device/index.x07device.json)
-
-Current app profiles:
-
-- `crewops_dev`
-- `crewops_release`
-- `crewops_budget`
-
-Current device profiles:
-
-- `device_desktop_dev`
-- `device_ios_dev`
-- `device_android_dev`
-
-The pipeline in [`scripts/ci/check_all.sh`](../scripts/ci/check_all.sh) covers:
+[`scripts/ci/check_all.sh`](../scripts/ci/check_all.sh) remains the authoritative CrewOps gate for:
 
 - lock and profile validation
 - frontend and backend test harness runs
 - app build and serve smoke
 - trace replay and generated regression replay
-- execution, offline, denied-permission, and reconnect replay coverage
-- app pack, verify, provenance attest/verify, deploy plan, and SLO evaluation
-- device build/verify for desktop, iOS, and Android
+- pack, verify, provenance, deploy-plan, and SLO evaluation
 - desktop headless smoke
 - iOS and Android package generation
 
-The only intentional gap is the local `x07-platform` smoke, which remains a documented TODO until the platform probe succeeds in the workspace.
+The `v0.3.0` release bar is the M4 multi-role matrix: dispatcher control, supervisor review and correction loops, manager drill-down, shared activity and alerts, and technician offline or evidence flows. The only intentional workspace-local gap remains the optional `x07-platform` smoke probe.
 
 ## Current Boundaries
 
-- No live database or multi-user sync backend
-- No notifications, barcode scan, or background sync daemon
-- Dispatcher and manager surfaces remain read-only while technician execution is active
-- iOS and Android dev profiles still require a reachable backend URL before packaging for a real simulator or device
+- CrewOps is still seed-backed and deterministic rather than database-backed.
+- The mobile dev profiles still require a reachable backend URL before real simulator or device packaging.
+- Release and device packaging use the same reducer bundle; there is no dynamic code loading or runtime WASM replacement.

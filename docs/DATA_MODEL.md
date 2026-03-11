@@ -1,245 +1,209 @@
 # CrewOps Data Model
 
-CrewOps now ships the current technician execution seed. The generated source of truth lives in [`tests/fixtures/demo_org.json`](../tests/fixtures/demo_org.json) and is mirrored into [`backend/src/demo_seed.x07.json`](../backend/src/demo_seed.x07.json) for deterministic backend bootstrap and replay flows.
+CrewOps now ships the M4 multi-role demo seed. The handwritten generator is [`scripts/ci/seed_demo.sh`](../scripts/ci/seed_demo.sh). It regenerates the canonical fixture [`tests/fixtures/demo_org.json`](../tests/fixtures/demo_org.json) and mirrors the same tenant shape into [`backend/src/demo_seed.x07.json`](../backend/src/demo_seed.x07.json) for deterministic backend bootstrap and replay flows.
 
 ## Seed Scope
 
 - `1` organization: `org_demo`
 - `2` branches: `branch_north`, `branch_south`
 - `3` teams: `team_north_alpha`, `team_north_beta`, `team_south_gamma`
-- `10` users: `8` technicians, `1` dispatcher, `1` manager
+- `11` users: `8` technicians, `1` dispatcher, `1` supervisor, `1` manager
 - `20` customers
 - `30` sites
 - `60` assets
 - `25` work orders
 - `25` visits
+- `25` assignments
+- `25` schedule windows
+- `3` review queue items
+- `1` review decision
+- `1` correction task
+- `1` correction response
+- `25` activity events
+- `4` alerts
+- `1` SLA policy bundle
+- `2` branch summaries
+- `3` team summaries
+- `1` dashboard rollup
+- `3` workload snapshots
+- `1` dispatch filter profile
 - `3` checklist templates
 - `3` catalog parts
 
-The fixture top level uses `organization`, `branches`, `teams`, `users`, `customers`, `sites`, `assets`, `work_orders`, `visits`, `templates`, `parts_catalog`, `indexes`, and `summary`. The frontend normalizes those into reducer maps under `entities.*`, while execution-only state stays under the dedicated `execution` and `sync` branches.
+The generated fixture top level now includes:
 
-## Core Entities
+- `organization`
+- `branches`
+- `teams`
+- `users`
+- `customers`
+- `sites`
+- `assets`
+- `work_orders`
+- `visits`
+- `assignments`
+- `schedule_windows`
+- `templates`
+- `parts_catalog`
+- `review_queue_items`
+- `review_decisions`
+- `correction_tasks`
+- `correction_responses`
+- `activity_events`
+- `alerts`
+- `sla_policies`
+- `dispatch_filters`
+- `branch_summaries`
+- `team_summaries`
+- `dashboard_rollups`
+- `workload_snapshots`
+- `indexes`
+- `summary`
 
-### Organization, branches, teams, and users
+## Roles And Ownership
 
 - One organization owns all branches.
-- Each branch owns teams, customers, sites, and the primary branch assignment for users.
+- Each branch owns teams, customers, sites, and primary branch assignment for users.
 - Technician users belong to one team.
-- Dispatcher and manager demo users span all teams so the same seed supports all three shells.
+- Dispatcher, supervisor, and manager demo users span the full seeded organization so the same dataset drives all role shells.
 
-### Customers, sites, and assets
+The seeded role set is:
 
-- Customers belong to a branch.
-- Sites belong to one customer and one branch.
-- Assets belong to one site and inherit the customer and branch context through that site.
-- The reducer keeps supporting indexes for `assets_by_site` and `sites_by_customer`.
+- `technician`
+- `dispatcher`
+- `supervisor`
+- `manager`
 
-### Work orders
+## Core Operational Entities
 
-Each work order is the dispatcher-facing assignment envelope for one visitable task. The seeded shape includes:
+### Work orders and visits
+
+Work orders remain the primary operational envelope. In M4 they carry both technician execution context and dispatcher or supervisor control fields:
 
 - identity: `id`, `number`, `title`
-- scheduling: `scheduled_day`, `window`
-- routing: `branch_id`, `team_id`, `assignee_user_id`
+- ownership: `branch_id`, `team_id`, `assignee_user_id`
 - customer context: `customer_id`, `site_id`, `asset_id`
-- workflow control: `status`, `priority`, `sla_bucket`
+- scheduling: `scheduled_day`, `window`
+- status and priority: `status`, `priority`, `sla_bucket`
 - execution binding: `template_id`, `completion_policy`, `allowed_part_ids`
+- M4 control state: `assignment_revision`, `latest_assignment_id`, review-state indexes, and summary rollup participation
 
-`completion_policy` is duplicated at the work-order layer so scheduling surfaces can reason about required signoff, block reasons, and optional location capture without opening the template in detail.
+Visits remain the technician execution records attached to work orders. They still own the nested execution payload, but they now also participate in review, correction, activity, and alert flows.
 
-### Visits
+### Assignments and schedule windows
 
-Visits are the technician execution records attached to work orders. The seeded visit record carries:
-
-- assignment context: `work_order_id`, `user_id`, `team_id`, `branch_id`
-- field context: `site_id`, `asset_id`, `template_id`
-- planning: `planned_start`
-- coarse visit state: `state`
-- execution seed: `execution`
-
-Current seeded visit-state distribution:
-
-- `planned`: `10`
-- `logged`: `15`
-
-The coarse `state` stays aligned with the broader operational pipeline. Detailed technician progress lives inside the nested `execution` object.
-
-### Templates
-
-Checklist templates are first-class seeded entities under `entities.templates`. A template includes:
-
-- identity: `id`, `name`, `version`
-- `sections`
-- `completion_policy`
-- `evidence_policy`
-
-Each section contains ordered `fields` with:
+Assignments are first-class M4 records rather than implicit work-order fields. Each assignment captures:
 
 - `id`
-- `type`
-- `label`
-- `required`
-- optional `options` for choice fields
+- `work_order_id`
+- `assignee_user_id`
+- `team_id`
+- `branch_id`
+- `revision`
+- `scheduled_day`
+- `window`
+- `priority`
+- `changed_at`
 
-Current seeded templates:
+Schedule windows keep the dispatcher-facing planning window normalized separately from visit execution.
 
-- `tmpl_arrival`
-- `tmpl_pm`
-- `tmpl_closeout`
+### Review and correction loop
 
-The technician flow reads template structure directly from the entity map and does not duplicate template definitions into ad hoc frontend-only registries.
+Supervisor review is modeled by four connected entity families:
 
-### Parts catalog
+- `review_queue_items`
+- `review_decisions`
+- `correction_tasks`
+- `correction_responses`
 
-`entities.parts_catalog` is the seeded source for consumables referenced by visit execution. Each part record includes:
+These records let the app represent:
 
-- `id`
-- `sku`
-- `name`
-- `uom`
+- awaiting-review submissions
+- approval or rejection decisions
+- correction requests with reason codes and supervisor notes
+- technician resubmission back to the queue
 
-Work orders use `allowed_part_ids` to constrain which catalog entries can be added during execution.
+The current seeded review-state families in indexes are:
 
-## Execution Overlay
+- `not_ready`
+- `not_required`
+- `awaiting_review`
+- `approved`
+- `correction_requested`
+- `resubmitted`
 
-The current execution surface adds a reducer-owned document for the actively selected visit. The canonical default comes from [`frontend/src/execution.x07.json`](../frontend/src/execution.x07.json).
+### Activity and alerts
 
-Execution state includes:
+`activity_events` model role-visible operational feed items such as assignment, dispatch readiness, arrival, blocked work, submit, awaiting review, approval, and intake creation.
 
-- progress and save state:
-  - `status`
-  - `draft_status`
-  - `autosave_status`
-  - `unsaved`
-  - `last_action`
-  - `validation_error`
-- template binding and completion mode:
-  - `template_id`
-  - `completion_mode`
-  - `signature_required`
-  - `signature_status`
-- checklist fields:
-  - `arrival_ready`
-  - `temperature`
-  - `filter_condition`
-  - `findings`
-- technician work logging:
-  - `note`
-  - `labor_minutes`
-  - `labor_running`
-  - `labor_cycles`
-  - `parts_qty`
-  - `block_reason`
-- signature capture:
-  - `signature_name`
-  - `signature_role`
-  - `signature_strokes`
-- evidence capture/import:
-  - `capture_status`
-  - `capture_attachment`
-  - `import_status`
-  - `import_attachment`
-  - `blob_status`
-- permissions and location:
-  - `permission_status`
-  - `permission_state`
-  - `location_status`
-  - `checkin_location`
-  - `checkout_location_status`
-  - `checkout_location`
+`alerts` model higher-signal role-aware exceptions:
 
-Current seeded execution-status distribution on visits:
+- dispatcher overdue or SLA risk
+- supervisor review backlog
+- manager branch risk
+- technician reassignment
 
-- `planned`: `10`
-- `resume_required`: `15`
+Unread rollups are summarized under `summary.activity_unread` and mirrored into sync metadata.
 
-The reducer can move that execution branch through the technician flow without mutating the normalized seed entities directly until sync/persist effects complete.
+### Rollups and summaries
 
-## Attachment And Sync Envelopes
+M4 adds normalized management views rather than ad hoc joined blobs:
 
-### Attachment manifest
+- `branch_summaries`
+- `team_summaries`
+- `dashboard_rollups`
+- `workload_snapshots`
+- `sla_policies`
+- `dispatch_filters`
 
-The frontend uses a compact attachment document shape for capture/import cards:
+The `summary` branch exposes shell-facing aggregates:
 
-- `source`
-- `label`
-- `handle`
-- `size_bytes`
-- `upload_status`
-
-The backend registration response adds the server attachment envelope:
-
-- `attachment_id`
-- `status`
-- `upload_path`
-- `manifest`
-
-Upload completion is modeled separately with `attachment_id`, `status`, and `uploaded_at`.
-
-### Pending client ops
-
-Offline technician work is represented in `sync.pending_ops`. Each queued op includes:
-
-- `op_id`
-- `kind`
-- `entity_id`
-- `status`
-- `payload`
-
-The current seed and traces exercise at least these op families:
-
-- check-in
-- draft save
-- submit
-- sync push acceptance
-
-The reducer treats these as deterministic, replay-safe envelopes instead of mutating server-backed entities optimistically without a queue record.
+- `counts`
+- `status_counts`
+- `attention_work_orders`
+- `dispatcher_focus`
+- `manager_metrics`
+- `supervisor_metrics`
+- `technician_today`
+- `activity_unread`
+- `branch_rollups`
+- `team_rollups`
+- `dashboard_rollup`
 
 ## Reducer Maps And Indexes
 
-Normalized entity maps live under:
+The reducer normalizes seeded entities under `entities.*`. M4 requires more read-optimized indexes than the earlier technician-only flow.
 
-- `entities.org`
-- `entities.branches`
-- `entities.teams`
-- `entities.users`
-- `entities.customers`
-- `entities.sites`
-- `entities.assets`
-- `entities.work_orders`
-- `entities.visits`
-- `entities.templates`
-- `entities.parts_catalog`
-
-Read-optimized indexes stay separate under `indexes`:
+Current index families:
 
 - `work_orders_by_status`
 - `work_orders_by_assignee`
+- `work_orders_by_branch`
+- `work_orders_by_team`
+- `work_orders_by_day`
+- `work_orders_by_priority`
+- `work_orders_by_review_state`
+- `review_queue_by_status`
+- `alerts_by_role`
+- `activity_by_role`
 - `assets_by_site`
 - `sites_by_customer`
 
-The `summary` branch keeps shell-friendly aggregates such as counts, status counts, dispatcher focus rows, and technician-today groupings.
+These indexes let dispatcher, supervisor, manager, and technician shells read the same normalized source of truth without per-view scanning logic.
 
-## Relationship Invariants
+## Execution, Drafts, And Sync
 
-- IDs are deterministic, ASCII, and stable across regenerated fixtures.
-- Cross-entity references stay normalized by id.
-- Each work order points at exactly one customer, site, asset, technician, and template.
-- Each visit belongs to one work order and one technician.
-- Templates own checklist structure and evidence/completion policy.
-- Reducer-only execution state is separate from seeded entity maps and can be safely cached under `crewops.execution.state.v1`.
-- Storage, browser, desktop, iOS, Android, and replay flows all read the same seeded tenant shape.
+Technician execution still lives in the nested `execution` branch and selected visit state. M4 keeps that execution model but adds operational overlays rather than replacing it.
 
-## Roles
+Reducer-only operational state now includes:
 
-- `technician`
-  - primary surface: visit execution, evidence, signatures, offline queue, reconnect sync
-- `dispatcher`
-  - read-only dispatch board and assignment visibility during technician execution
-- `manager`
-  - read-only branch summary and exception visibility during technician execution
+- intake and correction drafts
+- review selection state
+- activity and alert selection state
+- unread counters
+- sync conflict fields such as `conflict_status`, `conflict_code`, and `conflict_entity_id`
 
-`POST /api/session/dev-login` still swaps between those roles deterministically for local replay and device packaging smoke.
+Pending client ops still live in `sync.pending_ops`. They remain deterministic envelopes, but the release bar now includes dispatch-related state changes, correction resubmission, and alert or activity propagation alongside technician offline work.
 
 ## Lifecycle Enums
 
@@ -257,42 +221,21 @@ The `summary` branch keeps shell-friendly aggregates such as counts, status coun
 - `closed`
 - `canceled`
 
-Seeded counts:
+### Role surface routing
 
-- `draft`: `1`
-- `scheduled`: `4`
-- `dispatched`: `4`
-- `en_route`: `2`
-- `on_site`: `2`
-- `blocked`: `2`
-- `completed`: `4`
-- `needs_review`: `3`
-- `invoiced`: `1`
-- `closed`: `1`
-- `canceled`: `1`
+- `technician` defaults to `today`
+- `dispatcher` defaults to `dispatch`
+- `supervisor` defaults to `review`
+- `manager` defaults to `manager`
 
-### Visit execution outcomes
+## Relationship Invariants
 
-Completion flows distinguish:
-
-- normal completion
-- blocked submission with required block reason
-- check-out with optional location capture
-
-Template and work-order completion policies currently default to:
-
-- signature required on completion
-- block reason required when blocked
-- location capture optional
-
-## Sync Scope
-
-The current sync surface expands beyond the earlier preference-only shell. The local/offline surface includes:
-
-- technician execution draft persistence
-- queued visit operations
-- attachment registration/upload progress
-- reconnect push and pull cursor advancement
-- deterministic conflict/status messaging in the reducer
-
-Dispatcher, manager, billing, review, and notification orchestration remain outside the current mutation scope.
+- IDs are deterministic, ASCII, and stable across regenerated fixtures.
+- Cross-entity references stay normalized by id.
+- Each work order points at exactly one customer, site, asset, assignee, team, branch, and template.
+- Each visit belongs to one work order and one technician assignee.
+- Assignment revisions are explicit and deterministic.
+- Review and correction entities link back to the originating visit or work order.
+- Activity and alerts are role-scoped rather than duplicated per shell.
+- Reducer-only drafts and execution state stay separate from seeded normalized entities.
+- Web, desktop, iOS, Android, and replay flows all consume the same tenant shape.

@@ -21,24 +21,38 @@ GENERATED_REGRESSION_UI="$ROOT/tests/regress/bootstrap_api_error.final.ui.json"
 PLATFORM_STATE_DIR="$BUILD_DIR/platform_state"
 PLATFORM_METRICS_DIR="$BUILD_DIR/platform_metrics"
 PLATFORM_TODO_REPORT="$REPORT_DIR/platform.smoke.todo.txt"
+TRACE_GENERATOR="$ROOT/scripts/generate_m4_traces.mjs"
 WASM_BACKEND_ROOT="${WASM_BACKEND_ROOT:-$ROOT/../x07-wasm-backend}"
 X07_PLATFORM_ROOT="${X07_PLATFORM_ROOT:-$ROOT/../x07-platform}"
 
-APP_PASSING_TRACES=(
+TRACE_FIXTURES=(
   "$ROOT/tests/traces/bootstrap_demo_happy.trace.json"
-  "$ROOT/tests/traces/bootstrap_cached_then_refresh.trace.json"
-  "$ROOT/tests/traces/dispatcher_board_filter.trace.json"
-  "$ROOT/tests/traces/technician_today_nav.trace.json"
-  "$ROOT/tests/traces/settings_role_switch.trace.json"
-  "$ROOT/tests/traces/check_in_happy.trace.json"
-  "$ROOT/tests/traces/checklist_draft_autosave.trace.json"
-  "$ROOT/tests/traces/offline_visit_complete_then_sync.trace.json"
-  "$ROOT/tests/traces/required_field_validation.trace.json"
-  "$ROOT/tests/traces/photo_capture_denied.trace.json"
-  "$ROOT/tests/traces/location_permission_denied.trace.json"
-  "$ROOT/tests/traces/attachment_retry_after_reconnect.trace.json"
-  "$ROOT/tests/traces/blocked_visit_submit.trace.json"
-  "$ROOT/tests/traces/evidence_capture_upload_happy.trace.json"
+  "$ROOT/tests/traces/dispatch_assign_happy.trace.json"
+  "$ROOT/tests/traces/dispatch_reassign_happy.trace.json"
+  "$ROOT/tests/traces/technician_reassigned_mid_draft.trace.json"
+  "$ROOT/tests/traces/supervisor_request_correction.trace.json"
+  "$ROOT/tests/traces/technician_correction_resubmit.trace.json"
+  "$ROOT/tests/traces/review_queue_filtering.trace.json"
+  "$ROOT/tests/traces/manager_dashboard_rollup.trace.json"
+  "$ROOT/tests/traces/local_notification_assignment_alert.trace.json"
+  "$ROOT/tests/traces/conflict_reassign_vs_local_submit.trace.json"
+  "$ROOT/tests/traces/bootstrap_api_error.trace.json"
+)
+
+APP_SMOKE_TRACES=(
+  "$ROOT/tests/traces/bootstrap_demo_happy.trace.json"
+)
+
+APP_M4_REQUIRED_TRACES=(
+  "$ROOT/tests/traces/dispatch_assign_happy.trace.json"
+  "$ROOT/tests/traces/dispatch_reassign_happy.trace.json"
+  "$ROOT/tests/traces/technician_reassigned_mid_draft.trace.json"
+  "$ROOT/tests/traces/supervisor_request_correction.trace.json"
+  "$ROOT/tests/traces/technician_correction_resubmit.trace.json"
+  "$ROOT/tests/traces/review_queue_filtering.trace.json"
+  "$ROOT/tests/traces/manager_dashboard_rollup.trace.json"
+  "$ROOT/tests/traces/local_notification_assignment_alert.trace.json"
+  "$ROOT/tests/traces/conflict_reassign_vs_local_submit.trace.json"
 )
 EXPECTED_FAILURE_TRACE="$ROOT/tests/traces/bootstrap_api_error.trace.json"
 
@@ -92,6 +106,14 @@ resolve_python() {
   fi
   if command -v python >/dev/null 2>&1; then
     command -v python
+    return 0
+  fi
+  return 1
+}
+
+resolve_node() {
+  if command -v node >/dev/null 2>&1; then
+    command -v node
     return 0
   fi
   return 1
@@ -188,6 +210,19 @@ require_path() {
   if [ ! -e "$path" ]; then
     mark_failure "$label missing: $path"
   fi
+}
+
+validate_json_files() {
+  "$PYTHON" - "$@" <<'PY'
+import json
+import pathlib
+import sys
+
+for raw_path in sys.argv[1:]:
+    path = pathlib.Path(raw_path)
+    with path.open("r", encoding="utf-8") as handle:
+        json.load(handle)
+PY
 }
 
 run_expect_failure_with_incident() {
@@ -469,8 +504,14 @@ if [ -z "$PYTHON" ]; then
   exit 1
 fi
 
+NODE_BIN="${NODE_BIN:-$(resolve_node || true)}"
+if [ -z "$NODE_BIN" ]; then
+  note "missing required node interpreter: node"
+  exit 1
+fi
+
 X07_BIN="$(resolve_versioned_tool --version "${X07_BIN:-}" "$(command -v x07 2>/dev/null || true)" "$ROOT/../x07/target/debug/x07" "$ROOT/../x07/target/release/x07" || true)"
-X07_WASM_BIN="$(resolve_versioned_tool --version "${X07_WASM_BIN:-}" "$(command -v x07-wasm 2>/dev/null || true)" "$ROOT/../x07-wasm-backend/target/debug/x07-wasm" "$ROOT/../x07-wasm-backend/target/release/x07-wasm" || true)"
+X07_WASM_BIN="$(resolve_versioned_tool --version "${X07_WASM_BIN:-}" "$ROOT/../x07-wasm-backend/target/debug/x07-wasm" "$ROOT/../x07-wasm-backend/target/release/x07-wasm" "$(command -v x07-wasm 2>/dev/null || true)" || true)"
 
 if [ -z "$X07_BIN" ] || [ -z "$X07_WASM_BIN" ]; then
   note "missing required binaries: x07 and/or x07-wasm"
@@ -485,6 +526,7 @@ fi
 
 note "using x07: $X07_BIN"
 note "using x07-wasm: $X07_WASM_BIN"
+note "using node: $NODE_BIN"
 
 run_step "x07 check frontend" \
   run_json \
@@ -605,7 +647,25 @@ run_step "x07-wasm app serve smoke crewops_dev" \
     --mode smoke \
     --strict
 
-for trace_path in "${APP_PASSING_TRACES[@]}"; do
+run_step "generate M4 app traces" \
+  "$NODE_BIN" "$TRACE_GENERATOR"
+
+run_step "validate M4 trace JSON fixtures" \
+  validate_json_files \
+    "${TRACE_FIXTURES[@]}"
+
+for trace_path in "${APP_SMOKE_TRACES[@]}"; do
+  trace_name="$(basename "$trace_path" .trace.json)"
+  run_step "x07-wasm app test ${trace_name}" \
+    run_json \
+      "$REPORT_DIR/app.test.${trace_name}.json" \
+      "$X07_WASM_BIN" app test \
+      --dir "$APP_DEV_DIR" \
+      --trace "$trace_path" \
+      --strict
+done
+
+for trace_path in "${APP_M4_REQUIRED_TRACES[@]}"; do
   trace_name="$(basename "$trace_path" .trace.json)"
   run_step "x07-wasm app test ${trace_name}" \
     run_json \

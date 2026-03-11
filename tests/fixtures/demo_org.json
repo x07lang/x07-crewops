@@ -119,6 +119,17 @@
       ],
       "branch_id": "branch_north"
     },
+    "user_supervisor_nadia": {
+      "id": "user_supervisor_nadia",
+      "role": "supervisor",
+      "name": "Nadia Hart",
+      "team_ids": [
+        "team_north_alpha",
+        "team_north_beta",
+        "team_south_gamma"
+      ],
+      "branch_id": "branch_north"
+    },
     "user_manager_jonas": {
       "id": "user_manager_jonas",
       "role": "manager",
@@ -500,481 +511,481 @@
       "id": "asset_001",
       "site_id": "site_001",
       "customer_id": "cust_001",
-      "kind": "pump",
+      "kind": "panel",
       "name": "Asset 001",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_002": {
       "id": "asset_002",
       "site_id": "site_002",
       "customer_id": "cust_002",
-      "kind": "panel",
+      "kind": "door",
       "name": "Asset 002",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_003": {
       "id": "asset_003",
       "site_id": "site_003",
       "customer_id": "cust_003",
-      "kind": "door",
+      "kind": "hvac",
       "name": "Asset 003",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_004": {
       "id": "asset_004",
       "site_id": "site_004",
       "customer_id": "cust_004",
-      "kind": "hvac",
+      "kind": "pump",
       "name": "Asset 004",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_005": {
       "id": "asset_005",
       "site_id": "site_005",
       "customer_id": "cust_005",
-      "kind": "pump",
+      "kind": "panel",
       "name": "Asset 005",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_006": {
       "id": "asset_006",
       "site_id": "site_006",
       "customer_id": "cust_006",
-      "kind": "panel",
+      "kind": "door",
       "name": "Asset 006",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_007": {
       "id": "asset_007",
       "site_id": "site_007",
       "customer_id": "cust_007",
-      "kind": "door",
+      "kind": "hvac",
       "name": "Asset 007",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_008": {
       "id": "asset_008",
       "site_id": "site_008",
       "customer_id": "cust_008",
-      "kind": "hvac",
+      "kind": "pump",
       "name": "Asset 008",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_009": {
       "id": "asset_009",
       "site_id": "site_009",
       "customer_id": "cust_009",
-      "kind": "pump",
+      "kind": "panel",
       "name": "Asset 009",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_010": {
       "id": "asset_010",
       "site_id": "site_010",
       "customer_id": "cust_010",
-      "kind": "panel",
+      "kind": "door",
       "name": "Asset 010",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_011": {
       "id": "asset_011",
       "site_id": "site_011",
       "customer_id": "cust_011",
-      "kind": "door",
+      "kind": "hvac",
       "name": "Asset 011",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_012": {
       "id": "asset_012",
       "site_id": "site_012",
       "customer_id": "cust_012",
-      "kind": "hvac",
+      "kind": "pump",
       "name": "Asset 012",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_013": {
       "id": "asset_013",
       "site_id": "site_013",
       "customer_id": "cust_013",
-      "kind": "pump",
+      "kind": "panel",
       "name": "Asset 013",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_014": {
       "id": "asset_014",
       "site_id": "site_014",
       "customer_id": "cust_014",
-      "kind": "panel",
+      "kind": "door",
       "name": "Asset 014",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_015": {
       "id": "asset_015",
       "site_id": "site_015",
       "customer_id": "cust_015",
-      "kind": "door",
+      "kind": "hvac",
       "name": "Asset 015",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_016": {
       "id": "asset_016",
       "site_id": "site_016",
       "customer_id": "cust_016",
-      "kind": "hvac",
+      "kind": "pump",
       "name": "Asset 016",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_017": {
       "id": "asset_017",
       "site_id": "site_017",
       "customer_id": "cust_017",
-      "kind": "pump",
+      "kind": "panel",
       "name": "Asset 017",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_018": {
       "id": "asset_018",
       "site_id": "site_018",
       "customer_id": "cust_018",
-      "kind": "panel",
+      "kind": "door",
       "name": "Asset 018",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_019": {
       "id": "asset_019",
       "site_id": "site_019",
       "customer_id": "cust_019",
-      "kind": "door",
+      "kind": "hvac",
       "name": "Asset 019",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_020": {
       "id": "asset_020",
       "site_id": "site_020",
       "customer_id": "cust_020",
-      "kind": "hvac",
+      "kind": "pump",
       "name": "Asset 020",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_021": {
       "id": "asset_021",
       "site_id": "site_021",
       "customer_id": "cust_001",
-      "kind": "pump",
+      "kind": "panel",
       "name": "Asset 021",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_022": {
       "id": "asset_022",
       "site_id": "site_022",
       "customer_id": "cust_002",
-      "kind": "panel",
+      "kind": "door",
       "name": "Asset 022",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_023": {
       "id": "asset_023",
       "site_id": "site_023",
       "customer_id": "cust_003",
-      "kind": "door",
+      "kind": "hvac",
       "name": "Asset 023",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_024": {
       "id": "asset_024",
       "site_id": "site_024",
       "customer_id": "cust_004",
-      "kind": "hvac",
+      "kind": "pump",
       "name": "Asset 024",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_025": {
       "id": "asset_025",
       "site_id": "site_025",
       "customer_id": "cust_005",
-      "kind": "pump",
+      "kind": "panel",
       "name": "Asset 025",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_026": {
       "id": "asset_026",
       "site_id": "site_026",
       "customer_id": "cust_006",
-      "kind": "panel",
+      "kind": "door",
       "name": "Asset 026",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_027": {
       "id": "asset_027",
       "site_id": "site_027",
       "customer_id": "cust_007",
-      "kind": "door",
+      "kind": "hvac",
       "name": "Asset 027",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_028": {
       "id": "asset_028",
       "site_id": "site_028",
       "customer_id": "cust_008",
-      "kind": "hvac",
+      "kind": "pump",
       "name": "Asset 028",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_029": {
       "id": "asset_029",
       "site_id": "site_029",
       "customer_id": "cust_009",
-      "kind": "pump",
+      "kind": "panel",
       "name": "Asset 029",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_030": {
       "id": "asset_030",
       "site_id": "site_030",
       "customer_id": "cust_010",
-      "kind": "panel",
+      "kind": "door",
       "name": "Asset 030",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_031": {
       "id": "asset_031",
       "site_id": "site_001",
       "customer_id": "cust_001",
-      "kind": "door",
+      "kind": "hvac",
       "name": "Asset 031",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_032": {
       "id": "asset_032",
       "site_id": "site_002",
       "customer_id": "cust_002",
-      "kind": "hvac",
+      "kind": "pump",
       "name": "Asset 032",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_033": {
       "id": "asset_033",
       "site_id": "site_003",
       "customer_id": "cust_003",
-      "kind": "pump",
+      "kind": "panel",
       "name": "Asset 033",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_034": {
       "id": "asset_034",
       "site_id": "site_004",
       "customer_id": "cust_004",
-      "kind": "panel",
+      "kind": "door",
       "name": "Asset 034",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_035": {
       "id": "asset_035",
       "site_id": "site_005",
       "customer_id": "cust_005",
-      "kind": "door",
+      "kind": "hvac",
       "name": "Asset 035",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_036": {
       "id": "asset_036",
       "site_id": "site_006",
       "customer_id": "cust_006",
-      "kind": "hvac",
+      "kind": "pump",
       "name": "Asset 036",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_037": {
       "id": "asset_037",
       "site_id": "site_007",
       "customer_id": "cust_007",
-      "kind": "pump",
+      "kind": "panel",
       "name": "Asset 037",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_038": {
       "id": "asset_038",
       "site_id": "site_008",
       "customer_id": "cust_008",
-      "kind": "panel",
+      "kind": "door",
       "name": "Asset 038",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_039": {
       "id": "asset_039",
       "site_id": "site_009",
       "customer_id": "cust_009",
-      "kind": "door",
+      "kind": "hvac",
       "name": "Asset 039",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_040": {
       "id": "asset_040",
       "site_id": "site_010",
       "customer_id": "cust_010",
-      "kind": "hvac",
+      "kind": "pump",
       "name": "Asset 040",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_041": {
       "id": "asset_041",
       "site_id": "site_011",
       "customer_id": "cust_011",
-      "kind": "pump",
+      "kind": "panel",
       "name": "Asset 041",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_042": {
       "id": "asset_042",
       "site_id": "site_012",
       "customer_id": "cust_012",
-      "kind": "panel",
+      "kind": "door",
       "name": "Asset 042",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_043": {
       "id": "asset_043",
       "site_id": "site_013",
       "customer_id": "cust_013",
-      "kind": "door",
+      "kind": "hvac",
       "name": "Asset 043",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_044": {
       "id": "asset_044",
       "site_id": "site_014",
       "customer_id": "cust_014",
-      "kind": "hvac",
+      "kind": "pump",
       "name": "Asset 044",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_045": {
       "id": "asset_045",
       "site_id": "site_015",
       "customer_id": "cust_015",
-      "kind": "pump",
+      "kind": "panel",
       "name": "Asset 045",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_046": {
       "id": "asset_046",
       "site_id": "site_016",
       "customer_id": "cust_016",
-      "kind": "panel",
+      "kind": "door",
       "name": "Asset 046",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_047": {
       "id": "asset_047",
       "site_id": "site_017",
       "customer_id": "cust_017",
-      "kind": "door",
+      "kind": "hvac",
       "name": "Asset 047",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_048": {
       "id": "asset_048",
       "site_id": "site_018",
       "customer_id": "cust_018",
-      "kind": "hvac",
+      "kind": "pump",
       "name": "Asset 048",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_049": {
       "id": "asset_049",
       "site_id": "site_019",
       "customer_id": "cust_019",
-      "kind": "pump",
+      "kind": "panel",
       "name": "Asset 049",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_050": {
       "id": "asset_050",
       "site_id": "site_020",
       "customer_id": "cust_020",
-      "kind": "panel",
+      "kind": "door",
       "name": "Asset 050",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_051": {
       "id": "asset_051",
       "site_id": "site_021",
       "customer_id": "cust_001",
-      "kind": "door",
+      "kind": "hvac",
       "name": "Asset 051",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_052": {
       "id": "asset_052",
       "site_id": "site_022",
       "customer_id": "cust_002",
-      "kind": "hvac",
+      "kind": "pump",
       "name": "Asset 052",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_053": {
       "id": "asset_053",
       "site_id": "site_023",
       "customer_id": "cust_003",
-      "kind": "pump",
+      "kind": "panel",
       "name": "Asset 053",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_054": {
       "id": "asset_054",
       "site_id": "site_024",
       "customer_id": "cust_004",
-      "kind": "panel",
+      "kind": "door",
       "name": "Asset 054",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_055": {
       "id": "asset_055",
       "site_id": "site_025",
       "customer_id": "cust_005",
-      "kind": "door",
+      "kind": "hvac",
       "name": "Asset 055",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_056": {
       "id": "asset_056",
       "site_id": "site_026",
       "customer_id": "cust_006",
-      "kind": "hvac",
+      "kind": "pump",
       "name": "Asset 056",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_057": {
       "id": "asset_057",
       "site_id": "site_027",
       "customer_id": "cust_007",
-      "kind": "pump",
+      "kind": "panel",
       "name": "Asset 057",
-      "service_level": "critical"
+      "service_level": "standard"
     },
     "asset_058": {
       "id": "asset_058",
       "site_id": "site_028",
       "customer_id": "cust_008",
-      "kind": "panel",
+      "kind": "door",
       "name": "Asset 058",
-      "service_level": "standard"
+      "service_level": "routine"
     },
     "asset_059": {
       "id": "asset_059",
       "site_id": "site_029",
       "customer_id": "cust_009",
-      "kind": "door",
+      "kind": "hvac",
       "name": "Asset 059",
-      "service_level": "routine"
+      "service_level": "critical"
     },
     "asset_060": {
       "id": "asset_060",
       "site_id": "site_030",
       "customer_id": "cust_010",
-      "kind": "hvac",
+      "kind": "pump",
       "name": "Asset 060",
-      "service_level": "critical"
+      "service_level": "standard"
     }
   },
   "work_orders": {
@@ -992,6 +1003,10 @@
       "asset_id": "asset_001",
       "scheduled_day": "2026-03-10",
       "window": "10:00-12:00",
+      "review_state": "not_ready",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_001",
+      "schedule_window_id": "schedule_window_001",
       "sla_bucket": "attention",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1018,6 +1033,10 @@
       "asset_id": "asset_002",
       "scheduled_day": "2026-03-11",
       "window": "13:00-15:00",
+      "review_state": "not_ready",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_002",
+      "schedule_window_id": "schedule_window_002",
       "sla_bucket": "attention",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1045,6 +1064,10 @@
       "asset_id": "asset_003",
       "scheduled_day": "2026-03-12",
       "window": "15:00-17:00",
+      "review_state": "not_ready",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_003",
+      "schedule_window_id": "schedule_window_003",
       "sla_bucket": "stable",
       "template_id": "tmpl_closeout",
       "completion_policy": {
@@ -1070,6 +1093,10 @@
       "asset_id": "asset_004",
       "scheduled_day": "2026-03-13",
       "window": "08:00-10:00",
+      "review_state": "not_ready",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_004",
+      "schedule_window_id": "schedule_window_004",
       "sla_bucket": "on_track",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1096,6 +1123,10 @@
       "asset_id": "asset_005",
       "scheduled_day": "2026-03-14",
       "window": "10:00-12:00",
+      "review_state": "not_ready",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_005",
+      "schedule_window_id": "schedule_window_005",
       "sla_bucket": "attention",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1123,6 +1154,10 @@
       "asset_id": "asset_006",
       "scheduled_day": "2026-03-15",
       "window": "13:00-15:00",
+      "review_state": "not_ready",
+      "assignment_revision": 2,
+      "latest_assignment_id": "assignment_006",
+      "schedule_window_id": "schedule_window_006",
       "sla_bucket": "attention",
       "template_id": "tmpl_closeout",
       "completion_policy": {
@@ -1148,6 +1183,10 @@
       "asset_id": "asset_007",
       "scheduled_day": "2026-03-16",
       "window": "15:00-17:00",
+      "review_state": "not_ready",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_007",
+      "schedule_window_id": "schedule_window_007",
       "sla_bucket": "stable",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1174,6 +1213,10 @@
       "asset_id": "asset_008",
       "scheduled_day": "2026-03-10",
       "window": "08:00-10:00",
+      "review_state": "not_ready",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_008",
+      "schedule_window_id": "schedule_window_008",
       "sla_bucket": "on_track",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1201,6 +1244,10 @@
       "asset_id": "asset_009",
       "scheduled_day": "2026-03-11",
       "window": "10:00-12:00",
+      "review_state": "not_ready",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_009",
+      "schedule_window_id": "schedule_window_009",
       "sla_bucket": "attention",
       "template_id": "tmpl_closeout",
       "completion_policy": {
@@ -1226,6 +1273,10 @@
       "asset_id": "asset_010",
       "scheduled_day": "2026-03-12",
       "window": "13:00-15:00",
+      "review_state": "not_ready",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_010",
+      "schedule_window_id": "schedule_window_010",
       "sla_bucket": "attention",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1252,6 +1303,10 @@
       "asset_id": "asset_011",
       "scheduled_day": "2026-03-13",
       "window": "15:00-17:00",
+      "review_state": "not_ready",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_011",
+      "schedule_window_id": "schedule_window_011",
       "sla_bucket": "stable",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1279,6 +1334,10 @@
       "asset_id": "asset_012",
       "scheduled_day": "2026-03-14",
       "window": "08:00-10:00",
+      "review_state": "not_ready",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_012",
+      "schedule_window_id": "schedule_window_012",
       "sla_bucket": "on_track",
       "template_id": "tmpl_closeout",
       "completion_policy": {
@@ -1304,6 +1363,10 @@
       "asset_id": "asset_013",
       "scheduled_day": "2026-03-15",
       "window": "10:00-12:00",
+      "review_state": "approved",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_013",
+      "schedule_window_id": "schedule_window_013",
       "sla_bucket": "attention",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1330,6 +1393,10 @@
       "asset_id": "asset_014",
       "scheduled_day": "2026-03-16",
       "window": "13:00-15:00",
+      "review_state": "approved",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_014",
+      "schedule_window_id": "schedule_window_014",
       "sla_bucket": "attention",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1357,6 +1424,10 @@
       "asset_id": "asset_015",
       "scheduled_day": "2026-03-10",
       "window": "15:00-17:00",
+      "review_state": "approved",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_015",
+      "schedule_window_id": "schedule_window_015",
       "sla_bucket": "stable",
       "template_id": "tmpl_closeout",
       "completion_policy": {
@@ -1382,6 +1453,10 @@
       "asset_id": "asset_016",
       "scheduled_day": "2026-03-11",
       "window": "08:00-10:00",
+      "review_state": "awaiting_review",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_016",
+      "schedule_window_id": "schedule_window_016",
       "sla_bucket": "on_track",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1408,6 +1483,10 @@
       "asset_id": "asset_017",
       "scheduled_day": "2026-03-12",
       "window": "10:00-12:00",
+      "review_state": "correction_requested",
+      "assignment_revision": 2,
+      "latest_assignment_id": "assignment_017",
+      "schedule_window_id": "schedule_window_017",
       "sla_bucket": "attention",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1435,6 +1514,10 @@
       "asset_id": "asset_018",
       "scheduled_day": "2026-03-13",
       "window": "13:00-15:00",
+      "review_state": "approved",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_018",
+      "schedule_window_id": "schedule_window_018",
       "sla_bucket": "attention",
       "template_id": "tmpl_closeout",
       "completion_policy": {
@@ -1460,6 +1543,10 @@
       "asset_id": "asset_019",
       "scheduled_day": "2026-03-14",
       "window": "15:00-17:00",
+      "review_state": "approved",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_019",
+      "schedule_window_id": "schedule_window_019",
       "sla_bucket": "stable",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1486,6 +1573,10 @@
       "asset_id": "asset_020",
       "scheduled_day": "2026-03-15",
       "window": "08:00-10:00",
+      "review_state": "not_required",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_020",
+      "schedule_window_id": "schedule_window_020",
       "sla_bucket": "on_track",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1513,6 +1604,10 @@
       "asset_id": "asset_021",
       "scheduled_day": "2026-03-16",
       "window": "10:00-12:00",
+      "review_state": "not_required",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_021",
+      "schedule_window_id": "schedule_window_021",
       "sla_bucket": "attention",
       "template_id": "tmpl_closeout",
       "completion_policy": {
@@ -1538,6 +1633,10 @@
       "asset_id": "asset_022",
       "scheduled_day": "2026-03-10",
       "window": "13:00-15:00",
+      "review_state": "not_ready",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_022",
+      "schedule_window_id": "schedule_window_022",
       "sla_bucket": "attention",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1564,6 +1663,10 @@
       "asset_id": "asset_023",
       "scheduled_day": "2026-03-11",
       "window": "15:00-17:00",
+      "review_state": "not_ready",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_023",
+      "schedule_window_id": "schedule_window_023",
       "sla_bucket": "stable",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1591,6 +1694,10 @@
       "asset_id": "asset_024",
       "scheduled_day": "2026-03-12",
       "window": "08:00-10:00",
+      "review_state": "approved",
+      "assignment_revision": 1,
+      "latest_assignment_id": "assignment_024",
+      "schedule_window_id": "schedule_window_024",
       "sla_bucket": "on_track",
       "template_id": "tmpl_closeout",
       "completion_policy": {
@@ -1616,6 +1723,10 @@
       "asset_id": "asset_025",
       "scheduled_day": "2026-03-13",
       "window": "10:00-12:00",
+      "review_state": "resubmitted",
+      "assignment_revision": 2,
+      "latest_assignment_id": "assignment_025",
+      "schedule_window_id": "schedule_window_025",
       "sla_bucket": "attention",
       "template_id": "tmpl_pm",
       "completion_policy": {
@@ -1640,7 +1751,8 @@
       "site_id": "site_001",
       "asset_id": "asset_001",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-10T10:00:00Z",
+      "review_state": "not_ready",
+      "planned_start": "2026-03-10T08:00:00Z",
       "execution": {
         "status": "planned",
         "autosave_status": "idle",
@@ -1663,7 +1775,8 @@
       "site_id": "site_002",
       "asset_id": "asset_002",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-11T12:00:00Z",
+      "review_state": "not_ready",
+      "planned_start": "2026-03-11T10:00:00Z",
       "execution": {
         "status": "planned",
         "autosave_status": "idle",
@@ -1686,7 +1799,8 @@
       "site_id": "site_003",
       "asset_id": "asset_003",
       "template_id": "tmpl_closeout",
-      "planned_start": "2026-03-12T14:00:00Z",
+      "review_state": "not_ready",
+      "planned_start": "2026-03-12T12:00:00Z",
       "execution": {
         "status": "planned",
         "autosave_status": "idle",
@@ -1709,7 +1823,8 @@
       "site_id": "site_004",
       "asset_id": "asset_004",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-13T08:00:00Z",
+      "review_state": "not_ready",
+      "planned_start": "2026-03-13T14:00:00Z",
       "execution": {
         "status": "planned",
         "autosave_status": "idle",
@@ -1732,7 +1847,8 @@
       "site_id": "site_005",
       "asset_id": "asset_005",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-14T10:00:00Z",
+      "review_state": "not_ready",
+      "planned_start": "2026-03-14T08:00:00Z",
       "execution": {
         "status": "planned",
         "autosave_status": "idle",
@@ -1755,7 +1871,8 @@
       "site_id": "site_006",
       "asset_id": "asset_006",
       "template_id": "tmpl_closeout",
-      "planned_start": "2026-03-15T12:00:00Z",
+      "review_state": "not_ready",
+      "planned_start": "2026-03-15T10:00:00Z",
       "execution": {
         "status": "planned",
         "autosave_status": "idle",
@@ -1778,7 +1895,8 @@
       "site_id": "site_007",
       "asset_id": "asset_007",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-16T14:00:00Z",
+      "review_state": "not_ready",
+      "planned_start": "2026-03-16T12:00:00Z",
       "execution": {
         "status": "planned",
         "autosave_status": "idle",
@@ -1801,7 +1919,8 @@
       "site_id": "site_008",
       "asset_id": "asset_008",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-10T08:00:00Z",
+      "review_state": "not_ready",
+      "planned_start": "2026-03-10T14:00:00Z",
       "execution": {
         "status": "planned",
         "autosave_status": "idle",
@@ -1824,7 +1943,8 @@
       "site_id": "site_009",
       "asset_id": "asset_009",
       "template_id": "tmpl_closeout",
-      "planned_start": "2026-03-11T10:00:00Z",
+      "review_state": "not_ready",
+      "planned_start": "2026-03-11T08:00:00Z",
       "execution": {
         "status": "resume_required",
         "autosave_status": "idle",
@@ -1847,7 +1967,8 @@
       "site_id": "site_010",
       "asset_id": "asset_010",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-12T12:00:00Z",
+      "review_state": "not_ready",
+      "planned_start": "2026-03-12T10:00:00Z",
       "execution": {
         "status": "resume_required",
         "autosave_status": "idle",
@@ -1870,7 +1991,8 @@
       "site_id": "site_011",
       "asset_id": "asset_011",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-13T14:00:00Z",
+      "review_state": "not_ready",
+      "planned_start": "2026-03-13T12:00:00Z",
       "execution": {
         "status": "resume_required",
         "autosave_status": "idle",
@@ -1893,7 +2015,8 @@
       "site_id": "site_012",
       "asset_id": "asset_012",
       "template_id": "tmpl_closeout",
-      "planned_start": "2026-03-14T08:00:00Z",
+      "review_state": "not_ready",
+      "planned_start": "2026-03-14T14:00:00Z",
       "execution": {
         "status": "resume_required",
         "autosave_status": "idle",
@@ -1916,7 +2039,8 @@
       "site_id": "site_013",
       "asset_id": "asset_013",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-15T10:00:00Z",
+      "review_state": "approved",
+      "planned_start": "2026-03-15T08:00:00Z",
       "execution": {
         "status": "resume_required",
         "autosave_status": "idle",
@@ -1939,7 +2063,8 @@
       "site_id": "site_014",
       "asset_id": "asset_014",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-16T12:00:00Z",
+      "review_state": "approved",
+      "planned_start": "2026-03-16T10:00:00Z",
       "execution": {
         "status": "resume_required",
         "autosave_status": "idle",
@@ -1962,7 +2087,8 @@
       "site_id": "site_015",
       "asset_id": "asset_015",
       "template_id": "tmpl_closeout",
-      "planned_start": "2026-03-10T14:00:00Z",
+      "review_state": "approved",
+      "planned_start": "2026-03-10T12:00:00Z",
       "execution": {
         "status": "resume_required",
         "autosave_status": "idle",
@@ -1985,7 +2111,8 @@
       "site_id": "site_016",
       "asset_id": "asset_016",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-11T08:00:00Z",
+      "review_state": "awaiting_review",
+      "planned_start": "2026-03-11T14:00:00Z",
       "execution": {
         "status": "resume_required",
         "autosave_status": "idle",
@@ -2008,7 +2135,8 @@
       "site_id": "site_017",
       "asset_id": "asset_017",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-12T10:00:00Z",
+      "review_state": "correction_requested",
+      "planned_start": "2026-03-12T08:00:00Z",
       "execution": {
         "status": "resume_required",
         "autosave_status": "idle",
@@ -2031,7 +2159,8 @@
       "site_id": "site_018",
       "asset_id": "asset_018",
       "template_id": "tmpl_closeout",
-      "planned_start": "2026-03-13T12:00:00Z",
+      "review_state": "approved",
+      "planned_start": "2026-03-13T10:00:00Z",
       "execution": {
         "status": "resume_required",
         "autosave_status": "idle",
@@ -2054,7 +2183,8 @@
       "site_id": "site_019",
       "asset_id": "asset_019",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-14T14:00:00Z",
+      "review_state": "approved",
+      "planned_start": "2026-03-14T12:00:00Z",
       "execution": {
         "status": "resume_required",
         "autosave_status": "idle",
@@ -2077,7 +2207,8 @@
       "site_id": "site_020",
       "asset_id": "asset_020",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-15T08:00:00Z",
+      "review_state": "not_required",
+      "planned_start": "2026-03-15T14:00:00Z",
       "execution": {
         "status": "resume_required",
         "autosave_status": "idle",
@@ -2100,7 +2231,8 @@
       "site_id": "site_021",
       "asset_id": "asset_021",
       "template_id": "tmpl_closeout",
-      "planned_start": "2026-03-16T10:00:00Z",
+      "review_state": "not_required",
+      "planned_start": "2026-03-16T08:00:00Z",
       "execution": {
         "status": "resume_required",
         "autosave_status": "idle",
@@ -2123,7 +2255,8 @@
       "site_id": "site_022",
       "asset_id": "asset_022",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-10T12:00:00Z",
+      "review_state": "not_ready",
+      "planned_start": "2026-03-10T10:00:00Z",
       "execution": {
         "status": "planned",
         "autosave_status": "idle",
@@ -2146,7 +2279,8 @@
       "site_id": "site_023",
       "asset_id": "asset_023",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-11T14:00:00Z",
+      "review_state": "not_ready",
+      "planned_start": "2026-03-11T12:00:00Z",
       "execution": {
         "status": "planned",
         "autosave_status": "idle",
@@ -2169,7 +2303,8 @@
       "site_id": "site_024",
       "asset_id": "asset_024",
       "template_id": "tmpl_closeout",
-      "planned_start": "2026-03-12T08:00:00Z",
+      "review_state": "approved",
+      "planned_start": "2026-03-12T14:00:00Z",
       "execution": {
         "status": "resume_required",
         "autosave_status": "idle",
@@ -2192,7 +2327,8 @@
       "site_id": "site_025",
       "asset_id": "asset_025",
       "template_id": "tmpl_pm",
-      "planned_start": "2026-03-13T10:00:00Z",
+      "review_state": "resubmitted",
+      "planned_start": "2026-03-13T08:00:00Z",
       "execution": {
         "status": "resume_required",
         "autosave_status": "idle",
@@ -2326,6 +2462,962 @@
       "uom": "can"
     }
   },
+  "assignments": {
+    "assignment_001": {
+      "id": "assignment_001",
+      "work_order_id": "wo_001",
+      "assignee_user_id": "user_tech_ava",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "revision": 1,
+      "scheduled_day": "2026-03-10",
+      "window": "10:00-12:00",
+      "priority": "medium",
+      "changed_at": "2026-03-10T08:00:00Z"
+    },
+    "assignment_002": {
+      "id": "assignment_002",
+      "work_order_id": "wo_002",
+      "assignee_user_id": "user_tech_noah",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "revision": 1,
+      "scheduled_day": "2026-03-11",
+      "window": "13:00-15:00",
+      "priority": "high",
+      "changed_at": "2026-03-11T10:00:00Z"
+    },
+    "assignment_003": {
+      "id": "assignment_003",
+      "work_order_id": "wo_003",
+      "assignee_user_id": "user_tech_zoe",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "revision": 1,
+      "scheduled_day": "2026-03-12",
+      "window": "15:00-17:00",
+      "priority": "urgent",
+      "changed_at": "2026-03-12T12:00:00Z"
+    },
+    "assignment_004": {
+      "id": "assignment_004",
+      "work_order_id": "wo_004",
+      "assignee_user_id": "user_tech_liam",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "revision": 1,
+      "scheduled_day": "2026-03-13",
+      "window": "08:00-10:00",
+      "priority": "low",
+      "changed_at": "2026-03-13T14:00:00Z"
+    },
+    "assignment_005": {
+      "id": "assignment_005",
+      "work_order_id": "wo_005",
+      "assignee_user_id": "user_tech_mila",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "revision": 1,
+      "scheduled_day": "2026-03-14",
+      "window": "10:00-12:00",
+      "priority": "medium",
+      "changed_at": "2026-03-14T08:00:00Z"
+    },
+    "assignment_006": {
+      "id": "assignment_006",
+      "work_order_id": "wo_006",
+      "assignee_user_id": "user_tech_omar",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "revision": 2,
+      "scheduled_day": "2026-03-15",
+      "window": "13:00-15:00",
+      "priority": "high",
+      "changed_at": "2026-03-15T10:00:00Z"
+    },
+    "assignment_007": {
+      "id": "assignment_007",
+      "work_order_id": "wo_007",
+      "assignee_user_id": "user_tech_ivy",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "revision": 1,
+      "scheduled_day": "2026-03-16",
+      "window": "15:00-17:00",
+      "priority": "urgent",
+      "changed_at": "2026-03-16T12:00:00Z"
+    },
+    "assignment_008": {
+      "id": "assignment_008",
+      "work_order_id": "wo_008",
+      "assignee_user_id": "user_tech_jude",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "revision": 1,
+      "scheduled_day": "2026-03-10",
+      "window": "08:00-10:00",
+      "priority": "low",
+      "changed_at": "2026-03-10T14:00:00Z"
+    },
+    "assignment_009": {
+      "id": "assignment_009",
+      "work_order_id": "wo_009",
+      "assignee_user_id": "user_tech_ava",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "revision": 1,
+      "scheduled_day": "2026-03-11",
+      "window": "10:00-12:00",
+      "priority": "medium",
+      "changed_at": "2026-03-11T08:00:00Z"
+    },
+    "assignment_010": {
+      "id": "assignment_010",
+      "work_order_id": "wo_010",
+      "assignee_user_id": "user_tech_noah",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "revision": 1,
+      "scheduled_day": "2026-03-12",
+      "window": "13:00-15:00",
+      "priority": "high",
+      "changed_at": "2026-03-12T10:00:00Z"
+    },
+    "assignment_011": {
+      "id": "assignment_011",
+      "work_order_id": "wo_011",
+      "assignee_user_id": "user_tech_zoe",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "revision": 1,
+      "scheduled_day": "2026-03-13",
+      "window": "15:00-17:00",
+      "priority": "urgent",
+      "changed_at": "2026-03-13T12:00:00Z"
+    },
+    "assignment_012": {
+      "id": "assignment_012",
+      "work_order_id": "wo_012",
+      "assignee_user_id": "user_tech_liam",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "revision": 1,
+      "scheduled_day": "2026-03-14",
+      "window": "08:00-10:00",
+      "priority": "low",
+      "changed_at": "2026-03-14T14:00:00Z"
+    },
+    "assignment_013": {
+      "id": "assignment_013",
+      "work_order_id": "wo_013",
+      "assignee_user_id": "user_tech_mila",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "revision": 1,
+      "scheduled_day": "2026-03-15",
+      "window": "10:00-12:00",
+      "priority": "medium",
+      "changed_at": "2026-03-15T08:00:00Z"
+    },
+    "assignment_014": {
+      "id": "assignment_014",
+      "work_order_id": "wo_014",
+      "assignee_user_id": "user_tech_omar",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "revision": 1,
+      "scheduled_day": "2026-03-16",
+      "window": "13:00-15:00",
+      "priority": "high",
+      "changed_at": "2026-03-16T10:00:00Z"
+    },
+    "assignment_015": {
+      "id": "assignment_015",
+      "work_order_id": "wo_015",
+      "assignee_user_id": "user_tech_ivy",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "revision": 1,
+      "scheduled_day": "2026-03-10",
+      "window": "15:00-17:00",
+      "priority": "urgent",
+      "changed_at": "2026-03-10T12:00:00Z"
+    },
+    "assignment_016": {
+      "id": "assignment_016",
+      "work_order_id": "wo_016",
+      "assignee_user_id": "user_tech_jude",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "revision": 1,
+      "scheduled_day": "2026-03-11",
+      "window": "08:00-10:00",
+      "priority": "low",
+      "changed_at": "2026-03-11T14:00:00Z"
+    },
+    "assignment_017": {
+      "id": "assignment_017",
+      "work_order_id": "wo_017",
+      "assignee_user_id": "user_tech_ava",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "revision": 2,
+      "scheduled_day": "2026-03-12",
+      "window": "10:00-12:00",
+      "priority": "medium",
+      "changed_at": "2026-03-12T08:00:00Z"
+    },
+    "assignment_018": {
+      "id": "assignment_018",
+      "work_order_id": "wo_018",
+      "assignee_user_id": "user_tech_noah",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "revision": 1,
+      "scheduled_day": "2026-03-13",
+      "window": "13:00-15:00",
+      "priority": "high",
+      "changed_at": "2026-03-13T10:00:00Z"
+    },
+    "assignment_019": {
+      "id": "assignment_019",
+      "work_order_id": "wo_019",
+      "assignee_user_id": "user_tech_zoe",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "revision": 1,
+      "scheduled_day": "2026-03-14",
+      "window": "15:00-17:00",
+      "priority": "urgent",
+      "changed_at": "2026-03-14T12:00:00Z"
+    },
+    "assignment_020": {
+      "id": "assignment_020",
+      "work_order_id": "wo_020",
+      "assignee_user_id": "user_tech_liam",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "revision": 1,
+      "scheduled_day": "2026-03-15",
+      "window": "08:00-10:00",
+      "priority": "low",
+      "changed_at": "2026-03-15T14:00:00Z"
+    },
+    "assignment_021": {
+      "id": "assignment_021",
+      "work_order_id": "wo_021",
+      "assignee_user_id": "user_tech_mila",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "revision": 1,
+      "scheduled_day": "2026-03-16",
+      "window": "10:00-12:00",
+      "priority": "medium",
+      "changed_at": "2026-03-16T08:00:00Z"
+    },
+    "assignment_022": {
+      "id": "assignment_022",
+      "work_order_id": "wo_022",
+      "assignee_user_id": "user_tech_omar",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "revision": 1,
+      "scheduled_day": "2026-03-10",
+      "window": "13:00-15:00",
+      "priority": "high",
+      "changed_at": "2026-03-10T10:00:00Z"
+    },
+    "assignment_023": {
+      "id": "assignment_023",
+      "work_order_id": "wo_023",
+      "assignee_user_id": "user_tech_ivy",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "revision": 1,
+      "scheduled_day": "2026-03-11",
+      "window": "15:00-17:00",
+      "priority": "urgent",
+      "changed_at": "2026-03-11T12:00:00Z"
+    },
+    "assignment_024": {
+      "id": "assignment_024",
+      "work_order_id": "wo_024",
+      "assignee_user_id": "user_tech_jude",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "revision": 1,
+      "scheduled_day": "2026-03-12",
+      "window": "08:00-10:00",
+      "priority": "low",
+      "changed_at": "2026-03-12T14:00:00Z"
+    },
+    "assignment_025": {
+      "id": "assignment_025",
+      "work_order_id": "wo_025",
+      "assignee_user_id": "user_tech_ava",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "revision": 2,
+      "scheduled_day": "2026-03-13",
+      "window": "10:00-12:00",
+      "priority": "medium",
+      "changed_at": "2026-03-13T08:00:00Z"
+    }
+  },
+  "schedule_windows": {
+    "schedule_window_001": {
+      "id": "schedule_window_001",
+      "work_order_id": "wo_001",
+      "day": "2026-03-10",
+      "window": "10:00-12:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha"
+    },
+    "schedule_window_002": {
+      "id": "schedule_window_002",
+      "work_order_id": "wo_002",
+      "day": "2026-03-11",
+      "window": "13:00-15:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_beta"
+    },
+    "schedule_window_003": {
+      "id": "schedule_window_003",
+      "work_order_id": "wo_003",
+      "day": "2026-03-12",
+      "window": "15:00-17:00",
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma"
+    },
+    "schedule_window_004": {
+      "id": "schedule_window_004",
+      "work_order_id": "wo_004",
+      "day": "2026-03-13",
+      "window": "08:00-10:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha"
+    },
+    "schedule_window_005": {
+      "id": "schedule_window_005",
+      "work_order_id": "wo_005",
+      "day": "2026-03-14",
+      "window": "10:00-12:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_beta"
+    },
+    "schedule_window_006": {
+      "id": "schedule_window_006",
+      "work_order_id": "wo_006",
+      "day": "2026-03-15",
+      "window": "13:00-15:00",
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma"
+    },
+    "schedule_window_007": {
+      "id": "schedule_window_007",
+      "work_order_id": "wo_007",
+      "day": "2026-03-16",
+      "window": "15:00-17:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha"
+    },
+    "schedule_window_008": {
+      "id": "schedule_window_008",
+      "work_order_id": "wo_008",
+      "day": "2026-03-10",
+      "window": "08:00-10:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_beta"
+    },
+    "schedule_window_009": {
+      "id": "schedule_window_009",
+      "work_order_id": "wo_009",
+      "day": "2026-03-11",
+      "window": "10:00-12:00",
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma"
+    },
+    "schedule_window_010": {
+      "id": "schedule_window_010",
+      "work_order_id": "wo_010",
+      "day": "2026-03-12",
+      "window": "13:00-15:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha"
+    },
+    "schedule_window_011": {
+      "id": "schedule_window_011",
+      "work_order_id": "wo_011",
+      "day": "2026-03-13",
+      "window": "15:00-17:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_beta"
+    },
+    "schedule_window_012": {
+      "id": "schedule_window_012",
+      "work_order_id": "wo_012",
+      "day": "2026-03-14",
+      "window": "08:00-10:00",
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma"
+    },
+    "schedule_window_013": {
+      "id": "schedule_window_013",
+      "work_order_id": "wo_013",
+      "day": "2026-03-15",
+      "window": "10:00-12:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha"
+    },
+    "schedule_window_014": {
+      "id": "schedule_window_014",
+      "work_order_id": "wo_014",
+      "day": "2026-03-16",
+      "window": "13:00-15:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_beta"
+    },
+    "schedule_window_015": {
+      "id": "schedule_window_015",
+      "work_order_id": "wo_015",
+      "day": "2026-03-10",
+      "window": "15:00-17:00",
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma"
+    },
+    "schedule_window_016": {
+      "id": "schedule_window_016",
+      "work_order_id": "wo_016",
+      "day": "2026-03-11",
+      "window": "08:00-10:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha"
+    },
+    "schedule_window_017": {
+      "id": "schedule_window_017",
+      "work_order_id": "wo_017",
+      "day": "2026-03-12",
+      "window": "10:00-12:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_beta"
+    },
+    "schedule_window_018": {
+      "id": "schedule_window_018",
+      "work_order_id": "wo_018",
+      "day": "2026-03-13",
+      "window": "13:00-15:00",
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma"
+    },
+    "schedule_window_019": {
+      "id": "schedule_window_019",
+      "work_order_id": "wo_019",
+      "day": "2026-03-14",
+      "window": "15:00-17:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha"
+    },
+    "schedule_window_020": {
+      "id": "schedule_window_020",
+      "work_order_id": "wo_020",
+      "day": "2026-03-15",
+      "window": "08:00-10:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_beta"
+    },
+    "schedule_window_021": {
+      "id": "schedule_window_021",
+      "work_order_id": "wo_021",
+      "day": "2026-03-16",
+      "window": "10:00-12:00",
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma"
+    },
+    "schedule_window_022": {
+      "id": "schedule_window_022",
+      "work_order_id": "wo_022",
+      "day": "2026-03-10",
+      "window": "13:00-15:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha"
+    },
+    "schedule_window_023": {
+      "id": "schedule_window_023",
+      "work_order_id": "wo_023",
+      "day": "2026-03-11",
+      "window": "15:00-17:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_beta"
+    },
+    "schedule_window_024": {
+      "id": "schedule_window_024",
+      "work_order_id": "wo_024",
+      "day": "2026-03-12",
+      "window": "08:00-10:00",
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma"
+    },
+    "schedule_window_025": {
+      "id": "schedule_window_025",
+      "work_order_id": "wo_025",
+      "day": "2026-03-13",
+      "window": "10:00-12:00",
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha"
+    }
+  },
+  "review_queue_items": {
+    "review_queue_016": {
+      "id": "review_queue_016",
+      "visit_id": "visit_016",
+      "work_order_id": "wo_016",
+      "status": "awaiting_review",
+      "priority": "low",
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha",
+      "assignee_user_id": "user_tech_jude",
+      "submitted_at": "2026-03-11T14:00:00Z"
+    },
+    "review_queue_017": {
+      "id": "review_queue_017",
+      "visit_id": "visit_017",
+      "work_order_id": "wo_017",
+      "status": "correction_requested",
+      "priority": "medium",
+      "branch_id": "branch_north",
+      "team_id": "team_north_beta",
+      "assignee_user_id": "user_tech_ava",
+      "submitted_at": "2026-03-12T08:00:00Z"
+    },
+    "review_queue_025": {
+      "id": "review_queue_025",
+      "visit_id": "visit_025",
+      "work_order_id": "wo_025",
+      "status": "resubmitted",
+      "priority": "medium",
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha",
+      "assignee_user_id": "user_tech_ava",
+      "submitted_at": "2026-03-13T08:00:00Z"
+    }
+  },
+  "review_decisions": {
+    "review_decision_016": {
+      "id": "review_decision_016",
+      "visit_id": "visit_016",
+      "work_order_id": "wo_016",
+      "outcome": "approved",
+      "reviewer_user_id": "user_supervisor_nadia",
+      "note": "Ready for closeout."
+    }
+  },
+  "correction_tasks": {
+    "correction_017": {
+      "id": "correction_017",
+      "visit_id": "visit_017",
+      "work_order_id": "wo_017",
+      "status": "resubmitted",
+      "reason_code": "missing_evidence",
+      "supervisor_note": "Add evidence and clarify the findings.",
+      "requested_by_user_id": "user_supervisor_nadia"
+    }
+  },
+  "correction_responses": {
+    "correction_response_025": {
+      "id": "correction_response_025",
+      "correction_task_id": "correction_017",
+      "visit_id": "visit_025",
+      "work_order_id": "wo_025",
+      "status": "resubmitted",
+      "response_note": "Uploaded additional evidence and clarified findings.",
+      "submitted_by_user_id": "user_tech_ava"
+    }
+  },
+  "activity_events": {
+    "activity_001": {
+      "id": "activity_001",
+      "kind": "assignment",
+      "work_order_id": "wo_001",
+      "visit_id": "visit_001",
+      "role": "dispatcher",
+      "message": "WO-1201 Leak follow-up",
+      "created_at": "2026-03-10T08:00:00Z",
+      "unread": false
+    },
+    "activity_002": {
+      "id": "activity_002",
+      "kind": "assignment",
+      "work_order_id": "wo_002",
+      "visit_id": "visit_002",
+      "role": "dispatcher",
+      "message": "WO-1202 Sensor drift",
+      "created_at": "2026-03-11T10:00:00Z",
+      "unread": true
+    },
+    "activity_003": {
+      "id": "activity_003",
+      "kind": "assignment",
+      "work_order_id": "wo_003",
+      "visit_id": "visit_003",
+      "role": "dispatcher",
+      "message": "WO-1203 Roof drain check",
+      "created_at": "2026-03-12T12:00:00Z",
+      "unread": false
+    },
+    "activity_004": {
+      "id": "activity_004",
+      "kind": "dispatch_ready",
+      "work_order_id": "wo_004",
+      "visit_id": "visit_004",
+      "role": "dispatcher",
+      "message": "WO-1204 Panel reset",
+      "created_at": "2026-03-13T14:00:00Z",
+      "unread": true
+    },
+    "activity_005": {
+      "id": "activity_005",
+      "kind": "dispatch_ready",
+      "work_order_id": "wo_005",
+      "visit_id": "visit_005",
+      "role": "dispatcher",
+      "message": "WO-1205 Quarterly PM",
+      "created_at": "2026-03-14T08:00:00Z",
+      "unread": false
+    },
+    "activity_006": {
+      "id": "activity_006",
+      "kind": "dispatch_ready",
+      "work_order_id": "wo_006",
+      "visit_id": "visit_006",
+      "role": "dispatcher",
+      "message": "WO-1206 Leak follow-up",
+      "created_at": "2026-03-15T10:00:00Z",
+      "unread": true
+    },
+    "activity_007": {
+      "id": "activity_007",
+      "kind": "travel_started",
+      "work_order_id": "wo_007",
+      "visit_id": "visit_007",
+      "role": "dispatcher",
+      "message": "WO-1207 Sensor drift",
+      "created_at": "2026-03-16T12:00:00Z",
+      "unread": false
+    },
+    "activity_008": {
+      "id": "activity_008",
+      "kind": "travel_started",
+      "work_order_id": "wo_008",
+      "visit_id": "visit_008",
+      "role": "dispatcher",
+      "message": "WO-1208 Roof drain check",
+      "created_at": "2026-03-10T14:00:00Z",
+      "unread": true
+    },
+    "activity_009": {
+      "id": "activity_009",
+      "kind": "arrival",
+      "work_order_id": "wo_009",
+      "visit_id": "visit_009",
+      "role": "technician",
+      "message": "WO-1209 Panel reset",
+      "created_at": "2026-03-11T08:00:00Z",
+      "unread": false
+    },
+    "activity_010": {
+      "id": "activity_010",
+      "kind": "arrival",
+      "work_order_id": "wo_010",
+      "visit_id": "visit_010",
+      "role": "technician",
+      "message": "WO-1210 Quarterly PM",
+      "created_at": "2026-03-12T10:00:00Z",
+      "unread": true
+    },
+    "activity_011": {
+      "id": "activity_011",
+      "kind": "blocked",
+      "work_order_id": "wo_011",
+      "visit_id": "visit_011",
+      "role": "technician",
+      "message": "WO-1211 Leak follow-up",
+      "created_at": "2026-03-13T12:00:00Z",
+      "unread": false
+    },
+    "activity_012": {
+      "id": "activity_012",
+      "kind": "blocked",
+      "work_order_id": "wo_012",
+      "visit_id": "visit_012",
+      "role": "technician",
+      "message": "WO-1212 Sensor drift",
+      "created_at": "2026-03-14T14:00:00Z",
+      "unread": true
+    },
+    "activity_013": {
+      "id": "activity_013",
+      "kind": "submit",
+      "work_order_id": "wo_013",
+      "visit_id": "visit_013",
+      "role": "technician",
+      "message": "WO-1213 Roof drain check",
+      "created_at": "2026-03-15T08:00:00Z",
+      "unread": false
+    },
+    "activity_014": {
+      "id": "activity_014",
+      "kind": "submit",
+      "work_order_id": "wo_014",
+      "visit_id": "visit_014",
+      "role": "technician",
+      "message": "WO-1214 Panel reset",
+      "created_at": "2026-03-16T10:00:00Z",
+      "unread": true
+    },
+    "activity_015": {
+      "id": "activity_015",
+      "kind": "submit",
+      "work_order_id": "wo_015",
+      "visit_id": "visit_015",
+      "role": "technician",
+      "message": "WO-1215 Quarterly PM",
+      "created_at": "2026-03-10T12:00:00Z",
+      "unread": false
+    },
+    "activity_016": {
+      "id": "activity_016",
+      "kind": "awaiting_review",
+      "work_order_id": "wo_016",
+      "visit_id": "visit_016",
+      "role": "supervisor",
+      "message": "WO-1216 Leak follow-up",
+      "created_at": "2026-03-11T14:00:00Z",
+      "unread": true
+    },
+    "activity_017": {
+      "id": "activity_017",
+      "kind": "awaiting_review",
+      "work_order_id": "wo_017",
+      "visit_id": "visit_017",
+      "role": "supervisor",
+      "message": "WO-1217 Sensor drift",
+      "created_at": "2026-03-12T08:00:00Z",
+      "unread": false
+    },
+    "activity_018": {
+      "id": "activity_018",
+      "kind": "approved",
+      "work_order_id": "wo_018",
+      "visit_id": "visit_018",
+      "role": "manager",
+      "message": "WO-1218 Roof drain check",
+      "created_at": "2026-03-13T10:00:00Z",
+      "unread": true
+    },
+    "activity_019": {
+      "id": "activity_019",
+      "kind": "closed",
+      "work_order_id": "wo_019",
+      "visit_id": "visit_019",
+      "role": "technician",
+      "message": "WO-1219 Panel reset",
+      "created_at": "2026-03-14T12:00:00Z",
+      "unread": false
+    },
+    "activity_020": {
+      "id": "activity_020",
+      "kind": "canceled",
+      "work_order_id": "wo_020",
+      "visit_id": "visit_020",
+      "role": "technician",
+      "message": "WO-1220 Quarterly PM",
+      "created_at": "2026-03-15T14:00:00Z",
+      "unread": true
+    },
+    "activity_021": {
+      "id": "activity_021",
+      "kind": "intake_created",
+      "work_order_id": "wo_021",
+      "visit_id": "visit_021",
+      "role": "manager",
+      "message": "WO-1221 Leak follow-up",
+      "created_at": "2026-03-16T08:00:00Z",
+      "unread": false
+    },
+    "activity_022": {
+      "id": "activity_022",
+      "kind": "assignment",
+      "work_order_id": "wo_022",
+      "visit_id": "visit_022",
+      "role": "dispatcher",
+      "message": "WO-1222 Sensor drift",
+      "created_at": "2026-03-10T10:00:00Z",
+      "unread": true
+    },
+    "activity_023": {
+      "id": "activity_023",
+      "kind": "dispatch_ready",
+      "work_order_id": "wo_023",
+      "visit_id": "visit_023",
+      "role": "dispatcher",
+      "message": "WO-1223 Roof drain check",
+      "created_at": "2026-03-11T12:00:00Z",
+      "unread": false
+    },
+    "activity_024": {
+      "id": "activity_024",
+      "kind": "submit",
+      "work_order_id": "wo_024",
+      "visit_id": "visit_024",
+      "role": "technician",
+      "message": "WO-1224 Panel reset",
+      "created_at": "2026-03-12T14:00:00Z",
+      "unread": true
+    },
+    "activity_025": {
+      "id": "activity_025",
+      "kind": "awaiting_review",
+      "work_order_id": "wo_025",
+      "visit_id": "visit_025",
+      "role": "supervisor",
+      "message": "WO-1225 Quarterly PM",
+      "created_at": "2026-03-13T08:00:00Z",
+      "unread": false
+    }
+  },
+  "alerts": {
+    "alert_dispatcher_overdue": {
+      "id": "alert_dispatcher_overdue",
+      "role": "dispatcher",
+      "severity": "high",
+      "work_order_id": "wo_005",
+      "message": "WO-1205 is nearing SLA breach."
+    },
+    "alert_supervisor_review": {
+      "id": "alert_supervisor_review",
+      "role": "supervisor",
+      "severity": "medium",
+      "work_order_id": "wo_016",
+      "message": "Review queue has awaiting items."
+    },
+    "alert_manager_sla": {
+      "id": "alert_manager_sla",
+      "role": "manager",
+      "severity": "high",
+      "work_order_id": "wo_010",
+      "message": "North branch SLA risk is elevated."
+    },
+    "alert_technician_reassign": {
+      "id": "alert_technician_reassign",
+      "role": "technician",
+      "severity": "medium",
+      "work_order_id": "wo_006",
+      "message": "A reassignment changed your day plan."
+    }
+  },
+  "sla_policies": {
+    "sla_default": {
+      "id": "sla_default",
+      "location_policy": "optional",
+      "signature_policy": "required",
+      "review_policy": "required",
+      "default_priority": "medium",
+      "expected_duration": "90",
+      "breach_threshold_minutes": 120
+    }
+  },
+  "dashboard_rollups": {
+    "dashboard_default": {
+      "id": "dashboard_default",
+      "branch_ids": [
+        "branch_north",
+        "branch_south"
+      ],
+      "team_ids": [
+        "team_north_alpha",
+        "team_north_beta",
+        "team_south_gamma"
+      ],
+      "overdue": 4,
+      "blocked": 2,
+      "awaiting_review": 1,
+      "correction_requested": 1,
+      "resubmitted": 1,
+      "sla_risk": 13
+    }
+  },
+  "workload_snapshots": {
+    "team_north_alpha": {
+      "id": "workload_team_north_alpha",
+      "team_id": "team_north_alpha",
+      "scheduled": 3,
+      "active": 2,
+      "review": 2
+    },
+    "team_north_beta": {
+      "id": "workload_team_north_beta",
+      "team_id": "team_north_beta",
+      "scheduled": 3,
+      "active": 1,
+      "review": 1
+    },
+    "team_south_gamma": {
+      "id": "workload_team_south_gamma",
+      "team_id": "team_south_gamma",
+      "scheduled": 2,
+      "active": 1,
+      "review": 0
+    }
+  },
+  "branch_summaries": {
+    "branch_north": {
+      "id": "branch_north",
+      "branch_id": "branch_north",
+      "open_work_orders": 15,
+      "review_backlog": 3,
+      "sla_risk": 9
+    },
+    "branch_south": {
+      "id": "branch_south",
+      "branch_id": "branch_south",
+      "open_work_orders": 8,
+      "review_backlog": 0,
+      "sla_risk": 4
+    }
+  },
+  "team_summaries": {
+    "team_north_alpha": {
+      "id": "team_north_alpha",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "open_work_orders": 8,
+      "blocked": 0
+    },
+    "team_north_beta": {
+      "id": "team_north_beta",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "open_work_orders": 7,
+      "blocked": 1
+    },
+    "team_south_gamma": {
+      "id": "team_south_gamma",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "open_work_orders": 8,
+      "blocked": 1
+    }
+  },
+  "dispatch_filters": {
+    "dispatch_default": {
+      "id": "dispatch_default",
+      "day": "2026-03-11",
+      "branch_id": "branch_north",
+      "team_id": "all",
+      "status": "all",
+      "priority": "all"
+    }
+  },
   "indexes": {
     "work_orders_by_status": {
       "draft": [
@@ -2383,15 +3475,15 @@
         "wo_017",
         "wo_025"
       ],
-      "user_tech_noah": [
-        "wo_002",
-        "wo_010",
-        "wo_018"
+      "user_tech_ivy": [
+        "wo_007",
+        "wo_015",
+        "wo_023"
       ],
-      "user_tech_zoe": [
-        "wo_003",
-        "wo_011",
-        "wo_019"
+      "user_tech_jude": [
+        "wo_008",
+        "wo_016",
+        "wo_024"
       ],
       "user_tech_liam": [
         "wo_004",
@@ -2403,20 +3495,259 @@
         "wo_013",
         "wo_021"
       ],
+      "user_tech_noah": [
+        "wo_002",
+        "wo_010",
+        "wo_018"
+      ],
       "user_tech_omar": [
         "wo_006",
         "wo_014",
         "wo_022"
       ],
-      "user_tech_ivy": [
+      "user_tech_zoe": [
+        "wo_003",
+        "wo_011",
+        "wo_019"
+      ]
+    },
+    "work_orders_by_branch": {
+      "branch_north": [
+        "wo_001",
+        "wo_002",
+        "wo_004",
+        "wo_005",
         "wo_007",
+        "wo_008",
+        "wo_010",
+        "wo_011",
+        "wo_013",
+        "wo_014",
+        "wo_016",
+        "wo_017",
+        "wo_019",
+        "wo_020",
+        "wo_022",
+        "wo_023",
+        "wo_025"
+      ],
+      "branch_south": [
+        "wo_003",
+        "wo_006",
+        "wo_009",
+        "wo_012",
         "wo_015",
+        "wo_018",
+        "wo_021",
+        "wo_024"
+      ]
+    },
+    "work_orders_by_team": {
+      "team_north_alpha": [
+        "wo_001",
+        "wo_004",
+        "wo_007",
+        "wo_010",
+        "wo_013",
+        "wo_016",
+        "wo_019",
+        "wo_022",
+        "wo_025"
+      ],
+      "team_north_beta": [
+        "wo_002",
+        "wo_005",
+        "wo_008",
+        "wo_011",
+        "wo_014",
+        "wo_017",
+        "wo_020",
         "wo_023"
       ],
-      "user_tech_jude": [
-        "wo_008",
-        "wo_016",
+      "team_south_gamma": [
+        "wo_003",
+        "wo_006",
+        "wo_009",
+        "wo_012",
+        "wo_015",
+        "wo_018",
+        "wo_021",
         "wo_024"
+      ]
+    },
+    "work_orders_by_day": {
+      "2026-03-10": [
+        "wo_001",
+        "wo_008",
+        "wo_015",
+        "wo_022"
+      ],
+      "2026-03-11": [
+        "wo_002",
+        "wo_009",
+        "wo_016",
+        "wo_023"
+      ],
+      "2026-03-12": [
+        "wo_003",
+        "wo_010",
+        "wo_017",
+        "wo_024"
+      ],
+      "2026-03-13": [
+        "wo_004",
+        "wo_011",
+        "wo_018",
+        "wo_025"
+      ],
+      "2026-03-14": [
+        "wo_005",
+        "wo_012",
+        "wo_019"
+      ],
+      "2026-03-15": [
+        "wo_006",
+        "wo_013",
+        "wo_020"
+      ],
+      "2026-03-16": [
+        "wo_007",
+        "wo_014",
+        "wo_021"
+      ]
+    },
+    "work_orders_by_review_state": {
+      "approved": [
+        "wo_013",
+        "wo_014",
+        "wo_015",
+        "wo_018",
+        "wo_019",
+        "wo_024"
+      ],
+      "awaiting_review": [
+        "wo_016"
+      ],
+      "correction_requested": [
+        "wo_017"
+      ],
+      "not_ready": [
+        "wo_001",
+        "wo_002",
+        "wo_003",
+        "wo_004",
+        "wo_005",
+        "wo_006",
+        "wo_007",
+        "wo_008",
+        "wo_009",
+        "wo_010",
+        "wo_011",
+        "wo_012",
+        "wo_022",
+        "wo_023"
+      ],
+      "not_required": [
+        "wo_020",
+        "wo_021"
+      ],
+      "resubmitted": [
+        "wo_025"
+      ]
+    },
+    "work_orders_by_priority": {
+      "high": [
+        "wo_002",
+        "wo_006",
+        "wo_010",
+        "wo_014",
+        "wo_018",
+        "wo_022"
+      ],
+      "low": [
+        "wo_004",
+        "wo_008",
+        "wo_012",
+        "wo_016",
+        "wo_020",
+        "wo_024"
+      ],
+      "medium": [
+        "wo_001",
+        "wo_005",
+        "wo_009",
+        "wo_013",
+        "wo_017",
+        "wo_021",
+        "wo_025"
+      ],
+      "urgent": [
+        "wo_003",
+        "wo_007",
+        "wo_011",
+        "wo_015",
+        "wo_019",
+        "wo_023"
+      ]
+    },
+    "review_queue_by_status": {
+      "awaiting_review": [
+        "review_queue_016"
+      ],
+      "correction_requested": [
+        "review_queue_017"
+      ],
+      "resubmitted": [
+        "review_queue_025"
+      ]
+    },
+    "alerts_by_role": {
+      "dispatcher": [
+        "alert_dispatcher_overdue"
+      ],
+      "manager": [
+        "alert_manager_sla"
+      ],
+      "supervisor": [
+        "alert_supervisor_review"
+      ],
+      "technician": [
+        "alert_technician_reassign"
+      ]
+    },
+    "activity_by_role": {
+      "dispatcher": [
+        "activity_001",
+        "activity_002",
+        "activity_003",
+        "activity_004",
+        "activity_005",
+        "activity_006",
+        "activity_007",
+        "activity_008",
+        "activity_022",
+        "activity_023"
+      ],
+      "manager": [
+        "activity_018",
+        "activity_021"
+      ],
+      "supervisor": [
+        "activity_016",
+        "activity_017",
+        "activity_025"
+      ],
+      "technician": [
+        "activity_009",
+        "activity_010",
+        "activity_011",
+        "activity_012",
+        "activity_013",
+        "activity_014",
+        "activity_015",
+        "activity_019",
+        "activity_020",
+        "activity_024"
       ]
     },
     "assets_by_site": {
@@ -2659,7 +3990,13 @@
       "overdue": 4,
       "blocked": 2,
       "review": 3,
-      "completion_rate": "76%"
+      "completion_rate": "76%",
+      "sla_risk": 13
+    },
+    "supervisor_metrics": {
+      "awaiting_review": 1,
+      "correction_requested": 1,
+      "resubmitted": 1
     },
     "technician_today": {
       "user_tech_ava": [
@@ -2702,6 +4039,69 @@
         "wo_016",
         "wo_024"
       ]
+    },
+    "activity_unread": {
+      "technician": 1,
+      "dispatcher": 1,
+      "supervisor": 1,
+      "manager": 1
+    },
+    "branch_rollups": [
+      {
+        "id": "branch_north",
+        "branch_id": "branch_north",
+        "open_work_orders": 15,
+        "review_backlog": 3,
+        "sla_risk": 9
+      },
+      {
+        "id": "branch_south",
+        "branch_id": "branch_south",
+        "open_work_orders": 8,
+        "review_backlog": 0,
+        "sla_risk": 4
+      }
+    ],
+    "team_rollups": [
+      {
+        "id": "team_north_alpha",
+        "team_id": "team_north_alpha",
+        "branch_id": "branch_north",
+        "open_work_orders": 8,
+        "blocked": 0
+      },
+      {
+        "id": "team_north_beta",
+        "team_id": "team_north_beta",
+        "branch_id": "branch_north",
+        "open_work_orders": 7,
+        "blocked": 1
+      },
+      {
+        "id": "team_south_gamma",
+        "team_id": "team_south_gamma",
+        "branch_id": "branch_south",
+        "open_work_orders": 8,
+        "blocked": 1
+      }
+    ],
+    "dashboard_rollup": {
+      "id": "dashboard_default",
+      "branch_ids": [
+        "branch_north",
+        "branch_south"
+      ],
+      "team_ids": [
+        "team_north_alpha",
+        "team_north_beta",
+        "team_south_gamma"
+      ],
+      "overdue": 4,
+      "blocked": 2,
+      "awaiting_review": 1,
+      "correction_requested": 1,
+      "resubmitted": 1,
+      "sla_risk": 13
     }
   }
 }

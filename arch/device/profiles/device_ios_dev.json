@@ -8,7 +8,7 @@
     "app_id": "io.x07.crewops.ios.dev"
   },
   "version": {
-    "version": "0.2.0",
+    "version": "0.3.0",
     "build": 1
   },
   "security": {
@@ -33,5 +33,5 @@
     "bundle_id": "io.x07.crewops.ios.dev",
     "signing_mode": "dev"
   },
-  "notes": "CrewOps iOS packaging keeps runtime network denied until a real backend base_url and allowlist are configured in this profile; camera, import, blob storage, and foreground location are enabled for M3 execution."
+  "notes": "CrewOps iOS packaging keeps runtime network denied until a real backend base_url and allowlist are configured in this profile; camera, import, blob storage, foreground location, and local notifications are enabled for M4 operations."
 }
