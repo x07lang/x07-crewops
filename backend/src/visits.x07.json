@@ -1,0 +1,818 @@
+{
+  "decls": [
+    {
+      "kind": "export",
+      "names": [
+        "visits.can_handle_v1",
+        "visits.handle_v1"
+      ]
+    },
+    {
+      "body": [
+        "if",
+        [
+          "view.eq",
+          "method_json",
+          [
+            "bytes.view_lit",
+            "\"POST\""
+          ]
+        ],
+        [
+          "if",
+          [
+            "visits._matches_action_v1",
+            "path_json",
+            [
+              "bytes.view_lit",
+              "/check-in\""
+            ]
+          ],
+          1,
+          [
+            "if",
+            [
+              "visits._matches_action_v1",
+              "path_json",
+              [
+                "bytes.view_lit",
+                "/save-draft\""
+              ]
+            ],
+            1,
+            [
+              "if",
+              [
+                "visits._matches_action_v1",
+                "path_json",
+                [
+                  "bytes.view_lit",
+                  "/submit\""
+                ]
+              ],
+              1,
+              [
+                "if",
+                [
+                  "visits._matches_action_v1",
+                  "path_json",
+                  [
+                    "bytes.view_lit",
+                    "/block\""
+                  ]
+                ],
+                1,
+                [
+                  "if",
+                  [
+                    "visits._matches_action_v1",
+                    "path_json",
+                    [
+                      "bytes.view_lit",
+                      "/check-out\""
+                    ]
+                  ],
+                  1,
+                  0
+                ]
+              ]
+            ]
+          ]
+        ],
+        0
+      ],
+      "kind": "defn",
+      "name": "visits.can_handle_v1",
+      "params": [
+        {
+          "name": "method_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "i32"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "suffix_check_in",
+          [
+            "bytes.view_lit",
+            "/check-in\""
+          ]
+        ],
+        [
+          "let",
+          "suffix_save_draft",
+          [
+            "bytes.view_lit",
+            "/save-draft\""
+          ]
+        ],
+        [
+          "let",
+          "suffix_submit",
+          [
+            "bytes.view_lit",
+            "/submit\""
+          ]
+        ],
+        [
+          "let",
+          "suffix_block",
+          [
+            "bytes.view_lit",
+            "/block\""
+          ]
+        ],
+        [
+          "let",
+          "suffix_check_out",
+          [
+            "bytes.view_lit",
+            "/check-out\""
+          ]
+        ],
+        [
+          "let",
+          "visit_id_json",
+          [
+            "if",
+            [
+              "visits._matches_action_v1",
+              "path_json",
+              "suffix_check_in"
+            ],
+            [
+              "visits._extract_visit_id_v1",
+              "path_json",
+              "suffix_check_in"
+            ],
+            [
+              "if",
+              [
+                "visits._matches_action_v1",
+                "path_json",
+                "suffix_save_draft"
+              ],
+              [
+                "visits._extract_visit_id_v1",
+                "path_json",
+                "suffix_save_draft"
+              ],
+              [
+                "if",
+                [
+                  "visits._matches_action_v1",
+                  "path_json",
+                  "suffix_submit"
+                ],
+                [
+                  "visits._extract_visit_id_v1",
+                  "path_json",
+                  "suffix_submit"
+                ],
+                [
+                  "if",
+                  [
+                    "visits._matches_action_v1",
+                    "path_json",
+                    "suffix_block"
+                  ],
+                  [
+                    "visits._extract_visit_id_v1",
+                    "path_json",
+                    "suffix_block"
+                  ],
+                  [
+                    "visits._extract_visit_id_v1",
+                    "path_json",
+                    "suffix_check_out"
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+        [
+          "let",
+          "visit_id_view",
+          [
+            "bytes.view",
+            "visit_id_json"
+          ]
+        ],
+        [
+          "let",
+          "body_json",
+          [
+            "if",
+            [
+              "visits._matches_action_v1",
+              "path_json",
+              "suffix_check_in"
+            ],
+            [
+              "visits._check_in_body_v1",
+              "visit_id_view"
+            ],
+            [
+              "if",
+              [
+                "visits._matches_action_v1",
+                "path_json",
+                "suffix_save_draft"
+              ],
+              [
+                "visits._save_draft_body_v1",
+                "visit_id_view"
+              ],
+              [
+                "if",
+                [
+                  "visits._matches_action_v1",
+                  "path_json",
+                  "suffix_submit"
+                ],
+                [
+                  "visits._submit_body_v1",
+                  "visit_id_view"
+                ],
+                [
+                  "if",
+                  [
+                    "visits._matches_action_v1",
+                    "path_json",
+                    "suffix_block"
+                  ],
+                  [
+                    "visits._block_body_v1",
+                    "visit_id_view"
+                  ],
+                  [
+                    "visits._check_out_body_v1",
+                    "visit_id_view"
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+        [
+          "errors.response_v1",
+          "req_id_json",
+          [
+            "bytes.view_lit",
+            "200"
+          ],
+          [
+            "bytes.view",
+            "body_json"
+          ]
+        ]
+      ],
+      "kind": "defn",
+      "name": "visits.handle_v1",
+      "params": [
+        {
+          "name": "req_id_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "out",
+          [
+            "std.vec.with_capacity",
+            384
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              "{\"visit_id\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "visit_id_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"status\":\"checked_in\",\"visit_state\":\"on_site\",\"checked_in_at\":\"2026-03-10T09:10:00Z\",\"location_capture_optional\":true}"
+            ]
+          ]
+        ],
+        [
+          "std.vec.as_bytes",
+          "out"
+        ]
+      ],
+      "kind": "defn",
+      "name": "visits._check_in_body_v1",
+      "params": [
+        {
+          "name": "visit_id_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "out",
+          [
+            "std.vec.with_capacity",
+            320
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              "{\"visit_id\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "visit_id_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"status\":\"saved\",\"server_draft_version\":\"draft_v3\",\"saved_at\":\"2026-03-10T09:12:00Z\"}"
+            ]
+          ]
+        ],
+        [
+          "std.vec.as_bytes",
+          "out"
+        ]
+      ],
+      "kind": "defn",
+      "name": "visits._save_draft_body_v1",
+      "params": [
+        {
+          "name": "visit_id_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "out",
+          [
+            "std.vec.with_capacity",
+            384
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              "{\"visit_id\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "visit_id_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"status\":\"accepted\",\"visit_state\":\"completed\",\"requires_signature\":true,\"submitted_at\":\"2026-03-10T10:05:00Z\"}"
+            ]
+          ]
+        ],
+        [
+          "std.vec.as_bytes",
+          "out"
+        ]
+      ],
+      "kind": "defn",
+      "name": "visits._submit_body_v1",
+      "params": [
+        {
+          "name": "visit_id_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "out",
+          [
+            "std.vec.with_capacity",
+            384
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              "{\"visit_id\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "visit_id_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"status\":\"blocked\",\"visit_state\":\"blocked\",\"requires_block_reason\":true,\"submitted_at\":\"2026-03-10T10:05:00Z\"}"
+            ]
+          ]
+        ],
+        [
+          "std.vec.as_bytes",
+          "out"
+        ]
+      ],
+      "kind": "defn",
+      "name": "visits._block_body_v1",
+      "params": [
+        {
+          "name": "visit_id_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "out",
+          [
+            "std.vec.with_capacity",
+            384
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              "{\"visit_id\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "visit_id_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"status\":\"checked_out\",\"visit_state\":\"completed\",\"checked_out_at\":\"2026-03-10T10:05:00Z\",\"location_capture_optional\":true}"
+            ]
+          ]
+        ],
+        [
+          "std.vec.as_bytes",
+          "out"
+        ]
+      ],
+      "kind": "defn",
+      "name": "visits._check_out_body_v1",
+      "params": [
+        {
+          "name": "visit_id_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "prefix_json",
+          [
+            "bytes.view_lit",
+            "\"/api/visits/"
+          ]
+        ],
+        [
+          "let",
+          "prefix_match",
+          [
+            "visits._path_has_prefix_v1",
+            "path_json",
+            "prefix_json"
+          ]
+        ],
+        [
+          "let",
+          "suffix_len",
+          [
+            "view.len",
+            "suffix_json"
+          ]
+        ],
+        [
+          "let",
+          "path_len",
+          [
+            "view.len",
+            "path_json"
+          ]
+        ],
+        [
+          "if",
+          "prefix_match",
+          [
+            "if",
+            [
+              ">=u",
+              "path_len",
+              [
+                "+",
+                [
+                  "view.len",
+                  "prefix_json"
+                ],
+                "suffix_len"
+              ]
+            ],
+            [
+              "view.eq",
+              [
+                "view.slice",
+                "path_json",
+                [
+                  "-",
+                  "path_len",
+                  "suffix_len"
+                ],
+                "suffix_len"
+              ],
+              "suffix_json"
+            ],
+            0
+          ],
+          0
+        ]
+      ],
+      "kind": "defn",
+      "name": "visits._matches_action_v1",
+      "params": [
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "suffix_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "i32"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "prefix_json",
+          [
+            "bytes.view_lit",
+            "\"/api/visits/"
+          ]
+        ],
+        [
+          "let",
+          "prefix_len",
+          [
+            "view.len",
+            "prefix_json"
+          ]
+        ],
+        [
+          "let",
+          "suffix_len",
+          [
+            "view.len",
+            "suffix_json"
+          ]
+        ],
+        [
+          "let",
+          "path_len",
+          [
+            "view.len",
+            "path_json"
+          ]
+        ],
+        [
+          "if",
+          [
+            "visits._matches_action_v1",
+            "path_json",
+            "suffix_json"
+          ],
+          [
+            "begin",
+            [
+              "let",
+              "raw_id_json",
+              [
+                "view.to_bytes",
+                [
+                  "view.slice",
+                  "path_json",
+                  "prefix_len",
+                  [
+                    "-",
+                    [
+                      "-",
+                      "path_len",
+                      "prefix_len"
+                    ],
+                    "suffix_len"
+                  ]
+                ]
+              ]
+            ],
+            [
+              "errors.json_string_v1",
+              [
+                "bytes.view",
+                "raw_id_json"
+              ]
+            ]
+          ],
+          [
+            "bytes.lit",
+            "\"visit_001\""
+          ]
+        ]
+      ],
+      "kind": "defn",
+      "name": "visits._extract_visit_id_v1",
+      "params": [
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "suffix_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "if",
+        [
+          ">=u",
+          [
+            "view.len",
+            "path_json"
+          ],
+          [
+            "view.len",
+            "prefix_json"
+          ]
+        ],
+        [
+          "view.eq",
+          [
+            "view.slice",
+            "path_json",
+            0,
+            [
+              "view.len",
+              "prefix_json"
+            ]
+          ],
+          "prefix_json"
+        ],
+        0
+      ],
+      "kind": "defn",
+      "name": "visits._path_has_prefix_v1",
+      "params": [
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "prefix_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "i32"
+    }
+  ],
+  "imports": [
+    "errors",
+    "std.vec"
+  ],
+  "kind": "module",
+  "module_id": "visits",
+  "schema_version": "x07.x07ast@0.5.0"
+}

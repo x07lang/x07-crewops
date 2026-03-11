@@ -30,6 +30,15 @@ APP_PASSING_TRACES=(
   "$ROOT/tests/traces/dispatcher_board_filter.trace.json"
   "$ROOT/tests/traces/technician_today_nav.trace.json"
   "$ROOT/tests/traces/settings_role_switch.trace.json"
+  "$ROOT/tests/traces/check_in_happy.trace.json"
+  "$ROOT/tests/traces/checklist_draft_autosave.trace.json"
+  "$ROOT/tests/traces/offline_visit_complete_then_sync.trace.json"
+  "$ROOT/tests/traces/required_field_validation.trace.json"
+  "$ROOT/tests/traces/photo_capture_denied.trace.json"
+  "$ROOT/tests/traces/location_permission_denied.trace.json"
+  "$ROOT/tests/traces/attachment_retry_after_reconnect.trace.json"
+  "$ROOT/tests/traces/blocked_visit_submit.trace.json"
+  "$ROOT/tests/traces/evidence_capture_upload_happy.trace.json"
 )
 EXPECTED_FAILURE_TRACE="$ROOT/tests/traces/bootstrap_api_error.trace.json"
 
@@ -369,6 +378,10 @@ build_device_bundle() {
 
 run_desktop_smoke() {
   local host_tool=""
+  local serve_pid=""
+  local serve_ready=0
+  local attempt=0
+  local max_attempts=30
 
   build_device_bundle "device_desktop_dev" "$DESKTOP_BUNDLE_DIR"
 
@@ -379,6 +392,40 @@ run_desktop_smoke() {
   fi
 
   export X07_DEVICE_HOST_DESKTOP="$host_tool"
+
+  note "==> x07-wasm app serve listen crewops_dev"
+  "$X07_WASM_BIN" app serve \
+    --dir "$APP_DEV_DIR" \
+    --mode listen \
+    --addr 127.0.0.1:17081 \
+    --json \
+    --report-out "$REPORT_DIR/app.serve.crewops_dev.listen.json" \
+    --quiet-json \
+    --strict \
+    >"$REPORT_DIR/app.serve.crewops_dev.listen.stdout.json" 2>&1 &
+  serve_pid="$!"
+
+  while [ "$attempt" -lt "$max_attempts" ]; do
+    if curl -fsS http://127.0.0.1:17081/api/meta/app >/dev/null 2>&1; then
+      serve_ready=1
+      break
+    fi
+    if ! kill -0 "$serve_pid" >/dev/null 2>&1; then
+      break
+    fi
+    attempt=$((attempt + 1))
+    sleep 1
+  done
+
+  if [ "$serve_ready" -ne 1 ]; then
+    if [ -n "$serve_pid" ] && kill -0 "$serve_pid" >/dev/null 2>&1; then
+      kill "$serve_pid" >/dev/null 2>&1 || true
+      wait "$serve_pid" >/dev/null 2>&1 || true
+    fi
+    mark_failure "x07-wasm app serve listen crewops_dev"
+    return 0
+  fi
+
   run_step "x07-wasm device run device_desktop_dev" \
     run_json \
       "$REPORT_DIR/device.run.device_desktop_dev.json" \
@@ -386,6 +433,11 @@ run_desktop_smoke() {
       --bundle "$DESKTOP_BUNDLE_DIR" \
       --target desktop \
       --headless-smoke
+
+  if [ -n "$serve_pid" ] && kill -0 "$serve_pid" >/dev/null 2>&1; then
+    kill "$serve_pid" >/dev/null 2>&1 || true
+    wait "$serve_pid" >/dev/null 2>&1 || true
+  fi
 }
 
 package_mobile_target() {

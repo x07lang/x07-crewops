@@ -8,7 +8,7 @@
     "app_id": "io.x07.crewops.ios.dev"
   },
   "version": {
-    "version": "0.1.0",
+    "version": "0.2.0",
     "build": 1
   },
   "security": {
@@ -24,7 +24,7 @@
     "allowed_hosts": ["example.invalid"]
   },
   "capabilities": {
-    "path": "arch/device/profiles/device_dev.capabilities.json"
+    "path": "arch/device/profiles/device_mobile_dev.capabilities.json"
   },
   "telemetry_profile": {
     "path": "arch/device/profiles/device_ios_dev.telemetry.profile.json"
@@ -33,5 +33,5 @@
     "bundle_id": "io.x07.crewops.ios.dev",
     "signing_mode": "dev"
   },
-  "notes": "CrewOps iOS packaging keeps runtime network denied until a real backend base_url and allowlist are configured in this profile."
+  "notes": "CrewOps iOS packaging keeps runtime network denied until a real backend base_url and allowlist are configured in this profile; camera, import, blob storage, and foreground location are enabled for M3 execution."
 }

@@ -6,7 +6,7 @@ Use this repo as the current CrewOps showcase, not the older Atlas or Field Note
 
 - Frontend: [`frontend/src/app.x07.json`](frontend/src/app.x07.json) is the `std.web_ui` reducer.
 - Backend: [`backend/src/app.x07.json`](backend/src/app.x07.json) is the WASI HTTP proxy component.
-- Frontend package baseline: [`frontend/x07.json`](frontend/x07.json) is locked to `std-web-ui@0.2.0`.
+- Frontend package baseline: [`frontend/x07.json`](frontend/x07.json) is locked to `std-web-ui@0.2.1`.
 - App profiles: `crewops_dev`, `crewops_release`, `crewops_budget`
 - Device profiles: `device_desktop_dev`, `device_ios_dev`, `device_android_dev`
 - Demo seed source: [`scripts/ci/seed_demo.sh`](scripts/ci/seed_demo.sh)

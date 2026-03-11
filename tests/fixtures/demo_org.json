@@ -992,7 +992,17 @@
       "asset_id": "asset_001",
       "scheduled_day": "2026-03-10",
       "window": "10:00-12:00",
-      "sla_bucket": "attention"
+      "sla_bucket": "attention",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42"
+      ]
     },
     "wo_002": {
       "id": "wo_002",
@@ -1008,7 +1018,18 @@
       "asset_id": "asset_002",
       "scheduled_day": "2026-03-11",
       "window": "13:00-15:00",
-      "sla_bucket": "attention"
+      "sla_bucket": "attention",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42",
+        "part_contact_cleaner"
+      ]
     },
     "wo_003": {
       "id": "wo_003",
@@ -1024,7 +1045,16 @@
       "asset_id": "asset_003",
       "scheduled_day": "2026-03-12",
       "window": "15:00-17:00",
-      "sla_bucket": "stable"
+      "sla_bucket": "stable",
+      "template_id": "tmpl_closeout",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13"
+      ]
     },
     "wo_004": {
       "id": "wo_004",
@@ -1040,7 +1070,17 @@
       "asset_id": "asset_004",
       "scheduled_day": "2026-03-13",
       "window": "08:00-10:00",
-      "sla_bucket": "on_track"
+      "sla_bucket": "on_track",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42"
+      ]
     },
     "wo_005": {
       "id": "wo_005",
@@ -1056,7 +1096,18 @@
       "asset_id": "asset_005",
       "scheduled_day": "2026-03-14",
       "window": "10:00-12:00",
-      "sla_bucket": "attention"
+      "sla_bucket": "attention",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42",
+        "part_contact_cleaner"
+      ]
     },
     "wo_006": {
       "id": "wo_006",
@@ -1072,7 +1123,16 @@
       "asset_id": "asset_006",
       "scheduled_day": "2026-03-15",
       "window": "13:00-15:00",
-      "sla_bucket": "attention"
+      "sla_bucket": "attention",
+      "template_id": "tmpl_closeout",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13"
+      ]
     },
     "wo_007": {
       "id": "wo_007",
@@ -1088,7 +1148,17 @@
       "asset_id": "asset_007",
       "scheduled_day": "2026-03-16",
       "window": "15:00-17:00",
-      "sla_bucket": "stable"
+      "sla_bucket": "stable",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42"
+      ]
     },
     "wo_008": {
       "id": "wo_008",
@@ -1104,7 +1174,18 @@
       "asset_id": "asset_008",
       "scheduled_day": "2026-03-10",
       "window": "08:00-10:00",
-      "sla_bucket": "on_track"
+      "sla_bucket": "on_track",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42",
+        "part_contact_cleaner"
+      ]
     },
     "wo_009": {
       "id": "wo_009",
@@ -1120,7 +1201,16 @@
       "asset_id": "asset_009",
       "scheduled_day": "2026-03-11",
       "window": "10:00-12:00",
-      "sla_bucket": "attention"
+      "sla_bucket": "attention",
+      "template_id": "tmpl_closeout",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13"
+      ]
     },
     "wo_010": {
       "id": "wo_010",
@@ -1136,7 +1226,17 @@
       "asset_id": "asset_010",
       "scheduled_day": "2026-03-12",
       "window": "13:00-15:00",
-      "sla_bucket": "attention"
+      "sla_bucket": "attention",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42"
+      ]
     },
     "wo_011": {
       "id": "wo_011",
@@ -1152,7 +1252,18 @@
       "asset_id": "asset_011",
       "scheduled_day": "2026-03-13",
       "window": "15:00-17:00",
-      "sla_bucket": "stable"
+      "sla_bucket": "stable",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42",
+        "part_contact_cleaner"
+      ]
     },
     "wo_012": {
       "id": "wo_012",
@@ -1168,7 +1279,16 @@
       "asset_id": "asset_012",
       "scheduled_day": "2026-03-14",
       "window": "08:00-10:00",
-      "sla_bucket": "on_track"
+      "sla_bucket": "on_track",
+      "template_id": "tmpl_closeout",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13"
+      ]
     },
     "wo_013": {
       "id": "wo_013",
@@ -1184,7 +1304,17 @@
       "asset_id": "asset_013",
       "scheduled_day": "2026-03-15",
       "window": "10:00-12:00",
-      "sla_bucket": "attention"
+      "sla_bucket": "attention",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42"
+      ]
     },
     "wo_014": {
       "id": "wo_014",
@@ -1200,7 +1330,18 @@
       "asset_id": "asset_014",
       "scheduled_day": "2026-03-16",
       "window": "13:00-15:00",
-      "sla_bucket": "attention"
+      "sla_bucket": "attention",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42",
+        "part_contact_cleaner"
+      ]
     },
     "wo_015": {
       "id": "wo_015",
@@ -1216,7 +1357,16 @@
       "asset_id": "asset_015",
       "scheduled_day": "2026-03-10",
       "window": "15:00-17:00",
-      "sla_bucket": "stable"
+      "sla_bucket": "stable",
+      "template_id": "tmpl_closeout",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13"
+      ]
     },
     "wo_016": {
       "id": "wo_016",
@@ -1232,7 +1382,17 @@
       "asset_id": "asset_016",
       "scheduled_day": "2026-03-11",
       "window": "08:00-10:00",
-      "sla_bucket": "on_track"
+      "sla_bucket": "on_track",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42"
+      ]
     },
     "wo_017": {
       "id": "wo_017",
@@ -1248,7 +1408,18 @@
       "asset_id": "asset_017",
       "scheduled_day": "2026-03-12",
       "window": "10:00-12:00",
-      "sla_bucket": "attention"
+      "sla_bucket": "attention",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42",
+        "part_contact_cleaner"
+      ]
     },
     "wo_018": {
       "id": "wo_018",
@@ -1264,7 +1435,16 @@
       "asset_id": "asset_018",
       "scheduled_day": "2026-03-13",
       "window": "13:00-15:00",
-      "sla_bucket": "attention"
+      "sla_bucket": "attention",
+      "template_id": "tmpl_closeout",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13"
+      ]
     },
     "wo_019": {
       "id": "wo_019",
@@ -1280,7 +1460,17 @@
       "asset_id": "asset_019",
       "scheduled_day": "2026-03-14",
       "window": "15:00-17:00",
-      "sla_bucket": "stable"
+      "sla_bucket": "stable",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42"
+      ]
     },
     "wo_020": {
       "id": "wo_020",
@@ -1296,7 +1486,18 @@
       "asset_id": "asset_020",
       "scheduled_day": "2026-03-15",
       "window": "08:00-10:00",
-      "sla_bucket": "on_track"
+      "sla_bucket": "on_track",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42",
+        "part_contact_cleaner"
+      ]
     },
     "wo_021": {
       "id": "wo_021",
@@ -1312,7 +1513,16 @@
       "asset_id": "asset_021",
       "scheduled_day": "2026-03-16",
       "window": "10:00-12:00",
-      "sla_bucket": "attention"
+      "sla_bucket": "attention",
+      "template_id": "tmpl_closeout",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13"
+      ]
     },
     "wo_022": {
       "id": "wo_022",
@@ -1328,7 +1538,17 @@
       "asset_id": "asset_022",
       "scheduled_day": "2026-03-10",
       "window": "13:00-15:00",
-      "sla_bucket": "attention"
+      "sla_bucket": "attention",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42"
+      ]
     },
     "wo_023": {
       "id": "wo_023",
@@ -1344,7 +1564,18 @@
       "asset_id": "asset_023",
       "scheduled_day": "2026-03-11",
       "window": "15:00-17:00",
-      "sla_bucket": "stable"
+      "sla_bucket": "stable",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42",
+        "part_contact_cleaner"
+      ]
     },
     "wo_024": {
       "id": "wo_024",
@@ -1360,7 +1591,16 @@
       "asset_id": "asset_024",
       "scheduled_day": "2026-03-12",
       "window": "08:00-10:00",
-      "sla_bucket": "on_track"
+      "sla_bucket": "on_track",
+      "template_id": "tmpl_closeout",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13"
+      ]
     },
     "wo_025": {
       "id": "wo_025",
@@ -1376,7 +1616,17 @@
       "asset_id": "asset_025",
       "scheduled_day": "2026-03-13",
       "window": "10:00-12:00",
-      "sla_bucket": "attention"
+      "sla_bucket": "attention",
+      "template_id": "tmpl_pm",
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "allowed_part_ids": [
+        "part_filter_merv13",
+        "part_belt_a42"
+      ]
     }
   },
   "visits": {
@@ -1384,168 +1634,696 @@
       "id": "visit_001",
       "work_order_id": "wo_001",
       "user_id": "user_tech_ava",
-      "state": "planned"
+      "state": "planned",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "site_id": "site_001",
+      "asset_id": "asset_001",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-10T10:00:00Z",
+      "execution": {
+        "status": "planned",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_002": {
       "id": "visit_002",
       "work_order_id": "wo_002",
       "user_id": "user_tech_noah",
-      "state": "planned"
+      "state": "planned",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "site_id": "site_002",
+      "asset_id": "asset_002",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-11T12:00:00Z",
+      "execution": {
+        "status": "planned",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_003": {
       "id": "visit_003",
       "work_order_id": "wo_003",
       "user_id": "user_tech_zoe",
-      "state": "planned"
+      "state": "planned",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "site_id": "site_003",
+      "asset_id": "asset_003",
+      "template_id": "tmpl_closeout",
+      "planned_start": "2026-03-12T14:00:00Z",
+      "execution": {
+        "status": "planned",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_004": {
       "id": "visit_004",
       "work_order_id": "wo_004",
       "user_id": "user_tech_liam",
-      "state": "planned"
+      "state": "planned",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "site_id": "site_004",
+      "asset_id": "asset_004",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-13T08:00:00Z",
+      "execution": {
+        "status": "planned",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_005": {
       "id": "visit_005",
       "work_order_id": "wo_005",
       "user_id": "user_tech_mila",
-      "state": "planned"
+      "state": "planned",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "site_id": "site_005",
+      "asset_id": "asset_005",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-14T10:00:00Z",
+      "execution": {
+        "status": "planned",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_006": {
       "id": "visit_006",
       "work_order_id": "wo_006",
       "user_id": "user_tech_omar",
-      "state": "planned"
+      "state": "planned",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "site_id": "site_006",
+      "asset_id": "asset_006",
+      "template_id": "tmpl_closeout",
+      "planned_start": "2026-03-15T12:00:00Z",
+      "execution": {
+        "status": "planned",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_007": {
       "id": "visit_007",
       "work_order_id": "wo_007",
       "user_id": "user_tech_ivy",
-      "state": "planned"
+      "state": "planned",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "site_id": "site_007",
+      "asset_id": "asset_007",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-16T14:00:00Z",
+      "execution": {
+        "status": "planned",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_008": {
       "id": "visit_008",
       "work_order_id": "wo_008",
       "user_id": "user_tech_jude",
-      "state": "planned"
+      "state": "planned",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "site_id": "site_008",
+      "asset_id": "asset_008",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-10T08:00:00Z",
+      "execution": {
+        "status": "planned",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_009": {
       "id": "visit_009",
       "work_order_id": "wo_009",
       "user_id": "user_tech_ava",
-      "state": "logged"
+      "state": "logged",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "site_id": "site_009",
+      "asset_id": "asset_009",
+      "template_id": "tmpl_closeout",
+      "planned_start": "2026-03-11T10:00:00Z",
+      "execution": {
+        "status": "resume_required",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_010": {
       "id": "visit_010",
       "work_order_id": "wo_010",
       "user_id": "user_tech_noah",
-      "state": "logged"
+      "state": "logged",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "site_id": "site_010",
+      "asset_id": "asset_010",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-12T12:00:00Z",
+      "execution": {
+        "status": "resume_required",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_011": {
       "id": "visit_011",
       "work_order_id": "wo_011",
       "user_id": "user_tech_zoe",
-      "state": "logged"
+      "state": "logged",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "site_id": "site_011",
+      "asset_id": "asset_011",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-13T14:00:00Z",
+      "execution": {
+        "status": "resume_required",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_012": {
       "id": "visit_012",
       "work_order_id": "wo_012",
       "user_id": "user_tech_liam",
-      "state": "logged"
+      "state": "logged",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "site_id": "site_012",
+      "asset_id": "asset_012",
+      "template_id": "tmpl_closeout",
+      "planned_start": "2026-03-14T08:00:00Z",
+      "execution": {
+        "status": "resume_required",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_013": {
       "id": "visit_013",
       "work_order_id": "wo_013",
       "user_id": "user_tech_mila",
-      "state": "logged"
+      "state": "logged",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "site_id": "site_013",
+      "asset_id": "asset_013",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-15T10:00:00Z",
+      "execution": {
+        "status": "resume_required",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_014": {
       "id": "visit_014",
       "work_order_id": "wo_014",
       "user_id": "user_tech_omar",
-      "state": "logged"
+      "state": "logged",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "site_id": "site_014",
+      "asset_id": "asset_014",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-16T12:00:00Z",
+      "execution": {
+        "status": "resume_required",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_015": {
       "id": "visit_015",
       "work_order_id": "wo_015",
       "user_id": "user_tech_ivy",
-      "state": "logged"
+      "state": "logged",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "site_id": "site_015",
+      "asset_id": "asset_015",
+      "template_id": "tmpl_closeout",
+      "planned_start": "2026-03-10T14:00:00Z",
+      "execution": {
+        "status": "resume_required",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_016": {
       "id": "visit_016",
       "work_order_id": "wo_016",
       "user_id": "user_tech_jude",
-      "state": "logged"
+      "state": "logged",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "site_id": "site_016",
+      "asset_id": "asset_016",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-11T08:00:00Z",
+      "execution": {
+        "status": "resume_required",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_017": {
       "id": "visit_017",
       "work_order_id": "wo_017",
       "user_id": "user_tech_ava",
-      "state": "logged"
+      "state": "logged",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "site_id": "site_017",
+      "asset_id": "asset_017",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-12T10:00:00Z",
+      "execution": {
+        "status": "resume_required",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_018": {
       "id": "visit_018",
       "work_order_id": "wo_018",
       "user_id": "user_tech_noah",
-      "state": "logged"
+      "state": "logged",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "site_id": "site_018",
+      "asset_id": "asset_018",
+      "template_id": "tmpl_closeout",
+      "planned_start": "2026-03-13T12:00:00Z",
+      "execution": {
+        "status": "resume_required",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_019": {
       "id": "visit_019",
       "work_order_id": "wo_019",
       "user_id": "user_tech_zoe",
-      "state": "logged"
+      "state": "logged",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "site_id": "site_019",
+      "asset_id": "asset_019",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-14T14:00:00Z",
+      "execution": {
+        "status": "resume_required",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_020": {
       "id": "visit_020",
       "work_order_id": "wo_020",
       "user_id": "user_tech_liam",
-      "state": "logged"
+      "state": "logged",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "site_id": "site_020",
+      "asset_id": "asset_020",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-15T08:00:00Z",
+      "execution": {
+        "status": "resume_required",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_021": {
       "id": "visit_021",
       "work_order_id": "wo_021",
       "user_id": "user_tech_mila",
-      "state": "logged"
+      "state": "logged",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "site_id": "site_021",
+      "asset_id": "asset_021",
+      "template_id": "tmpl_closeout",
+      "planned_start": "2026-03-16T10:00:00Z",
+      "execution": {
+        "status": "resume_required",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_022": {
       "id": "visit_022",
       "work_order_id": "wo_022",
       "user_id": "user_tech_omar",
-      "state": "planned"
+      "state": "planned",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "site_id": "site_022",
+      "asset_id": "asset_022",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-10T12:00:00Z",
+      "execution": {
+        "status": "planned",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_023": {
       "id": "visit_023",
       "work_order_id": "wo_023",
       "user_id": "user_tech_ivy",
-      "state": "planned"
+      "state": "planned",
+      "team_id": "team_north_beta",
+      "branch_id": "branch_north",
+      "site_id": "site_023",
+      "asset_id": "asset_023",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-11T14:00:00Z",
+      "execution": {
+        "status": "planned",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_024": {
       "id": "visit_024",
       "work_order_id": "wo_024",
       "user_id": "user_tech_jude",
-      "state": "logged"
+      "state": "logged",
+      "team_id": "team_south_gamma",
+      "branch_id": "branch_south",
+      "site_id": "site_024",
+      "asset_id": "asset_024",
+      "template_id": "tmpl_closeout",
+      "planned_start": "2026-03-12T08:00:00Z",
+      "execution": {
+        "status": "resume_required",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     },
     "visit_025": {
       "id": "visit_025",
       "work_order_id": "wo_025",
       "user_id": "user_tech_ava",
-      "state": "logged"
+      "state": "logged",
+      "team_id": "team_north_alpha",
+      "branch_id": "branch_north",
+      "site_id": "site_025",
+      "asset_id": "asset_025",
+      "template_id": "tmpl_pm",
+      "planned_start": "2026-03-13T10:00:00Z",
+      "execution": {
+        "status": "resume_required",
+        "autosave_status": "idle",
+        "completion_mode": "complete",
+        "signature_required": true,
+        "location_capture_optional": true,
+        "notes": "",
+        "labor_minutes": 0,
+        "parts_used": [],
+        "attachments": []
+      }
     }
   },
   "templates": {
     "tmpl_arrival": {
       "id": "tmpl_arrival",
       "name": "Arrival Walkthrough",
-      "version": 1
+      "version": 1,
+      "sections": [
+        {
+          "id": "arrival",
+          "title": "Arrival",
+          "fields": [
+            {
+              "id": "safety_ready",
+              "type": "checkbox",
+              "label": "Safety walkthrough completed",
+              "required": true
+            }
+          ]
+        }
+      ]
     },
     "tmpl_pm": {
       "id": "tmpl_pm",
       "name": "Preventive Maintenance",
-      "version": 2
+      "version": 3,
+      "sections": [
+        {
+          "id": "arrival",
+          "title": "Arrival",
+          "fields": [
+            {
+              "id": "safety_ready",
+              "type": "checkbox",
+              "label": "Safety walkthrough completed",
+              "required": true
+            }
+          ]
+        },
+        {
+          "id": "inspection",
+          "title": "Inspection",
+          "fields": [
+            {
+              "id": "temperature_reading",
+              "type": "number",
+              "label": "Supply temperature (F)",
+              "required": true
+            },
+            {
+              "id": "filter_condition",
+              "type": "choice",
+              "label": "Filter condition",
+              "required": true,
+              "options": [
+                "clean",
+                "replace"
+              ]
+            },
+            {
+              "id": "findings",
+              "type": "textarea",
+              "label": "Findings",
+              "required": true
+            }
+          ]
+        }
+      ],
+      "completion_policy": {
+        "signature_required_on_complete": true,
+        "block_reason_required": true,
+        "location_capture_optional": true
+      },
+      "evidence_policy": {
+        "allow_camera": true,
+        "allow_import": true,
+        "accepted_kinds": [
+          "image",
+          "pdf"
+        ]
+      }
     },
     "tmpl_closeout": {
       "id": "tmpl_closeout",
       "name": "Closeout Review",
-      "version": 1
+      "version": 1,
+      "sections": [
+        {
+          "id": "closeout",
+          "title": "Closeout",
+          "fields": [
+            {
+              "id": "summary",
+              "type": "textarea",
+              "label": "Completion summary",
+              "required": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "parts_catalog": {
+    "part_filter_merv13": {
+      "id": "part_filter_merv13",
+      "sku": "FLT-MERV13-20x25x2",
+      "name": "MERV 13 Filter",
+      "uom": "each"
+    },
+    "part_belt_a42": {
+      "id": "part_belt_a42",
+      "sku": "BLT-A42",
+      "name": "Drive Belt A42",
+      "uom": "each"
+    },
+    "part_contact_cleaner": {
+      "id": "part_contact_cleaner",
+      "sku": "CLN-CNT-001",
+      "name": "Contact Cleaner",
+      "uom": "can"
     }
   },
   "indexes": {

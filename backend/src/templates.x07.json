@@ -1,0 +1,313 @@
+{
+  "decls": [
+    {
+      "kind": "export",
+      "names": [
+        "templates.can_handle_v1",
+        "templates.handle_v1"
+      ]
+    },
+    {
+      "body": [
+        "if",
+        [
+          "view.eq",
+          "method_json",
+          [
+            "bytes.view_lit",
+            "\"GET\""
+          ]
+        ],
+        [
+          "templates._path_has_prefix_v1",
+          "path_json",
+          [
+            "bytes.view_lit",
+            "\"/api/templates/"
+          ]
+        ],
+        0
+      ],
+      "kind": "defn",
+      "name": "templates.can_handle_v1",
+      "params": [
+        {
+          "name": "method_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "i32"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "template_id_json",
+          [
+            "templates._extract_template_id_v1",
+            "path_json"
+          ]
+        ],
+        [
+          "let",
+          "template_id_view",
+          [
+            "bytes.view",
+            "template_id_json"
+          ]
+        ],
+        [
+          "let",
+          "body_json",
+          [
+            "if",
+            [
+              "view.eq",
+              "template_id_view",
+              [
+                "bytes.view_lit",
+                "\"tmpl_arrival\""
+              ]
+            ],
+            [
+              "demo_seed.template_arrival_body_v1"
+            ],
+            [
+              "if",
+              [
+                "view.eq",
+                "template_id_view",
+                [
+                  "bytes.view_lit",
+                  "\"tmpl_closeout\""
+                ]
+              ],
+              [
+                "demo_seed.template_closeout_body_v1"
+              ],
+              [
+                "if",
+                [
+                  "view.eq",
+                  "template_id_view",
+                  [
+                    "bytes.view_lit",
+                    "\"tmpl_pm\""
+                  ]
+                ],
+                [
+                  "demo_seed.template_pm_body_v1"
+                ],
+                [
+                  "bytes.lit",
+                  "ERR"
+                ]
+              ]
+            ]
+          ]
+        ],
+        [
+          "let",
+          "body_view",
+          [
+            "bytes.view",
+            "body_json"
+          ]
+        ],
+        [
+          "if",
+          [
+            "view.eq",
+            "body_view",
+            [
+              "bytes.view_lit",
+              "ERR"
+            ]
+          ],
+          [
+            "errors.error_response_v1",
+            "req_id_json",
+            [
+              "bytes.view_lit",
+              "404"
+            ],
+            [
+              "bytes.view_lit",
+              "\"template_not_found\""
+            ],
+            [
+              "bytes.view_lit",
+              "\"CrewOps template was not found\""
+            ],
+            [
+              "bytes.view_lit",
+              "\"backend\""
+            ]
+          ],
+          [
+            "errors.response_v1",
+            "req_id_json",
+            [
+              "bytes.view_lit",
+              "200"
+            ],
+            "body_view"
+          ]
+        ]
+      ],
+      "kind": "defn",
+      "name": "templates.handle_v1",
+      "params": [
+        {
+          "name": "req_id_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "prefix",
+          [
+            "bytes.view_lit",
+            "\"/api/templates/"
+          ]
+        ],
+        [
+          "let",
+          "prefix_len",
+          [
+            "view.len",
+            "prefix"
+          ]
+        ],
+        [
+          "let",
+          "path_len",
+          [
+            "view.len",
+            "path_json"
+          ]
+        ],
+        [
+          "if",
+          [
+            "<u",
+            "path_len",
+            [
+              "+",
+              "prefix_len",
+              1
+            ]
+          ],
+          [
+            "bytes.lit",
+            "\"tmpl_pm\""
+          ],
+          [
+            "begin",
+            [
+              "let",
+              "raw_id_json",
+              [
+                "view.to_bytes",
+                [
+                  "view.slice",
+                  "path_json",
+                  "prefix_len",
+                  [
+                    "-",
+                    "path_len",
+                    [
+                      "+",
+                      "prefix_len",
+                      1
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            [
+              "errors.json_string_v1",
+              [
+                "bytes.view",
+                "raw_id_json"
+              ]
+            ]
+          ]
+        ]
+      ],
+      "kind": "defn",
+      "name": "templates._extract_template_id_v1",
+      "params": [
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "if",
+        [
+          ">=u",
+          [
+            "view.len",
+            "path_json"
+          ],
+          [
+            "view.len",
+            "prefix_json"
+          ]
+        ],
+        [
+          "view.eq",
+          [
+            "view.slice",
+            "path_json",
+            0,
+            [
+              "view.len",
+              "prefix_json"
+            ]
+          ],
+          "prefix_json"
+        ],
+        0
+      ],
+      "kind": "defn",
+      "name": "templates._path_has_prefix_v1",
+      "params": [
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "prefix_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "i32"
+    }
+  ],
+  "imports": [
+    "demo_seed",
+    "errors"
+  ],
+  "kind": "module",
+  "module_id": "templates",
+  "schema_version": "x07.x07ast@0.5.0"
+}

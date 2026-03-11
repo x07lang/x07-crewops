@@ -2,8 +2,8 @@
   "dependencies": [
     {
       "name": "std-web-ui",
-      "path": ".x07/deps/std-web-ui/0.2.0",
-      "version": "0.2.0"
+      "path": ".x07/deps/std-web-ui/0.2.1",
+      "version": "0.2.1"
     }
   ],
   "entry": "src/main.x07.json",

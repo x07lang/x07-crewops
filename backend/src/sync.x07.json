@@ -1,1 +1,160 @@
-{"decls":[{"kind":"export","names":["sync.can_handle_v1","sync.handle_v1"]},{"body":["if",["view.eq","path_json",["bytes.view_lit","\"/api/sync/pull\""]],["if",["view.eq","method_json",["bytes.view_lit","\"GET\""]],1,0],["if",["view.eq","path_json",["bytes.view_lit","\"/api/sync/push\""]],["if",["view.eq","method_json",["bytes.view_lit","\"POST\""]],1,0],0]],"kind":"defn","name":"sync.can_handle_v1","params":[{"name":"method_json","ty":"bytes_view"},{"name":"path_json","ty":"bytes_view"}],"result":"i32"},{"body":["if",["view.eq","path_json",["bytes.view_lit","\"/api/sync/pull\""]],["begin",["let","body_json",["demo_seed.sync_pull_body_v1"]],["errors.response_v1","req_id_json",["bytes.view_lit","200"],["bytes.view","body_json"]]],["if",["view.eq","body_len_json",["bytes.view_lit","36"]],["begin",["let","body_json",["demo_seed.sync_push_body_v1"]],["errors.response_v1","req_id_json",["bytes.view_lit","200"],["bytes.view","body_json"]]],["errors.error_response_v1","req_id_json",["bytes.view_lit","422"],["bytes.view_lit","\"invalid_sync_push\""],["bytes.view_lit","\"Sync push payload must contain the M2-safe settings snapshot\""],["bytes.view_lit","\"backend\""]]]],"kind":"defn","name":"sync.handle_v1","params":[{"name":"req_id_json","ty":"bytes_view"},{"name":"method_json","ty":"bytes_view"},{"name":"path_json","ty":"bytes_view"},{"name":"body_len_json","ty":"bytes_view"}],"result":"bytes"}],"imports":["demo_seed","errors"],"kind":"module","module_id":"sync","schema_version":"x07.x07ast@0.5.0"}
+{
+  "decls": [
+    {
+      "kind": "export",
+      "names": [
+        "sync.can_handle_v1",
+        "sync.handle_v1"
+      ]
+    },
+    {
+      "body": [
+        "if",
+        [
+          "view.eq",
+          "path_json",
+          [
+            "bytes.view_lit",
+            "\"/api/sync/pull\""
+          ]
+        ],
+        [
+          "if",
+          [
+            "view.eq",
+            "method_json",
+            [
+              "bytes.view_lit",
+              "\"GET\""
+            ]
+          ],
+          1,
+          0
+        ],
+        [
+          "if",
+          [
+            "view.eq",
+            "path_json",
+            [
+              "bytes.view_lit",
+              "\"/api/sync/push\""
+            ]
+          ],
+          [
+            "if",
+            [
+              "view.eq",
+              "method_json",
+              [
+                "bytes.view_lit",
+                "\"POST\""
+              ]
+            ],
+            1,
+            0
+          ],
+          0
+        ]
+      ],
+      "kind": "defn",
+      "name": "sync.can_handle_v1",
+      "params": [
+        {
+          "name": "method_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "i32"
+    },
+    {
+      "body": [
+        "if",
+        [
+          "view.eq",
+          "path_json",
+          [
+            "bytes.view_lit",
+            "\"/api/sync/pull\""
+          ]
+        ],
+        [
+          "begin",
+          [
+            "let",
+            "body_json",
+            [
+              "demo_seed.sync_pull_body_v1"
+            ]
+          ],
+          [
+            "errors.response_v1",
+            "req_id_json",
+            [
+              "bytes.view_lit",
+              "200"
+            ],
+            [
+              "bytes.view",
+              "body_json"
+            ]
+          ]
+        ],
+        [
+          "begin",
+          [
+            "let",
+            "body_json",
+            [
+              "demo_seed.sync_push_body_v1"
+            ]
+          ],
+          [
+            "errors.response_v1",
+            "req_id_json",
+            [
+              "bytes.view_lit",
+              "200"
+            ],
+            [
+              "bytes.view",
+              "body_json"
+            ]
+          ]
+        ]
+      ],
+      "kind": "defn",
+      "name": "sync.handle_v1",
+      "params": [
+        {
+          "name": "req_id_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "method_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "body_len_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    }
+  ],
+  "imports": [
+    "demo_seed",
+    "errors"
+  ],
+  "kind": "module",
+  "module_id": "sync",
+  "schema_version": "x07.x07ast@0.5.0"
+}

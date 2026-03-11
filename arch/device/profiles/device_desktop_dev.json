@@ -8,7 +8,7 @@
     "app_id": "io.x07.crewops.desktop.dev"
   },
   "version": {
-    "version": "0.1.0",
+    "version": "0.2.0",
     "build": 1
   },
   "security": {
@@ -27,7 +27,7 @@
     ]
   },
   "capabilities": {
-    "path": "arch/device/profiles/device_dev.capabilities.json"
+    "path": "arch/device/profiles/device_desktop_dev.capabilities.json"
   },
   "telemetry_profile": {
     "path": "arch/device/profiles/device_desktop_dev.telemetry.profile.json"
@@ -42,5 +42,5 @@
       "kind": "dir"
     }
   },
-  "notes": "CrewOps desktop dev runs against the local app serve endpoint on 127.0.0.1:17081."
+  "notes": "CrewOps desktop dev runs against the local app serve endpoint on 127.0.0.1:17081 with file import and blob storage enabled for M3 execution."
 }

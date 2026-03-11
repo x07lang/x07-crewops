@@ -1,6 +1,6 @@
 # CrewOps Mobile Build
 
-This repo packages the current CrewOps reducer for desktop, iOS, and Android from the same [`frontend/x07.json`](../frontend/x07.json) project. The frontend dependency baseline is `std-web-ui@0.2.0`.
+This repo packages the current CrewOps reducer for desktop, iOS, and Android from the same [`frontend/x07.json`](../frontend/x07.json) project. The frontend dependency baseline is `std-web-ui@0.2.1`.
 
 ## Prereqs
 
@@ -61,19 +61,21 @@ x07-wasm device package --bundle dist/device/device_android_dev --target android
 
 `x07-wasm device package` writes the packaged payload plus `package.manifest.json` under the `--out-dir` you choose.
 
-## Current Network State
+## Current Network And Capability State
 
 Current checked-in device dev profile behavior:
 
 - `device_desktop_dev` points at `http://127.0.0.1:17081` and is the profile used by the desktop headless smoke in [`scripts/ci/check_all.sh`](../scripts/ci/check_all.sh).
 - `device_ios_dev` and `device_android_dev` still point at `https://example.invalid` and must be edited before packaging for a real simulator or device.
 - all device profiles keep dynamic code loading disabled.
+- `arch/device/profiles/device_desktop_dev.capabilities.json` enables `files.pick` and `blob_store`, while camera and location stay unsupported for deterministic desktop fallback.
+- `arch/device/profiles/device_mobile_dev.capabilities.json` enables `camera.photo`, `files.pick`, `blob_store`, and `location.foreground` for technician execution.
 
 Before pointing a package at a real backend:
 
 1. Edit the relevant device profile.
 2. Set `backend.base_url` and `backend.allowed_hosts`.
-3. Keep `arch/device/profiles/device_dev.capabilities.json` aligned with the same host allowlist.
+3. Keep the referenced capabilities profile aligned with the same host allowlist.
 4. Rebuild and repackage.
 
 ## Script Notes

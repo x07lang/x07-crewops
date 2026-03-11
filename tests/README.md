@@ -12,6 +12,15 @@ This directory holds the current CrewOps demo fixtures, replay traces, and regre
 - `tests/traces/dispatcher_board_filter.trace.json`: dispatcher route and board filter flow.
 - `tests/traces/technician_today_nav.trace.json`: technician navigation flow.
 - `tests/traces/settings_role_switch.trace.json`: settings updates and role switch flow.
+- `tests/traces/check_in_happy.trace.json`: technician check-in with location capture through the visit execution flow.
+- `tests/traces/checklist_draft_autosave.trace.json`: template-driven checklist edits, labor timer ticks, and autosave.
+- `tests/traces/offline_visit_complete_then_sync.trace.json`: offline completion, queued ops, reconnect, and sync drain.
+- `tests/traces/required_field_validation.trace.json`: required completion and blocked-state validation messaging.
+- `tests/traces/photo_capture_denied.trace.json`: denied camera capture path with deterministic device-result replay.
+- `tests/traces/location_permission_denied.trace.json`: denied location permission path during check-in.
+- `tests/traces/attachment_retry_after_reconnect.trace.json`: offline evidence import followed by reconnect sync.
+- `tests/traces/blocked_visit_submit.trace.json`: blocked visit submission without signature.
+- `tests/traces/evidence_capture_upload_happy.trace.json`: successful capture, attachment register, and upload flow.
 
 Run them against the current app bundle, for example:
 

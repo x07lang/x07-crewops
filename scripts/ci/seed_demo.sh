@@ -120,6 +120,27 @@ for i in range(1, 61):
         "service_level": ["critical", "standard", "routine"][i % 3],
     }
 
+parts_catalog = {
+    "part_filter_merv13": {
+        "id": "part_filter_merv13",
+        "sku": "FLT-MERV13-20x25x2",
+        "name": "MERV 13 Filter",
+        "uom": "each",
+    },
+    "part_belt_a42": {
+        "id": "part_belt_a42",
+        "sku": "BLT-A42",
+        "name": "Drive Belt A42",
+        "uom": "each",
+    },
+    "part_contact_cleaner": {
+        "id": "part_contact_cleaner",
+        "sku": "CLN-CNT-001",
+        "name": "Contact Cleaner",
+        "uom": "can",
+    },
+}
+
 statuses = [
     "scheduled",
     "scheduled",
@@ -181,12 +202,38 @@ for i in range(1, 26):
             i % 4
         ],
         "sla_bucket": ["on_track", "attention", "attention", "stable"][i % 4],
+        "template_id": "tmpl_pm" if i % 3 else "tmpl_closeout",
+        "completion_policy": {
+            "signature_required_on_complete": True,
+            "block_reason_required": True,
+            "location_capture_optional": True,
+        },
+        "allowed_part_ids": list(parts_catalog)[: 1 + (i % 3)],
     }
     visits[f"visit_{i:03d}"] = {
         "id": f"visit_{i:03d}",
         "work_order_id": work_order_id,
         "user_id": technician_id,
         "state": "planned" if status in {"scheduled", "dispatched", "en_route"} else "logged",
+        "team_id": team["id"],
+        "branch_id": team["branch_id"],
+        "site_id": site_id,
+        "asset_id": asset_id,
+        "template_id": work_orders[work_order_id]["template_id"],
+        "planned_start": f"2026-03-{((i - 1) % 7) + 10:02d}T{8 + (i % 4) * 2:02d}:00:00Z",
+        "execution": {
+            "status": "planned"
+            if status in {"scheduled", "dispatched", "en_route"}
+            else "resume_required",
+            "autosave_status": "idle",
+            "completion_mode": "complete",
+            "signature_required": True,
+            "location_capture_optional": True,
+            "notes": "",
+            "labor_minutes": 0,
+            "parts_used": [],
+            "attachments": [],
+        },
     }
 
 templates = {
@@ -194,16 +241,93 @@ templates = {
         "id": "tmpl_arrival",
         "name": "Arrival Walkthrough",
         "version": 1,
+        "sections": [
+            {
+                "id": "arrival",
+                "title": "Arrival",
+                "fields": [
+                    {
+                        "id": "safety_ready",
+                        "type": "checkbox",
+                        "label": "Safety walkthrough completed",
+                        "required": True,
+                    }
+                ],
+            }
+        ],
     },
     "tmpl_pm": {
         "id": "tmpl_pm",
         "name": "Preventive Maintenance",
-        "version": 2,
+        "version": 3,
+        "sections": [
+            {
+                "id": "arrival",
+                "title": "Arrival",
+                "fields": [
+                    {
+                        "id": "safety_ready",
+                        "type": "checkbox",
+                        "label": "Safety walkthrough completed",
+                        "required": True,
+                    }
+                ],
+            },
+            {
+                "id": "inspection",
+                "title": "Inspection",
+                "fields": [
+                    {
+                        "id": "temperature_reading",
+                        "type": "number",
+                        "label": "Supply temperature (F)",
+                        "required": True,
+                    },
+                    {
+                        "id": "filter_condition",
+                        "type": "choice",
+                        "label": "Filter condition",
+                        "required": True,
+                        "options": ["clean", "replace"],
+                    },
+                    {
+                        "id": "findings",
+                        "type": "textarea",
+                        "label": "Findings",
+                        "required": True,
+                    },
+                ],
+            },
+        ],
+        "completion_policy": {
+            "signature_required_on_complete": True,
+            "block_reason_required": True,
+            "location_capture_optional": True,
+        },
+        "evidence_policy": {
+            "allow_camera": True,
+            "allow_import": True,
+            "accepted_kinds": ["image", "pdf"],
+        },
     },
     "tmpl_closeout": {
         "id": "tmpl_closeout",
         "name": "Closeout Review",
         "version": 1,
+        "sections": [
+            {
+                "id": "closeout",
+                "title": "Closeout",
+                "fields": [
+                    {
+                        "id": "summary",
+                        "type": "textarea",
+                        "label": "Completion summary",
+                        "required": True,
+                    }
+                ],
+            }
+        ],
     },
 }
 
@@ -281,6 +405,7 @@ fixture = {
     "work_orders": work_orders,
     "visits": visits,
     "templates": templates,
+    "parts_catalog": parts_catalog,
     "indexes": indexes,
     "summary": summary,
 }
@@ -288,26 +413,85 @@ fixture = {
 fixture_compact = json.dumps(fixture, separators=(",", ":"))
 meta_doc = {
     "app_name": "CrewOps",
-    "app_version": "0.1.0",
+    "app_version": "0.2.0",
     "build_profile": "dev",
     "environment": "local",
     "generated_at": "2026-03-10T00:00:00Z",
 }
 sync_pull_doc = {
-    "cursor": "sync_cursor_2026_03_10_002",
+    "cursor": "sync_cursor_2026_03_10_102",
     "changes": [],
     "status": "idle",
     "received_at": "2026-03-10T00:00:00Z",
+    "server_policies": {
+        "signature_required_on_complete": True,
+        "location_capture_optional": True,
+        "offline_queue_mode": "client_ops_v1",
+    },
 }
 sync_push_doc = {
-    "cursor": "sync_cursor_2026_03_10_003",
-    "applied": [
-        "settings.theme",
-        "settings.pinned_views",
-        "ui.filters.status",
+    "cursor": "sync_cursor_2026_03_10_103",
+    "accepted_ops": [
+        "op_check_in_visit_001",
+        "op_save_draft_visit_001",
+        "op_submit_visit_001",
     ],
+    "conflicts": [],
     "status": "accepted",
     "received_at": "2026-03-10T00:00:00Z",
+}
+
+template_arrival_doc = templates["tmpl_arrival"]
+template_pm_doc = templates["tmpl_pm"]
+template_closeout_doc = templates["tmpl_closeout"]
+check_in_doc = {
+    "visit_id": "visit_001",
+    "status": "checked_in",
+    "visit_state": "on_site",
+    "checked_in_at": "2026-03-10T09:10:00Z",
+    "location_capture_optional": True,
+}
+save_draft_doc = {
+    "visit_id": "visit_001",
+    "status": "saved",
+    "server_draft_version": "draft_v3",
+    "saved_at": "2026-03-10T09:12:00Z",
+}
+submit_doc = {
+    "visit_id": "visit_001",
+    "status": "accepted",
+    "visit_state": "completed",
+    "requires_signature": True,
+    "submitted_at": "2026-03-10T10:05:00Z",
+}
+block_doc = {
+    "visit_id": "visit_001",
+    "status": "blocked",
+    "visit_state": "blocked",
+    "requires_block_reason": True,
+    "submitted_at": "2026-03-10T10:05:00Z",
+}
+check_out_doc = {
+    "visit_id": "visit_001",
+    "status": "checked_out",
+    "visit_state": "completed",
+    "checked_out_at": "2026-03-10T10:05:00Z",
+    "location_capture_optional": True,
+}
+attachment_register_doc = {
+    "attachment_id": "att_demo_001",
+    "status": "registered",
+    "upload_path": "/api/attachments/att_demo_001/content",
+    "manifest": {
+        "source": "device",
+        "kind": "image",
+        "handle": "blob_demo_001",
+    },
+}
+attachment_upload_doc = {
+    "attachment_id": "att_demo_001",
+    "status": "uploaded",
+    "uploaded_at": "2026-03-10T09:33:00Z",
 }
 
 
@@ -347,7 +531,7 @@ bootstrap_doc = {
         "status": "ready",
         "source": "http",
         "last_loaded_at": "2026-03-10T00:00:00Z",
-        "sync_cursor": "sync_cursor_2026_03_10_001",
+        "sync_cursor": "sync_cursor_2026_03_10_101",
     },
     "entities": {
         "org": {org["id"]: org},
@@ -360,19 +544,22 @@ bootstrap_doc = {
         "work_orders": work_orders,
         "visits": visits,
         "templates": templates,
+        "parts_catalog": parts_catalog,
     },
     "indexes": indexes,
     "summary": summary,
     "sync": {
-        "cursor": "sync_cursor_2026_03_10_001",
+        "cursor": "sync_cursor_2026_03_10_101",
         "pending_ops": [],
         "last_pull_at": "2026-03-10T00:00:00Z",
         "last_push_at": None,
         "status": "idle",
         "last_error": None,
+        "conflict_status": "idle",
+        "conflict_message": "",
     },
     "diagnostics": {
-        "app_version": "0.1.0",
+        "app_version": "0.2.0",
         "target_kind": "web",
         "build_profile": "dev",
     },
@@ -406,6 +593,16 @@ module = {
                 "demo_seed.meta_body_v1",
                 "demo_seed.sync_pull_body_v1",
                 "demo_seed.sync_push_body_v1",
+                "demo_seed.template_arrival_body_v1",
+                "demo_seed.template_pm_body_v1",
+                "demo_seed.template_closeout_body_v1",
+                "demo_seed.visit_block_body_v1",
+                "demo_seed.visit_check_in_body_v1",
+                "demo_seed.visit_check_out_body_v1",
+                "demo_seed.visit_save_draft_body_v1",
+                "demo_seed.visit_submit_body_v1",
+                "demo_seed.attachment_register_body_v1",
+                "demo_seed.attachment_upload_body_v1",
             ],
         },
         bytes_defn("demo_seed.fixture_body_v1", fixture),
@@ -440,6 +637,16 @@ module = {
         bytes_defn("demo_seed.meta_body_v1", meta_doc),
         bytes_defn("demo_seed.sync_pull_body_v1", sync_pull_doc),
         bytes_defn("demo_seed.sync_push_body_v1", sync_push_doc),
+        bytes_defn("demo_seed.template_arrival_body_v1", template_arrival_doc),
+        bytes_defn("demo_seed.template_pm_body_v1", template_pm_doc),
+        bytes_defn("demo_seed.template_closeout_body_v1", template_closeout_doc),
+        bytes_defn("demo_seed.visit_check_in_body_v1", check_in_doc),
+        bytes_defn("demo_seed.visit_save_draft_body_v1", save_draft_doc),
+        bytes_defn("demo_seed.visit_submit_body_v1", submit_doc),
+        bytes_defn("demo_seed.visit_block_body_v1", block_doc),
+        bytes_defn("demo_seed.visit_check_out_body_v1", check_out_doc),
+        bytes_defn("demo_seed.attachment_register_body_v1", attachment_register_doc),
+        bytes_defn("demo_seed.attachment_upload_body_v1", attachment_upload_doc),
     ],
 }
 

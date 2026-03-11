@@ -1,0 +1,441 @@
+{
+  "decls": [
+    {
+      "kind": "export",
+      "names": [
+        "attachments.can_handle_v1",
+        "attachments.handle_v1"
+      ]
+    },
+    {
+      "body": [
+        "if",
+        [
+          "view.eq",
+          "path_json",
+          [
+            "bytes.view_lit",
+            "\"/api/attachments/register\""
+          ]
+        ],
+        [
+          "if",
+          [
+            "view.eq",
+            "method_json",
+            [
+              "bytes.view_lit",
+              "\"POST\""
+            ]
+          ],
+          1,
+          0
+        ],
+        [
+          "if",
+          [
+            "view.eq",
+            "method_json",
+            [
+              "bytes.view_lit",
+              "\"PUT\""
+            ]
+          ],
+          [
+            "attachments._matches_upload_v1",
+            "path_json"
+          ],
+          0
+        ]
+      ],
+      "kind": "defn",
+      "name": "attachments.can_handle_v1",
+      "params": [
+        {
+          "name": "method_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "i32"
+    },
+    {
+      "body": [
+        "if",
+        [
+          "view.eq",
+          "path_json",
+          [
+            "bytes.view_lit",
+            "\"/api/attachments/register\""
+          ]
+        ],
+        [
+          "begin",
+          [
+            "let",
+            "register_body_json",
+            [
+              "demo_seed.attachment_register_body_v1"
+            ]
+          ],
+          [
+            "errors.response_v1",
+            "req_id_json",
+            [
+              "bytes.view_lit",
+              "200"
+            ],
+            [
+              "bytes.view",
+              "register_body_json"
+            ]
+          ]
+        ],
+        [
+          "begin",
+          [
+            "let",
+            "attachment_id_json",
+            [
+              "attachments._extract_attachment_id_v1",
+              "path_json"
+            ]
+          ],
+          [
+            "let",
+            "body_json",
+            [
+              "attachments._upload_body_v1",
+              [
+                "bytes.view",
+                "attachment_id_json"
+              ]
+            ]
+          ],
+          [
+            "errors.response_v1",
+            "req_id_json",
+            [
+              "bytes.view_lit",
+              "200"
+            ],
+            [
+              "bytes.view",
+              "body_json"
+            ]
+          ]
+        ]
+      ],
+      "kind": "defn",
+      "name": "attachments.handle_v1",
+      "params": [
+        {
+          "name": "req_id_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "out",
+          [
+            "std.vec.with_capacity",
+            256
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              "{\"attachment_id\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "attachment_id_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
+              ",\"status\":\"uploaded\",\"uploaded_at\":\"2026-03-10T09:33:00Z\"}"
+            ]
+          ]
+        ],
+        [
+          "std.vec.as_bytes",
+          "out"
+        ]
+      ],
+      "kind": "defn",
+      "name": "attachments._upload_body_v1",
+      "params": [
+        {
+          "name": "attachment_id_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "prefix_json",
+          [
+            "bytes.view_lit",
+            "\"/api/attachments/"
+          ]
+        ],
+        [
+          "let",
+          "suffix_json",
+          [
+            "bytes.view_lit",
+            "/content\""
+          ]
+        ],
+        [
+          "let",
+          "prefix_len",
+          [
+            "view.len",
+            "prefix_json"
+          ]
+        ],
+        [
+          "let",
+          "suffix_len",
+          [
+            "view.len",
+            "suffix_json"
+          ]
+        ],
+        [
+          "let",
+          "path_len",
+          [
+            "view.len",
+            "path_json"
+          ]
+        ],
+        [
+          "if",
+          [
+            "attachments._matches_upload_v1",
+            "path_json"
+          ],
+          [
+            "begin",
+            [
+              "let",
+              "raw_id_json",
+              [
+                "view.to_bytes",
+                [
+                  "view.slice",
+                  "path_json",
+                  "prefix_len",
+                  [
+                    "-",
+                    [
+                      "-",
+                      "path_len",
+                      "prefix_len"
+                    ],
+                    "suffix_len"
+                  ]
+                ]
+              ]
+            ],
+            [
+              "errors.json_string_v1",
+              [
+                "bytes.view",
+                "raw_id_json"
+              ]
+            ]
+          ],
+          [
+            "bytes.lit",
+            "\"att_demo_001\""
+          ]
+        ]
+      ],
+      "kind": "defn",
+      "name": "attachments._extract_attachment_id_v1",
+      "params": [
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "prefix_json",
+          [
+            "bytes.view_lit",
+            "\"/api/attachments/"
+          ]
+        ],
+        [
+          "let",
+          "suffix_json",
+          [
+            "bytes.view_lit",
+            "/content\""
+          ]
+        ],
+        [
+          "if",
+          [
+            "attachments._path_has_prefix_v1",
+            "path_json",
+            "prefix_json"
+          ],
+          [
+            "if",
+            [
+              ">=u",
+              [
+                "view.len",
+                "path_json"
+              ],
+              [
+                "+",
+                [
+                  "view.len",
+                  "prefix_json"
+                ],
+                [
+                  "view.len",
+                  "suffix_json"
+                ]
+              ]
+            ],
+            [
+              "view.eq",
+              [
+                "view.slice",
+                "path_json",
+                [
+                  "-",
+                  [
+                    "view.len",
+                    "path_json"
+                  ],
+                  [
+                    "view.len",
+                    "suffix_json"
+                  ]
+                ],
+                [
+                  "view.len",
+                  "suffix_json"
+                ]
+              ],
+              "suffix_json"
+            ],
+            0
+          ],
+          0
+        ]
+      ],
+      "kind": "defn",
+      "name": "attachments._matches_upload_v1",
+      "params": [
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "i32"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "if",
+          [
+            ">=u",
+            [
+              "view.len",
+              "path_json"
+            ],
+            [
+              "view.len",
+              "prefix_json"
+            ]
+          ],
+          [
+            "view.eq",
+            [
+              "view.slice",
+              "path_json",
+              0,
+              [
+                "view.len",
+                "prefix_json"
+              ]
+            ],
+            "prefix_json"
+          ],
+          0
+        ]
+      ],
+      "kind": "defn",
+      "name": "attachments._path_has_prefix_v1",
+      "params": [
+        {
+          "name": "path_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "prefix_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "i32"
+    }
+  ],
+  "imports": [
+    "demo_seed",
+    "errors",
+    "std.vec"
+  ],
+  "kind": "module",
+  "module_id": "attachments",
+  "schema_version": "x07.x07ast@0.5.0"
+}

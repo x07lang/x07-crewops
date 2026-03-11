@@ -1,1 +1,266 @@
-{"decls":[{"kind":"export","names":["entities.empty_entities_v1","entities.empty_indexes_v1","entities.empty_summary_v1","entities.selected_work_order_from_target_v1"]},{"body":["bytes.lit","{\"org\":{},\"branches\":{},\"teams\":{},\"users\":{},\"customers\":{},\"sites\":{},\"assets\":{},\"work_orders\":{},\"visits\":{},\"templates\":{}}"],"kind":"defn","name":"entities.empty_entities_v1","params":[],"result":"bytes"},{"body":["bytes.lit","{\"work_orders_by_status\":{},\"work_orders_by_assignee\":{},\"assets_by_site\":{},\"sites_by_customer\":{}}"],"kind":"defn","name":"entities.empty_indexes_v1","params":[],"result":"bytes"},{"body":["bytes.lit","{\"counts\":{\"branches\":0,\"teams\":0,\"technicians\":0,\"customers\":0,\"sites\":0,\"assets\":0,\"work_orders\":0},\"status_counts\":{},\"attention_work_orders\":[],\"dispatcher_focus\":[],\"manager_metrics\":{\"overdue\":0,\"blocked\":0,\"review\":0,\"completion_rate\":\"0%\"},\"technician_today\":{}}"],"kind":"defn","name":"entities.empty_summary_v1","params":[],"result":"bytes"},{"body":["if",["view.eq","target_json",["bytes.view_lit","\"wo_001\""]],["bytes.lit","\"wo_001\""],["if",["view.eq","target_json",["bytes.view_lit","\"wo_002\""]],["bytes.lit","\"wo_002\""],["if",["view.eq","target_json",["bytes.view_lit","\"wo_003\""]],["bytes.lit","\"wo_003\""],["if",["view.eq","target_json",["bytes.view_lit","\"wo_004\""]],["bytes.lit","\"wo_004\""],["if",["view.eq","target_json",["bytes.view_lit","\"wo_005\""]],["bytes.lit","\"wo_005\""],["if",["view.eq","target_json",["bytes.view_lit","\"wo_006\""]],["bytes.lit","\"wo_006\""],["view.to_bytes","current_json"]]]]]]],"kind":"defn","name":"entities.selected_work_order_from_target_v1","params":[{"name":"target_json","ty":"bytes_view"},{"name":"current_json","ty":"bytes_view"}],"result":"bytes"}],"imports":[],"kind":"module","module_id":"entities","schema_version":"x07.x07ast@0.5.0"}
+{
+  "decls": [
+    {
+      "kind": "export",
+      "names": [
+        "entities.empty_entities_v1",
+        "entities.empty_indexes_v1",
+        "entities.empty_summary_v1",
+        "entities.selected_visit_from_target_v1",
+        "entities.selected_work_order_from_target_v1"
+      ]
+    },
+    {
+      "body": [
+        "bytes.lit",
+        "{\"org\":{},\"branches\":{},\"teams\":{},\"users\":{},\"customers\":{},\"sites\":{},\"assets\":{},\"work_orders\":{},\"visits\":{},\"templates\":{},\"parts_catalog\":{}}"
+      ],
+      "kind": "defn",
+      "name": "entities.empty_entities_v1",
+      "params": [],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "bytes.lit",
+        "{\"work_orders_by_status\":{},\"work_orders_by_assignee\":{},\"assets_by_site\":{},\"sites_by_customer\":{}}"
+      ],
+      "kind": "defn",
+      "name": "entities.empty_indexes_v1",
+      "params": [],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "bytes.lit",
+        "{\"counts\":{\"branches\":0,\"teams\":0,\"technicians\":0,\"customers\":0,\"sites\":0,\"assets\":0,\"work_orders\":0},\"status_counts\":{},\"attention_work_orders\":[],\"dispatcher_focus\":[],\"manager_metrics\":{\"overdue\":0,\"blocked\":0,\"review\":0,\"completion_rate\":\"0%\"},\"technician_today\":{}}"
+      ],
+      "kind": "defn",
+      "name": "entities.empty_summary_v1",
+      "params": [],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "if",
+        [
+          "view.eq",
+          "target_json",
+          [
+            "bytes.view_lit",
+            "\"wo_001\""
+          ]
+        ],
+        [
+          "bytes.lit",
+          "\"visit_001\""
+        ],
+        [
+          "if",
+          [
+            "view.eq",
+            "target_json",
+            [
+              "bytes.view_lit",
+              "\"wo_002\""
+            ]
+          ],
+          [
+            "bytes.lit",
+            "\"visit_002\""
+          ],
+          [
+            "if",
+            [
+              "view.eq",
+              "target_json",
+              [
+                "bytes.view_lit",
+                "\"wo_003\""
+              ]
+            ],
+            [
+              "bytes.lit",
+              "\"visit_003\""
+            ],
+            [
+              "if",
+              [
+                "view.eq",
+                "target_json",
+                [
+                  "bytes.view_lit",
+                  "\"wo_004\""
+                ]
+              ],
+              [
+                "bytes.lit",
+                "\"visit_004\""
+              ],
+              [
+                "if",
+                [
+                  "view.eq",
+                  "target_json",
+                  [
+                    "bytes.view_lit",
+                    "\"wo_005\""
+                  ]
+                ],
+                [
+                  "bytes.lit",
+                  "\"visit_005\""
+                ],
+                [
+                  "if",
+                  [
+                    "view.eq",
+                    "target_json",
+                    [
+                      "bytes.view_lit",
+                      "\"wo_006\""
+                    ]
+                  ],
+                  [
+                    "bytes.lit",
+                    "\"visit_006\""
+                  ],
+                  [
+                    "view.to_bytes",
+                    "current_json"
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      "kind": "defn",
+      "name": "entities.selected_visit_from_target_v1",
+      "params": [
+        {
+          "name": "target_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "current_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    },
+    {
+      "body": [
+        "if",
+        [
+          "view.eq",
+          "target_json",
+          [
+            "bytes.view_lit",
+            "\"wo_001\""
+          ]
+        ],
+        [
+          "bytes.lit",
+          "\"wo_001\""
+        ],
+        [
+          "if",
+          [
+            "view.eq",
+            "target_json",
+            [
+              "bytes.view_lit",
+              "\"wo_002\""
+            ]
+          ],
+          [
+            "bytes.lit",
+            "\"wo_002\""
+          ],
+          [
+            "if",
+            [
+              "view.eq",
+              "target_json",
+              [
+                "bytes.view_lit",
+                "\"wo_003\""
+              ]
+            ],
+            [
+              "bytes.lit",
+              "\"wo_003\""
+            ],
+            [
+              "if",
+              [
+                "view.eq",
+                "target_json",
+                [
+                  "bytes.view_lit",
+                  "\"wo_004\""
+                ]
+              ],
+              [
+                "bytes.lit",
+                "\"wo_004\""
+              ],
+              [
+                "if",
+                [
+                  "view.eq",
+                  "target_json",
+                  [
+                    "bytes.view_lit",
+                    "\"wo_005\""
+                  ]
+                ],
+                [
+                  "bytes.lit",
+                  "\"wo_005\""
+                ],
+                [
+                  "if",
+                  [
+                    "view.eq",
+                    "target_json",
+                    [
+                      "bytes.view_lit",
+                      "\"wo_006\""
+                    ]
+                  ],
+                  [
+                    "bytes.lit",
+                    "\"wo_006\""
+                  ],
+                  [
+                    "view.to_bytes",
+                    "current_json"
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      "kind": "defn",
+      "name": "entities.selected_work_order_from_target_v1",
+      "params": [
+        {
+          "name": "target_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "current_json",
+          "ty": "bytes_view"
+        }
+      ],
+      "result": "bytes"
+    }
+  ],
+  "imports": [],
+  "kind": "module",
+  "module_id": "entities",
+  "schema_version": "x07.x07ast@0.5.0"
+}

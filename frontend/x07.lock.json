@@ -3,9 +3,9 @@
   "dependencies": [
     {
       "name": "std-web-ui",
-      "version": "0.2.0",
-      "path": ".x07/deps/std-web-ui/0.2.0",
-      "package_manifest_sha256": "9dfc2582802906d9ca47d82de6f4d5c21be5b28c8fcb78a7e3fa5f6dd79d2166",
+      "version": "0.2.1",
+      "path": ".x07/deps/std-web-ui/0.2.1",
+      "package_manifest_sha256": "0a506080ff3b202fbef791e8718824b5b0be83da4aa271aa595c0ec55fa22a4d",
       "module_root": "modules",
       "modules_sha256": {
         "std.web_ui.effects.device.blobs": "0c0a3ddf99ed8161f33281fe3d57d0c7a0662475eb532e6db340a679418ce169",
