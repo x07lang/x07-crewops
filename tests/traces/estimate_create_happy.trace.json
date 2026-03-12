@@ -3298,7 +3298,7 @@
               "estimate_line_quantity": "1",
               "estimate_line_unit_price": "185.00",
               "estimate_note": "Follow up within seven days.",
-              "estimate_selected_id": "est_001",
+              "estimate_selected_id": "est_002",
               "estimate_signature_name": "Morgan Hale",
               "estimate_signature_note": "Approved as quoted.",
               "estimate_status_filter": "all",
@@ -3686,7 +3686,7 @@
             "selected_customer_id": "cust_013",
             "selected_customer_statement_id": "statement_cust_013",
             "selected_discount_rule_id": "discount_rule_loyalty",
-            "selected_estimate_id": "est_001",
+            "selected_estimate_id": "est_002",
             "selected_export_job_id": "export_job_003",
             "selected_finance_rollup_id": "finance_global",
             "selected_integration_endpoint_id": "integration_endpoint_crm",
@@ -6989,7 +6989,7 @@
               "estimate_line_quantity": "1",
               "estimate_line_unit_price": "185.00",
               "estimate_note": "Follow up within seven days.",
-              "estimate_selected_id": "est_001",
+              "estimate_selected_id": "est_002",
               "estimate_signature_name": "Morgan Hale",
               "estimate_signature_note": "Approved as quoted.",
               "estimate_status_filter": "all",
@@ -8553,7 +8553,7 @@
             "selected_customer_id": "cust_013",
             "selected_customer_statement_id": "statement_cust_013",
             "selected_discount_rule_id": "discount_rule_loyalty",
-            "selected_estimate_id": "est_001",
+            "selected_estimate_id": "est_002",
             "selected_export_job_id": "export_job_003",
             "selected_finance_rollup_id": "finance_global",
             "selected_integration_endpoint_id": "integration_endpoint_crm",
@@ -11823,7 +11823,7 @@
               "estimate_line_quantity": "1",
               "estimate_line_unit_price": "185.00",
               "estimate_note": "Follow up within seven days.",
-              "estimate_selected_id": "est_001",
+              "estimate_selected_id": "est_002",
               "estimate_signature_name": "Morgan Hale",
               "estimate_signature_note": "Approved as quoted.",
               "estimate_status_filter": "all",
@@ -12211,7 +12211,7 @@
             "selected_customer_id": "cust_013",
             "selected_customer_statement_id": "statement_cust_013",
             "selected_discount_rule_id": "discount_rule_loyalty",
-            "selected_estimate_id": "est_001",
+            "selected_estimate_id": "est_002",
             "selected_export_job_id": "export_job_003",
             "selected_finance_rollup_id": "finance_global",
             "selected_integration_endpoint_id": "integration_endpoint_crm",
@@ -15514,7 +15514,7 @@
               "estimate_line_quantity": "1",
               "estimate_line_unit_price": "185.00",
               "estimate_note": "Follow up within seven days.",
-              "estimate_selected_id": "est_001",
+              "estimate_selected_id": "est_002",
               "estimate_signature_name": "Morgan Hale",
               "estimate_signature_note": "Approved as quoted.",
               "estimate_status_filter": "all",
@@ -17078,7 +17078,7 @@
             "selected_customer_id": "cust_013",
             "selected_customer_statement_id": "statement_cust_013",
             "selected_discount_rule_id": "discount_rule_loyalty",
-            "selected_estimate_id": "est_001",
+            "selected_estimate_id": "est_002",
             "selected_export_job_id": "export_job_003",
             "selected_finance_rollup_id": "finance_global",
             "selected_integration_endpoint_id": "integration_endpoint_crm",
@@ -18705,7 +18705,7 @@
                                   {
                                     "k": "text",
                                     "key": "estimates_summary_line_1",
-                                    "text": "\"Selected: \"est_001\" | Sync: \"idle"
+                                    "text": "\"Selected: \"est_002\" | Sync: \"idle"
                                   }
                                 ],
                                 "k": "el",
@@ -19434,7 +19434,7 @@
               "estimate_line_quantity": "1",
               "estimate_line_unit_price": "185.00",
               "estimate_note": "Follow up within seven days.",
-              "estimate_selected_id": "est_001",
+              "estimate_selected_id": "est_002",
               "estimate_signature_name": "Morgan Hale",
               "estimate_signature_note": "Approved as quoted.",
               "estimate_status_filter": "all",
@@ -19822,7 +19822,7 @@
             "selected_customer_id": "cust_013",
             "selected_customer_statement_id": "statement_cust_013",
             "selected_discount_rule_id": "discount_rule_loyalty",
-            "selected_estimate_id": "est_001",
+            "selected_estimate_id": "est_002",
             "selected_export_job_id": "export_job_003",
             "selected_finance_rollup_id": "finance_global",
             "selected_integration_endpoint_id": "integration_endpoint_crm",
@@ -21441,7 +21441,7 @@
                               {
                                 "k": "text",
                                 "key": "estimates_summary_line_1",
-                                "text": "\"Selected: \"est_001\" | Sync: \"idle"
+                                "text": "\"Selected: \"est_002\" | Sync: \"idle"
                               }
                             ],
                             "k": "el",
@@ -22212,7 +22212,7 @@
               "estimate_line_quantity": "1",
               "estimate_line_unit_price": "185.00",
               "estimate_note": "Follow up within seven days.",
-              "estimate_selected_id": "est_001",
+              "estimate_selected_id": "est_002",
               "estimate_signature_name": "Morgan Hale",
               "estimate_signature_note": "Approved as quoted.",
               "estimate_status_filter": "all",
@@ -23776,7 +23776,7 @@
             "selected_customer_id": "cust_013",
             "selected_customer_statement_id": "statement_cust_013",
             "selected_discount_rule_id": "discount_rule_loyalty",
-            "selected_estimate_id": "est_001",
+            "selected_estimate_id": "est_002",
             "selected_export_job_id": "export_job_003",
             "selected_finance_rollup_id": "finance_global",
             "selected_integration_endpoint_id": "integration_endpoint_crm",
@@ -25403,7 +25403,7 @@
                                   {
                                     "k": "text",
                                     "key": "estimates_summary_line_1",
-                                    "text": "\"Selected: \"est_001\" | Sync: \"idle"
+                                    "text": "\"Selected: \"est_002\" | Sync: \"idle"
                                   }
                                 ],
                                 "k": "el",
@@ -26132,7 +26132,7 @@
               "estimate_line_quantity": "1",
               "estimate_line_unit_price": "185.00",
               "estimate_note": "Follow up within seven days.",
-              "estimate_selected_id": "est_001",
+              "estimate_selected_id": "est_002",
               "estimate_signature_name": "Morgan Hale",
               "estimate_signature_note": "Approved as quoted.",
               "estimate_status_filter": "all",
@@ -26520,7 +26520,7 @@
             "selected_customer_id": "cust_013",
             "selected_customer_statement_id": "statement_cust_013",
             "selected_discount_rule_id": "discount_rule_loyalty",
-            "selected_estimate_id": "est_001",
+            "selected_estimate_id": "est_002",
             "selected_export_job_id": "export_job_003",
             "selected_finance_rollup_id": "finance_global",
             "selected_integration_endpoint_id": "integration_endpoint_crm",
@@ -28139,7 +28139,7 @@
                               {
                                 "k": "text",
                                 "key": "estimates_summary_line_1",
-                                "text": "\"Selected: \"est_001\" | Sync: \"idle"
+                                "text": "\"Selected: \"est_002\" | Sync: \"idle"
                               }
                             ],
                             "k": "el",
@@ -28910,7 +28910,7 @@
               "estimate_line_quantity": "1",
               "estimate_line_unit_price": "185.00",
               "estimate_note": "Follow up within seven days.",
-              "estimate_selected_id": "est_001",
+              "estimate_selected_id": "est_002",
               "estimate_signature_name": "Morgan Hale",
               "estimate_signature_note": "Approved as quoted.",
               "estimate_status_filter": "all",
@@ -30474,7 +30474,7 @@
             "selected_customer_id": "cust_013",
             "selected_customer_statement_id": "statement_cust_013",
             "selected_discount_rule_id": "discount_rule_loyalty",
-            "selected_estimate_id": "est_001",
+            "selected_estimate_id": "est_002",
             "selected_export_job_id": "export_job_003",
             "selected_finance_rollup_id": "finance_global",
             "selected_integration_endpoint_id": "integration_endpoint_crm",
@@ -32101,7 +32101,7 @@
                                   {
                                     "k": "text",
                                     "key": "estimates_summary_line_1",
-                                    "text": "\"Selected: \"est_001\" | Sync: \"idle"
+                                    "text": "\"Selected: \"est_002\" | Sync: \"idle"
                                   }
                                 ],
                                 "k": "el",
@@ -32830,7 +32830,7 @@
               "estimate_line_quantity": "1",
               "estimate_line_unit_price": "185.00",
               "estimate_note": "Follow up within seven days.",
-              "estimate_selected_id": "est_001",
+              "estimate_selected_id": "est_002",
               "estimate_signature_name": "Morgan Hale",
               "estimate_signature_note": "Approved as quoted.",
               "estimate_status_filter": "all",
@@ -33218,7 +33218,7 @@
             "selected_customer_id": "cust_013",
             "selected_customer_statement_id": "statement_cust_013",
             "selected_discount_rule_id": "discount_rule_loyalty",
-            "selected_estimate_id": "est_001",
+            "selected_estimate_id": "est_002",
             "selected_export_job_id": "export_job_003",
             "selected_finance_rollup_id": "finance_global",
             "selected_integration_endpoint_id": "integration_endpoint_crm",
@@ -34837,7 +34837,7 @@
                               {
                                 "k": "text",
                                 "key": "estimates_summary_line_1",
-                                "text": "\"Selected: \"est_001\" | Sync: \"idle"
+                                "text": "\"Selected: \"est_002\" | Sync: \"idle"
                               }
                             ],
                             "k": "el",
@@ -35608,7 +35608,7 @@
               "estimate_line_quantity": "1",
               "estimate_line_unit_price": "185.00",
               "estimate_note": "Follow up within seven days.",
-              "estimate_selected_id": "est_001",
+              "estimate_selected_id": "est_002",
               "estimate_signature_name": "Morgan Hale",
               "estimate_signature_note": "Approved as quoted.",
               "estimate_status_filter": "all",
@@ -37172,7 +37172,7 @@
             "selected_customer_id": "cust_013",
             "selected_customer_statement_id": "statement_cust_013",
             "selected_discount_rule_id": "discount_rule_loyalty",
-            "selected_estimate_id": "est_001",
+            "selected_estimate_id": "est_002",
             "selected_export_job_id": "export_job_003",
             "selected_finance_rollup_id": "finance_global",
             "selected_integration_endpoint_id": "integration_endpoint_crm",
@@ -38799,7 +38799,7 @@
                                   {
                                     "k": "text",
                                     "key": "estimates_summary_line_1",
-                                    "text": "\"Selected: \"est_001\" | Sync: \"idle"
+                                    "text": "\"Selected: \"est_002\" | Sync: \"idle"
                                   }
                                 ],
                                 "k": "el",
@@ -39528,7 +39528,7 @@
               "estimate_line_quantity": "1",
               "estimate_line_unit_price": "185.00",
               "estimate_note": "Follow up within seven days.",
-              "estimate_selected_id": "est_001",
+              "estimate_selected_id": "est_002",
               "estimate_signature_name": "Morgan Hale",
               "estimate_signature_note": "Approved as quoted.",
               "estimate_status_filter": "all",
@@ -39916,7 +39916,7 @@
             "selected_customer_id": "cust_013",
             "selected_customer_statement_id": "statement_cust_013",
             "selected_discount_rule_id": "discount_rule_loyalty",
-            "selected_estimate_id": "est_001",
+            "selected_estimate_id": "est_002",
             "selected_export_job_id": "export_job_003",
             "selected_finance_rollup_id": "finance_global",
             "selected_integration_endpoint_id": "integration_endpoint_crm",
@@ -41535,7 +41535,7 @@
                               {
                                 "k": "text",
                                 "key": "estimates_summary_line_1",
-                                "text": "\"Selected: \"est_001\" | Sync: \"idle"
+                                "text": "\"Selected: \"est_002\" | Sync: \"idle"
                               }
                             ],
                             "k": "el",
@@ -42305,7 +42305,7 @@
               "estimate_line_quantity": "1",
               "estimate_line_unit_price": "185.00",
               "estimate_note": "Follow up within seven days.",
-              "estimate_selected_id": "est_001",
+              "estimate_selected_id": "est_002",
               "estimate_signature_name": "Morgan Hale",
               "estimate_signature_note": "Approved as quoted.",
               "estimate_status_filter": "all",
@@ -43869,7 +43869,7 @@
             "selected_customer_id": "cust_013",
             "selected_customer_statement_id": "statement_cust_013",
             "selected_discount_rule_id": "discount_rule_loyalty",
-            "selected_estimate_id": "est_001",
+            "selected_estimate_id": "est_002",
             "selected_export_job_id": "export_job_003",
             "selected_finance_rollup_id": "finance_global",
             "selected_integration_endpoint_id": "integration_endpoint_crm",
@@ -45496,7 +45496,7 @@
                                   {
                                     "k": "text",
                                     "key": "estimates_summary_line_1",
-                                    "text": "\"Selected: \"est_001\" | Sync: \"idle"
+                                    "text": "\"Selected: \"est_002\" | Sync: \"idle"
                                   }
                                 ],
                                 "k": "el",
@@ -46225,7 +46225,7 @@
               "estimate_line_quantity": "1",
               "estimate_line_unit_price": "185.00",
               "estimate_note": "Follow up within seven days.",
-              "estimate_selected_id": "est_001",
+              "estimate_selected_id": "est_002",
               "estimate_signature_name": "Morgan Hale",
               "estimate_signature_note": "Approved as quoted.",
               "estimate_status_filter": "all",
@@ -46613,7 +46613,7 @@
             "selected_customer_id": "cust_013",
             "selected_customer_statement_id": "statement_cust_013",
             "selected_discount_rule_id": "discount_rule_loyalty",
-            "selected_estimate_id": "est_001",
+            "selected_estimate_id": "est_002",
             "selected_export_job_id": "export_job_003",
             "selected_finance_rollup_id": "finance_global",
             "selected_integration_endpoint_id": "integration_endpoint_crm",
@@ -48232,7 +48232,7 @@
                               {
                                 "k": "text",
                                 "key": "estimates_summary_line_1",
-                                "text": "\"Selected: \"est_001\" | Sync: \"idle"
+                                "text": "\"Selected: \"est_002\" | Sync: \"idle"
                               }
                             ],
                             "k": "el",

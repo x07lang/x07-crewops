@@ -282,7 +282,7 @@ function defaultUi() {
     selected_export_job_id: 'export_job_003',
     selected_finance_rollup_id: 'finance_global',
     selected_profitability_snapshot_id: 'finance_global',
-    selected_estimate_id: 'est_001',
+    selected_estimate_id: 'est_002',
     selected_contract_id: 'agreement_001',
     selected_recurring_plan_id: 'recurring_plan_001',
     selected_integration_endpoint_id: 'integration_endpoint_crm',
@@ -362,7 +362,7 @@ function defaultDrafts() {
     export_kind: 'invoices',
     export_format: 'csv',
     commercial_ops: {
-      estimate_selected_id: 'est_001',
+      estimate_selected_id: 'est_002',
       estimate_status_filter: 'all',
       estimate_branch_filter: 'all',
       estimate_customer_filter: 'all',
