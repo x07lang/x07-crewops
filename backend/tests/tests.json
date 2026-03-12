@@ -32,6 +32,42 @@
       "world": "solve-pure"
     },
     {
+      "entry": "backend_tests.test_estimate_detail_route_v1",
+      "expect": "pass",
+      "id": "backend/estimate-detail-route",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "backend_tests.test_estimate_approval_conflict_route_v1",
+      "expect": "pass",
+      "id": "backend/estimate-approval-conflict-route",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "backend_tests.test_contract_renew_conflict_route_v1",
+      "expect": "pass",
+      "id": "backend/contract-renew-conflict-route",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "backend_tests.test_recurring_generate_route_v1",
+      "expect": "pass",
+      "id": "backend/recurring-generate-route",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "backend_tests.test_integrations_deliveries_route_v1",
+      "expect": "pass",
+      "id": "backend/integrations-deliveries-route",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "backend_tests.test_integrations_delivery_retry_route_v1",
+      "expect": "pass",
+      "id": "backend/integrations-delivery-retry-route",
+      "world": "solve-pure"
+    },
+    {
       "entry": "backend_tests.test_invoice_totals_seed_v1",
       "expect": "pass",
       "id": "backend/invoice-totals-seed",
@@ -53,6 +89,18 @@
       "entry": "backend_tests.test_finance_rollup_seed_v1",
       "expect": "pass",
       "id": "backend/finance-rollup-seed",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "backend_tests.test_m6_summary_seed_v1",
+      "expect": "pass",
+      "id": "backend/m6-summary-seed",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "backend_tests.test_m6_sync_seed_v1",
+      "expect": "pass",
+      "id": "backend/m6-sync-seed",
       "world": "solve-pure"
     },
     {

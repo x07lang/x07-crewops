@@ -1,6 +1,6 @@
 # Manager Dashboards
 
-CrewOps `v0.4.0` keeps the manager dashboard and adds the M5 commercial control surface around it. Managers now move across operations, finance, receivables, exports, pricing, invoices, and customer account views inside the same reducer.
+CrewOps `v0.5.0` keeps the manager dashboard and adds the M6 contracted-service control surface around it. Managers now move across operations, finance, receivables, exports, pricing, invoices, customer accounts, estimates, contracts, recurring plans, and integrations inside the same reducer.
 
 ## Manager And Commercial Routes
 
@@ -14,6 +14,10 @@ Current manager-facing routes:
 - `invoices`
 - `customers`
 - `activity`
+- `estimates`
+- `contracts`
+- `recurring`
+- `integrations`
 
 Current manager-facing APIs:
 
@@ -33,6 +37,11 @@ Current manager-facing APIs:
 - `POST /api/invoices/:id/issue`
 - `POST /api/invoices/:id/void`
 - `POST /api/invoices/:id/payments`
+- `GET /api/estimates`
+- `GET /api/contracts`
+- `GET /api/recurring/board`
+- `GET /api/integrations`
+- `GET /api/integrations/deliveries`
 
 ## Summary Shapes
 
@@ -45,7 +54,7 @@ The manager route still reads the operational rollups:
 - `activity_unread`
 - `alert_unread`
 
-The commercial M5 routes add:
+The commercial M6 routes add:
 
 - `finance_metrics`
 - `invoice_status_counts`
@@ -53,37 +62,48 @@ The commercial M5 routes add:
 - `receivables_overview`
 - `export_job_counts`
 - `profitability_summary`
+- `estimate_status_counts`
+- `agreement_status_counts`
+- `recurring_plan_status_counts`
+- `contract_health_overview`
+- `renewal_pipeline`
+- `recurring_revenue_summary`
+- `integration_summary`
 
-Those shapes are already normalized in bootstrap and commercial API responses, so the UI does not need view-specific joins.
+Those shapes are normalized in bootstrap and commercial API responses, so the UI does not need route-specific joins.
 
 ## Commercial Control Surface
 
-Managers can now review and act on:
+Managers can review and act on:
 
 - price books, labor and part rate policies, billing policies, tax rules, and discount rules
 - invoice lists, detail records, issue and void actions, payment posting, and generated artifacts
 - customer account and statement views
 - branch or customer receivable summaries
 - export job state for invoice, receivable, and profitability extracts
-- finance rollups and profitability snapshots at global, branch, and team scope
+- estimate drafts, revisions, approvals, and conversion candidates
+- service agreements, renewal-pending contracts, and recurring-plan generation state
+- API keys, webhook subscriptions, delivery logs, and connector mappings
 
 ## Decision Questions
 
-The combined manager and finance surface is built around a short set of questions:
+The combined manager and commercial surface is built around a short set of questions:
 
 - Where is the review or dispatch backlog creating billing delay?
 - Which branches are carrying overdue balance or weak cash collection?
-- Which customers need statement follow-up?
-- Are pricing revisions, invoice locks, or export failures blocking revenue operations?
-- Which branch or team has the weakest profitability snapshot?
+- Which customers need statement follow-up or contract renewal attention?
+- Which estimate revisions are stale or blocked on approval?
+- Are recurring plans, delivery retries, pricing revisions, invoice locks, or export failures blocking revenue operations?
+- Which branch or team has the weakest profitability snapshot or recurring-revenue health?
 
 ## Release Coverage
 
-The `v0.4.0` manager release bar covers:
+The `v0.5.0` manager release bar covers:
 
 - operational summary bootstrap and drill-down
 - finance and profitability summary views
 - receivable and customer account drill-down
 - pricing and invoice control views
-- export job monitoring and retry
+- estimate, contract, renewal, and recurring-service dashboards
+- integrations center and delivery-log visibility
 - deterministic sync state for commercial conflicts and revisions

@@ -7,11 +7,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
 const FIXTURE_PATH = path.join(ROOT, 'tests/fixtures/demo_org.json');
+const DEMO_SEED_AST_PATH = path.join(ROOT, 'backend/src/demo_seed.x07.json');
 const REPORT_DIR = path.join(ROOT, 'build/reports');
 const APP_DIR = path.join(ROOT, 'dist/crewops_gate/app.crewops_dev');
 const X07_WASM = path.join(ROOT, '../x07-wasm-backend/target/debug/x07-wasm');
 const CREATED_UTC = '2026-03-11T00:00:00Z';
-const APP_VERSION = '0.4.0';
+const APP_VERSION = '0.5.0';
 const TOOL_VERSION = '0.2.4';
 const NOW = '2026-03-11T00:00:00Z';
 
@@ -26,6 +27,7 @@ const x07Wasm = x07WasmArg ? x07WasmArg.slice('--x07-wasm='.length) : X07_WASM;
 const traceFilter = traceFilterArg ? traceFilterArg.slice('--filter='.length) : null;
 
 const fixture = JSON.parse(fs.readFileSync(FIXTURE_PATH, 'utf8'));
+const demoSeedAst = JSON.parse(fs.readFileSync(DEMO_SEED_AST_PATH, 'utf8'));
 const baseEntities = {
   org: { [fixture.organization.id]: fixture.organization },
   branches: fixture.branches,
@@ -71,6 +73,24 @@ const baseEntities = {
   export_jobs: fixture.export_jobs,
   finance_rollups: fixture.finance_rollups,
   profitability_snapshots: fixture.profitability_snapshots,
+  estimates: fixture.estimates,
+  estimate_versions: fixture.estimate_versions,
+  estimate_approvals: fixture.estimate_approvals,
+  proposal_artifacts: fixture.proposal_artifacts,
+  service_agreements: fixture.service_agreements,
+  agreement_lines: fixture.agreement_lines,
+  recurring_plans: fixture.recurring_plans,
+  recurrence_rules: fixture.recurrence_rules,
+  generated_schedule_items: fixture.generated_schedule_items,
+  renewal_records: fixture.renewal_records,
+  contract_health_snapshots: fixture.contract_health_snapshots,
+  integration_endpoints: fixture.integration_endpoints,
+  api_key_records: fixture.api_key_records,
+  webhook_subscriptions: fixture.webhook_subscriptions,
+  webhook_deliveries: fixture.webhook_deliveries,
+  connector_mappings: fixture.connector_mappings,
+  import_or_sync_jobs: fixture.import_or_sync_jobs,
+  recurring_revenue_rollups: fixture.recurring_revenue_rollups,
 };
 const bootstrapWorkOrderIds = ['wo_001', 'wo_002', 'wo_003', 'wo_004', 'wo_005', 'wo_006'];
 const bootstrapTemplateIds = ['tmpl_arrival', 'tmpl_pm', 'tmpl_closeout'];
@@ -195,6 +215,29 @@ function clone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
+const demoSeedLiteralCache = new Map();
+
+function demoSeedDoc(name) {
+  if (demoSeedLiteralCache.has(name)) {
+    return clone(demoSeedLiteralCache.get(name));
+  }
+  const decl = (demoSeedAst.decls ?? []).find((item) => item.kind === 'defn' && item.name === name);
+  if (decl == null || !Array.isArray(decl.body) || decl.body[0] !== 'bytes.lit' || typeof decl.body[1] !== 'string') {
+    throw new Error(`demo seed literal not found: ${name}`);
+  }
+  const doc = JSON.parse(decl.body[1]);
+  demoSeedLiteralCache.set(name, doc);
+  return clone(doc);
+}
+
+function demoSeedMapEntry(name, key) {
+  const map = demoSeedDoc(name);
+  if (map[key] == null) {
+    throw new Error(`demo seed map entry not found: ${name} -> ${key}`);
+  }
+  return map[key];
+}
+
 function suffixFromId(id) {
   return id.split('_').pop();
 }
@@ -239,6 +282,10 @@ function defaultUi() {
     selected_export_job_id: 'export_job_003',
     selected_finance_rollup_id: 'finance_global',
     selected_profitability_snapshot_id: 'finance_global',
+    selected_estimate_id: 'est_001',
+    selected_contract_id: 'agreement_001',
+    selected_recurring_plan_id: 'recurring_plan_001',
+    selected_integration_endpoint_id: 'integration_endpoint_crm',
     selected_branch_id: 'branch_north',
     selected_team_id: 'team_north_alpha',
     network_status: 'online',
@@ -314,6 +361,48 @@ function defaultDrafts() {
     export_status_filter: 'open',
     export_kind: 'invoices',
     export_format: 'csv',
+    commercial_ops: {
+      estimate_selected_id: 'est_001',
+      estimate_status_filter: 'all',
+      estimate_branch_filter: 'all',
+      estimate_customer_filter: 'all',
+      estimate_expiration_date: '2026-04-12',
+      estimate_terms: 'Net 15.',
+      estimate_note: 'Follow up within seven days.',
+      estimate_line_description: 'Preventive maintenance visit',
+      estimate_line_quantity: '1',
+      estimate_line_unit_price: '185.00',
+      estimate_discount_rate: '0.03',
+      estimate_tax_rate: '0.101',
+      estimate_signature_name: 'Morgan Hale',
+      estimate_signature_note: 'Approved as quoted.',
+      contract_selected_id: 'agreement_001',
+      contract_status_filter: 'all',
+      contract_branch_filter: 'all',
+      contract_start_date: '2026-04-01',
+      contract_end_date: '2027-03-31',
+      contract_renewal_date: '2027-02-15',
+      contract_service_window: '08:00-10:00',
+      contract_sla_tier: 'gold',
+      contract_response_commitment: 'same_day',
+      recurring_selected_id: 'recurring_plan_001',
+      recurring_status_filter: 'all',
+      recurring_team_filter: 'all',
+      recurring_next_date: '2026-03-21',
+      recurring_service_window: '08:00-10:00',
+      recurring_skip_reason: 'Customer blackout week.',
+      integration_selected_id: 'integration_endpoint_crm',
+      integration_status_filter: 'all',
+      integration_scope_filter: 'all',
+      api_key_label: 'CrewOps ERP sync',
+      api_key_expires_at: '2026-12-31',
+      api_key_scope_csv: 'integrations.read,deliveries.read',
+      webhook_label: 'Estimate lifecycle mirror',
+      webhook_url: 'https://example.test/hooks/estimates',
+      webhook_events_csv: 'estimate.approved,estimate.converted',
+      mapping_source_key: 'customer.external_code',
+      mapping_target_key: 'crm.account_id',
+    },
   };
 }
 
@@ -502,6 +591,10 @@ function syncDoc(cursor, status, overrides = {}) {
     invoice_lock_status: 'idle',
     invoice_lock_message: '',
     stale_invoice_id: null,
+    estimate_revision_status: 'idle',
+    stale_estimate_id: null,
+    agreement_revision_status: 'idle',
+    stale_agreement_id: null,
     payment_revision_status: 'idle',
     pricing_revision_status: 'idle',
     stale_price_book_id: null,
@@ -509,6 +602,16 @@ function syncDoc(cursor, status, overrides = {}) {
     finance_revision: 'finance_rev_2026_03_11_001',
     unread_alerts: 4,
     unread_activity: 6,
+    commercial_ops: {
+      estimate_revision_status: 'idle',
+      stale_estimate_id: null,
+      agreement_revision_status: 'idle',
+      stale_agreement_id: null,
+      recurring_generation_status: 'idle',
+      stale_recurring_plan_id: null,
+      delivery_retry_status: 'idle',
+      stale_delivery_id: null,
+    },
     ...overrides,
   };
 }
@@ -991,6 +1094,48 @@ const serviceSummaryMap = Object.fromEntries(
   ]),
 );
 
+function estimateListDoc() {
+  return demoSeedDoc('demo_seed.estimate_list_body_v1');
+}
+
+const estimateDetailMap = demoSeedDoc('demo_seed.estimate_detail_map_body_v1');
+const estimateCreateDoc = demoSeedDoc('demo_seed.estimate_create_body_v1');
+const estimatePatchMap = demoSeedDoc('demo_seed.estimate_patch_map_body_v1');
+const estimateSendMap = demoSeedDoc('demo_seed.estimate_send_map_body_v1');
+const estimateApproveMap = demoSeedDoc('demo_seed.estimate_approve_map_body_v1');
+const estimateConvertMap = demoSeedDoc('demo_seed.estimate_convert_map_body_v1');
+const estimateApprovalConflictDoc = demoSeedDoc('demo_seed.estimate_approval_conflict_body_v1');
+const estimateConversionConflictDoc = demoSeedDoc('demo_seed.estimate_conversion_conflict_body_v1');
+
+function contractListDoc() {
+  return demoSeedDoc('demo_seed.contract_list_body_v1');
+}
+
+const contractCreateDoc = demoSeedDoc('demo_seed.contract_create_body_v1');
+const contractResumeMap = demoSeedDoc('demo_seed.contract_resume_map_body_v1');
+const contractRenewMap = demoSeedDoc('demo_seed.contract_renew_map_body_v1');
+const contractRenewConflictDoc = demoSeedDoc('demo_seed.contract_renewal_conflict_body_v1');
+
+function recurringBoardDoc() {
+  return demoSeedDoc('demo_seed.recurring_board_body_v1');
+}
+
+const recurringGenerateMap = demoSeedDoc('demo_seed.recurring_generate_map_body_v1');
+const recurringSkipMap = demoSeedDoc('demo_seed.recurring_skip_map_body_v1');
+const recurringGenerationConflictDoc = demoSeedDoc('demo_seed.recurring_generation_conflict_body_v1');
+
+function integrationsCenterDoc() {
+  return demoSeedDoc('demo_seed.integrations_center_body_v1');
+}
+
+function integrationsDeliveriesDoc() {
+  return demoSeedDoc('demo_seed.integrations_deliveries_body_v1');
+}
+
+const integrationsApiKeyCreateDoc = demoSeedDoc('demo_seed.integrations_api_key_create_body_v1');
+const integrationsWebhookCreateDoc = demoSeedDoc('demo_seed.integrations_webhook_create_body_v1');
+const integrationsDeliveryRetryDoc = demoSeedDoc('demo_seed.integrations_delivery_retry_body_v1');
+
 function workOrderAssignDoc(workOrderId) {
   const workOrder = baseEntities.work_orders[workOrderId];
   return payloadWithOperationalSnapshot(
@@ -1430,26 +1575,46 @@ function writeTrace(tracePath, doc) {
   fs.writeFileSync(tracePath, `${JSON.stringify(doc, null, 2)}\n`);
 }
 
+function readJson(pathname) {
+  return JSON.parse(fs.readFileSync(pathname, 'utf8'));
+}
+
+function isSuccessfulGoldenUpdate(reportPath) {
+  if (!fs.existsSync(reportPath)) {
+    return false;
+  }
+  const reportDoc = readJson(reportPath);
+  const stdoutJson = reportDoc?.result?.stdout_json;
+  return stdoutJson?.failed === 0 && stdoutJson?.updated_golden === true;
+}
+
 function updateGolden(tracePath) {
   const reportPath = path.join(REPORT_DIR, `${path.basename(tracePath, '.json')}.report.json`);
-  execFileSync(
-    x07Wasm,
-    [
-      'app',
-      'test',
-      '--dir',
-      appDir,
-      '--trace',
-      tracePath,
-      '--update-golden',
-      '--json',
-      '--report-out',
-      reportPath,
-      '--quiet-json',
-      '--strict',
-    ],
-    { cwd: ROOT, stdio: 'pipe' },
-  );
+  try {
+    execFileSync(
+      x07Wasm,
+      [
+        'app',
+        'test',
+        '--dir',
+        appDir,
+        '--trace',
+        tracePath,
+        '--update-golden',
+        '--json',
+        '--report-out',
+        reportPath,
+        '--quiet-json',
+        '--strict',
+      ],
+      { cwd: ROOT, stdio: 'pipe' },
+    );
+  } catch (error) {
+    if (isSuccessfulGoldenUpdate(reportPath)) {
+      return;
+    }
+    throw error;
+  }
 }
 
 function pushRoleLogin(doc, role) {
@@ -1730,6 +1895,9 @@ const traces = [
       }));
       return doc;
     },
+    postprocess(doc) {
+      return clearStepStateAfter(doc, 0);
+    },
   },
   {
     path: path.join(ROOT, 'tests/traces/partial_payment_record.trace.json'),
@@ -1828,6 +1996,9 @@ const traces = [
       }));
       doc.steps.push(click('action_select_export_job_003'));
       return doc;
+    },
+    postprocess(doc) {
+      return clearStepStateAfter(doc, 0);
     },
   },
   {
@@ -1938,6 +2109,275 @@ const traces = [
               drafts.payment_reference = 'ACH-55201';
             }),
           ),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/estimate_create_happy.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_estimates', 'req_estimate_list', '/api/estimates', estimateListDoc());
+      doc.steps.push(input('input_estimate_note', 'Bundle the spring PM with condenser cleaning.'));
+      doc.steps.push(input('input_estimate_line_unit_price', '210.00'));
+      doc.steps.push(input('input_estimate_expiration_date', '2026-04-18'));
+      doc.steps.push(click('action_estimate_create', {
+        http: [
+          exchange(
+            'req_estimate_create',
+            'POST',
+            '/api/estimates',
+            201,
+            estimateCreateDoc,
+            draftsText((drafts) => {
+              drafts.commercial_ops.estimate_note = 'Bundle the spring PM with condenser cleaning.';
+              drafts.commercial_ops.estimate_line_unit_price = '210.00';
+              drafts.commercial_ops.estimate_expiration_date = '2026-04-18';
+            }),
+          ),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/estimate_revision_then_send.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_estimates', 'req_estimate_list', '/api/estimates', estimateListDoc());
+      doc.steps.push(click('action_select_estimate_est_001', {
+        http: [
+          exchange('req_estimate_detail', 'GET', '/api/estimates/est_001', 200, estimateDetailMap.est_001),
+        ],
+      }));
+      doc.steps.push(input('input_estimate_note', 'Revision includes condenser cleaning and filter bundle.'));
+      doc.steps.push(input('input_estimate_line_unit_price', '245.00'));
+      doc.steps.push(click('action_estimate_patch', {
+        http: [
+          exchange(
+            'req_estimate_patch',
+            'PATCH',
+            '/api/estimates/est_001',
+            200,
+            estimatePatchMap.est_001,
+            draftsText((drafts) => {
+              drafts.commercial_ops.estimate_note = 'Revision includes condenser cleaning and filter bundle.';
+              drafts.commercial_ops.estimate_line_unit_price = '245.00';
+            }),
+          ),
+        ],
+      }));
+      doc.steps.push(click('action_estimate_send', {
+        http: [
+          exchange('req_estimate_send', 'POST', '/api/estimates/est_001/send', 200, estimateSendMap.est_001, '{}'),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/customer_approve_and_convert.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_estimates', 'req_estimate_list', '/api/estimates', estimateListDoc());
+      doc.steps.push(click('action_select_estimate_est_002', {
+        http: [
+          exchange('req_estimate_detail', 'GET', '/api/estimates/est_002', 200, estimateDetailMap.est_002),
+        ],
+      }));
+      doc.steps.push(input('input_estimate_signature_name', 'Morgan Hale'));
+      doc.steps.push(input('input_estimate_signature_note', 'Approved for next available service window.'));
+      doc.steps.push(click('action_estimate_approve', {
+        http: [
+          exchange(
+            'req_estimate_approve',
+            'POST',
+            '/api/estimates/est_002/approve',
+            200,
+            estimateApproveMap.est_002,
+            draftsText((drafts) => {
+              drafts.commercial_ops.estimate_signature_name = 'Morgan Hale';
+              drafts.commercial_ops.estimate_signature_note = 'Approved for next available service window.';
+            }),
+          ),
+        ],
+      }));
+      doc.steps.push(click('action_estimate_convert', {
+        http: [
+          exchange('req_estimate_convert', 'POST', '/api/estimates/est_002/convert', 200, estimateConvertMap.est_002, '{}'),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/stale_approval_blocked.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_estimates', 'req_estimate_list', '/api/estimates', estimateListDoc());
+      doc.steps.push(click('action_select_estimate_est_003', {
+        http: [
+          exchange('req_estimate_detail', 'GET', '/api/estimates/est_003', 200, estimateDetailMap.est_003),
+        ],
+      }));
+      doc.steps.push(input('input_estimate_signature_name', 'Dana Flores'));
+      doc.steps.push(click('action_estimate_approve', {
+        http: [
+          exchange(
+            'req_estimate_approve',
+            'POST',
+            '/api/estimates/est_003/approve',
+            409,
+            estimateApprovalConflictDoc,
+            draftsText((drafts) => {
+              drafts.commercial_ops.estimate_signature_name = 'Dana Flores';
+            }),
+          ),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/contract_create_and_activate.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_contracts', 'req_contract_list', '/api/contracts', contractListDoc());
+      doc.steps.push(input('input_contract_start_date', '2026-04-01'));
+      doc.steps.push(input('input_contract_end_date', '2027-03-31'));
+      doc.steps.push(click('action_contract_create', {
+        http: [
+          exchange(
+            'req_contract_create',
+            'POST',
+            '/api/contracts',
+            201,
+            contractCreateDoc,
+            draftsText((drafts) => {
+              drafts.commercial_ops.contract_start_date = '2026-04-01';
+              drafts.commercial_ops.contract_end_date = '2027-03-31';
+            }),
+          ),
+        ],
+      }));
+      doc.steps.push(click('action_contract_resume', {
+        http: [
+          exchange('req_contract_resume', 'POST', '/api/contracts/agreement_004/resume', 200, contractResumeMap.agreement_004, '{}'),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/recurring_plan_generate_schedule.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_recurring', 'req_recurring_board', '/api/recurring/board', recurringBoardDoc());
+      doc.steps.push(click('action_select_recurring_recurring_plan_001'));
+      doc.steps.push(click('action_recurring_generate', {
+        http: [
+          exchange(
+            'req_recurring_generate',
+            'POST',
+            '/api/recurring/recurring_plan_001/generate',
+            200,
+            recurringGenerateMap.recurring_plan_001,
+            '{}',
+          ),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/recurring_skip_and_resume.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_recurring', 'req_recurring_board', '/api/recurring/board', recurringBoardDoc());
+      doc.steps.push(click('action_select_recurring_recurring_plan_002'));
+      doc.steps.push(input('input_recurring_skip_reason', 'Tenant blackout window through spring remodel.'));
+      doc.steps.push(click('action_recurring_skip', {
+        http: [
+          exchange(
+            'req_recurring_skip',
+            'POST',
+            '/api/recurring/recurring_plan_002/skip',
+            200,
+            recurringSkipMap.recurring_plan_002,
+            draftsText((drafts) => {
+              drafts.commercial_ops.recurring_skip_reason = 'Tenant blackout window through spring remodel.';
+            }),
+          ),
+        ],
+      }));
+      doc.steps.push(click('nav_contracts', {
+        http: [
+          exchange('req_contract_list', 'GET', '/api/contracts', 200, contractListDoc()),
+        ],
+      }));
+      doc.steps.push(click('action_select_contract_agreement_002'));
+      doc.steps.push(click('action_contract_resume', {
+        http: [
+          exchange('req_contract_resume', 'POST', '/api/contracts/agreement_002/resume', 200, contractResumeMap.agreement_002, '{}'),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/webhook_delivery_retry.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_integrations', 'req_integrations_center', '/api/integrations', integrationsCenterDoc());
+      doc.steps.push(click('action_select_integration_endpoint_crm'));
+      doc.steps.push(click('action_integrations_deliveries', {
+        http: [
+          exchange('req_integrations_deliveries', 'GET', '/api/integrations/deliveries', 200, integrationsDeliveriesDoc()),
+        ],
+      }));
+      doc.steps.push(click('action_integrations_delivery_retry', {
+        http: [
+          exchange(
+            'req_integrations_delivery_retry',
+            'POST',
+            '/api/integrations/deliveries/delivery_002/retry',
+            200,
+            integrationsDeliveryRetryDoc,
+            '{}',
+          ),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/renewal_dashboard_view.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_contracts', 'req_contract_list', '/api/contracts', contractListDoc());
+      doc.steps.push(click('action_select_contract_agreement_003'));
+      doc.steps.push(click('action_contract_refresh', {
+        http: [
+          exchange('req_contract_list', 'GET', '/api/contracts', 200, contractListDoc()),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/conversion_revision_conflict.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_estimates', 'req_estimate_list', '/api/estimates', estimateListDoc());
+      doc.steps.push(click('action_select_estimate_est_003', {
+        http: [
+          exchange('req_estimate_detail', 'GET', '/api/estimates/est_003', 200, estimateDetailMap.est_003),
+        ],
+      }));
+      doc.steps.push(click('action_estimate_convert', {
+        http: [
+          exchange('req_estimate_convert', 'POST', '/api/estimates/est_003/convert', 409, estimateConversionConflictDoc, '{}'),
         ],
       }));
       return doc;

@@ -1,13 +1,13 @@
 # CrewOps Architecture
 
-CrewOps `v0.4.0` is still one repo, one deterministic reducer, and one seed-backed backend. M5 extends the operations core with commercial workflows instead of spinning up a separate billing app.
+CrewOps `v0.5.0` stays one repo, one deterministic reducer, and one seed-backed backend. M6 extends the operations and finance core with estimates, approvals, service agreements, recurring work generation, renewals, and integration control without splitting the app into separate products.
 
 ## Repo Layers
 
 - [`frontend/`](../frontend)
-  - reducer modules, state defaults, and the `std-web-ui@0.2.2` dependency
+  - reducer modules, state defaults, and the `std-web-ui@0.2.3` dependency
 - [`backend/`](../backend)
-  - deterministic API handlers for bootstrap, execution, dispatch, review, activity, sync, and the M5 commercial surface
+  - deterministic API handlers for bootstrap, execution, dispatch, review, activity, sync, billing, estimates, contracts, recurrence, and integrations
 - [`arch/`](../arch)
   - app, web UI, device, SLO, and provenance profiles
 - [`tests/`](../tests)
@@ -19,7 +19,7 @@ CrewOps `v0.4.0` is still one repo, one deterministic reducer, and one seed-back
 
 The reducer entrypoint is [`frontend/src/app.x07.json`](../frontend/src/app.x07.json).
 
-CrewOps still uses one shared state tree rather than one reducer per role. M5 extends that tree with commercial selections, draft fields, summaries, and sync metadata.
+CrewOps keeps one shared state tree rather than one reducer per role. M6 extends that tree with commercial contract state, recurring-service selections, integration filters, and revision or delivery conflict state.
 
 Current primary routes:
 
@@ -37,19 +37,23 @@ Current primary routes:
 - `sites`
 - `assets`
 - `settings`
+- `estimates`
+- `contracts`
+- `recurring`
+- `integrations`
 
 Important state modules:
 
 - [`frontend/src/state.x07.json`](../frontend/src/state.x07.json)
-  - default UI and `0.4.0` app metadata
+  - default UI, selected ids for the M6 commercial surfaces, and `0.5.0` app metadata
 - [`frontend/src/entities.x07.json`](../frontend/src/entities.x07.json)
-  - normalized entity maps and indexes for both ops and commercial views
+  - normalized entity maps and indexes for ops, finance, estimates, agreements, recurring plans, and integrations
 - [`frontend/src/drafts.x07.json`](../frontend/src/drafts.x07.json)
-  - intake, pricing, invoice, payment, statement, receivable, and export draft fields
+  - intake, pricing, invoice, payment, export, and `commercial_ops` draft fields
 - [`frontend/src/sync.x07.json`](../frontend/src/sync.x07.json)
-  - generic conflict state plus `invoice_lock_status`, `payment_revision_status`, `pricing_revision_status`, `export_status`, `finance_revision`, and stale ids
+  - deterministic sync state for invoice, payment, pricing, estimate, agreement, recurrence, and delivery failures
 - [`frontend/src/routes.x07.json`](../frontend/src/routes.x07.json)
-  - route selection for the full M5 nav surface
+  - route selection for the full M6 nav surface
 
 ## Backend Surface
 
@@ -70,39 +74,25 @@ Operational handlers remain in the existing modules:
 - [`backend/src/attachments.x07.json`](../backend/src/attachments.x07.json)
 - [`backend/src/sync.x07.json`](../backend/src/sync.x07.json)
 
-M5 commercial routes are grouped under [`backend/src/commercial_api.x07.json`](../backend/src/commercial_api.x07.json), which delegates to:
+Commercial routes are grouped under [`backend/src/commercial_api.x07.json`](../backend/src/commercial_api.x07.json), which delegates to:
 
 - [`backend/src/pricing.x07.json`](../backend/src/pricing.x07.json)
-  - `GET /api/pricing/config`
-  - `PATCH /api/pricing/config`
-  - `PATCH /api/pricing/config/conflict`
 - [`backend/src/invoices.x07.json`](../backend/src/invoices.x07.json)
-  - `GET /api/invoices`
-  - `POST /api/invoices/generate`
-  - `GET /api/invoices/:id`
-  - `PATCH /api/invoices/:id`
-  - `POST /api/invoices/:id/issue`
-  - `POST /api/invoices/:id/void`
-  - `POST /api/invoices/:id/payments`
-  - `GET /api/invoices/:id/artifact`
-  - `GET /api/invoices/:id/service-summary`
 - [`backend/src/finance_summary.x07.json`](../backend/src/finance_summary.x07.json)
-  - `GET /api/finance/summary`
-  - `GET /api/finance/receivables`
 - [`backend/src/customers.x07.json`](../backend/src/customers.x07.json)
-  - `GET /api/customers/:id/account`
 - [`backend/src/exports.x07.json`](../backend/src/exports.x07.json)
-  - `GET /api/exports/jobs`
-  - `POST /api/exports/jobs`
-  - `POST /api/exports/jobs/:id/retry`
+- [`backend/src/estimates.x07.json`](../backend/src/estimates.x07.json)
+- [`backend/src/contracts.x07.json`](../backend/src/contracts.x07.json)
+- [`backend/src/recurrence.x07.json`](../backend/src/recurrence.x07.json)
+- [`backend/src/integrations.x07.json`](../backend/src/integrations.x07.json)
 
 ## Seed, Bootstrap, And Sync
 
-The canonical seed is still generated by [`scripts/ci/seed_demo.sh`](../scripts/ci/seed_demo.sh) and mirrored into deterministic backend payloads. M5 expands that seed with pricing, invoice, payment, customer-statement, receivable, export, finance-rollup, and profitability data.
+The canonical seed is generated by [`scripts/ci/seed_demo.sh`](../scripts/ci/seed_demo.sh) and mirrored into deterministic backend payloads. M6 expands that seed with estimate versions and approvals, proposal artifacts, service agreements, agreement lines, recurring plans and schedule items, renewal and contract-health records, and integration endpoint plus delivery data.
 
-Bootstrap still hydrates cache first and then HTTP when available. The cache key is now `crewops.bootstrap.snapshot.v2`.
+Bootstrap still hydrates cache first and then HTTP when available. The cache key remains `crewops.bootstrap.snapshot.v2`.
 
-Sync remains deterministic and snapshot-based. The M5 envelope adds commercial status and conflict fields rather than introducing live background workers or a database-backed queue.
+Sync remains deterministic and snapshot-based. The envelope now carries billing, estimate revision, agreement revision, recurring-generation, and delivery-retry state rather than introducing live workers or a database-backed queue.
 
 ## Current Boundaries
 

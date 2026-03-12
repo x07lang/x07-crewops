@@ -1,6 +1,6 @@
 # Dispatch And Review
 
-CrewOps `v0.4.0` keeps dispatch and supervisor review as the front-line operational loop, then hands approved and completed work into the M5 commercial surface without switching apps or data models.
+CrewOps `v0.5.0` keeps dispatch and supervisor review as the front-line operational loop, then feeds the same work stream into billing, estimates, contracts, recurring maintenance, and integration surfaces without switching apps or data models.
 
 ## Dispatcher Surface
 
@@ -57,21 +57,23 @@ Backend routes:
 - `POST /api/review/:visit_id/request-correction`
 - `POST /api/corrections/:id/resubmit`
 
-## Handoff To Commercial M5
+## Handoff To Commercial M6
 
-M5 does not replace dispatch or review. It extends the same workflow after work is completed or approved.
+M6 does not replace dispatch or review. It extends the same workflow after work is completed, reviewed, or approved.
 
 Downstream commercial surfaces read the same normalized tenant and snapshot updates through:
 
-- `POST /api/invoices/generate`
+- `GET /api/estimates`
+- `POST /api/estimates/:id/send`
+- `POST /api/estimates/:id/approve`
+- `POST /api/estimates/:id/convert`
+- `GET /api/contracts`
+- `GET /api/recurring/board`
 - `GET /api/invoices`
-- `GET /api/invoices/:id`
-- `GET /api/customers/:id/account`
 - `GET /api/finance/summary`
-- `GET /api/finance/receivables`
-- `GET /api/exports/jobs`
+- `GET /api/integrations`
 
-That keeps dispatch, review, invoicing, receivables, and finance aligned to one deterministic seed and one reducer state tree.
+That keeps dispatch, review, quoting, contracting, recurring service, billing, and finance aligned to one deterministic seed and one reducer state tree.
 
 ## Shared Activity And Sync
 
@@ -83,21 +85,23 @@ Dispatch and review still share one activity and alert model:
 - `alerts_by_role`
 - unread counts in `summary.activity_unread` and `summary.alert_unread`
 
-The sync branch now also surfaces commercial conflict state that operators can see after dispatch or review actions feed billing:
+The sync branch now also surfaces contract and integration conflict state that operators can see after dispatch or review actions feed commercial workflows:
 
 - `invoice_lock_status`
+- `estimate_revision_status`
+- `agreement_revision_status`
 - `payment_revision_status`
 - `pricing_revision_status`
 - `export_status`
-- `finance_revision`
+- recurring-generation and delivery-retry state
 
 ## Release Coverage
 
-The `v0.4.0` dispatch and review release bar covers:
+The `v0.5.0` dispatch and review release bar covers:
 
 - dispatcher filtering, intake, assign, and reassign flows
 - supervisor approve, reject, and correction loops
 - technician resubmission after correction
 - activity and alert propagation
-- downstream handoff into invoice generation and commercial summaries
-- deterministic stale-lock and conflict responses
+- downstream handoff into estimate, contract, invoice, and recurring-service surfaces
+- deterministic stale-lock, stale-revision, and conflict responses

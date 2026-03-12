@@ -1,6 +1,6 @@
 # CrewOps Mobile Build
 
-CrewOps `v0.4.0` ships the same M5 reducer across desktop, iOS, and Android. The frontend dependency baseline is `std-web-ui@0.2.2`, and the checked-in device profiles now carry the `0.4.0` release version.
+CrewOps `v0.5.0` ships the same M6 reducer across desktop, iOS, and Android. The frontend dependency baseline is `std-web-ui@0.2.3`, and the checked-in device profiles carry the `0.5.0` release version.
 
 ## Prereqs
 
@@ -46,10 +46,10 @@ Current profile ids from [`arch/device/index.x07device.json`](../arch/device/ind
 - `device_ios_dev`
 - `device_android_dev`
 
-Current M5 packaging intent:
+Current M6 packaging intent:
 
 - desktop is the local smoke and operator demo profile
-- iOS and Android package the same reducer for technician, dispatch, review, manager, finance, receivables, exports, and customer-account views
+- iOS and Android package the same reducer for technician, dispatch, review, manager, finance, receivables, exports, estimates, contracts, recurring, and integrations
 - all profiles keep dynamic code loading disabled
 
 ## Capability State
@@ -76,6 +76,6 @@ Before pointing a mobile package at a real backend:
 
 ## CI And Release Notes
 
-[`scripts/ci/check_all.sh`](../scripts/ci/check_all.sh) remains the canonical CrewOps gate for the `v0.4.0` line, including replay, pack, verify, provenance, SLO, desktop smoke, and mobile package generation.
+[`scripts/ci/check_all.sh`](../scripts/ci/check_all.sh) remains the canonical CrewOps gate for the `v0.5.0` line, including replay, generated regressions, pack, verify, provenance, SLO, desktop smoke, and mobile package generation.
 
 The app still ships as one deterministic bundle. Do not rely on runtime WASM replacement or dynamic code loading.

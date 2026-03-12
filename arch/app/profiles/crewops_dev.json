@@ -24,7 +24,7 @@
     "max_concurrency": 16,
     "max_request_wall_ms": 2000,
     "backend_runtime": {
-      "max_fuel": 200000000,
+      "max_fuel": 2000000000,
       "max_memory_bytes": 268435456,
       "max_table_elements": 131072,
       "max_wasm_stack_bytes": 2097152

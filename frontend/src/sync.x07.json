@@ -11,7 +11,7 @@
     {
       "body": [
         "bytes.lit",
-        "{\"cursor\":null,\"pending_ops\":[],\"last_pull_at\":null,\"last_push_at\":null,\"last_server_event_at\":null,\"status\":\"idle\",\"last_error\":null,\"conflict_status\":\"idle\",\"conflict_message\":\"\",\"conflict_code\":null,\"conflict_entity_id\":null,\"invoice_lock_status\":\"idle\",\"invoice_lock_message\":\"\",\"stale_invoice_id\":null,\"payment_revision_status\":\"idle\",\"pricing_revision_status\":\"idle\",\"stale_price_book_id\":null,\"export_status\":\"idle\",\"finance_revision\":null,\"unread_alerts\":0,\"unread_activity\":0}"
+        "{\"cursor\":null,\"pending_ops\":[],\"last_pull_at\":null,\"last_push_at\":null,\"last_server_event_at\":null,\"status\":\"idle\",\"last_error\":null,\"conflict_status\":\"idle\",\"conflict_message\":\"\",\"conflict_code\":null,\"conflict_entity_id\":null,\"invoice_lock_status\":\"idle\",\"invoice_lock_message\":\"\",\"stale_invoice_id\":null,\"payment_revision_status\":\"idle\",\"pricing_revision_status\":\"idle\",\"stale_price_book_id\":null,\"export_status\":\"idle\",\"finance_revision\":null,\"unread_alerts\":0,\"unread_activity\":0,\"commercial_ops\":{\"estimate_revision_status\":\"idle\",\"stale_estimate_id\":null,\"agreement_revision_status\":\"idle\",\"stale_agreement_id\":null,\"recurring_generation_status\":\"idle\",\"stale_recurring_plan_id\":null,\"delivery_retry_status\":\"idle\",\"stale_delivery_id\":null}}"
       ],
       "kind": "defn",
       "name": "sync.default_json_v1",
@@ -478,6 +478,27 @@
             "out",
             [
               "bytes.view_lit",
+              ",\"commercial_ops\":"
+            ]
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            "commercial_ops_json"
+          ]
+        ],
+        [
+          "set",
+          "out",
+          [
+            "std.vec.extend_bytes",
+            "out",
+            [
+              "bytes.view_lit",
               "}"
             ]
           ]
@@ -572,6 +593,10 @@
         },
         {
           "name": "unread_activity_json",
+          "ty": "bytes_view"
+        },
+        {
+          "name": "commercial_ops_json",
           "ty": "bytes_view"
         }
       ],

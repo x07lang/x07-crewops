@@ -8,6 +8,12 @@
       "world": "solve-pure"
     },
     {
+      "entry": "frontend_tests.test_m6_route_request_helpers_v1",
+      "expect": "pass",
+      "id": "frontend/m6-route-request-helpers",
+      "world": "solve-pure"
+    },
+    {
       "entry": "frontend_tests.test_invoice_artifact_ids_v1",
       "expect": "pass",
       "id": "frontend/invoice-artifact-ids",
@@ -29,6 +35,12 @@
       "entry": "frontend_tests.test_toggle_helpers_v1",
       "expect": "pass",
       "id": "frontend/toggle-helpers",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "frontend_tests.test_m6_nav_dispatch_requests_v1",
+      "expect": "pass",
+      "id": "frontend/m6-nav-dispatch-requests",
       "world": "solve-pure"
     },
     {

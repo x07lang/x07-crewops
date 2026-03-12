@@ -50,6 +50,16 @@ TRACE_FIXTURES=(
   "$ROOT/tests/traces/manager_finance_dashboard.trace.json"
   "$ROOT/tests/traces/payment_revision_conflict.trace.json"
   "$ROOT/tests/traces/bootstrap_api_error.trace.json"
+  "$ROOT/tests/traces/estimate_create_happy.trace.json"
+  "$ROOT/tests/traces/estimate_revision_then_send.trace.json"
+  "$ROOT/tests/traces/customer_approve_and_convert.trace.json"
+  "$ROOT/tests/traces/stale_approval_blocked.trace.json"
+  "$ROOT/tests/traces/contract_create_and_activate.trace.json"
+  "$ROOT/tests/traces/recurring_plan_generate_schedule.trace.json"
+  "$ROOT/tests/traces/recurring_skip_and_resume.trace.json"
+  "$ROOT/tests/traces/webhook_delivery_retry.trace.json"
+  "$ROOT/tests/traces/renewal_dashboard_view.trace.json"
+  "$ROOT/tests/traces/conversion_revision_conflict.trace.json"
 )
 
 APP_SMOKE_TRACES=(
@@ -77,6 +87,16 @@ APP_REQUIRED_TRACES=(
   "$ROOT/tests/traces/pricing_revision_mismatch.trace.json"
   "$ROOT/tests/traces/manager_finance_dashboard.trace.json"
   "$ROOT/tests/traces/payment_revision_conflict.trace.json"
+  "$ROOT/tests/traces/estimate_create_happy.trace.json"
+  "$ROOT/tests/traces/estimate_revision_then_send.trace.json"
+  "$ROOT/tests/traces/customer_approve_and_convert.trace.json"
+  "$ROOT/tests/traces/stale_approval_blocked.trace.json"
+  "$ROOT/tests/traces/contract_create_and_activate.trace.json"
+  "$ROOT/tests/traces/recurring_plan_generate_schedule.trace.json"
+  "$ROOT/tests/traces/recurring_skip_and_resume.trace.json"
+  "$ROOT/tests/traces/webhook_delivery_retry.trace.json"
+  "$ROOT/tests/traces/renewal_dashboard_view.trace.json"
+  "$ROOT/tests/traces/conversion_revision_conflict.trace.json"
 )
 EXPECTED_BOOTSTRAP_FAILURE_TRACE="$ROOT/tests/traces/bootstrap_api_error.trace.json"
 
@@ -671,10 +691,10 @@ run_step "x07-wasm app serve smoke crewops_dev" \
     --mode smoke \
     --strict
 
-run_step "generate M5 app traces" \
+run_step "generate M6 app traces" \
   "$NODE_BIN" "$TRACE_GENERATOR" --update-golden
 
-run_step "validate M5 trace JSON fixtures" \
+run_step "validate M6 trace JSON fixtures" \
   validate_json_files \
     "${TRACE_FIXTURES[@]}"
 

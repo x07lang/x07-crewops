@@ -21,6 +21,16 @@ This directory holds the current CrewOps demo fixtures, replay traces, and regre
 - `tests/traces/attachment_retry_after_reconnect.trace.json`: offline evidence import followed by reconnect sync.
 - `tests/traces/blocked_visit_submit.trace.json`: blocked visit submission without signature.
 - `tests/traces/evidence_capture_upload_happy.trace.json`: successful capture, attachment register, and upload flow.
+- `tests/traces/estimate_create_happy.trace.json`: manager creates a draft estimate from the M6 commercial surface.
+- `tests/traces/estimate_revision_then_send.trace.json`: manager revises a draft estimate and sends it to the customer.
+- `tests/traces/customer_approve_and_convert.trace.json`: manager replays approval and conversion on the seeded approved estimate path.
+- `tests/traces/stale_approval_blocked.trace.json`: stale estimate approval is rejected with deterministic conflict state.
+- `tests/traces/contract_create_and_activate.trace.json`: service-agreement creation plus resume flow on the contract surface.
+- `tests/traces/recurring_plan_generate_schedule.trace.json`: recurring-plan generation updates future schedule items deterministically.
+- `tests/traces/recurring_skip_and_resume.trace.json`: paused recurring-service flow skips an occurrence and resumes the linked agreement.
+- `tests/traces/webhook_delivery_retry.trace.json`: integrations center delivery-log view and retry-state visibility.
+- `tests/traces/renewal_dashboard_view.trace.json`: contract health and renewal-pipeline surface on the contracts route.
+- `tests/traces/conversion_revision_conflict.trace.json`: stale estimate conversion is blocked with deterministic conflict payloads.
 
 Run them against the current app bundle, for example:
 
@@ -33,6 +43,8 @@ x07-wasm app test --dir dist/app/crewops_dev --trace tests/traces/bootstrap_demo
 - `tests/traces/bootstrap_api_error.trace.json`: expected-failure bootstrap incident seed. This replay should fail and emit an `incident_dir` in the JSON report.
 - `tests/regress/bootstrap_api_error.trace.json`: regression replay generated from that incident bundle.
 - `tests/regress/bootstrap_api_error.final.ui.json`: golden final UI snapshot for the generated regression.
+- `tests/regress/payment_revision_conflict.trace.json`: committed regression replay for the finance conflict path.
+- `tests/regress/payment_revision_conflict.final.ui.json`: golden final UI snapshot for that committed regression.
 
 Typical flow:
 

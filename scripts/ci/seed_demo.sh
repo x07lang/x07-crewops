@@ -12,7 +12,7 @@ from collections import defaultdict
 
 root = pathlib.Path(sys.argv[1])
 now = "2026-03-11T00:00:00Z"
-APP_VERSION = "0.4.0"
+APP_VERSION = "0.5.0"
 
 
 def clone_doc(doc):
@@ -1520,6 +1520,1067 @@ export_jobs = {
     },
 }
 
+estimate_lines = {}
+estimate_versions = {}
+estimate_approvals = {}
+proposal_artifacts = {}
+estimates = {}
+
+
+def estimate_version_id(estimate_id, revision):
+    return f"estimate_version_{estimate_id}_r{revision}"
+
+
+def build_estimate_bundle(blueprint):
+    bundle_lines = {}
+    bundle_versions = {}
+    bundle_approvals = {}
+    version_ids = []
+    latest_shared_revision = blueprint.get("latest_shared_revision")
+    approved_revision = blueprint.get("approved_revision")
+    price_book_id = blueprint.get("price_book_id", f"price_book_{blueprint['branch_id']}")
+    billing_policy_id = blueprint.get("billing_policy_id", f"billing_policy_{blueprint['branch_id']}")
+    tax_rule_id = blueprint.get("tax_rule_id", "tax_rule_wa")
+    discount_rule_id = blueprint.get("discount_rule_id", "discount_rule_loyalty")
+
+    for version in blueprint["versions"]:
+        version_id = estimate_version_id(blueprint["id"], version["revision"])
+        version_ids.append(version_id)
+        line_ids = []
+        labor_subtotal = 0.0
+        parts_subtotal = 0.0
+        service_fee_total = 0.0
+        travel_total = 0.0
+        subtotal = 0.0
+
+        for line_idx, line_spec in enumerate(version["lines"], start=1):
+            line_id = f"estimate_line_{blueprint['id']}_r{version['revision']}_{line_idx:02d}"
+            amount = round(line_spec["quantity"] * line_spec["unit_price"], 2)
+            bundle_lines[line_id] = {
+                "id": line_id,
+                "estimate_version_id": version_id,
+                "kind": line_spec["kind"],
+                "description": line_spec["description"],
+                "quantity": line_spec["quantity"],
+                "uom": line_spec["uom"],
+                "unit_price": line_spec["unit_price"],
+                "amount": amount,
+                "part_id": line_spec.get("part_id"),
+            }
+            line_ids.append(line_id)
+            subtotal = round(subtotal + amount, 2)
+            if line_spec["kind"] == "labor":
+                labor_subtotal = round(labor_subtotal + amount, 2)
+            elif line_spec["kind"] == "part":
+                parts_subtotal = round(parts_subtotal + amount, 2)
+            elif line_spec["kind"] == "service_fee":
+                service_fee_total = round(service_fee_total + amount, 2)
+            elif line_spec["kind"] == "travel":
+                travel_total = round(travel_total + amount, 2)
+
+        discount_total = round(subtotal * version.get("discount_rate", 0.0), 2)
+        taxable_subtotal = round(subtotal - discount_total, 2)
+        tax_total = round(taxable_subtotal * version.get("tax_rate", 0.0), 2)
+        total = round(taxable_subtotal + tax_total, 2)
+
+        bundle_versions[version_id] = {
+            "id": version_id,
+            "estimate_id": blueprint["id"],
+            "revision": version["revision"],
+            "state": version["state"],
+            "created_at": version["created_at"],
+            "created_by_user_id": version["created_by_user_id"],
+            "shared_at": version.get("shared_at"),
+            "line_ids": line_ids,
+            "notes": version.get("notes", ""),
+            "terms": version.get("terms", ""),
+            "expiration_date": version.get("expiration_date", blueprint["expiration_date"]),
+            "price_book_id": price_book_id,
+            "billing_policy_id": billing_policy_id,
+            "tax_rule_id": tax_rule_id,
+            "discount_rule_id": discount_rule_id,
+            "labor_subtotal": labor_subtotal,
+            "parts_subtotal": parts_subtotal,
+            "service_fee_total": service_fee_total,
+            "travel_total": travel_total,
+            "subtotal": subtotal,
+            "discount_total": discount_total,
+            "tax_total": tax_total,
+            "total": total,
+            "margin_note": version.get("margin_note"),
+        }
+
+    proposal_artifact_id = f"proposal_artifact_{blueprint['id']}"
+    proposal_artifact = {
+        "id": proposal_artifact_id,
+        "estimate_id": blueprint["id"],
+        "estimate_version_id": estimate_version_id(
+            blueprint["id"],
+            blueprint.get(
+                "artifact_revision",
+                latest_shared_revision or blueprint["current_revision"],
+            ),
+        ),
+        "status": blueprint.get("artifact_status", "ready"),
+        "printable_path": (
+            f"/artifacts/proposals/{blueprint['id']}.pdf"
+            if blueprint.get("artifact_status", "ready") != "draft"
+            else None
+        ),
+        "json_path": f"/artifacts/proposals/{blueprint['id']}.json",
+        "generated_at": blueprint.get("artifact_generated_at"),
+        "retryable": blueprint.get("artifact_status", "ready") == "failed",
+        "error_code": blueprint.get("artifact_error_code"),
+        "error_message": blueprint.get("artifact_error_message"),
+    }
+
+    approval_ids = []
+    for approval_idx, approval in enumerate(blueprint.get("approvals", []), start=1):
+        approval_id = f"estimate_approval_{blueprint['id']}_{approval_idx:02d}"
+        bundle_approvals[approval_id] = {
+            "id": approval_id,
+            "estimate_id": blueprint["id"],
+            "estimate_version_id": estimate_version_id(
+                blueprint["id"],
+                approval["revision"],
+            ),
+            "state": approval["state"],
+            "customer_name": approval["customer_name"],
+            "captured_at": approval["captured_at"],
+            "channel": approval["channel"],
+            "signature_ref": approval.get("signature_ref"),
+            "note": approval.get("note", ""),
+            "reason": approval.get("reason"),
+        }
+        approval_ids.append(approval_id)
+
+    current_version_id = estimate_version_id(blueprint["id"], blueprint["current_revision"])
+    current_version = bundle_versions[current_version_id]
+    estimate_doc = {
+        "id": blueprint["id"],
+        "number": blueprint["number"],
+        "status": blueprint["status"],
+        "customer_id": blueprint["customer_id"],
+        "site_id": blueprint["site_id"],
+        "asset_id": blueprint.get("asset_id"),
+        "branch_id": blueprint["branch_id"],
+        "team_id": blueprint["team_id"],
+        "source_work_order_id": blueprint.get("source_work_order_id"),
+        "source_visit_id": blueprint.get("source_visit_id"),
+        "currency": blueprint.get("currency", "USD"),
+        "current_version_id": current_version_id,
+        "latest_shared_version_id": (
+            estimate_version_id(blueprint["id"], latest_shared_revision)
+            if latest_shared_revision is not None
+            else None
+        ),
+        "approved_version_id": (
+            estimate_version_id(blueprint["id"], approved_revision)
+            if approved_revision is not None
+            else None
+        ),
+        "version_ids": version_ids,
+        "approval_ids": approval_ids,
+        "proposal_artifact_id": proposal_artifact_id,
+        "price_book_id": price_book_id,
+        "billing_policy_id": billing_policy_id,
+        "tax_rule_id": tax_rule_id,
+        "discount_rule_id": discount_rule_id,
+        "created_at": blueprint["created_at"],
+        "updated_at": blueprint.get("updated_at", blueprint["created_at"]),
+        "sent_at": blueprint.get("sent_at"),
+        "viewed_at": blueprint.get("viewed_at"),
+        "approved_at": blueprint.get("approved_at"),
+        "rejected_at": blueprint.get("rejected_at"),
+        "converted_at": blueprint.get("converted_at"),
+        "expiration_date": blueprint["expiration_date"],
+        "approval_state": blueprint.get("approval_state", "not_requested"),
+        "linked_work_order_id": blueprint.get("linked_work_order_id"),
+        "linked_agreement_id": blueprint.get("linked_agreement_id"),
+        "origin": blueprint.get("origin", "backoffice"),
+        "subtotal": current_version["subtotal"],
+        "discount_total": current_version["discount_total"],
+        "tax_total": current_version["tax_total"],
+        "total": current_version["total"],
+    }
+
+    return {
+        "estimate": estimate_doc,
+        "versions": bundle_versions,
+        "lines": bundle_lines,
+        "approvals": bundle_approvals,
+        "proposal_artifact": proposal_artifact,
+    }
+
+
+estimate_blueprints = [
+    {
+        "id": "est_001",
+        "number": "EST-6001",
+        "status": "draft",
+        "customer_id": "cust_006",
+        "site_id": "site_006",
+        "asset_id": "asset_006",
+        "branch_id": "branch_south",
+        "team_id": "team_south_gamma",
+        "source_work_order_id": "wo_006",
+        "created_at": "2026-03-06T15:10:00Z",
+        "updated_at": "2026-03-11T09:20:00Z",
+        "expiration_date": "2026-04-12",
+        "current_revision": 2,
+        "latest_shared_revision": 1,
+        "artifact_status": "draft",
+        "versions": [
+            {
+                "revision": 1,
+                "state": "superseded",
+                "created_at": "2026-03-06T15:10:00Z",
+                "created_by_user_id": "user_manager_jonas",
+                "shared_at": "2026-03-07T17:00:00Z",
+                "discount_rate": 0.03,
+                "tax_rate": 0.101,
+                "notes": "Filter replacement and belt inspection.",
+                "terms": "Net 15.",
+                "margin_note": "Bundle with PM follow-up.",
+                "lines": [
+                    {
+                        "kind": "service_fee",
+                        "description": "Preventive maintenance visit",
+                        "quantity": 1,
+                        "uom": "visit",
+                        "unit_price": 185.0,
+                    },
+                    {
+                        "kind": "labor",
+                        "description": "Technician labor",
+                        "quantity": 2,
+                        "uom": "hour",
+                        "unit_price": 98.0,
+                    },
+                    {
+                        "kind": "part",
+                        "description": "MERV 13 filter",
+                        "quantity": 2,
+                        "uom": "each",
+                        "unit_price": 24.5,
+                        "part_id": "part_filter_merv13",
+                    },
+                    {
+                        "kind": "travel",
+                        "description": "Travel charge",
+                        "quantity": 1,
+                        "uom": "trip",
+                        "unit_price": 28.0,
+                    },
+                ],
+            },
+            {
+                "revision": 2,
+                "state": "draft",
+                "created_at": "2026-03-11T09:10:00Z",
+                "created_by_user_id": "user_manager_jonas",
+                "discount_rate": 0.03,
+                "tax_rate": 0.101,
+                "notes": "Added condenser coil cleaning to the bundled visit.",
+                "terms": "Net 15.",
+                "margin_note": "Travel remains bundled to protect margin.",
+                "lines": [
+                    {
+                        "kind": "service_fee",
+                        "description": "Preventive maintenance visit",
+                        "quantity": 1,
+                        "uom": "visit",
+                        "unit_price": 185.0,
+                    },
+                    {
+                        "kind": "labor",
+                        "description": "Technician labor",
+                        "quantity": 2.5,
+                        "uom": "hour",
+                        "unit_price": 98.0,
+                    },
+                    {
+                        "kind": "part",
+                        "description": "MERV 13 filter",
+                        "quantity": 2,
+                        "uom": "each",
+                        "unit_price": 24.5,
+                        "part_id": "part_filter_merv13",
+                    },
+                    {
+                        "kind": "travel",
+                        "description": "Travel charge",
+                        "quantity": 1,
+                        "uom": "trip",
+                        "unit_price": 28.0,
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        "id": "est_002",
+        "number": "EST-6002",
+        "status": "sent",
+        "customer_id": "cust_011",
+        "site_id": "site_011",
+        "asset_id": "asset_011",
+        "branch_id": "branch_north",
+        "team_id": "team_north_alpha",
+        "created_at": "2026-03-08T11:25:00Z",
+        "updated_at": "2026-03-09T18:00:00Z",
+        "expiration_date": "2026-03-31",
+        "current_revision": 1,
+        "latest_shared_revision": 1,
+        "sent_at": "2026-03-09T18:00:00Z",
+        "viewed_at": "2026-03-10T13:15:00Z",
+        "approval_state": "awaiting_customer",
+        "artifact_status": "ready",
+        "artifact_generated_at": "2026-03-09T17:59:00Z",
+        "versions": [
+            {
+                "revision": 1,
+                "state": "sent",
+                "created_at": "2026-03-08T11:25:00Z",
+                "created_by_user_id": "user_manager_jonas",
+                "shared_at": "2026-03-09T18:00:00Z",
+                "discount_rate": 0.02,
+                "tax_rate": 0.101,
+                "notes": "Lobby door preventative service.",
+                "terms": "Approval reserves a next-week service window.",
+                "margin_note": "Keep labor fixed for trust-building.",
+                "lines": [
+                    {
+                        "kind": "service_fee",
+                        "description": "Door system tune-up",
+                        "quantity": 1,
+                        "uom": "visit",
+                        "unit_price": 210.0,
+                    },
+                    {
+                        "kind": "labor",
+                        "description": "Door technician labor",
+                        "quantity": 3,
+                        "uom": "hour",
+                        "unit_price": 92.0,
+                    },
+                    {
+                        "kind": "part",
+                        "description": "Contact cleaner",
+                        "quantity": 1,
+                        "uom": "can",
+                        "unit_price": 18.5,
+                        "part_id": "part_contact_cleaner",
+                    },
+                ],
+            }
+        ],
+    },
+    {
+        "id": "est_003",
+        "number": "EST-6003",
+        "status": "viewed",
+        "customer_id": "cust_018",
+        "site_id": "site_018",
+        "asset_id": "asset_018",
+        "branch_id": "branch_south",
+        "team_id": "team_south_gamma",
+        "source_work_order_id": "wo_018",
+        "created_at": "2026-03-07T09:40:00Z",
+        "updated_at": "2026-03-10T16:45:00Z",
+        "expiration_date": "2026-03-29",
+        "current_revision": 2,
+        "latest_shared_revision": 1,
+        "sent_at": "2026-03-08T17:20:00Z",
+        "viewed_at": "2026-03-09T10:00:00Z",
+        "approval_state": "stale_revision",
+        "artifact_status": "ready",
+        "artifact_revision": 1,
+        "artifact_generated_at": "2026-03-08T17:18:00Z",
+        "versions": [
+            {
+                "revision": 1,
+                "state": "sent",
+                "created_at": "2026-03-07T09:40:00Z",
+                "created_by_user_id": "user_manager_jonas",
+                "shared_at": "2026-03-08T17:20:00Z",
+                "discount_rate": 0.04,
+                "tax_rate": 0.101,
+                "notes": "Roof drain cleaning with minor sealing.",
+                "terms": "Revision 1 shared for customer review.",
+                "margin_note": "Keep parts visible to justify cost.",
+                "lines": [
+                    {
+                        "kind": "service_fee",
+                        "description": "Roof drain service window",
+                        "quantity": 1,
+                        "uom": "visit",
+                        "unit_price": 240.0,
+                    },
+                    {
+                        "kind": "labor",
+                        "description": "Technician labor",
+                        "quantity": 4,
+                        "uom": "hour",
+                        "unit_price": 94.0,
+                    },
+                    {
+                        "kind": "travel",
+                        "description": "Lift and travel charge",
+                        "quantity": 1,
+                        "uom": "trip",
+                        "unit_price": 44.0,
+                    },
+                ],
+            },
+            {
+                "revision": 2,
+                "state": "draft",
+                "created_at": "2026-03-10T16:45:00Z",
+                "created_by_user_id": "user_manager_jonas",
+                "discount_rate": 0.04,
+                "tax_rate": 0.101,
+                "notes": "Added follow-up flashing seal and drain camera inspection.",
+                "terms": "Revision 2 requires a fresh customer confirmation.",
+                "margin_note": "Revision 2 adds follow-up labor.",
+                "lines": [
+                    {
+                        "kind": "service_fee",
+                        "description": "Roof drain service window",
+                        "quantity": 1,
+                        "uom": "visit",
+                        "unit_price": 240.0,
+                    },
+                    {
+                        "kind": "labor",
+                        "description": "Technician labor",
+                        "quantity": 5,
+                        "uom": "hour",
+                        "unit_price": 94.0,
+                    },
+                    {
+                        "kind": "travel",
+                        "description": "Lift and travel charge",
+                        "quantity": 1,
+                        "uom": "trip",
+                        "unit_price": 44.0,
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        "id": "est_004",
+        "number": "EST-6004",
+        "status": "approved",
+        "customer_id": "cust_020",
+        "site_id": "site_020",
+        "asset_id": "asset_020",
+        "branch_id": "branch_north",
+        "team_id": "team_north_beta",
+        "source_work_order_id": "wo_020",
+        "created_at": "2026-03-04T14:30:00Z",
+        "updated_at": "2026-03-06T08:00:00Z",
+        "expiration_date": "2026-03-27",
+        "current_revision": 1,
+        "latest_shared_revision": 1,
+        "approved_revision": 1,
+        "sent_at": "2026-03-05T18:00:00Z",
+        "viewed_at": "2026-03-05T19:10:00Z",
+        "approved_at": "2026-03-06T08:00:00Z",
+        "approval_state": "approved",
+        "artifact_status": "ready",
+        "artifact_generated_at": "2026-03-05T17:58:00Z",
+        "linked_agreement_id": "agreement_001",
+        "linked_work_order_id": "wo_020",
+        "approvals": [
+            {
+                "revision": 1,
+                "state": "approved",
+                "customer_name": "Morgan Hale",
+                "captured_at": "2026-03-06T08:00:00Z",
+                "channel": "signature_capture",
+                "signature_ref": "sig_est_004_approved",
+                "note": "Approved annual service agreement.",
+            }
+        ],
+        "versions": [
+            {
+                "revision": 1,
+                "state": "approved",
+                "created_at": "2026-03-04T14:30:00Z",
+                "created_by_user_id": "user_manager_jonas",
+                "shared_at": "2026-03-05T18:00:00Z",
+                "discount_rate": 0.05,
+                "tax_rate": 0.101,
+                "notes": "Quarterly rooftop maintenance agreement.",
+                "terms": "Twelve-month service agreement billed quarterly.",
+                "margin_note": "Anchor with predictable quarterly cadence.",
+                "lines": [
+                    {
+                        "kind": "service_fee",
+                        "description": "Quarterly preventive maintenance program",
+                        "quantity": 4,
+                        "uom": "visit",
+                        "unit_price": 520.0,
+                    },
+                    {
+                        "kind": "labor",
+                        "description": "Seasonal startup labor",
+                        "quantity": 6,
+                        "uom": "hour",
+                        "unit_price": 95.0,
+                    },
+                    {
+                        "kind": "part",
+                        "description": "MERV 13 filter",
+                        "quantity": 4,
+                        "uom": "each",
+                        "unit_price": 24.5,
+                        "part_id": "part_filter_merv13",
+                    },
+                ],
+            }
+        ],
+    },
+]
+
+for blueprint in estimate_blueprints:
+    bundle = build_estimate_bundle(blueprint)
+    estimates[blueprint["id"]] = bundle["estimate"]
+    estimate_lines.update(bundle["lines"])
+    estimate_versions.update(bundle["versions"])
+    estimate_approvals.update(bundle["approvals"])
+    proposal_artifacts[bundle["proposal_artifact"]["id"]] = bundle["proposal_artifact"]
+
+agreement_lines = {
+    "agreement_line_001_service": {
+        "id": "agreement_line_001_service",
+        "agreement_id": "agreement_001",
+        "kind": "preventive_maintenance",
+        "description": "Quarterly rooftop preventive maintenance",
+        "included_quantity": 4,
+        "uom": "visit",
+        "annual_value": 2880.0,
+    },
+    "agreement_line_002_service": {
+        "id": "agreement_line_002_service",
+        "agreement_id": "agreement_002",
+        "kind": "door_service",
+        "description": "Quarterly lobby door service",
+        "included_quantity": 4,
+        "uom": "visit",
+        "annual_value": 1560.0,
+    },
+    "agreement_line_003_service": {
+        "id": "agreement_line_003_service",
+        "agreement_id": "agreement_003",
+        "kind": "roof_drain",
+        "description": "Bi-monthly roof drain and flashing inspection",
+        "included_quantity": 6,
+        "uom": "visit",
+        "annual_value": 2140.0,
+    },
+}
+service_agreements = {
+    "agreement_001": {
+        "id": "agreement_001",
+        "number": "AGR-7001",
+        "status": "active",
+        "source_estimate_id": "est_004",
+        "source_estimate_version_id": "estimate_version_est_004_r1",
+        "customer_id": "cust_020",
+        "branch_id": "branch_north",
+        "team_id": "team_north_beta",
+        "covered_site_ids": ["site_020"],
+        "covered_asset_ids": ["asset_020"],
+        "agreement_line_ids": ["agreement_line_001_service"],
+        "recurring_plan_ids": ["recurring_plan_001"],
+        "renewal_record_ids": ["renewal_001"],
+        "health_snapshot_id": "contract_health_agreement_001",
+        "owner_user_id": "user_manager_jonas",
+        "currency": "USD",
+        "annual_value": 2880.0,
+        "recurring_revenue_monthly": 240.0,
+        "start_date": "2026-03-15",
+        "end_date": "2027-03-14",
+        "renewal_date": "2027-01-15",
+        "service_window": "08:00-10:00",
+        "sla_tier": "platinum",
+        "response_commitment": "4h",
+        "paused_at": None,
+        "resumed_at": None,
+        "notes": "Quarterly rooftop maintenance and seasonal startup coverage.",
+    },
+    "agreement_002": {
+        "id": "agreement_002",
+        "number": "AGR-7002",
+        "status": "paused",
+        "source_estimate_id": "est_002",
+        "source_estimate_version_id": "estimate_version_est_002_r1",
+        "customer_id": "cust_011",
+        "branch_id": "branch_north",
+        "team_id": "team_north_alpha",
+        "covered_site_ids": ["site_011"],
+        "covered_asset_ids": ["asset_011"],
+        "agreement_line_ids": ["agreement_line_002_service"],
+        "recurring_plan_ids": ["recurring_plan_002"],
+        "renewal_record_ids": [],
+        "health_snapshot_id": "contract_health_agreement_002",
+        "owner_user_id": "user_manager_jonas",
+        "currency": "USD",
+        "annual_value": 1560.0,
+        "recurring_revenue_monthly": 130.0,
+        "start_date": "2026-01-01",
+        "end_date": "2026-12-31",
+        "renewal_date": "2026-11-30",
+        "service_window": "09:00-11:00",
+        "sla_tier": "gold",
+        "response_commitment": "same_day",
+        "paused_at": "2026-03-01T12:00:00Z",
+        "resumed_at": None,
+        "pause_reason": "Tenant blackout window through spring remodel.",
+        "notes": "Pause retains future cadence and asset coverage.",
+    },
+    "agreement_003": {
+        "id": "agreement_003",
+        "number": "AGR-7003",
+        "status": "renewal_pending",
+        "source_estimate_id": "est_003",
+        "source_estimate_version_id": "estimate_version_est_003_r1",
+        "customer_id": "cust_018",
+        "branch_id": "branch_south",
+        "team_id": "team_south_gamma",
+        "covered_site_ids": ["site_018"],
+        "covered_asset_ids": ["asset_018"],
+        "agreement_line_ids": ["agreement_line_003_service"],
+        "recurring_plan_ids": ["recurring_plan_003"],
+        "renewal_record_ids": ["renewal_002"],
+        "health_snapshot_id": "contract_health_agreement_003",
+        "owner_user_id": "user_manager_jonas",
+        "currency": "USD",
+        "annual_value": 2140.0,
+        "recurring_revenue_monthly": 178.33,
+        "start_date": "2025-04-01",
+        "end_date": "2026-03-31",
+        "renewal_date": "2026-03-25",
+        "service_window": "13:00-15:00",
+        "sla_tier": "gold",
+        "response_commitment": "8h",
+        "paused_at": None,
+        "resumed_at": None,
+        "notes": "Renewal is pending after scope edits to the latest estimate revision.",
+    },
+}
+recurrence_rules = {
+    "recurrence_rule_001": {
+        "id": "recurrence_rule_001",
+        "plan_id": "recurring_plan_001",
+        "cadence_unit": "month",
+        "interval": 3,
+        "day_of_month": 15,
+        "timezone": "America/Los_Angeles",
+    },
+    "recurrence_rule_002": {
+        "id": "recurrence_rule_002",
+        "plan_id": "recurring_plan_002",
+        "cadence_unit": "month",
+        "interval": 3,
+        "day_of_month": 1,
+        "timezone": "America/Los_Angeles",
+    },
+    "recurrence_rule_003": {
+        "id": "recurrence_rule_003",
+        "plan_id": "recurring_plan_003",
+        "cadence_unit": "month",
+        "interval": 2,
+        "day_of_month": 20,
+        "timezone": "America/Los_Angeles",
+    },
+}
+recurring_plans = {
+    "recurring_plan_001": {
+        "id": "recurring_plan_001",
+        "agreement_id": "agreement_001",
+        "rule_id": "recurrence_rule_001",
+        "status": "active",
+        "next_scheduled_date": "2026-04-15",
+        "service_window": "08:00-10:00",
+        "covered_site_ids": ["site_020"],
+        "covered_asset_ids": ["asset_020"],
+        "included_service_types": ["pm", "filter_change"],
+        "branch_id": "branch_north",
+        "team_id": "team_north_beta",
+        "last_generated_at": "2026-03-10T09:00:00Z",
+        "generation_revision": 2,
+        "last_generated_schedule_item_id": "schedule_item_001",
+        "skip_history_ids": [],
+    },
+    "recurring_plan_002": {
+        "id": "recurring_plan_002",
+        "agreement_id": "agreement_002",
+        "rule_id": "recurrence_rule_002",
+        "status": "paused",
+        "next_scheduled_date": "2026-06-01",
+        "service_window": "09:00-11:00",
+        "covered_site_ids": ["site_011"],
+        "covered_asset_ids": ["asset_011"],
+        "included_service_types": ["inspection", "door_adjustment"],
+        "branch_id": "branch_north",
+        "team_id": "team_north_alpha",
+        "last_generated_at": "2026-02-25T10:30:00Z",
+        "generation_revision": 1,
+        "last_generated_schedule_item_id": "schedule_item_003",
+        "skip_history_ids": ["schedule_item_003"],
+        "pause_reason": "Tenant blackout window through remodel.",
+    },
+    "recurring_plan_003": {
+        "id": "recurring_plan_003",
+        "agreement_id": "agreement_003",
+        "rule_id": "recurrence_rule_003",
+        "status": "active",
+        "next_scheduled_date": "2026-03-20",
+        "service_window": "13:00-15:00",
+        "covered_site_ids": ["site_018"],
+        "covered_asset_ids": ["asset_018"],
+        "included_service_types": ["roof_drain", "seal_check"],
+        "branch_id": "branch_south",
+        "team_id": "team_south_gamma",
+        "last_generated_at": "2026-03-10T09:00:00Z",
+        "generation_revision": 5,
+        "last_generated_schedule_item_id": "schedule_item_004",
+        "skip_history_ids": [],
+    },
+}
+generated_schedule_items = {
+    "schedule_item_001": {
+        "id": "schedule_item_001",
+        "plan_id": "recurring_plan_001",
+        "agreement_id": "agreement_001",
+        "scheduled_date": "2026-04-15",
+        "service_window": "08:00-10:00",
+        "status": "planned",
+        "generated_work_order_id": None,
+        "source_generation_revision": 2,
+        "created_at": "2026-03-10T09:00:00Z",
+        "skip_reason": None,
+        "rescheduled_from_id": None,
+    },
+    "schedule_item_002": {
+        "id": "schedule_item_002",
+        "plan_id": "recurring_plan_001",
+        "agreement_id": "agreement_001",
+        "scheduled_date": "2026-07-15",
+        "service_window": "08:00-10:00",
+        "status": "planned",
+        "generated_work_order_id": None,
+        "source_generation_revision": 2,
+        "created_at": "2026-03-10T09:00:00Z",
+        "skip_reason": None,
+        "rescheduled_from_id": None,
+    },
+    "schedule_item_003": {
+        "id": "schedule_item_003",
+        "plan_id": "recurring_plan_002",
+        "agreement_id": "agreement_002",
+        "scheduled_date": "2026-03-01",
+        "service_window": "09:00-11:00",
+        "status": "skipped",
+        "generated_work_order_id": None,
+        "source_generation_revision": 1,
+        "created_at": "2026-02-25T10:30:00Z",
+        "skip_reason": "Customer blackout window requested by site contact.",
+        "rescheduled_from_id": None,
+    },
+    "schedule_item_004": {
+        "id": "schedule_item_004",
+        "plan_id": "recurring_plan_003",
+        "agreement_id": "agreement_003",
+        "scheduled_date": "2026-03-20",
+        "service_window": "13:00-15:00",
+        "status": "generated",
+        "generated_work_order_id": "wo_018",
+        "source_generation_revision": 5,
+        "created_at": "2026-03-10T09:00:00Z",
+        "skip_reason": None,
+        "rescheduled_from_id": None,
+    },
+}
+renewal_records = {
+    "renewal_001": {
+        "id": "renewal_001",
+        "agreement_id": "agreement_001",
+        "status": "scheduled",
+        "due_date": "2027-01-15",
+        "quoted_estimate_id": None,
+        "prior_agreement_id": "agreement_001",
+        "next_term_start": "2027-03-15",
+        "created_at": "2026-03-01T10:00:00Z",
+        "updated_at": "2026-03-01T10:00:00Z",
+    },
+    "renewal_002": {
+        "id": "renewal_002",
+        "agreement_id": "agreement_003",
+        "status": "pending_review",
+        "due_date": "2026-03-25",
+        "quoted_estimate_id": "est_003",
+        "prior_agreement_id": "agreement_003",
+        "next_term_start": "2026-04-01",
+        "created_at": "2026-03-09T15:30:00Z",
+        "updated_at": "2026-03-10T16:45:00Z",
+    },
+}
+contract_health_snapshots = {
+    "contract_health_agreement_001": {
+        "id": "contract_health_agreement_001",
+        "agreement_id": "agreement_001",
+        "health_status": "healthy",
+        "service_completion_pct": 100.0,
+        "skipped_occurrences": 0,
+        "overdue_occurrences": 0,
+        "renewal_risk": "low",
+        "revenue_at_risk": 0.0,
+    },
+    "contract_health_agreement_002": {
+        "id": "contract_health_agreement_002",
+        "agreement_id": "agreement_002",
+        "health_status": "paused",
+        "service_completion_pct": 100.0,
+        "skipped_occurrences": 1,
+        "overdue_occurrences": 0,
+        "renewal_risk": "medium",
+        "revenue_at_risk": 130.0,
+    },
+    "contract_health_agreement_003": {
+        "id": "contract_health_agreement_003",
+        "agreement_id": "agreement_003",
+        "health_status": "at_risk",
+        "service_completion_pct": 83.33,
+        "skipped_occurrences": 0,
+        "overdue_occurrences": 1,
+        "renewal_risk": "high",
+        "revenue_at_risk": 178.33,
+    },
+}
+recurring_revenue_rollups = {
+    "recurring_revenue_global": {
+        "id": "recurring_revenue_global",
+        "scope": "global",
+        "branch_id": None,
+        "team_id": None,
+        "monthly_recurring_revenue": 548.33,
+        "annual_contract_value": 6580.0,
+        "active_agreements": 1,
+        "paused_agreements": 1,
+        "renewal_pending_count": 1,
+        "skipped_occurrences": 1,
+    },
+    "recurring_revenue_branch_north": {
+        "id": "recurring_revenue_branch_north",
+        "scope": "branch",
+        "branch_id": "branch_north",
+        "team_id": None,
+        "monthly_recurring_revenue": 370.0,
+        "annual_contract_value": 4440.0,
+        "active_agreements": 1,
+        "paused_agreements": 1,
+        "renewal_pending_count": 0,
+        "skipped_occurrences": 1,
+    },
+    "recurring_revenue_team_north_beta": {
+        "id": "recurring_revenue_team_north_beta",
+        "scope": "team",
+        "branch_id": "branch_north",
+        "team_id": "team_north_beta",
+        "monthly_recurring_revenue": 240.0,
+        "annual_contract_value": 2880.0,
+        "active_agreements": 1,
+        "paused_agreements": 0,
+        "renewal_pending_count": 0,
+        "skipped_occurrences": 0,
+    },
+}
+integration_endpoints = {
+    "integration_endpoint_accounting": {
+        "id": "integration_endpoint_accounting",
+        "kind": "accounting_export",
+        "status": "healthy",
+        "direction": "outbound",
+        "created_at": "2026-02-20T12:00:00Z",
+        "last_activity_at": "2026-03-11T08:16:00Z",
+        "last_error": None,
+        "connector_mapping_ids": ["connector_mapping_002"],
+        "sync_job_ids": ["sync_job_001"],
+    },
+    "integration_endpoint_crm": {
+        "id": "integration_endpoint_crm",
+        "kind": "crm_sync",
+        "status": "degraded",
+        "direction": "bidirectional",
+        "created_at": "2026-02-25T09:30:00Z",
+        "last_activity_at": "2026-03-11T06:30:00Z",
+        "last_error": "Duplicate downstream event id rejected during renewal sync.",
+        "connector_mapping_ids": ["connector_mapping_001"],
+        "sync_job_ids": ["sync_job_002"],
+    },
+}
+api_key_records = {
+    "api_key_001": {
+        "id": "api_key_001",
+        "label": "Ops sync key",
+        "status": "active",
+        "key_prefix": "x07_live_ops",
+        "masked_secret": "x07_live_ops_****V7K2",
+        "created_at": "2026-02-18T12:00:00Z",
+        "rotated_at": None,
+        "expires_at": "2026-09-01T00:00:00Z",
+        "last_used_at": "2026-03-11T07:45:00Z",
+        "scope_ids": ["estimates.read", "contracts.write", "recurring.generate"],
+    },
+    "api_key_002": {
+        "id": "api_key_002",
+        "label": "Finance export mirror",
+        "status": "rotated",
+        "key_prefix": "x07_fin",
+        "masked_secret": "x07_fin_****T9D1",
+        "created_at": "2026-01-12T09:00:00Z",
+        "rotated_at": "2026-03-10T18:00:00Z",
+        "expires_at": None,
+        "last_used_at": "2026-03-10T17:55:00Z",
+        "scope_ids": ["finance.read", "deliveries.read"],
+        "replacement_key_id": "api_key_001",
+    },
+}
+webhook_subscriptions = {
+    "webhook_001": {
+        "id": "webhook_001",
+        "label": "CRM opportunity updates",
+        "status": "active",
+        "endpoint_id": "integration_endpoint_crm",
+        "endpoint_url": "https://example.test/hooks/crm",
+        "event_types": ["estimate.approved", "contract.renewed"],
+        "masked_secret": "whsec_****9c1e",
+        "created_at": "2026-02-25T09:35:00Z",
+        "last_delivery_at": "2026-03-06T08:01:01Z",
+        "failure_count": 0,
+        "connector_mapping_ids": ["connector_mapping_001"],
+    },
+    "webhook_002": {
+        "id": "webhook_002",
+        "label": "Operations schedule mirror",
+        "status": "degraded",
+        "endpoint_id": "integration_endpoint_accounting",
+        "endpoint_url": "https://example.test/hooks/schedule",
+        "event_types": ["recurring.generated", "invoice.issued", "payment.recorded"],
+        "masked_secret": "whsec_****7fa2",
+        "created_at": "2026-02-20T12:10:00Z",
+        "last_delivery_at": "2026-03-10T09:02:00Z",
+        "failure_count": 2,
+        "connector_mapping_ids": ["connector_mapping_002"],
+    },
+}
+webhook_deliveries = {
+    "delivery_001": {
+        "id": "delivery_001",
+        "subscription_id": "webhook_001",
+        "event_type": "estimate.approved",
+        "entity_kind": "estimate",
+        "entity_id": "est_004",
+        "status": "delivered",
+        "attempt_count": 1,
+        "created_at": "2026-03-06T08:01:00Z",
+        "last_attempt_at": "2026-03-06T08:01:01Z",
+        "next_retry_at": None,
+        "response_code": 202,
+        "response_summary": "Accepted",
+        "delivery_revision": "delivery_rev_001",
+        "duplicate_of_id": None,
+        "retryable": False,
+    },
+    "delivery_002": {
+        "id": "delivery_002",
+        "subscription_id": "webhook_002",
+        "event_type": "recurring.generated",
+        "entity_kind": "recurring_plan",
+        "entity_id": "recurring_plan_003",
+        "status": "failed",
+        "attempt_count": 3,
+        "created_at": "2026-03-10T09:00:00Z",
+        "last_attempt_at": "2026-03-10T09:02:00Z",
+        "next_retry_at": "2026-03-11T09:30:00Z",
+        "response_code": 500,
+        "response_summary": "Connector timed out during schedule export batch.",
+        "delivery_revision": "delivery_rev_003",
+        "duplicate_of_id": None,
+        "retryable": True,
+    },
+    "delivery_003": {
+        "id": "delivery_003",
+        "subscription_id": "webhook_001",
+        "event_type": "contract.renewed",
+        "entity_kind": "service_agreement",
+        "entity_id": "agreement_003",
+        "status": "duplicate",
+        "attempt_count": 1,
+        "created_at": "2026-03-11T06:30:00Z",
+        "last_attempt_at": "2026-03-11T06:30:00Z",
+        "next_retry_at": None,
+        "response_code": 409,
+        "response_summary": "Duplicate downstream event id rejected by sink.",
+        "delivery_revision": "delivery_rev_004",
+        "duplicate_of_id": "delivery_001",
+        "retryable": False,
+    },
+}
+connector_mappings = {
+    "connector_mapping_001": {
+        "id": "connector_mapping_001",
+        "endpoint_id": "integration_endpoint_crm",
+        "entity_kind": "estimate",
+        "status": "active",
+        "external_object": "opportunity",
+        "field_mappings": {
+            "estimate_total": "amount",
+            "customer_id": "account_ref",
+            "status": "stage",
+        },
+        "updated_at": "2026-03-05T16:00:00Z",
+    },
+    "connector_mapping_002": {
+        "id": "connector_mapping_002",
+        "endpoint_id": "integration_endpoint_accounting",
+        "entity_kind": "service_agreement",
+        "status": "active",
+        "external_object": "contract",
+        "field_mappings": {
+            "annual_value": "contract_value",
+            "renewal_date": "renewal_date",
+            "status": "contract_status",
+        },
+        "updated_at": "2026-03-07T09:00:00Z",
+    },
+}
+import_or_sync_jobs = {
+    "sync_job_001": {
+        "id": "sync_job_001",
+        "kind": "connector_backfill",
+        "status": "completed",
+        "endpoint_id": "integration_endpoint_accounting",
+        "started_at": "2026-03-09T18:00:00Z",
+        "completed_at": "2026-03-09T18:12:00Z",
+        "summary": "Reconciled 12 invoices and 3 agreements.",
+    },
+    "sync_job_002": {
+        "id": "sync_job_002",
+        "kind": "webhook_retry",
+        "status": "running",
+        "endpoint_id": "integration_endpoint_crm",
+        "started_at": "2026-03-11T06:35:00Z",
+        "completed_at": None,
+        "summary": "Retrying failed recurring-service deliveries.",
+    },
+}
+
 indexes = {
     "work_orders_by_status": {
         key: []
@@ -1563,6 +2624,19 @@ indexes = {
     "price_books_by_customer": defaultdict(list),
     "statements_by_customer": defaultdict(list),
     "receivables_by_branch": defaultdict(list),
+    "estimates_by_status": defaultdict(list),
+    "estimates_by_customer": defaultdict(list),
+    "estimates_by_branch": defaultdict(list),
+    "agreements_by_status": defaultdict(list),
+    "agreements_by_customer": defaultdict(list),
+    "agreements_by_branch": defaultdict(list),
+    "recurring_plans_by_status": defaultdict(list),
+    "recurring_plans_by_agreement": defaultdict(list),
+    "generated_schedule_items_by_plan": defaultdict(list),
+    "renewal_records_by_status": defaultdict(list),
+    "api_keys_by_status": defaultdict(list),
+    "webhook_deliveries_by_status": defaultdict(list),
+    "webhook_deliveries_by_subscription": defaultdict(list),
 }
 for work_order_id, work_order in work_orders.items():
     indexes["work_orders_by_status"][work_order["status"]].append(work_order_id)
@@ -1609,6 +2683,26 @@ for statement_id, statement in customer_statements.items():
 for receivable_id, receivable in receivable_summaries.items():
     if receivable["branch_id"] is not None:
         indexes["receivables_by_branch"][receivable["branch_id"]].append(receivable_id)
+for estimate_id, estimate in estimates.items():
+    indexes["estimates_by_status"][estimate["status"]].append(estimate_id)
+    indexes["estimates_by_customer"][estimate["customer_id"]].append(estimate_id)
+    indexes["estimates_by_branch"][estimate["branch_id"]].append(estimate_id)
+for agreement_id, agreement in service_agreements.items():
+    indexes["agreements_by_status"][agreement["status"]].append(agreement_id)
+    indexes["agreements_by_customer"][agreement["customer_id"]].append(agreement_id)
+    indexes["agreements_by_branch"][agreement["branch_id"]].append(agreement_id)
+for plan_id, plan in recurring_plans.items():
+    indexes["recurring_plans_by_status"][plan["status"]].append(plan_id)
+    indexes["recurring_plans_by_agreement"][plan["agreement_id"]].append(plan_id)
+for item_id, item in generated_schedule_items.items():
+    indexes["generated_schedule_items_by_plan"][item["plan_id"]].append(item_id)
+for renewal_id, renewal in renewal_records.items():
+    indexes["renewal_records_by_status"][renewal["status"]].append(renewal_id)
+for api_key_id, api_key in api_key_records.items():
+    indexes["api_keys_by_status"][api_key["status"]].append(api_key_id)
+for delivery_id, delivery in webhook_deliveries.items():
+    indexes["webhook_deliveries_by_status"][delivery["status"]].append(delivery_id)
+    indexes["webhook_deliveries_by_subscription"][delivery["subscription_id"]].append(delivery_id)
 indexes = {
     key: {
         inner_key: value
@@ -1636,6 +2730,12 @@ summary = {
         "invoices": len(invoices),
         "payments": len(payment_records),
         "export_jobs": len(export_jobs),
+        "estimates": len(estimates),
+        "estimate_versions": len(estimate_versions),
+        "service_agreements": len(service_agreements),
+        "recurring_plans": len(recurring_plans),
+        "webhook_subscriptions": len(webhook_subscriptions),
+        "webhook_deliveries": len(webhook_deliveries),
     },
     "status_counts": {
         key: len(value) for key, value in indexes["work_orders_by_status"].items()
@@ -1706,6 +2806,48 @@ summary = {
         key: len(value) for key, value in indexes["export_jobs_by_status"].items()
     },
     "profitability_summary": profitability_snapshots["finance_global"],
+    "estimate_status_counts": {
+        key: len(value) for key, value in indexes["estimates_by_status"].items()
+    },
+    "agreement_status_counts": {
+        key: len(value) for key, value in indexes["agreements_by_status"].items()
+    },
+    "recurring_plan_status_counts": {
+        key: len(value) for key, value in indexes["recurring_plans_by_status"].items()
+    },
+    "contract_health_overview": {
+        "active": len(indexes["agreements_by_status"].get("active", [])),
+        "paused": len(indexes["agreements_by_status"].get("paused", [])),
+        "renewal_pending": len(indexes["agreements_by_status"].get("renewal_pending", [])),
+        "at_risk_agreement_ids": [
+            snapshot["agreement_id"]
+            for snapshot in contract_health_snapshots.values()
+            if snapshot["health_status"] == "at_risk"
+        ],
+    },
+    "renewal_pipeline": {
+        "pending_ids": indexes["renewal_records_by_status"].get("pending_review", []),
+        "scheduled_ids": indexes["renewal_records_by_status"].get("scheduled", []),
+        "due_next_30_days": [
+            renewal["agreement_id"]
+            for renewal in renewal_records.values()
+            if renewal["due_date"] <= "2026-04-10"
+        ],
+    },
+    "recurring_revenue_summary": recurring_revenue_rollups["recurring_revenue_global"],
+    "integration_summary": {
+        "active_api_keys": len(indexes["api_keys_by_status"].get("active", [])),
+        "rotated_api_keys": len(indexes["api_keys_by_status"].get("rotated", [])),
+        "failed_deliveries": len(indexes["webhook_deliveries_by_status"].get("failed", [])),
+        "duplicate_deliveries": len(indexes["webhook_deliveries_by_status"].get("duplicate", [])),
+        "active_webhooks": len(
+            [
+                subscription_id
+                for subscription_id, subscription in webhook_subscriptions.items()
+                if subscription["status"] == "active"
+            ]
+        ),
+    },
 }
 
 fixture = {
@@ -1753,6 +2895,25 @@ fixture = {
     "export_jobs": export_jobs,
     "finance_rollups": finance_rollups,
     "profitability_snapshots": profitability_snapshots,
+    "estimates": estimates,
+    "estimate_versions": estimate_versions,
+    "estimate_lines": estimate_lines,
+    "estimate_approvals": estimate_approvals,
+    "proposal_artifacts": proposal_artifacts,
+    "service_agreements": service_agreements,
+    "agreement_lines": agreement_lines,
+    "recurring_plans": recurring_plans,
+    "recurrence_rules": recurrence_rules,
+    "generated_schedule_items": generated_schedule_items,
+    "renewal_records": renewal_records,
+    "contract_health_snapshots": contract_health_snapshots,
+    "integration_endpoints": integration_endpoints,
+    "api_key_records": api_key_records,
+    "webhook_subscriptions": webhook_subscriptions,
+    "webhook_deliveries": webhook_deliveries,
+    "connector_mappings": connector_mappings,
+    "import_or_sync_jobs": import_or_sync_jobs,
+    "recurring_revenue_rollups": recurring_revenue_rollups,
     "indexes": indexes,
     "summary": summary,
 }
@@ -1802,6 +2963,25 @@ base_entities = {
     "export_jobs": export_jobs,
     "finance_rollups": finance_rollups,
     "profitability_snapshots": profitability_snapshots,
+    "estimates": estimates,
+    "estimate_versions": estimate_versions,
+    "estimate_lines": estimate_lines,
+    "estimate_approvals": estimate_approvals,
+    "proposal_artifacts": proposal_artifacts,
+    "service_agreements": service_agreements,
+    "agreement_lines": agreement_lines,
+    "recurring_plans": recurring_plans,
+    "recurrence_rules": recurrence_rules,
+    "generated_schedule_items": generated_schedule_items,
+    "renewal_records": renewal_records,
+    "contract_health_snapshots": contract_health_snapshots,
+    "integration_endpoints": integration_endpoints,
+    "api_key_records": api_key_records,
+    "webhook_subscriptions": webhook_subscriptions,
+    "webhook_deliveries": webhook_deliveries,
+    "connector_mappings": connector_mappings,
+    "import_or_sync_jobs": import_or_sync_jobs,
+    "recurring_revenue_rollups": recurring_revenue_rollups,
 }
 bootstrap_work_order_ids = [
     "wo_001",
@@ -1845,7 +3025,19 @@ def compact_template_doc(template):
     }
 
 
-bootstrap_entities = clone_doc(base_entities)
+bootstrap_entities = {
+    "work_orders": {
+        work_order_id: compact_work_order_doc(work_orders[work_order_id])
+        for work_order_id in bootstrap_work_order_ids
+        if work_order_id in work_orders
+    },
+    "templates": {
+        template_id: compact_template_doc(templates[template_id])
+        for template_id in bootstrap_template_ids
+        if template_id in templates
+    },
+    "parts_catalog": clone_doc(parts_catalog),
+}
 review_entities = {
     "users": users,
     "branches": fixture["branches"],
@@ -1885,6 +3077,14 @@ def sync_doc(
     invoice_lock_status="idle",
     invoice_lock_message="",
     stale_invoice_id=None,
+    estimate_revision_status="idle",
+    stale_estimate_id=None,
+    agreement_revision_status="idle",
+    stale_agreement_id=None,
+    recurring_generation_status="idle",
+    stale_recurring_plan_id=None,
+    delivery_retry_status="idle",
+    stale_delivery_id=None,
     payment_revision_status="idle",
     pricing_revision_status="idle",
     stale_price_book_id=None,
@@ -1906,6 +3106,14 @@ def sync_doc(
         "invoice_lock_status": invoice_lock_status,
         "invoice_lock_message": invoice_lock_message,
         "stale_invoice_id": stale_invoice_id,
+        "estimate_revision_status": estimate_revision_status,
+        "stale_estimate_id": stale_estimate_id,
+        "agreement_revision_status": agreement_revision_status,
+        "stale_agreement_id": stale_agreement_id,
+        "recurring_generation_status": recurring_generation_status,
+        "stale_recurring_plan_id": stale_recurring_plan_id,
+        "delivery_retry_status": delivery_retry_status,
+        "stale_delivery_id": stale_delivery_id,
         "payment_revision_status": payment_revision_status,
         "pricing_revision_status": pricing_revision_status,
         "stale_price_book_id": stale_price_book_id,
@@ -1917,7 +3125,20 @@ def sync_doc(
 
 
 def compact_entity_snapshot(source_entities, extra_work_order_ids=None):
-    return clone_doc(source_entities)
+    work_order_ids = list(dict.fromkeys((extra_work_order_ids or []) + bootstrap_work_order_ids))
+    return {
+        "work_orders": {
+            work_order_id: compact_work_order_doc(source_entities["work_orders"][work_order_id])
+            for work_order_id in work_order_ids
+            if work_order_id in source_entities["work_orders"]
+        },
+        "templates": {
+            template_id: compact_template_doc(source_entities["templates"][template_id])
+            for template_id in bootstrap_template_ids
+            if template_id in source_entities["templates"]
+        },
+        "parts_catalog": clone_doc(source_entities["parts_catalog"]),
+    }
 
 
 def payload_with_snapshot(extra, extra_work_order_ids=None):
@@ -1926,6 +3147,33 @@ def payload_with_snapshot(extra, extra_work_order_ids=None):
     out["indexes"] = clone_doc(indexes)
     out["summary"] = clone_doc(summary)
     return out
+
+
+def payload_with_snapshot_state(extra, entities_snapshot, indexes_snapshot, summary_snapshot):
+    out = dict(extra)
+    out["entities"] = clone_doc(entities_snapshot)
+    out["indexes"] = clone_doc(indexes_snapshot)
+    out["summary"] = clone_doc(summary_snapshot)
+    return out
+
+
+def move_group_member(index_group, source_key, target_key, entity_id):
+    if source_key is not None and source_key in index_group:
+        index_group[source_key] = [
+            item_id for item_id in index_group[source_key]
+            if item_id != entity_id
+        ]
+        if not index_group[source_key]:
+            del index_group[source_key]
+    target_group = index_group.setdefault(target_key, [])
+    if entity_id not in target_group:
+        target_group.append(entity_id)
+
+
+def adjust_counter(counter_doc, key, delta):
+    counter_doc[key] = counter_doc.get(key, 0) + delta
+    if counter_doc[key] == 0:
+        del counter_doc[key]
 
 
 meta_doc = {
@@ -2363,6 +3611,756 @@ service_summary_map = {
     for invoice_id, invoice in invoices.items()
 }
 
+estimate_list_doc = payload_with_snapshot(
+    {
+        "estimate_ids": list(estimates),
+        "approval_queue_ids": [
+            estimate_id
+            for estimate_id, estimate in estimates.items()
+            if estimate["status"] in {"sent", "viewed"}
+        ],
+        "contract_candidate_ids": [
+            estimate_id
+            for estimate_id, estimate in estimates.items()
+            if estimate["status"] == "approved"
+        ],
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+estimate_detail_map = {
+    estimate_id: payload_with_snapshot(
+        {
+            "estimate_id": estimate_id,
+            "estimate": estimate,
+            "versions": {
+                version_id: estimate_versions[version_id]
+                for version_id in estimate["version_ids"]
+            },
+            "lines": {
+                line_id: estimate_lines[line_id]
+                for version_id in estimate["version_ids"]
+                for line_id in estimate_versions[version_id]["line_ids"]
+            },
+            "approvals": {
+                approval_id: estimate_approvals[approval_id]
+                for approval_id in estimate["approval_ids"]
+            },
+            "proposal_artifact": proposal_artifacts[estimate["proposal_artifact_id"]],
+            "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+        }
+    )
+    for estimate_id, estimate in estimates.items()
+}
+
+estimate_create_blueprint = {
+    "id": "est_005",
+    "number": "EST-6005",
+    "status": "draft",
+    "customer_id": "cust_008",
+    "site_id": "site_008",
+    "asset_id": "asset_008",
+    "branch_id": "branch_south",
+    "team_id": "team_south_gamma",
+    "created_at": "2026-03-11T10:15:00Z",
+    "updated_at": "2026-03-11T10:15:00Z",
+    "expiration_date": "2026-04-15",
+    "current_revision": 1,
+    "latest_shared_revision": None,
+    "artifact_status": "draft",
+    "versions": [
+        {
+            "revision": 1,
+            "state": "draft",
+            "created_at": "2026-03-11T10:15:00Z",
+            "created_by_user_id": "user_manager_jonas",
+            "discount_rate": 0.02,
+            "tax_rate": 0.101,
+            "notes": "New draft estimate created from customer request.",
+            "terms": "Net 15.",
+            "margin_note": "Base draft before customer review.",
+            "lines": [
+                {
+                    "kind": "service_fee",
+                    "description": "Lighting retrofit site walk",
+                    "quantity": 1,
+                    "uom": "visit",
+                    "unit_price": 165.0,
+                },
+                {
+                    "kind": "labor",
+                    "description": "Estimator labor",
+                    "quantity": 2,
+                    "uom": "hour",
+                    "unit_price": 88.0,
+                },
+            ],
+        }
+    ],
+}
+estimate_create_bundle = build_estimate_bundle(estimate_create_blueprint)
+estimate_create_entities = clone_doc(base_entities)
+estimate_create_indexes = clone_doc(indexes)
+estimate_create_summary = clone_doc(summary)
+estimate_create_entities["estimates"]["est_005"] = estimate_create_bundle["estimate"]
+estimate_create_entities["estimate_versions"].update(estimate_create_bundle["versions"])
+estimate_create_entities["estimate_lines"].update(estimate_create_bundle["lines"])
+estimate_create_entities["estimate_approvals"].update(estimate_create_bundle["approvals"])
+estimate_create_entities["proposal_artifacts"][
+    estimate_create_bundle["proposal_artifact"]["id"]
+] = estimate_create_bundle["proposal_artifact"]
+estimate_create_indexes.setdefault("estimates_by_status", {}).setdefault("draft", []).append("est_005")
+estimate_create_indexes.setdefault("estimates_by_customer", {}).setdefault("cust_008", []).append("est_005")
+estimate_create_indexes.setdefault("estimates_by_branch", {}).setdefault("branch_south", []).append("est_005")
+estimate_create_summary["counts"]["estimates"] = estimate_create_summary["counts"]["estimates"] + 1
+estimate_create_summary["counts"]["estimate_versions"] = (
+    estimate_create_summary["counts"]["estimate_versions"] + 1
+)
+estimate_create_summary["estimate_status_counts"]["draft"] = (
+    estimate_create_summary["estimate_status_counts"].get("draft", 0) + 1
+)
+estimate_create_doc = payload_with_snapshot_state(
+    {
+        "status": "created",
+        "message": "Created estimate draft and reserved revision 1.",
+        "estimate_id": "est_005",
+        "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+    },
+    estimate_create_entities,
+    estimate_create_indexes,
+    estimate_create_summary,
+)
+
+estimate_patch_map = {
+    estimate_id: payload_with_snapshot(
+        {
+            "status": "updated",
+            "message": "Saved estimate revision changes.",
+            "estimate_id": estimate_id,
+            "current_version_id": estimate["current_version_id"],
+            "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+        }
+    )
+    for estimate_id, estimate in estimates.items()
+}
+
+estimate_send_map = {
+    estimate_id: payload_with_snapshot(
+        {
+            "status": "sent",
+            "message": "Published estimate revision to the customer.",
+            "estimate_id": estimate_id,
+            "proposal_artifact_id": estimate["proposal_artifact_id"],
+            "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+        }
+    )
+    for estimate_id, estimate in estimates.items()
+}
+
+estimate_approve_entities = clone_doc(base_entities)
+estimate_approve_indexes = clone_doc(indexes)
+estimate_approve_summary = clone_doc(summary)
+estimate_approve_entities["estimate_approvals"]["estimate_approval_est_002_01"] = {
+    "id": "estimate_approval_est_002_01",
+    "estimate_id": "est_002",
+    "estimate_version_id": "estimate_version_est_002_r1",
+    "state": "approved",
+    "customer_name": "Morgan Hale",
+    "captured_at": "2026-03-11T10:18:00Z",
+    "channel": "signature_capture",
+    "signature_ref": "sig_est_002_approved",
+    "note": "Approved for next available service window.",
+    "reason": None,
+}
+estimate_approve_entities["estimate_versions"]["estimate_version_est_002_r1"]["state"] = "approved"
+estimate_approve_entities["estimates"]["est_002"]["status"] = "approved"
+estimate_approve_entities["estimates"]["est_002"]["approval_state"] = "approved"
+estimate_approve_entities["estimates"]["est_002"]["approval_ids"] = [
+    "estimate_approval_est_002_01",
+]
+estimate_approve_entities["estimates"]["est_002"]["approved_version_id"] = "estimate_version_est_002_r1"
+estimate_approve_entities["estimates"]["est_002"]["approved_at"] = "2026-03-11T10:18:00Z"
+estimate_approve_entities["estimates"]["est_002"]["updated_at"] = "2026-03-11T10:18:00Z"
+move_group_member(
+    estimate_approve_indexes["estimates_by_status"],
+    "sent",
+    "approved",
+    "est_002",
+)
+adjust_counter(estimate_approve_summary["estimate_status_counts"], "sent", -1)
+adjust_counter(estimate_approve_summary["estimate_status_counts"], "approved", 1)
+estimate_approve_doc_est_002 = payload_with_snapshot_state(
+    {
+        "status": "approved",
+        "message": "Recorded customer approval for the current estimate revision.",
+        "estimate_id": "est_002",
+        "approval_id": "estimate_approval_est_002_01",
+        "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+    },
+    estimate_approve_entities,
+    estimate_approve_indexes,
+    estimate_approve_summary,
+)
+
+estimate_approve_map = {
+    **{
+        estimate_id: payload_with_snapshot(
+            {
+                "status": "approved",
+                "message": "Recorded customer approval for the current estimate revision.",
+                "estimate_id": estimate_id,
+                "approval_id": (
+                    estimate["approval_ids"][0]
+                    if estimate["approval_ids"]
+                    else None
+                ),
+                "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+            }
+        )
+        for estimate_id, estimate in estimates.items()
+        if estimate_id not in {"est_002", "est_003"}
+    },
+    "est_002": estimate_approve_doc_est_002,
+}
+
+estimate_reject_map = {
+    estimate_id: payload_with_snapshot(
+        {
+            "status": "rejected",
+            "message": "Recorded customer rejection and preserved estimate history.",
+            "estimate_id": estimate_id,
+            "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+        }
+    )
+    for estimate_id in estimates
+}
+
+estimate_convert_entities = clone_doc(estimate_approve_entities)
+estimate_convert_indexes = clone_doc(estimate_approve_indexes)
+estimate_convert_summary = clone_doc(estimate_approve_summary)
+estimate_convert_entities["estimates"]["est_002"]["linked_agreement_id"] = "agreement_002"
+estimate_convert_entities["estimates"]["est_002"]["converted_at"] = "2026-03-11T10:19:00Z"
+estimate_convert_entities["estimates"]["est_002"]["updated_at"] = "2026-03-11T10:19:00Z"
+estimate_convert_doc_est_002 = payload_with_snapshot_state(
+    {
+        "status": "converted",
+        "message": "Converted approved estimate into scheduled work and service agreement.",
+        "estimate_id": "est_002",
+        "agreement_id": "agreement_002",
+        "source_estimate_version_id": "estimate_version_est_002_r1",
+        "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+    },
+    estimate_convert_entities,
+    estimate_convert_indexes,
+    estimate_convert_summary,
+)
+
+estimate_convert_map = {
+    "est_002": estimate_convert_doc_est_002,
+    "est_004": payload_with_snapshot(
+        {
+            "status": "converted",
+            "message": "Converted approved estimate into scheduled work and service agreement.",
+            "estimate_id": "est_004",
+            "work_order_id": "wo_020",
+            "agreement_id": "agreement_001",
+            "source_estimate_version_id": "estimate_version_est_004_r1",
+            "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+        }
+    )
+}
+
+estimate_approval_conflict_doc = payload_with_snapshot(
+    {
+        "status": "conflict",
+        "message": "Approval was submitted against a stale estimate revision.",
+        "estimate_id": "est_003",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "conflict",
+            conflict_status="stale",
+            conflict_message="Estimate revision changed after approval started; refresh before approving.",
+            conflict_code="estimate_approval_revision_mismatch",
+            conflict_entity_id="est_003",
+            estimate_revision_status="mismatch",
+            stale_estimate_id="est_003",
+        ),
+    }
+)
+
+estimate_conversion_conflict_doc = payload_with_snapshot(
+    {
+        "status": "conflict",
+        "message": "Conversion was blocked because the approved estimate revision is stale.",
+        "estimate_id": "est_003",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "conflict",
+            conflict_status="stale",
+            conflict_message="Reopen the estimate and confirm the latest revision before converting.",
+            conflict_code="estimate_conversion_revision_mismatch",
+            conflict_entity_id="est_003",
+            estimate_revision_status="mismatch",
+            stale_estimate_id="est_003",
+        ),
+    }
+)
+
+contract_list_doc = payload_with_snapshot(
+    {
+        "agreement_ids": list(service_agreements),
+        "agreements": service_agreements,
+        "agreement_lines": agreement_lines,
+        "recurring_plan_ids": list(recurring_plans),
+        "renewal_records": renewal_records,
+        "contract_health": contract_health_snapshots,
+        "recurring_revenue": recurring_revenue_rollups,
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+contract_create_entities = clone_doc(base_entities)
+contract_create_indexes = clone_doc(indexes)
+contract_create_summary = clone_doc(summary)
+contract_create_entities["service_agreements"]["agreement_004"] = {
+    "id": "agreement_004",
+    "number": "AGR-7004",
+    "status": "draft",
+    "source_estimate_id": "est_001",
+    "source_estimate_version_id": "estimate_version_est_001_r2",
+    "customer_id": "cust_006",
+    "branch_id": "branch_south",
+    "team_id": "team_south_gamma",
+    "covered_site_ids": ["site_006"],
+    "covered_asset_ids": ["asset_006"],
+    "agreement_line_ids": ["agreement_line_004_service"],
+    "recurring_plan_ids": ["recurring_plan_004"],
+    "renewal_record_ids": [],
+    "health_snapshot_id": "contract_health_agreement_004",
+    "owner_user_id": "user_manager_jonas",
+    "currency": "USD",
+    "annual_value": 1980.0,
+    "recurring_revenue_monthly": 165.0,
+    "start_date": "2026-04-01",
+    "end_date": "2027-03-31",
+    "renewal_date": "2027-02-15",
+    "service_window": "11:00-13:00",
+    "sla_tier": "gold",
+    "response_commitment": "same_day",
+    "paused_at": None,
+    "resumed_at": None,
+    "notes": "Draft agreement created from estimate composer.",
+}
+contract_create_entities["agreement_lines"]["agreement_line_004_service"] = {
+    "id": "agreement_line_004_service",
+    "agreement_id": "agreement_004",
+    "kind": "hvac_service",
+    "description": "Quarterly HVAC maintenance coverage",
+    "included_quantity": 4,
+    "uom": "visit",
+    "annual_value": 1980.0,
+}
+contract_create_entities["recurrence_rules"]["recurrence_rule_004"] = {
+    "id": "recurrence_rule_004",
+    "plan_id": "recurring_plan_004",
+    "cadence_unit": "month",
+    "interval": 3,
+    "day_of_month": 1,
+    "timezone": "America/Los_Angeles",
+}
+contract_create_entities["recurring_plans"]["recurring_plan_004"] = {
+    "id": "recurring_plan_004",
+    "agreement_id": "agreement_004",
+    "rule_id": "recurrence_rule_004",
+    "status": "draft",
+    "next_scheduled_date": "2026-04-01",
+    "service_window": "11:00-13:00",
+    "covered_site_ids": ["site_006"],
+    "covered_asset_ids": ["asset_006"],
+    "included_service_types": ["pm"],
+    "branch_id": "branch_south",
+    "team_id": "team_south_gamma",
+    "last_generated_at": None,
+    "generation_revision": 0,
+    "last_generated_schedule_item_id": None,
+    "skip_history_ids": [],
+}
+contract_create_entities["contract_health_snapshots"]["contract_health_agreement_004"] = {
+    "id": "contract_health_agreement_004",
+    "agreement_id": "agreement_004",
+    "health_status": "draft",
+    "service_completion_pct": 0.0,
+    "skipped_occurrences": 0,
+    "overdue_occurrences": 0,
+    "renewal_risk": "low",
+    "revenue_at_risk": 0.0,
+}
+contract_create_indexes.setdefault("agreements_by_status", {}).setdefault("draft", []).append("agreement_004")
+contract_create_indexes.setdefault("agreements_by_customer", {}).setdefault("cust_006", []).append("agreement_004")
+contract_create_indexes.setdefault("agreements_by_branch", {}).setdefault("branch_south", []).append("agreement_004")
+contract_create_indexes.setdefault("recurring_plans_by_status", {}).setdefault("draft", []).append("recurring_plan_004")
+contract_create_indexes.setdefault("recurring_plans_by_agreement", {}).setdefault("agreement_004", []).append("recurring_plan_004")
+contract_create_summary["counts"]["service_agreements"] = contract_create_summary["counts"]["service_agreements"] + 1
+contract_create_summary["counts"]["recurring_plans"] = contract_create_summary["counts"]["recurring_plans"] + 1
+contract_create_summary["agreement_status_counts"]["draft"] = (
+    contract_create_summary["agreement_status_counts"].get("draft", 0) + 1
+)
+contract_create_summary["recurring_plan_status_counts"]["draft"] = (
+    contract_create_summary["recurring_plan_status_counts"].get("draft", 0) + 1
+)
+contract_create_doc = payload_with_snapshot_state(
+    {
+        "status": "created",
+        "message": "Created service agreement draft and recurring plan shell.",
+        "agreement_id": "agreement_004",
+        "recurring_plan_id": "recurring_plan_004",
+        "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+    },
+    contract_create_entities,
+    contract_create_indexes,
+    contract_create_summary,
+)
+
+
+def build_contract_resume_doc(
+    entities_snapshot,
+    indexes_snapshot,
+    summary_snapshot,
+    agreement_id,
+    recurring_plan_id,
+    resumed_at,
+):
+    next_entities = clone_doc(entities_snapshot)
+    next_indexes = clone_doc(indexes_snapshot)
+    next_summary = clone_doc(summary_snapshot)
+    previous_agreement_status = next_entities["service_agreements"][agreement_id]["status"]
+    previous_plan_status = next_entities["recurring_plans"][recurring_plan_id]["status"]
+
+    next_entities["service_agreements"][agreement_id]["status"] = "active"
+    next_entities["service_agreements"][agreement_id]["paused_at"] = None
+    next_entities["service_agreements"][agreement_id]["resumed_at"] = resumed_at
+    next_entities["service_agreements"][agreement_id].pop("pause_reason", None)
+    next_entities["recurring_plans"][recurring_plan_id]["status"] = "active"
+    next_entities["recurring_plans"][recurring_plan_id].pop("pause_reason", None)
+    next_entities["contract_health_snapshots"][
+        next_entities["service_agreements"][agreement_id]["health_snapshot_id"]
+    ]["health_status"] = "active"
+
+    move_group_member(
+        next_indexes["agreements_by_status"],
+        previous_agreement_status,
+        "active",
+        agreement_id,
+    )
+    move_group_member(
+        next_indexes["recurring_plans_by_status"],
+        previous_plan_status,
+        "active",
+        recurring_plan_id,
+    )
+    adjust_counter(next_summary["agreement_status_counts"], previous_agreement_status, -1)
+    adjust_counter(next_summary["agreement_status_counts"], "active", 1)
+    adjust_counter(next_summary["recurring_plan_status_counts"], previous_plan_status, -1)
+    adjust_counter(next_summary["recurring_plan_status_counts"], "active", 1)
+    if previous_agreement_status == "paused":
+        adjust_counter(next_summary["contract_health_overview"], "paused", -1)
+        adjust_counter(next_summary["recurring_revenue_summary"], "paused_agreements", -1)
+    adjust_counter(next_summary["contract_health_overview"], "active", 1)
+    adjust_counter(next_summary["recurring_revenue_summary"], "active_agreements", 1)
+
+    return payload_with_snapshot_state(
+        {
+            "status": "resumed",
+            "message": "Resumed service agreement and restored next scheduled service.",
+            "agreement_id": agreement_id,
+            "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+        },
+        next_entities,
+        next_indexes,
+        next_summary,
+    )
+
+contract_patch_map = {
+    agreement_id: payload_with_snapshot(
+        {
+            "status": "updated",
+            "message": "Updated agreement coverage and billing metadata.",
+            "agreement_id": agreement_id,
+            "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+        }
+    )
+    for agreement_id in service_agreements
+}
+
+contract_pause_map = {
+    agreement_id: payload_with_snapshot(
+        {
+            "status": "paused",
+            "message": "Paused service agreement and preserved recurring history.",
+            "agreement_id": agreement_id,
+            "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+        }
+    )
+    for agreement_id in service_agreements
+}
+
+contract_resume_map = {
+    **{
+        agreement_id: payload_with_snapshot(
+            {
+                "status": "resumed",
+                "message": "Resumed service agreement and restored next scheduled service.",
+                "agreement_id": agreement_id,
+                "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+            }
+        )
+        for agreement_id in service_agreements
+        if agreement_id != "agreement_002"
+    },
+    "agreement_002": build_contract_resume_doc(
+        base_entities,
+        indexes,
+        summary,
+        "agreement_002",
+        "recurring_plan_002",
+        "2026-03-11T10:21:00Z",
+    ),
+    "agreement_004": build_contract_resume_doc(
+        contract_create_entities,
+        contract_create_indexes,
+        contract_create_summary,
+        "agreement_004",
+        "recurring_plan_004",
+        "2026-03-11T10:24:00Z",
+    ),
+}
+
+contract_renew_map = {
+    "agreement_001": payload_with_snapshot(
+        {
+            "status": "renewed",
+            "message": "Created renewal record and preserved prior agreement history.",
+            "agreement_id": "agreement_001",
+            "renewal_record_id": "renewal_001",
+            "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+        }
+    ),
+    "agreement_002": payload_with_snapshot(
+        {
+            "status": "renewed",
+            "message": "Created renewal record and preserved prior agreement history.",
+            "agreement_id": "agreement_002",
+            "renewal_record_id": "renewal_001",
+            "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+        }
+    ),
+}
+
+contract_renewal_conflict_doc = payload_with_snapshot(
+    {
+        "status": "conflict",
+        "message": "Renewal was blocked because a newer agreement revision already exists.",
+        "agreement_id": "agreement_003",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "conflict",
+            conflict_status="stale",
+            conflict_message="Agreement renewal is revision-sensitive; refresh before renewing.",
+            conflict_code="agreement_renewal_revision_mismatch",
+            conflict_entity_id="agreement_003",
+            agreement_revision_status="mismatch",
+            stale_agreement_id="agreement_003",
+        ),
+    }
+)
+
+recurring_board_doc = payload_with_snapshot(
+    {
+        "plan_ids": list(recurring_plans),
+        "plans": recurring_plans,
+        "rules": recurrence_rules,
+        "schedule_items": generated_schedule_items,
+        "board": {
+            "upcoming_schedule_item_ids": [
+                item_id
+                for item_id, item in generated_schedule_items.items()
+                if item["status"] in {"planned", "generated"}
+            ],
+            "skipped_schedule_item_ids": indexes["generated_schedule_items_by_plan"].get("recurring_plan_002", []),
+        },
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+recurring_generate_map = {
+    "recurring_plan_001": payload_with_snapshot(
+        {
+            "status": "generated",
+            "message": "Generated future schedule items without duplicates.",
+            "plan_id": "recurring_plan_001",
+            "generated_schedule_item_ids": ["schedule_item_001", "schedule_item_002"],
+            "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+        }
+    ),
+    "recurring_plan_002": payload_with_snapshot(
+        {
+            "status": "generated",
+            "message": "Generated future schedule items without duplicates.",
+            "plan_id": "recurring_plan_002",
+            "generated_schedule_item_ids": ["schedule_item_003"],
+            "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+        }
+    ),
+}
+
+recurring_skip_map = {
+    plan_id: payload_with_snapshot(
+        {
+            "status": "skipped",
+            "message": "Skipped the next recurring occurrence and preserved history.",
+            "plan_id": plan_id,
+            "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+        }
+    )
+    for plan_id in recurring_plans
+}
+
+recurring_generation_conflict_doc = payload_with_snapshot(
+    {
+        "status": "conflict",
+        "message": "Recurring generation was blocked because a newer plan revision already generated future work.",
+        "plan_id": "recurring_plan_003",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "conflict",
+            conflict_status="stale",
+            conflict_message="Recurring plan changed after future occurrences were generated; refresh before generating again.",
+            conflict_code="recurring_generation_revision_mismatch",
+            conflict_entity_id="recurring_plan_003",
+            recurring_generation_status="mismatch",
+            stale_recurring_plan_id="recurring_plan_003",
+        ),
+    }
+)
+
+integrations_center_doc = payload_with_snapshot(
+    {
+        "endpoint_ids": list(integration_endpoints),
+        "api_key_ids": list(api_key_records),
+        "webhook_subscription_ids": list(webhook_subscriptions),
+        "connector_mapping_ids": list(connector_mappings),
+        "sync_job_ids": list(import_or_sync_jobs),
+        "delivery_summary": summary["integration_summary"],
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+integrations_deliveries_doc = payload_with_snapshot(
+    {
+        "delivery_ids": list(webhook_deliveries),
+        "deliveries": webhook_deliveries,
+        "failed_delivery_ids": indexes["webhook_deliveries_by_status"].get("failed", []),
+        "duplicate_delivery_ids": indexes["webhook_deliveries_by_status"].get("duplicate", []),
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+api_key_create_entities = clone_doc(base_entities)
+api_key_create_summary = clone_doc(summary)
+api_key_create_entities["api_key_records"]["api_key_003"] = {
+    "id": "api_key_003",
+    "label": "New integration key",
+    "status": "active",
+    "key_prefix": "x07_live_new",
+    "masked_secret": "x07_live_new_****Q2R4",
+    "created_at": "2026-03-11T10:20:00Z",
+    "rotated_at": None,
+    "expires_at": "2026-12-31T00:00:00Z",
+    "last_used_at": None,
+    "scope_ids": ["integrations.read", "deliveries.read"],
+}
+api_key_create_indexes = clone_doc(indexes)
+api_key_create_indexes.setdefault("api_keys_by_status", {}).setdefault("active", []).append("api_key_003")
+api_key_create_summary["integration_summary"]["active_api_keys"] = (
+    api_key_create_summary["integration_summary"]["active_api_keys"] + 1
+)
+integrations_api_key_create_doc = payload_with_snapshot_state(
+    {
+        "status": "created",
+        "message": "Created API key metadata and masked the new secret.",
+        "api_key_id": "api_key_003",
+        "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+    },
+    api_key_create_entities,
+    api_key_create_indexes,
+    api_key_create_summary,
+)
+
+webhook_create_entities = clone_doc(base_entities)
+webhook_create_indexes = clone_doc(indexes)
+webhook_create_summary = clone_doc(summary)
+webhook_create_entities["webhook_subscriptions"]["webhook_003"] = {
+    "id": "webhook_003",
+    "label": "Estimate lifecycle mirror",
+    "status": "active",
+    "endpoint_id": "integration_endpoint_crm",
+    "endpoint_url": "https://example.test/hooks/estimates",
+    "event_types": ["estimate.approved", "estimate.converted"],
+    "masked_secret": "whsec_****4db3",
+    "created_at": "2026-03-11T10:22:00Z",
+    "last_delivery_at": None,
+    "failure_count": 0,
+    "connector_mapping_ids": ["connector_mapping_001"],
+}
+webhook_create_summary["counts"]["webhook_subscriptions"] = (
+    webhook_create_summary["counts"]["webhook_subscriptions"] + 1
+)
+webhook_create_summary["integration_summary"]["active_webhooks"] = (
+    webhook_create_summary["integration_summary"]["active_webhooks"] + 1
+)
+integrations_webhook_create_doc = payload_with_snapshot_state(
+    {
+        "status": "created",
+        "message": "Created webhook subscription with masked secret metadata.",
+        "webhook_subscription_id": "webhook_003",
+        "sync": sync_doc("sync_cursor_2026_03_11_103", "accepted"),
+    },
+    webhook_create_entities,
+    webhook_create_indexes,
+    webhook_create_summary,
+)
+
+delivery_retry_entities = clone_doc(base_entities)
+delivery_retry_indexes = clone_doc(indexes)
+delivery_retry_summary = clone_doc(summary)
+delivery_retry_entities["webhook_deliveries"]["delivery_002"]["attempt_count"] = 4
+delivery_retry_entities["webhook_deliveries"]["delivery_002"]["last_attempt_at"] = "2026-03-11T09:31:00Z"
+delivery_retry_entities["webhook_deliveries"]["delivery_002"]["next_retry_at"] = "2026-03-11T10:15:00Z"
+delivery_retry_entities["webhook_deliveries"]["delivery_002"]["response_summary"] = (
+    "Retry attempted, but the downstream connector still timed out."
+)
+delivery_retry_entities["webhook_deliveries"]["delivery_002"]["delivery_revision"] = "delivery_rev_005"
+integrations_delivery_retry_doc = payload_with_snapshot_state(
+    {
+        "status": "retry_requested",
+        "message": "Retried the failed delivery and recorded the downstream timeout for operator follow-up.",
+        "delivery_id": "delivery_002",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "accepted",
+            conflict_status="stale",
+            conflict_message="Delivery remains failed after retry; inspect the delivery log.",
+            conflict_code="webhook_delivery_retry_required",
+            conflict_entity_id="delivery_002",
+            delivery_retry_status="retry_required",
+            stale_delivery_id="delivery_002",
+        ),
+    },
+    delivery_retry_entities,
+    delivery_retry_indexes,
+    delivery_retry_summary,
+)
+
 created_entities = clone_doc(base_entities)
 created_indexes = clone_doc(indexes)
 created_summary = clone_doc(summary)
@@ -2658,6 +4656,26 @@ sync_pull_doc = {
             "entity_id": "export_job_002",
             "work_order_id": "wo_024",
         },
+        {
+            "kind": "estimate",
+            "entity_id": "est_003",
+            "work_order_id": "wo_018",
+        },
+        {
+            "kind": "service_agreement",
+            "entity_id": "agreement_003",
+            "work_order_id": "wo_018",
+        },
+        {
+            "kind": "recurring_plan",
+            "entity_id": "recurring_plan_003",
+            "work_order_id": "wo_018",
+        },
+        {
+            "kind": "webhook_delivery",
+            "entity_id": "delivery_002",
+            "work_order_id": "wo_018",
+        },
     ],
     "status": "idle",
     "received_at": now,
@@ -2667,6 +4685,10 @@ sync_pull_doc = {
         "offline_queue_mode": "client_ops_v1",
         "invoice_lock_mode": "revision_sensitive",
         "payment_record_mode": "append_only",
+        "estimate_approval_mode": "revision_sensitive",
+        "agreement_renewal_mode": "append_history",
+        "recurring_generation_mode": "dedupe_by_plan_revision",
+        "delivery_retry_mode": "append_only",
     },
     "entities": {
         "assignments": assignments,
@@ -2682,6 +4704,25 @@ sync_pull_doc = {
         "payment_allocations": payment_allocations,
         "export_jobs": export_jobs,
         "receivable_summaries": receivable_summaries,
+        "estimates": estimates,
+        "estimate_versions": estimate_versions,
+        "estimate_lines": estimate_lines,
+        "estimate_approvals": estimate_approvals,
+        "proposal_artifacts": proposal_artifacts,
+        "service_agreements": service_agreements,
+        "agreement_lines": agreement_lines,
+        "recurring_plans": recurring_plans,
+        "recurrence_rules": recurrence_rules,
+        "generated_schedule_items": generated_schedule_items,
+        "renewal_records": renewal_records,
+        "contract_health_snapshots": contract_health_snapshots,
+        "integration_endpoints": integration_endpoints,
+        "api_key_records": api_key_records,
+        "webhook_subscriptions": webhook_subscriptions,
+        "webhook_deliveries": webhook_deliveries,
+        "connector_mappings": connector_mappings,
+        "import_or_sync_jobs": import_or_sync_jobs,
+        "recurring_revenue_rollups": recurring_revenue_rollups,
     },
     "indexes": indexes,
     "summary": summary,
@@ -2697,8 +4738,25 @@ sync_push_doc = {
         "op_invoice_patch_inv_001",
         "op_payment_record_inv_004",
         "op_export_retry_002",
+        "op_estimate_send_est_001",
+        "op_contract_pause_agreement_002",
+        "op_recurring_skip_plan_002",
+        "op_webhook_retry_delivery_002",
     ],
-    "conflicts": [],
+    "conflicts": [
+        {
+            "kind": "estimate_approval",
+            "entity_id": "est_003",
+            "code": "estimate_approval_revision_mismatch",
+            "message": "Refresh estimate revision before retrying approval.",
+        },
+        {
+            "kind": "webhook_delivery",
+            "entity_id": "delivery_002",
+            "code": "webhook_delivery_retry_required",
+            "message": "Delivery remains failed after retry; inspect the delivery log.",
+        },
+    ],
     "status": "accepted",
     "received_at": now,
     "entities": {
@@ -2712,12 +4770,29 @@ sync_push_doc = {
         "payment_allocations": payment_allocations,
         "export_jobs": export_jobs,
         "receivable_summaries": receivable_summaries,
+        "estimates": estimates,
+        "estimate_versions": estimate_versions,
+        "estimate_approvals": estimate_approvals,
+        "service_agreements": service_agreements,
+        "recurring_plans": recurring_plans,
+        "generated_schedule_items": generated_schedule_items,
+        "renewal_records": renewal_records,
+        "webhook_deliveries": webhook_deliveries,
+        "api_key_records": api_key_records,
     },
     "indexes": indexes,
     "summary": summary,
     "sync": sync_doc(
         "sync_cursor_2026_03_11_103",
         "accepted",
+        conflict_status="stale",
+        conflict_message="One estimate approval requires refresh before retry.",
+        conflict_code="estimate_approval_revision_mismatch",
+        conflict_entity_id="est_003",
+        estimate_revision_status="mismatch",
+        stale_estimate_id="est_003",
+        delivery_retry_status="retry_required",
+        stale_delivery_id="delivery_002",
         payment_revision_status="accepted",
         export_status="running",
         finance_revision="finance_rev_2026_03_11_002",
@@ -2822,6 +4897,32 @@ module = {
                 "demo_seed.export_retry_map_body_v1",
                 "demo_seed.invoice_artifact_map_body_v1",
                 "demo_seed.service_summary_map_body_v1",
+                "demo_seed.estimate_list_body_v1",
+                "demo_seed.estimate_detail_map_body_v1",
+                "demo_seed.estimate_create_body_v1",
+                "demo_seed.estimate_patch_map_body_v1",
+                "demo_seed.estimate_send_map_body_v1",
+                "demo_seed.estimate_approve_map_body_v1",
+                "demo_seed.estimate_reject_map_body_v1",
+                "demo_seed.estimate_convert_map_body_v1",
+                "demo_seed.estimate_approval_conflict_body_v1",
+                "demo_seed.estimate_conversion_conflict_body_v1",
+                "demo_seed.contract_list_body_v1",
+                "demo_seed.contract_create_body_v1",
+                "demo_seed.contract_patch_map_body_v1",
+                "demo_seed.contract_pause_map_body_v1",
+                "demo_seed.contract_resume_map_body_v1",
+                "demo_seed.contract_renew_map_body_v1",
+                "demo_seed.contract_renewal_conflict_body_v1",
+                "demo_seed.recurring_board_body_v1",
+                "demo_seed.recurring_generate_map_body_v1",
+                "demo_seed.recurring_skip_map_body_v1",
+                "demo_seed.recurring_generation_conflict_body_v1",
+                "demo_seed.integrations_center_body_v1",
+                "demo_seed.integrations_deliveries_body_v1",
+                "demo_seed.integrations_api_key_create_body_v1",
+                "demo_seed.integrations_webhook_create_body_v1",
+                "demo_seed.integrations_delivery_retry_body_v1",
                 "demo_seed.work_order_create_body_v1",
                 "demo_seed.work_order_patch_body_v1",
                 "demo_seed.work_order_patch_map_body_v1",
@@ -2942,6 +5043,56 @@ module = {
         bytes_defn(
             "demo_seed.service_summary_map_body_v1",
             service_summary_map,
+        ),
+        bytes_defn("demo_seed.estimate_list_body_v1", estimate_list_doc),
+        bytes_defn("demo_seed.estimate_detail_map_body_v1", estimate_detail_map),
+        bytes_defn("demo_seed.estimate_create_body_v1", estimate_create_doc),
+        bytes_defn("demo_seed.estimate_patch_map_body_v1", estimate_patch_map),
+        bytes_defn("demo_seed.estimate_send_map_body_v1", estimate_send_map),
+        bytes_defn("demo_seed.estimate_approve_map_body_v1", estimate_approve_map),
+        bytes_defn("demo_seed.estimate_reject_map_body_v1", estimate_reject_map),
+        bytes_defn("demo_seed.estimate_convert_map_body_v1", estimate_convert_map),
+        bytes_defn(
+            "demo_seed.estimate_approval_conflict_body_v1",
+            estimate_approval_conflict_doc,
+        ),
+        bytes_defn(
+            "demo_seed.estimate_conversion_conflict_body_v1",
+            estimate_conversion_conflict_doc,
+        ),
+        bytes_defn("demo_seed.contract_list_body_v1", contract_list_doc),
+        bytes_defn("demo_seed.contract_create_body_v1", contract_create_doc),
+        bytes_defn("demo_seed.contract_patch_map_body_v1", contract_patch_map),
+        bytes_defn("demo_seed.contract_pause_map_body_v1", contract_pause_map),
+        bytes_defn("demo_seed.contract_resume_map_body_v1", contract_resume_map),
+        bytes_defn("demo_seed.contract_renew_map_body_v1", contract_renew_map),
+        bytes_defn(
+            "demo_seed.contract_renewal_conflict_body_v1",
+            contract_renewal_conflict_doc,
+        ),
+        bytes_defn("demo_seed.recurring_board_body_v1", recurring_board_doc),
+        bytes_defn("demo_seed.recurring_generate_map_body_v1", recurring_generate_map),
+        bytes_defn("demo_seed.recurring_skip_map_body_v1", recurring_skip_map),
+        bytes_defn(
+            "demo_seed.recurring_generation_conflict_body_v1",
+            recurring_generation_conflict_doc,
+        ),
+        bytes_defn("demo_seed.integrations_center_body_v1", integrations_center_doc),
+        bytes_defn(
+            "demo_seed.integrations_deliveries_body_v1",
+            integrations_deliveries_doc,
+        ),
+        bytes_defn(
+            "demo_seed.integrations_api_key_create_body_v1",
+            integrations_api_key_create_doc,
+        ),
+        bytes_defn(
+            "demo_seed.integrations_webhook_create_body_v1",
+            integrations_webhook_create_doc,
+        ),
+        bytes_defn(
+            "demo_seed.integrations_delivery_retry_body_v1",
+            integrations_delivery_retry_doc,
         ),
         bytes_defn("demo_seed.work_order_create_body_v1", work_order_create_doc),
         bytes_defn("demo_seed.work_order_patch_body_v1", work_order_patch_doc),

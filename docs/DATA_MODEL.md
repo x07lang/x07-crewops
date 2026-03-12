@@ -1,6 +1,6 @@
 # CrewOps Data Model
 
-CrewOps `v0.4.0` ships an M5 seed that keeps the operations graph and adds commercial billing and finance entities. The canonical source is [`tests/fixtures/demo_org.json`](../tests/fixtures/demo_org.json), mirrored into deterministic backend payloads under [`backend/src/demo_seed.x07.json`](../backend/src/demo_seed.x07.json).
+CrewOps `v0.5.0` ships an M6 seed that keeps the operations graph, retains the M5 finance layer, and adds estimate, contract, recurring-service, renewal, and integration entities. The canonical source is [`tests/fixtures/demo_org.json`](../tests/fixtures/demo_org.json), mirrored into deterministic backend payloads under [`backend/src/demo_seed.x07.json`](../backend/src/demo_seed.x07.json).
 
 ## Seed Scope
 
@@ -28,7 +28,7 @@ Core operations:
 - `1` dashboard rollup
 - `3` workload snapshots
 
-Commercial M5:
+Commercial M5 and M6:
 
 - `3` price books
 - `6` price book items
@@ -49,10 +49,28 @@ Commercial M5:
 - `3` export jobs
 - `6` finance rollups
 - `6` profitability snapshots
+- `4` estimates
+- `6` estimate versions
+- `1` estimate approval
+- `4` proposal artifacts
+- `3` service agreements
+- `3` agreement lines
+- `3` recurring plans
+- `3` recurrence rules
+- `4` generated schedule items
+- `2` renewal records
+- `3` contract-health snapshots
+- `2` integration endpoints
+- `2` API key records
+- `2` webhook subscriptions
+- `3` webhook deliveries
+- `2` connector mappings
+- `2` import or sync jobs
+- `3` recurring-revenue rollups
 
 ## Top-Level Entity Families
 
-The generated fixture now includes:
+The generated fixture includes:
 
 - organization, branches, teams, users
 - customers, sites, assets
@@ -69,58 +87,78 @@ The generated fixture now includes:
 - payment_records, payment_allocations
 - customer_statements, receivable_summaries
 - export_jobs, finance_rollups, profitability_snapshots
+- estimates, estimate_versions, estimate_approvals, proposal_artifacts
+- service_agreements, agreement_lines
+- recurring_plans, recurrence_rules, generated_schedule_items
+- renewal_records, contract_health_snapshots
+- integration_endpoints, api_key_records, webhook_subscriptions, webhook_deliveries
+- connector_mappings, import_or_sync_jobs, recurring_revenue_rollups
 - indexes, summary
 
 ## Commercial Entity Shape
 
-Pricing is normalized rather than embedded on work orders:
+Pricing and finance stay normalized rather than embedded on work orders:
 
-- `price_books` and `price_book_items`
+- `price_books`
+- `price_book_items`
 - `billing_policies`
 - `labor_rate_policies`
 - `part_rate_policies`
 - `tax_rules`
 - `discount_rules`
-
-Invoicing is modeled as separate commercial records:
-
 - `invoices`
 - `invoice_lines`
 - `invoice_adjustments`
-- `invoice_artifacts`
-- `service_summary_artifacts`
 - `payment_records`
 - `payment_allocations`
-
-Accounts receivable and finance views are read from:
-
 - `customer_statements`
 - `receivable_summaries`
 - `export_jobs`
 - `finance_rollups`
 - `profitability_snapshots`
 
+M6 adds the contracted-service graph:
+
+- `estimates`
+- `estimate_versions`
+- `estimate_approvals`
+- `proposal_artifacts`
+- `service_agreements`
+- `agreement_lines`
+- `recurring_plans`
+- `recurrence_rules`
+- `generated_schedule_items`
+- `renewal_records`
+- `contract_health_snapshots`
+- `integration_endpoints`
+- `api_key_records`
+- `webhook_subscriptions`
+- `webhook_deliveries`
+- `connector_mappings`
+- `import_or_sync_jobs`
+- `recurring_revenue_rollups`
+
 ## Indexes And Summaries
 
-The reducer continues to read normalized entities through precomputed indexes. M5 adds commercial index families alongside the existing work-order and review indexes.
+The reducer reads normalized entities through precomputed indexes. M6 adds estimate, agreement, recurring-plan, renewal, API-key, and delivery indexes alongside the existing work-order, review, billing, and finance families.
 
-Current commercial indexes include:
+Current M6 index families include:
 
-- `invoices_by_status`
-- `invoices_by_customer`
-- `invoices_by_branch`
-- `invoices_by_team`
-- `invoices_by_aging_bucket`
-- `invoices_by_work_order`
-- `payments_by_invoice`
-- `payments_by_customer`
-- `price_books_by_branch`
-- `price_books_by_customer`
-- `statements_by_customer`
-- `receivables_by_branch`
-- `export_jobs_by_status`
+- `estimates_by_status`
+- `estimates_by_customer`
+- `estimates_by_branch`
+- `agreements_by_status`
+- `agreements_by_customer`
+- `agreements_by_branch`
+- `recurring_plans_by_status`
+- `recurring_plans_by_agreement`
+- `generated_schedule_items_by_plan`
+- `renewal_records_by_status`
+- `api_keys_by_status`
+- `webhook_deliveries_by_status`
+- `webhook_deliveries_by_subscription`
 
-The `summary` branch now carries both operations and commercial rollups:
+The `summary` branch now carries:
 
 - `manager_metrics`
 - `branch_rollups`
@@ -132,37 +170,49 @@ The `summary` branch now carries both operations and commercial rollups:
 - `receivables_overview`
 - `export_job_counts`
 - `profitability_summary`
+- `estimate_status_counts`
+- `agreement_status_counts`
+- `recurring_plan_status_counts`
+- `contract_health_overview`
+- `renewal_pipeline`
+- `recurring_revenue_summary`
+- `integration_summary`
 
 ## Reducer Draft And Sync State
 
-The reducer keeps user-editable commercial inputs in `drafts`, including pricing labels, invoice dates and memo, invoice line fields, payment fields, statement filters, receivable filters, and export filters.
+The reducer keeps user-editable commercial inputs in `drafts`, including pricing labels, invoice fields, payment fields, export filters, and the M6 `commercial_ops` subtree for estimate, contract, recurring, and integration forms.
 
-The `sync` branch now includes:
+The `sync` branch includes:
 
 - generic `conflict_status`, `conflict_code`, `conflict_entity_id`
 - `invoice_lock_status` and `invoice_lock_message`
-- `stale_invoice_id`
+- `estimate_revision_status` and `stale_estimate_id`
+- `agreement_revision_status` and `stale_agreement_id`
 - `payment_revision_status`
-- `pricing_revision_status`
-- `stale_price_book_id`
+- `pricing_revision_status` and `stale_price_book_id`
 - `export_status`
 - `finance_revision`
+- nested recurring-generation and delivery-retry state used by the frontend reducer
 
 ## Lifecycle Enums
 
-Work-order statuses in the seed:
+Estimate statuses in the seed:
 
 - `draft`
-- `scheduled`
-- `dispatched`
-- `en_route`
-- `on_site`
-- `blocked`
-- `completed`
-- `needs_review`
-- `invoiced`
-- `closed`
-- `canceled`
+- `sent`
+- `viewed`
+- `approved`
+
+Service agreement statuses in the seed:
+
+- `active`
+- `paused`
+- `renewal_pending`
+
+Recurring-plan statuses in the seed:
+
+- `active`
+- `paused`
 
 Invoice statuses in the seed:
 

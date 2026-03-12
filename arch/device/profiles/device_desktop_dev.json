@@ -8,7 +8,7 @@
     "app_id": "io.x07.crewops.desktop.dev"
   },
   "version": {
-    "version": "0.4.0",
+    "version": "0.5.0",
     "build": 1
   },
   "security": {
@@ -42,5 +42,5 @@
       "kind": "dir"
     }
   },
-  "notes": "CrewOps desktop dev runs against the local app serve endpoint on 127.0.0.1:17081 with the full M5 reducer surface, including dispatch, review, manager, finance, pricing, invoices, customers, receivables, exports, notifications, file import, and blob storage."
+  "notes": "CrewOps desktop dev runs against the local app serve endpoint on 127.0.0.1:17081 with the full M6 reducer surface, including dispatch, review, manager, pricing, estimates, invoices, contracts, recurring service, integrations, receivables, exports, notifications, file import, and blob storage."
 }

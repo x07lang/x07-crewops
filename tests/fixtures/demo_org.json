@@ -5360,6 +5360,1250 @@
       "gross_margin_pct": 53.11
     }
   },
+  "estimates": {
+    "est_001": {
+      "id": "est_001",
+      "number": "EST-6001",
+      "status": "draft",
+      "customer_id": "cust_006",
+      "site_id": "site_006",
+      "asset_id": "asset_006",
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma",
+      "source_work_order_id": "wo_006",
+      "source_visit_id": null,
+      "currency": "USD",
+      "current_version_id": "estimate_version_est_001_r2",
+      "latest_shared_version_id": "estimate_version_est_001_r1",
+      "approved_version_id": null,
+      "version_ids": [
+        "estimate_version_est_001_r1",
+        "estimate_version_est_001_r2"
+      ],
+      "approval_ids": [],
+      "proposal_artifact_id": "proposal_artifact_est_001",
+      "price_book_id": "price_book_branch_south",
+      "billing_policy_id": "billing_policy_branch_south",
+      "tax_rule_id": "tax_rule_wa",
+      "discount_rule_id": "discount_rule_loyalty",
+      "created_at": "2026-03-06T15:10:00Z",
+      "updated_at": "2026-03-11T09:20:00Z",
+      "sent_at": null,
+      "viewed_at": null,
+      "approved_at": null,
+      "rejected_at": null,
+      "converted_at": null,
+      "expiration_date": "2026-04-12",
+      "approval_state": "not_requested",
+      "linked_work_order_id": null,
+      "linked_agreement_id": null,
+      "origin": "backoffice",
+      "subtotal": 507.0,
+      "discount_total": 15.21,
+      "tax_total": 49.67,
+      "total": 541.46
+    },
+    "est_002": {
+      "id": "est_002",
+      "number": "EST-6002",
+      "status": "sent",
+      "customer_id": "cust_011",
+      "site_id": "site_011",
+      "asset_id": "asset_011",
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha",
+      "source_work_order_id": null,
+      "source_visit_id": null,
+      "currency": "USD",
+      "current_version_id": "estimate_version_est_002_r1",
+      "latest_shared_version_id": "estimate_version_est_002_r1",
+      "approved_version_id": null,
+      "version_ids": [
+        "estimate_version_est_002_r1"
+      ],
+      "approval_ids": [],
+      "proposal_artifact_id": "proposal_artifact_est_002",
+      "price_book_id": "price_book_branch_north",
+      "billing_policy_id": "billing_policy_branch_north",
+      "tax_rule_id": "tax_rule_wa",
+      "discount_rule_id": "discount_rule_loyalty",
+      "created_at": "2026-03-08T11:25:00Z",
+      "updated_at": "2026-03-09T18:00:00Z",
+      "sent_at": "2026-03-09T18:00:00Z",
+      "viewed_at": "2026-03-10T13:15:00Z",
+      "approved_at": null,
+      "rejected_at": null,
+      "converted_at": null,
+      "expiration_date": "2026-03-31",
+      "approval_state": "awaiting_customer",
+      "linked_work_order_id": null,
+      "linked_agreement_id": null,
+      "origin": "backoffice",
+      "subtotal": 504.5,
+      "discount_total": 10.09,
+      "tax_total": 49.94,
+      "total": 544.35
+    },
+    "est_003": {
+      "id": "est_003",
+      "number": "EST-6003",
+      "status": "viewed",
+      "customer_id": "cust_018",
+      "site_id": "site_018",
+      "asset_id": "asset_018",
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma",
+      "source_work_order_id": "wo_018",
+      "source_visit_id": null,
+      "currency": "USD",
+      "current_version_id": "estimate_version_est_003_r2",
+      "latest_shared_version_id": "estimate_version_est_003_r1",
+      "approved_version_id": null,
+      "version_ids": [
+        "estimate_version_est_003_r1",
+        "estimate_version_est_003_r2"
+      ],
+      "approval_ids": [],
+      "proposal_artifact_id": "proposal_artifact_est_003",
+      "price_book_id": "price_book_branch_south",
+      "billing_policy_id": "billing_policy_branch_south",
+      "tax_rule_id": "tax_rule_wa",
+      "discount_rule_id": "discount_rule_loyalty",
+      "created_at": "2026-03-07T09:40:00Z",
+      "updated_at": "2026-03-10T16:45:00Z",
+      "sent_at": "2026-03-08T17:20:00Z",
+      "viewed_at": "2026-03-09T10:00:00Z",
+      "approved_at": null,
+      "rejected_at": null,
+      "converted_at": null,
+      "expiration_date": "2026-03-29",
+      "approval_state": "stale_revision",
+      "linked_work_order_id": null,
+      "linked_agreement_id": null,
+      "origin": "backoffice",
+      "subtotal": 754.0,
+      "discount_total": 30.16,
+      "tax_total": 73.11,
+      "total": 796.95
+    },
+    "est_004": {
+      "id": "est_004",
+      "number": "EST-6004",
+      "status": "approved",
+      "customer_id": "cust_020",
+      "site_id": "site_020",
+      "asset_id": "asset_020",
+      "branch_id": "branch_north",
+      "team_id": "team_north_beta",
+      "source_work_order_id": "wo_020",
+      "source_visit_id": null,
+      "currency": "USD",
+      "current_version_id": "estimate_version_est_004_r1",
+      "latest_shared_version_id": "estimate_version_est_004_r1",
+      "approved_version_id": "estimate_version_est_004_r1",
+      "version_ids": [
+        "estimate_version_est_004_r1"
+      ],
+      "approval_ids": [
+        "estimate_approval_est_004_01"
+      ],
+      "proposal_artifact_id": "proposal_artifact_est_004",
+      "price_book_id": "price_book_branch_north",
+      "billing_policy_id": "billing_policy_branch_north",
+      "tax_rule_id": "tax_rule_wa",
+      "discount_rule_id": "discount_rule_loyalty",
+      "created_at": "2026-03-04T14:30:00Z",
+      "updated_at": "2026-03-06T08:00:00Z",
+      "sent_at": "2026-03-05T18:00:00Z",
+      "viewed_at": "2026-03-05T19:10:00Z",
+      "approved_at": "2026-03-06T08:00:00Z",
+      "rejected_at": null,
+      "converted_at": null,
+      "expiration_date": "2026-03-27",
+      "approval_state": "approved",
+      "linked_work_order_id": "wo_020",
+      "linked_agreement_id": "agreement_001",
+      "origin": "backoffice",
+      "subtotal": 2748.0,
+      "discount_total": 137.4,
+      "tax_total": 263.67,
+      "total": 2874.27
+    }
+  },
+  "estimate_versions": {
+    "estimate_version_est_001_r1": {
+      "id": "estimate_version_est_001_r1",
+      "estimate_id": "est_001",
+      "revision": 1,
+      "state": "superseded",
+      "created_at": "2026-03-06T15:10:00Z",
+      "created_by_user_id": "user_manager_jonas",
+      "shared_at": "2026-03-07T17:00:00Z",
+      "line_ids": [
+        "estimate_line_est_001_r1_01",
+        "estimate_line_est_001_r1_02",
+        "estimate_line_est_001_r1_03",
+        "estimate_line_est_001_r1_04"
+      ],
+      "notes": "Filter replacement and belt inspection.",
+      "terms": "Net 15.",
+      "expiration_date": "2026-04-12",
+      "price_book_id": "price_book_branch_south",
+      "billing_policy_id": "billing_policy_branch_south",
+      "tax_rule_id": "tax_rule_wa",
+      "discount_rule_id": "discount_rule_loyalty",
+      "labor_subtotal": 196.0,
+      "parts_subtotal": 49.0,
+      "service_fee_total": 185.0,
+      "travel_total": 28.0,
+      "subtotal": 458.0,
+      "discount_total": 13.74,
+      "tax_total": 44.87,
+      "total": 489.13,
+      "margin_note": "Bundle with PM follow-up."
+    },
+    "estimate_version_est_001_r2": {
+      "id": "estimate_version_est_001_r2",
+      "estimate_id": "est_001",
+      "revision": 2,
+      "state": "draft",
+      "created_at": "2026-03-11T09:10:00Z",
+      "created_by_user_id": "user_manager_jonas",
+      "shared_at": null,
+      "line_ids": [
+        "estimate_line_est_001_r2_01",
+        "estimate_line_est_001_r2_02",
+        "estimate_line_est_001_r2_03",
+        "estimate_line_est_001_r2_04"
+      ],
+      "notes": "Added condenser coil cleaning to the bundled visit.",
+      "terms": "Net 15.",
+      "expiration_date": "2026-04-12",
+      "price_book_id": "price_book_branch_south",
+      "billing_policy_id": "billing_policy_branch_south",
+      "tax_rule_id": "tax_rule_wa",
+      "discount_rule_id": "discount_rule_loyalty",
+      "labor_subtotal": 245.0,
+      "parts_subtotal": 49.0,
+      "service_fee_total": 185.0,
+      "travel_total": 28.0,
+      "subtotal": 507.0,
+      "discount_total": 15.21,
+      "tax_total": 49.67,
+      "total": 541.46,
+      "margin_note": "Travel remains bundled to protect margin."
+    },
+    "estimate_version_est_002_r1": {
+      "id": "estimate_version_est_002_r1",
+      "estimate_id": "est_002",
+      "revision": 1,
+      "state": "sent",
+      "created_at": "2026-03-08T11:25:00Z",
+      "created_by_user_id": "user_manager_jonas",
+      "shared_at": "2026-03-09T18:00:00Z",
+      "line_ids": [
+        "estimate_line_est_002_r1_01",
+        "estimate_line_est_002_r1_02",
+        "estimate_line_est_002_r1_03"
+      ],
+      "notes": "Lobby door preventative service.",
+      "terms": "Approval reserves a next-week service window.",
+      "expiration_date": "2026-03-31",
+      "price_book_id": "price_book_branch_north",
+      "billing_policy_id": "billing_policy_branch_north",
+      "tax_rule_id": "tax_rule_wa",
+      "discount_rule_id": "discount_rule_loyalty",
+      "labor_subtotal": 276.0,
+      "parts_subtotal": 18.5,
+      "service_fee_total": 210.0,
+      "travel_total": 0.0,
+      "subtotal": 504.5,
+      "discount_total": 10.09,
+      "tax_total": 49.94,
+      "total": 544.35,
+      "margin_note": "Keep labor fixed for trust-building."
+    },
+    "estimate_version_est_003_r1": {
+      "id": "estimate_version_est_003_r1",
+      "estimate_id": "est_003",
+      "revision": 1,
+      "state": "sent",
+      "created_at": "2026-03-07T09:40:00Z",
+      "created_by_user_id": "user_manager_jonas",
+      "shared_at": "2026-03-08T17:20:00Z",
+      "line_ids": [
+        "estimate_line_est_003_r1_01",
+        "estimate_line_est_003_r1_02",
+        "estimate_line_est_003_r1_03"
+      ],
+      "notes": "Roof drain cleaning with minor sealing.",
+      "terms": "Revision 1 shared for customer review.",
+      "expiration_date": "2026-03-29",
+      "price_book_id": "price_book_branch_south",
+      "billing_policy_id": "billing_policy_branch_south",
+      "tax_rule_id": "tax_rule_wa",
+      "discount_rule_id": "discount_rule_loyalty",
+      "labor_subtotal": 376.0,
+      "parts_subtotal": 0.0,
+      "service_fee_total": 240.0,
+      "travel_total": 44.0,
+      "subtotal": 660.0,
+      "discount_total": 26.4,
+      "tax_total": 63.99,
+      "total": 697.59,
+      "margin_note": "Keep parts visible to justify cost."
+    },
+    "estimate_version_est_003_r2": {
+      "id": "estimate_version_est_003_r2",
+      "estimate_id": "est_003",
+      "revision": 2,
+      "state": "draft",
+      "created_at": "2026-03-10T16:45:00Z",
+      "created_by_user_id": "user_manager_jonas",
+      "shared_at": null,
+      "line_ids": [
+        "estimate_line_est_003_r2_01",
+        "estimate_line_est_003_r2_02",
+        "estimate_line_est_003_r2_03"
+      ],
+      "notes": "Added follow-up flashing seal and drain camera inspection.",
+      "terms": "Revision 2 requires a fresh customer confirmation.",
+      "expiration_date": "2026-03-29",
+      "price_book_id": "price_book_branch_south",
+      "billing_policy_id": "billing_policy_branch_south",
+      "tax_rule_id": "tax_rule_wa",
+      "discount_rule_id": "discount_rule_loyalty",
+      "labor_subtotal": 470.0,
+      "parts_subtotal": 0.0,
+      "service_fee_total": 240.0,
+      "travel_total": 44.0,
+      "subtotal": 754.0,
+      "discount_total": 30.16,
+      "tax_total": 73.11,
+      "total": 796.95,
+      "margin_note": "Revision 2 adds follow-up labor."
+    },
+    "estimate_version_est_004_r1": {
+      "id": "estimate_version_est_004_r1",
+      "estimate_id": "est_004",
+      "revision": 1,
+      "state": "approved",
+      "created_at": "2026-03-04T14:30:00Z",
+      "created_by_user_id": "user_manager_jonas",
+      "shared_at": "2026-03-05T18:00:00Z",
+      "line_ids": [
+        "estimate_line_est_004_r1_01",
+        "estimate_line_est_004_r1_02",
+        "estimate_line_est_004_r1_03"
+      ],
+      "notes": "Quarterly rooftop maintenance agreement.",
+      "terms": "Twelve-month service agreement billed quarterly.",
+      "expiration_date": "2026-03-27",
+      "price_book_id": "price_book_branch_north",
+      "billing_policy_id": "billing_policy_branch_north",
+      "tax_rule_id": "tax_rule_wa",
+      "discount_rule_id": "discount_rule_loyalty",
+      "labor_subtotal": 570.0,
+      "parts_subtotal": 98.0,
+      "service_fee_total": 2080.0,
+      "travel_total": 0.0,
+      "subtotal": 2748.0,
+      "discount_total": 137.4,
+      "tax_total": 263.67,
+      "total": 2874.27,
+      "margin_note": "Anchor with predictable quarterly cadence."
+    }
+  },
+  "estimate_lines": {
+    "estimate_line_est_001_r1_01": {
+      "id": "estimate_line_est_001_r1_01",
+      "estimate_version_id": "estimate_version_est_001_r1",
+      "kind": "service_fee",
+      "description": "Preventive maintenance visit",
+      "quantity": 1,
+      "uom": "visit",
+      "unit_price": 185.0,
+      "amount": 185.0,
+      "part_id": null
+    },
+    "estimate_line_est_001_r1_02": {
+      "id": "estimate_line_est_001_r1_02",
+      "estimate_version_id": "estimate_version_est_001_r1",
+      "kind": "labor",
+      "description": "Technician labor",
+      "quantity": 2,
+      "uom": "hour",
+      "unit_price": 98.0,
+      "amount": 196.0,
+      "part_id": null
+    },
+    "estimate_line_est_001_r1_03": {
+      "id": "estimate_line_est_001_r1_03",
+      "estimate_version_id": "estimate_version_est_001_r1",
+      "kind": "part",
+      "description": "MERV 13 filter",
+      "quantity": 2,
+      "uom": "each",
+      "unit_price": 24.5,
+      "amount": 49.0,
+      "part_id": "part_filter_merv13"
+    },
+    "estimate_line_est_001_r1_04": {
+      "id": "estimate_line_est_001_r1_04",
+      "estimate_version_id": "estimate_version_est_001_r1",
+      "kind": "travel",
+      "description": "Travel charge",
+      "quantity": 1,
+      "uom": "trip",
+      "unit_price": 28.0,
+      "amount": 28.0,
+      "part_id": null
+    },
+    "estimate_line_est_001_r2_01": {
+      "id": "estimate_line_est_001_r2_01",
+      "estimate_version_id": "estimate_version_est_001_r2",
+      "kind": "service_fee",
+      "description": "Preventive maintenance visit",
+      "quantity": 1,
+      "uom": "visit",
+      "unit_price": 185.0,
+      "amount": 185.0,
+      "part_id": null
+    },
+    "estimate_line_est_001_r2_02": {
+      "id": "estimate_line_est_001_r2_02",
+      "estimate_version_id": "estimate_version_est_001_r2",
+      "kind": "labor",
+      "description": "Technician labor",
+      "quantity": 2.5,
+      "uom": "hour",
+      "unit_price": 98.0,
+      "amount": 245.0,
+      "part_id": null
+    },
+    "estimate_line_est_001_r2_03": {
+      "id": "estimate_line_est_001_r2_03",
+      "estimate_version_id": "estimate_version_est_001_r2",
+      "kind": "part",
+      "description": "MERV 13 filter",
+      "quantity": 2,
+      "uom": "each",
+      "unit_price": 24.5,
+      "amount": 49.0,
+      "part_id": "part_filter_merv13"
+    },
+    "estimate_line_est_001_r2_04": {
+      "id": "estimate_line_est_001_r2_04",
+      "estimate_version_id": "estimate_version_est_001_r2",
+      "kind": "travel",
+      "description": "Travel charge",
+      "quantity": 1,
+      "uom": "trip",
+      "unit_price": 28.0,
+      "amount": 28.0,
+      "part_id": null
+    },
+    "estimate_line_est_002_r1_01": {
+      "id": "estimate_line_est_002_r1_01",
+      "estimate_version_id": "estimate_version_est_002_r1",
+      "kind": "service_fee",
+      "description": "Door system tune-up",
+      "quantity": 1,
+      "uom": "visit",
+      "unit_price": 210.0,
+      "amount": 210.0,
+      "part_id": null
+    },
+    "estimate_line_est_002_r1_02": {
+      "id": "estimate_line_est_002_r1_02",
+      "estimate_version_id": "estimate_version_est_002_r1",
+      "kind": "labor",
+      "description": "Door technician labor",
+      "quantity": 3,
+      "uom": "hour",
+      "unit_price": 92.0,
+      "amount": 276.0,
+      "part_id": null
+    },
+    "estimate_line_est_002_r1_03": {
+      "id": "estimate_line_est_002_r1_03",
+      "estimate_version_id": "estimate_version_est_002_r1",
+      "kind": "part",
+      "description": "Contact cleaner",
+      "quantity": 1,
+      "uom": "can",
+      "unit_price": 18.5,
+      "amount": 18.5,
+      "part_id": "part_contact_cleaner"
+    },
+    "estimate_line_est_003_r1_01": {
+      "id": "estimate_line_est_003_r1_01",
+      "estimate_version_id": "estimate_version_est_003_r1",
+      "kind": "service_fee",
+      "description": "Roof drain service window",
+      "quantity": 1,
+      "uom": "visit",
+      "unit_price": 240.0,
+      "amount": 240.0,
+      "part_id": null
+    },
+    "estimate_line_est_003_r1_02": {
+      "id": "estimate_line_est_003_r1_02",
+      "estimate_version_id": "estimate_version_est_003_r1",
+      "kind": "labor",
+      "description": "Technician labor",
+      "quantity": 4,
+      "uom": "hour",
+      "unit_price": 94.0,
+      "amount": 376.0,
+      "part_id": null
+    },
+    "estimate_line_est_003_r1_03": {
+      "id": "estimate_line_est_003_r1_03",
+      "estimate_version_id": "estimate_version_est_003_r1",
+      "kind": "travel",
+      "description": "Lift and travel charge",
+      "quantity": 1,
+      "uom": "trip",
+      "unit_price": 44.0,
+      "amount": 44.0,
+      "part_id": null
+    },
+    "estimate_line_est_003_r2_01": {
+      "id": "estimate_line_est_003_r2_01",
+      "estimate_version_id": "estimate_version_est_003_r2",
+      "kind": "service_fee",
+      "description": "Roof drain service window",
+      "quantity": 1,
+      "uom": "visit",
+      "unit_price": 240.0,
+      "amount": 240.0,
+      "part_id": null
+    },
+    "estimate_line_est_003_r2_02": {
+      "id": "estimate_line_est_003_r2_02",
+      "estimate_version_id": "estimate_version_est_003_r2",
+      "kind": "labor",
+      "description": "Technician labor",
+      "quantity": 5,
+      "uom": "hour",
+      "unit_price": 94.0,
+      "amount": 470.0,
+      "part_id": null
+    },
+    "estimate_line_est_003_r2_03": {
+      "id": "estimate_line_est_003_r2_03",
+      "estimate_version_id": "estimate_version_est_003_r2",
+      "kind": "travel",
+      "description": "Lift and travel charge",
+      "quantity": 1,
+      "uom": "trip",
+      "unit_price": 44.0,
+      "amount": 44.0,
+      "part_id": null
+    },
+    "estimate_line_est_004_r1_01": {
+      "id": "estimate_line_est_004_r1_01",
+      "estimate_version_id": "estimate_version_est_004_r1",
+      "kind": "service_fee",
+      "description": "Quarterly preventive maintenance program",
+      "quantity": 4,
+      "uom": "visit",
+      "unit_price": 520.0,
+      "amount": 2080.0,
+      "part_id": null
+    },
+    "estimate_line_est_004_r1_02": {
+      "id": "estimate_line_est_004_r1_02",
+      "estimate_version_id": "estimate_version_est_004_r1",
+      "kind": "labor",
+      "description": "Seasonal startup labor",
+      "quantity": 6,
+      "uom": "hour",
+      "unit_price": 95.0,
+      "amount": 570.0,
+      "part_id": null
+    },
+    "estimate_line_est_004_r1_03": {
+      "id": "estimate_line_est_004_r1_03",
+      "estimate_version_id": "estimate_version_est_004_r1",
+      "kind": "part",
+      "description": "MERV 13 filter",
+      "quantity": 4,
+      "uom": "each",
+      "unit_price": 24.5,
+      "amount": 98.0,
+      "part_id": "part_filter_merv13"
+    }
+  },
+  "estimate_approvals": {
+    "estimate_approval_est_004_01": {
+      "id": "estimate_approval_est_004_01",
+      "estimate_id": "est_004",
+      "estimate_version_id": "estimate_version_est_004_r1",
+      "state": "approved",
+      "customer_name": "Morgan Hale",
+      "captured_at": "2026-03-06T08:00:00Z",
+      "channel": "signature_capture",
+      "signature_ref": "sig_est_004_approved",
+      "note": "Approved annual service agreement.",
+      "reason": null
+    }
+  },
+  "proposal_artifacts": {
+    "proposal_artifact_est_001": {
+      "id": "proposal_artifact_est_001",
+      "estimate_id": "est_001",
+      "estimate_version_id": "estimate_version_est_001_r1",
+      "status": "draft",
+      "printable_path": null,
+      "json_path": "/artifacts/proposals/est_001.json",
+      "generated_at": null,
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "proposal_artifact_est_002": {
+      "id": "proposal_artifact_est_002",
+      "estimate_id": "est_002",
+      "estimate_version_id": "estimate_version_est_002_r1",
+      "status": "ready",
+      "printable_path": "/artifacts/proposals/est_002.pdf",
+      "json_path": "/artifacts/proposals/est_002.json",
+      "generated_at": "2026-03-09T17:59:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "proposal_artifact_est_003": {
+      "id": "proposal_artifact_est_003",
+      "estimate_id": "est_003",
+      "estimate_version_id": "estimate_version_est_003_r1",
+      "status": "ready",
+      "printable_path": "/artifacts/proposals/est_003.pdf",
+      "json_path": "/artifacts/proposals/est_003.json",
+      "generated_at": "2026-03-08T17:18:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    },
+    "proposal_artifact_est_004": {
+      "id": "proposal_artifact_est_004",
+      "estimate_id": "est_004",
+      "estimate_version_id": "estimate_version_est_004_r1",
+      "status": "ready",
+      "printable_path": "/artifacts/proposals/est_004.pdf",
+      "json_path": "/artifacts/proposals/est_004.json",
+      "generated_at": "2026-03-05T17:58:00Z",
+      "retryable": false,
+      "error_code": null,
+      "error_message": null
+    }
+  },
+  "service_agreements": {
+    "agreement_001": {
+      "id": "agreement_001",
+      "number": "AGR-7001",
+      "status": "active",
+      "source_estimate_id": "est_004",
+      "source_estimate_version_id": "estimate_version_est_004_r1",
+      "customer_id": "cust_020",
+      "branch_id": "branch_north",
+      "team_id": "team_north_beta",
+      "covered_site_ids": [
+        "site_020"
+      ],
+      "covered_asset_ids": [
+        "asset_020"
+      ],
+      "agreement_line_ids": [
+        "agreement_line_001_service"
+      ],
+      "recurring_plan_ids": [
+        "recurring_plan_001"
+      ],
+      "renewal_record_ids": [
+        "renewal_001"
+      ],
+      "health_snapshot_id": "contract_health_agreement_001",
+      "owner_user_id": "user_manager_jonas",
+      "currency": "USD",
+      "annual_value": 2880.0,
+      "recurring_revenue_monthly": 240.0,
+      "start_date": "2026-03-15",
+      "end_date": "2027-03-14",
+      "renewal_date": "2027-01-15",
+      "service_window": "08:00-10:00",
+      "sla_tier": "platinum",
+      "response_commitment": "4h",
+      "paused_at": null,
+      "resumed_at": null,
+      "notes": "Quarterly rooftop maintenance and seasonal startup coverage."
+    },
+    "agreement_002": {
+      "id": "agreement_002",
+      "number": "AGR-7002",
+      "status": "paused",
+      "source_estimate_id": "est_002",
+      "source_estimate_version_id": "estimate_version_est_002_r1",
+      "customer_id": "cust_011",
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha",
+      "covered_site_ids": [
+        "site_011"
+      ],
+      "covered_asset_ids": [
+        "asset_011"
+      ],
+      "agreement_line_ids": [
+        "agreement_line_002_service"
+      ],
+      "recurring_plan_ids": [
+        "recurring_plan_002"
+      ],
+      "renewal_record_ids": [],
+      "health_snapshot_id": "contract_health_agreement_002",
+      "owner_user_id": "user_manager_jonas",
+      "currency": "USD",
+      "annual_value": 1560.0,
+      "recurring_revenue_monthly": 130.0,
+      "start_date": "2026-01-01",
+      "end_date": "2026-12-31",
+      "renewal_date": "2026-11-30",
+      "service_window": "09:00-11:00",
+      "sla_tier": "gold",
+      "response_commitment": "same_day",
+      "paused_at": "2026-03-01T12:00:00Z",
+      "resumed_at": null,
+      "pause_reason": "Tenant blackout window through spring remodel.",
+      "notes": "Pause retains future cadence and asset coverage."
+    },
+    "agreement_003": {
+      "id": "agreement_003",
+      "number": "AGR-7003",
+      "status": "renewal_pending",
+      "source_estimate_id": "est_003",
+      "source_estimate_version_id": "estimate_version_est_003_r1",
+      "customer_id": "cust_018",
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma",
+      "covered_site_ids": [
+        "site_018"
+      ],
+      "covered_asset_ids": [
+        "asset_018"
+      ],
+      "agreement_line_ids": [
+        "agreement_line_003_service"
+      ],
+      "recurring_plan_ids": [
+        "recurring_plan_003"
+      ],
+      "renewal_record_ids": [
+        "renewal_002"
+      ],
+      "health_snapshot_id": "contract_health_agreement_003",
+      "owner_user_id": "user_manager_jonas",
+      "currency": "USD",
+      "annual_value": 2140.0,
+      "recurring_revenue_monthly": 178.33,
+      "start_date": "2025-04-01",
+      "end_date": "2026-03-31",
+      "renewal_date": "2026-03-25",
+      "service_window": "13:00-15:00",
+      "sla_tier": "gold",
+      "response_commitment": "8h",
+      "paused_at": null,
+      "resumed_at": null,
+      "notes": "Renewal is pending after scope edits to the latest estimate revision."
+    }
+  },
+  "agreement_lines": {
+    "agreement_line_001_service": {
+      "id": "agreement_line_001_service",
+      "agreement_id": "agreement_001",
+      "kind": "preventive_maintenance",
+      "description": "Quarterly rooftop preventive maintenance",
+      "included_quantity": 4,
+      "uom": "visit",
+      "annual_value": 2880.0
+    },
+    "agreement_line_002_service": {
+      "id": "agreement_line_002_service",
+      "agreement_id": "agreement_002",
+      "kind": "door_service",
+      "description": "Quarterly lobby door service",
+      "included_quantity": 4,
+      "uom": "visit",
+      "annual_value": 1560.0
+    },
+    "agreement_line_003_service": {
+      "id": "agreement_line_003_service",
+      "agreement_id": "agreement_003",
+      "kind": "roof_drain",
+      "description": "Bi-monthly roof drain and flashing inspection",
+      "included_quantity": 6,
+      "uom": "visit",
+      "annual_value": 2140.0
+    }
+  },
+  "recurring_plans": {
+    "recurring_plan_001": {
+      "id": "recurring_plan_001",
+      "agreement_id": "agreement_001",
+      "rule_id": "recurrence_rule_001",
+      "status": "active",
+      "next_scheduled_date": "2026-04-15",
+      "service_window": "08:00-10:00",
+      "covered_site_ids": [
+        "site_020"
+      ],
+      "covered_asset_ids": [
+        "asset_020"
+      ],
+      "included_service_types": [
+        "pm",
+        "filter_change"
+      ],
+      "branch_id": "branch_north",
+      "team_id": "team_north_beta",
+      "last_generated_at": "2026-03-10T09:00:00Z",
+      "generation_revision": 2,
+      "last_generated_schedule_item_id": "schedule_item_001",
+      "skip_history_ids": []
+    },
+    "recurring_plan_002": {
+      "id": "recurring_plan_002",
+      "agreement_id": "agreement_002",
+      "rule_id": "recurrence_rule_002",
+      "status": "paused",
+      "next_scheduled_date": "2026-06-01",
+      "service_window": "09:00-11:00",
+      "covered_site_ids": [
+        "site_011"
+      ],
+      "covered_asset_ids": [
+        "asset_011"
+      ],
+      "included_service_types": [
+        "inspection",
+        "door_adjustment"
+      ],
+      "branch_id": "branch_north",
+      "team_id": "team_north_alpha",
+      "last_generated_at": "2026-02-25T10:30:00Z",
+      "generation_revision": 1,
+      "last_generated_schedule_item_id": "schedule_item_003",
+      "skip_history_ids": [
+        "schedule_item_003"
+      ],
+      "pause_reason": "Tenant blackout window through remodel."
+    },
+    "recurring_plan_003": {
+      "id": "recurring_plan_003",
+      "agreement_id": "agreement_003",
+      "rule_id": "recurrence_rule_003",
+      "status": "active",
+      "next_scheduled_date": "2026-03-20",
+      "service_window": "13:00-15:00",
+      "covered_site_ids": [
+        "site_018"
+      ],
+      "covered_asset_ids": [
+        "asset_018"
+      ],
+      "included_service_types": [
+        "roof_drain",
+        "seal_check"
+      ],
+      "branch_id": "branch_south",
+      "team_id": "team_south_gamma",
+      "last_generated_at": "2026-03-10T09:00:00Z",
+      "generation_revision": 5,
+      "last_generated_schedule_item_id": "schedule_item_004",
+      "skip_history_ids": []
+    }
+  },
+  "recurrence_rules": {
+    "recurrence_rule_001": {
+      "id": "recurrence_rule_001",
+      "plan_id": "recurring_plan_001",
+      "cadence_unit": "month",
+      "interval": 3,
+      "day_of_month": 15,
+      "timezone": "America/Los_Angeles"
+    },
+    "recurrence_rule_002": {
+      "id": "recurrence_rule_002",
+      "plan_id": "recurring_plan_002",
+      "cadence_unit": "month",
+      "interval": 3,
+      "day_of_month": 1,
+      "timezone": "America/Los_Angeles"
+    },
+    "recurrence_rule_003": {
+      "id": "recurrence_rule_003",
+      "plan_id": "recurring_plan_003",
+      "cadence_unit": "month",
+      "interval": 2,
+      "day_of_month": 20,
+      "timezone": "America/Los_Angeles"
+    }
+  },
+  "generated_schedule_items": {
+    "schedule_item_001": {
+      "id": "schedule_item_001",
+      "plan_id": "recurring_plan_001",
+      "agreement_id": "agreement_001",
+      "scheduled_date": "2026-04-15",
+      "service_window": "08:00-10:00",
+      "status": "planned",
+      "generated_work_order_id": null,
+      "source_generation_revision": 2,
+      "created_at": "2026-03-10T09:00:00Z",
+      "skip_reason": null,
+      "rescheduled_from_id": null
+    },
+    "schedule_item_002": {
+      "id": "schedule_item_002",
+      "plan_id": "recurring_plan_001",
+      "agreement_id": "agreement_001",
+      "scheduled_date": "2026-07-15",
+      "service_window": "08:00-10:00",
+      "status": "planned",
+      "generated_work_order_id": null,
+      "source_generation_revision": 2,
+      "created_at": "2026-03-10T09:00:00Z",
+      "skip_reason": null,
+      "rescheduled_from_id": null
+    },
+    "schedule_item_003": {
+      "id": "schedule_item_003",
+      "plan_id": "recurring_plan_002",
+      "agreement_id": "agreement_002",
+      "scheduled_date": "2026-03-01",
+      "service_window": "09:00-11:00",
+      "status": "skipped",
+      "generated_work_order_id": null,
+      "source_generation_revision": 1,
+      "created_at": "2026-02-25T10:30:00Z",
+      "skip_reason": "Customer blackout window requested by site contact.",
+      "rescheduled_from_id": null
+    },
+    "schedule_item_004": {
+      "id": "schedule_item_004",
+      "plan_id": "recurring_plan_003",
+      "agreement_id": "agreement_003",
+      "scheduled_date": "2026-03-20",
+      "service_window": "13:00-15:00",
+      "status": "generated",
+      "generated_work_order_id": "wo_018",
+      "source_generation_revision": 5,
+      "created_at": "2026-03-10T09:00:00Z",
+      "skip_reason": null,
+      "rescheduled_from_id": null
+    }
+  },
+  "renewal_records": {
+    "renewal_001": {
+      "id": "renewal_001",
+      "agreement_id": "agreement_001",
+      "status": "scheduled",
+      "due_date": "2027-01-15",
+      "quoted_estimate_id": null,
+      "prior_agreement_id": "agreement_001",
+      "next_term_start": "2027-03-15",
+      "created_at": "2026-03-01T10:00:00Z",
+      "updated_at": "2026-03-01T10:00:00Z"
+    },
+    "renewal_002": {
+      "id": "renewal_002",
+      "agreement_id": "agreement_003",
+      "status": "pending_review",
+      "due_date": "2026-03-25",
+      "quoted_estimate_id": "est_003",
+      "prior_agreement_id": "agreement_003",
+      "next_term_start": "2026-04-01",
+      "created_at": "2026-03-09T15:30:00Z",
+      "updated_at": "2026-03-10T16:45:00Z"
+    }
+  },
+  "contract_health_snapshots": {
+    "contract_health_agreement_001": {
+      "id": "contract_health_agreement_001",
+      "agreement_id": "agreement_001",
+      "health_status": "healthy",
+      "service_completion_pct": 100.0,
+      "skipped_occurrences": 0,
+      "overdue_occurrences": 0,
+      "renewal_risk": "low",
+      "revenue_at_risk": 0.0
+    },
+    "contract_health_agreement_002": {
+      "id": "contract_health_agreement_002",
+      "agreement_id": "agreement_002",
+      "health_status": "paused",
+      "service_completion_pct": 100.0,
+      "skipped_occurrences": 1,
+      "overdue_occurrences": 0,
+      "renewal_risk": "medium",
+      "revenue_at_risk": 130.0
+    },
+    "contract_health_agreement_003": {
+      "id": "contract_health_agreement_003",
+      "agreement_id": "agreement_003",
+      "health_status": "at_risk",
+      "service_completion_pct": 83.33,
+      "skipped_occurrences": 0,
+      "overdue_occurrences": 1,
+      "renewal_risk": "high",
+      "revenue_at_risk": 178.33
+    }
+  },
+  "integration_endpoints": {
+    "integration_endpoint_accounting": {
+      "id": "integration_endpoint_accounting",
+      "kind": "accounting_export",
+      "status": "healthy",
+      "direction": "outbound",
+      "created_at": "2026-02-20T12:00:00Z",
+      "last_activity_at": "2026-03-11T08:16:00Z",
+      "last_error": null,
+      "connector_mapping_ids": [
+        "connector_mapping_002"
+      ],
+      "sync_job_ids": [
+        "sync_job_001"
+      ]
+    },
+    "integration_endpoint_crm": {
+      "id": "integration_endpoint_crm",
+      "kind": "crm_sync",
+      "status": "degraded",
+      "direction": "bidirectional",
+      "created_at": "2026-02-25T09:30:00Z",
+      "last_activity_at": "2026-03-11T06:30:00Z",
+      "last_error": "Duplicate downstream event id rejected during renewal sync.",
+      "connector_mapping_ids": [
+        "connector_mapping_001"
+      ],
+      "sync_job_ids": [
+        "sync_job_002"
+      ]
+    }
+  },
+  "api_key_records": {
+    "api_key_001": {
+      "id": "api_key_001",
+      "label": "Ops sync key",
+      "status": "active",
+      "key_prefix": "x07_live_ops",
+      "masked_secret": "x07_live_ops_****V7K2",
+      "created_at": "2026-02-18T12:00:00Z",
+      "rotated_at": null,
+      "expires_at": "2026-09-01T00:00:00Z",
+      "last_used_at": "2026-03-11T07:45:00Z",
+      "scope_ids": [
+        "estimates.read",
+        "contracts.write",
+        "recurring.generate"
+      ]
+    },
+    "api_key_002": {
+      "id": "api_key_002",
+      "label": "Finance export mirror",
+      "status": "rotated",
+      "key_prefix": "x07_fin",
+      "masked_secret": "x07_fin_****T9D1",
+      "created_at": "2026-01-12T09:00:00Z",
+      "rotated_at": "2026-03-10T18:00:00Z",
+      "expires_at": null,
+      "last_used_at": "2026-03-10T17:55:00Z",
+      "scope_ids": [
+        "finance.read",
+        "deliveries.read"
+      ],
+      "replacement_key_id": "api_key_001"
+    }
+  },
+  "webhook_subscriptions": {
+    "webhook_001": {
+      "id": "webhook_001",
+      "label": "CRM opportunity updates",
+      "status": "active",
+      "endpoint_id": "integration_endpoint_crm",
+      "endpoint_url": "https://example.test/hooks/crm",
+      "event_types": [
+        "estimate.approved",
+        "contract.renewed"
+      ],
+      "masked_secret": "whsec_****9c1e",
+      "created_at": "2026-02-25T09:35:00Z",
+      "last_delivery_at": "2026-03-06T08:01:01Z",
+      "failure_count": 0,
+      "connector_mapping_ids": [
+        "connector_mapping_001"
+      ]
+    },
+    "webhook_002": {
+      "id": "webhook_002",
+      "label": "Operations schedule mirror",
+      "status": "degraded",
+      "endpoint_id": "integration_endpoint_accounting",
+      "endpoint_url": "https://example.test/hooks/schedule",
+      "event_types": [
+        "recurring.generated",
+        "invoice.issued",
+        "payment.recorded"
+      ],
+      "masked_secret": "whsec_****7fa2",
+      "created_at": "2026-02-20T12:10:00Z",
+      "last_delivery_at": "2026-03-10T09:02:00Z",
+      "failure_count": 2,
+      "connector_mapping_ids": [
+        "connector_mapping_002"
+      ]
+    }
+  },
+  "webhook_deliveries": {
+    "delivery_001": {
+      "id": "delivery_001",
+      "subscription_id": "webhook_001",
+      "event_type": "estimate.approved",
+      "entity_kind": "estimate",
+      "entity_id": "est_004",
+      "status": "delivered",
+      "attempt_count": 1,
+      "created_at": "2026-03-06T08:01:00Z",
+      "last_attempt_at": "2026-03-06T08:01:01Z",
+      "next_retry_at": null,
+      "response_code": 202,
+      "response_summary": "Accepted",
+      "delivery_revision": "delivery_rev_001",
+      "duplicate_of_id": null,
+      "retryable": false
+    },
+    "delivery_002": {
+      "id": "delivery_002",
+      "subscription_id": "webhook_002",
+      "event_type": "recurring.generated",
+      "entity_kind": "recurring_plan",
+      "entity_id": "recurring_plan_003",
+      "status": "failed",
+      "attempt_count": 3,
+      "created_at": "2026-03-10T09:00:00Z",
+      "last_attempt_at": "2026-03-10T09:02:00Z",
+      "next_retry_at": "2026-03-11T09:30:00Z",
+      "response_code": 500,
+      "response_summary": "Connector timed out during schedule export batch.",
+      "delivery_revision": "delivery_rev_003",
+      "duplicate_of_id": null,
+      "retryable": true
+    },
+    "delivery_003": {
+      "id": "delivery_003",
+      "subscription_id": "webhook_001",
+      "event_type": "contract.renewed",
+      "entity_kind": "service_agreement",
+      "entity_id": "agreement_003",
+      "status": "duplicate",
+      "attempt_count": 1,
+      "created_at": "2026-03-11T06:30:00Z",
+      "last_attempt_at": "2026-03-11T06:30:00Z",
+      "next_retry_at": null,
+      "response_code": 409,
+      "response_summary": "Duplicate downstream event id rejected by sink.",
+      "delivery_revision": "delivery_rev_004",
+      "duplicate_of_id": "delivery_001",
+      "retryable": false
+    }
+  },
+  "connector_mappings": {
+    "connector_mapping_001": {
+      "id": "connector_mapping_001",
+      "endpoint_id": "integration_endpoint_crm",
+      "entity_kind": "estimate",
+      "status": "active",
+      "external_object": "opportunity",
+      "field_mappings": {
+        "estimate_total": "amount",
+        "customer_id": "account_ref",
+        "status": "stage"
+      },
+      "updated_at": "2026-03-05T16:00:00Z"
+    },
+    "connector_mapping_002": {
+      "id": "connector_mapping_002",
+      "endpoint_id": "integration_endpoint_accounting",
+      "entity_kind": "service_agreement",
+      "status": "active",
+      "external_object": "contract",
+      "field_mappings": {
+        "annual_value": "contract_value",
+        "renewal_date": "renewal_date",
+        "status": "contract_status"
+      },
+      "updated_at": "2026-03-07T09:00:00Z"
+    }
+  },
+  "import_or_sync_jobs": {
+    "sync_job_001": {
+      "id": "sync_job_001",
+      "kind": "connector_backfill",
+      "status": "completed",
+      "endpoint_id": "integration_endpoint_accounting",
+      "started_at": "2026-03-09T18:00:00Z",
+      "completed_at": "2026-03-09T18:12:00Z",
+      "summary": "Reconciled 12 invoices and 3 agreements."
+    },
+    "sync_job_002": {
+      "id": "sync_job_002",
+      "kind": "webhook_retry",
+      "status": "running",
+      "endpoint_id": "integration_endpoint_crm",
+      "started_at": "2026-03-11T06:35:00Z",
+      "completed_at": null,
+      "summary": "Retrying failed recurring-service deliveries."
+    }
+  },
+  "recurring_revenue_rollups": {
+    "recurring_revenue_global": {
+      "id": "recurring_revenue_global",
+      "scope": "global",
+      "branch_id": null,
+      "team_id": null,
+      "monthly_recurring_revenue": 548.33,
+      "annual_contract_value": 6580.0,
+      "active_agreements": 1,
+      "paused_agreements": 1,
+      "renewal_pending_count": 1,
+      "skipped_occurrences": 1
+    },
+    "recurring_revenue_branch_north": {
+      "id": "recurring_revenue_branch_north",
+      "scope": "branch",
+      "branch_id": "branch_north",
+      "team_id": null,
+      "monthly_recurring_revenue": 370.0,
+      "annual_contract_value": 4440.0,
+      "active_agreements": 1,
+      "paused_agreements": 1,
+      "renewal_pending_count": 0,
+      "skipped_occurrences": 1
+    },
+    "recurring_revenue_team_north_beta": {
+      "id": "recurring_revenue_team_north_beta",
+      "scope": "team",
+      "branch_id": "branch_north",
+      "team_id": "team_north_beta",
+      "monthly_recurring_revenue": 240.0,
+      "annual_contract_value": 2880.0,
+      "active_agreements": 1,
+      "paused_agreements": 0,
+      "renewal_pending_count": 0,
+      "skipped_occurrences": 0
+    }
+  },
   "indexes": {
     "work_orders_by_status": {
       "draft": [
@@ -6123,6 +7367,143 @@
         "receivable_cust_018",
         "receivable_cust_004"
       ]
+    },
+    "estimates_by_status": {
+      "approved": [
+        "est_004"
+      ],
+      "draft": [
+        "est_001"
+      ],
+      "sent": [
+        "est_002"
+      ],
+      "viewed": [
+        "est_003"
+      ]
+    },
+    "estimates_by_customer": {
+      "cust_006": [
+        "est_001"
+      ],
+      "cust_011": [
+        "est_002"
+      ],
+      "cust_018": [
+        "est_003"
+      ],
+      "cust_020": [
+        "est_004"
+      ]
+    },
+    "estimates_by_branch": {
+      "branch_north": [
+        "est_002",
+        "est_004"
+      ],
+      "branch_south": [
+        "est_001",
+        "est_003"
+      ]
+    },
+    "agreements_by_status": {
+      "active": [
+        "agreement_001"
+      ],
+      "paused": [
+        "agreement_002"
+      ],
+      "renewal_pending": [
+        "agreement_003"
+      ]
+    },
+    "agreements_by_customer": {
+      "cust_011": [
+        "agreement_002"
+      ],
+      "cust_018": [
+        "agreement_003"
+      ],
+      "cust_020": [
+        "agreement_001"
+      ]
+    },
+    "agreements_by_branch": {
+      "branch_north": [
+        "agreement_001",
+        "agreement_002"
+      ],
+      "branch_south": [
+        "agreement_003"
+      ]
+    },
+    "recurring_plans_by_status": {
+      "active": [
+        "recurring_plan_001",
+        "recurring_plan_003"
+      ],
+      "paused": [
+        "recurring_plan_002"
+      ]
+    },
+    "recurring_plans_by_agreement": {
+      "agreement_001": [
+        "recurring_plan_001"
+      ],
+      "agreement_002": [
+        "recurring_plan_002"
+      ],
+      "agreement_003": [
+        "recurring_plan_003"
+      ]
+    },
+    "generated_schedule_items_by_plan": {
+      "recurring_plan_001": [
+        "schedule_item_001",
+        "schedule_item_002"
+      ],
+      "recurring_plan_002": [
+        "schedule_item_003"
+      ],
+      "recurring_plan_003": [
+        "schedule_item_004"
+      ]
+    },
+    "renewal_records_by_status": {
+      "pending_review": [
+        "renewal_002"
+      ],
+      "scheduled": [
+        "renewal_001"
+      ]
+    },
+    "api_keys_by_status": {
+      "active": [
+        "api_key_001"
+      ],
+      "rotated": [
+        "api_key_002"
+      ]
+    },
+    "webhook_deliveries_by_status": {
+      "delivered": [
+        "delivery_001"
+      ],
+      "duplicate": [
+        "delivery_003"
+      ],
+      "failed": [
+        "delivery_002"
+      ]
+    },
+    "webhook_deliveries_by_subscription": {
+      "webhook_001": [
+        "delivery_001",
+        "delivery_003"
+      ],
+      "webhook_002": [
+        "delivery_002"
+      ]
     }
   },
   "summary": {
@@ -6141,7 +7522,13 @@
       "assignments": 25,
       "invoices": 9,
       "payments": 3,
-      "export_jobs": 3
+      "export_jobs": 3,
+      "estimates": 4,
+      "estimate_versions": 6,
+      "service_agreements": 3,
+      "recurring_plans": 3,
+      "webhook_subscriptions": 2,
+      "webhook_deliveries": 3
     },
     "status_counts": {
       "draft": 1,
@@ -6384,6 +7771,59 @@
       "estimated_cost_total": 1085.68,
       "gross_margin_total": 1822.0,
       "gross_margin_pct": 62.66
+    },
+    "estimate_status_counts": {
+      "approved": 1,
+      "draft": 1,
+      "sent": 1,
+      "viewed": 1
+    },
+    "agreement_status_counts": {
+      "active": 1,
+      "paused": 1,
+      "renewal_pending": 1
+    },
+    "recurring_plan_status_counts": {
+      "active": 2,
+      "paused": 1
+    },
+    "contract_health_overview": {
+      "active": 1,
+      "paused": 1,
+      "renewal_pending": 1,
+      "at_risk_agreement_ids": [
+        "agreement_003"
+      ]
+    },
+    "renewal_pipeline": {
+      "pending_ids": [
+        "renewal_002"
+      ],
+      "scheduled_ids": [
+        "renewal_001"
+      ],
+      "due_next_30_days": [
+        "agreement_003"
+      ]
+    },
+    "recurring_revenue_summary": {
+      "id": "recurring_revenue_global",
+      "scope": "global",
+      "branch_id": null,
+      "team_id": null,
+      "monthly_recurring_revenue": 548.33,
+      "annual_contract_value": 6580.0,
+      "active_agreements": 1,
+      "paused_agreements": 1,
+      "renewal_pending_count": 1,
+      "skipped_occurrences": 1
+    },
+    "integration_summary": {
+      "active_api_keys": 1,
+      "rotated_api_keys": 1,
+      "failed_deliveries": 1,
+      "duplicate_deliveries": 1,
+      "active_webhooks": 1
     }
   }
 }

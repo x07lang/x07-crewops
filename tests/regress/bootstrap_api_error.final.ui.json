@@ -881,6 +881,161 @@
                               {
                                 "k": "text",
                                 "key": "text",
+                                "text": "Estimates"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_estimates",
+                            "on": [
+                              {
+                                "target": "nav_estimates",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
+                          },
+                          {
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Contracts"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_contracts",
+                            "on": [
+                              {
+                                "target": "nav_contracts",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
+                          },
+                          {
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Recurring"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_recurring",
+                            "on": [
+                              {
+                                "target": "nav_recurring",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
+                          }
+                        ],
+                        "k": "el",
+                        "key": "nav_row_five_fragment",
+                        "on": [],
+                        "props": {
+                          "attrs": {},
+                          "class": [],
+                          "style": {
+                            "display": "contents"
+                          }
+                        },
+                        "tag": "x07-fragment"
+                      },
+                      {
+                        "children": [
+                          {
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
+                                "text": "Integrations"
+                              }
+                            ],
+                            "k": "el",
+                            "key": "nav_integrations",
+                            "on": [
+                              {
+                                "target": "nav_integrations",
+                                "type": "click"
+                              }
+                            ],
+                            "props": {
+                              "attrs": {
+                                "type": "button"
+                              },
+                              "class": [
+                                "button"
+                              ],
+                              "style": {
+                                "background": "#a04b2f",
+                                "border": "1px solid #7b3017",
+                                "border-radius": "999px",
+                                "color": "#fff8ef",
+                                "margin-bottom": "8px",
+                                "margin-right": "8px",
+                                "padding": "10px 14px"
+                              }
+                            },
+                            "tag": "button"
+                          },
+                          {
+                            "children": [
+                              {
+                                "k": "text",
+                                "key": "text",
                                 "text": "Sites"
                               }
                             ],
@@ -948,7 +1103,7 @@
                           }
                         ],
                         "k": "el",
-                        "key": "nav_row_five_fragment",
+                        "key": "nav_row_six_fragment",
                         "on": [],
                         "props": {
                           "attrs": {},
