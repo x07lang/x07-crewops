@@ -104,6 +104,54 @@
       "world": "solve-pure"
     },
     {
+      "entry": "m7_backend_tests.test_enterprise_admin_route_v1",
+      "expect": "pass",
+      "id": "backend/m7-enterprise-admin-route",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "m7_backend_tests.test_portal_request_convert_route_v1",
+      "expect": "pass",
+      "id": "backend/m7-portal-request-convert-route",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "m7_backend_tests.test_inventory_movement_route_v1",
+      "expect": "pass",
+      "id": "backend/m7-inventory-movement-route",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "m7_backend_tests.test_procurement_receive_route_v1",
+      "expect": "pass",
+      "id": "backend/m7-procurement-receive-route",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "m7_backend_tests.test_connectors_vendor_deliveries_route_v1",
+      "expect": "pass",
+      "id": "backend/m7-connectors-vendor-deliveries-route",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "m7_backend_tests.test_release_readiness_route_v1",
+      "expect": "pass",
+      "id": "backend/m7-release-readiness-route",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "m7_backend_tests.test_m7_summary_seed_v1",
+      "expect": "pass",
+      "id": "backend/m7-summary-seed",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "m7_backend_tests.test_m7_sync_seed_v1",
+      "expect": "pass",
+      "id": "backend/m7-sync-seed",
+      "world": "solve-pure"
+    },
+    {
       "entry": "smoke.pass",
       "expect": "pass",
       "id": "smoke/pass",

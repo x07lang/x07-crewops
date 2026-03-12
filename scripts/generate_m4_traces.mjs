@@ -9,10 +9,11 @@ const ROOT = path.resolve(__dirname, '..');
 const FIXTURE_PATH = path.join(ROOT, 'tests/fixtures/demo_org.json');
 const DEMO_SEED_AST_PATH = path.join(ROOT, 'backend/src/demo_seed.x07.json');
 const REPORT_DIR = path.join(ROOT, 'build/reports');
+const INCIDENT_TRACE_DIR = path.join(ROOT, 'tests/incidents');
 const APP_DIR = path.join(ROOT, 'dist/crewops_gate/app.crewops_dev');
 const X07_WASM = path.join(ROOT, '../x07-wasm-backend/target/debug/x07-wasm');
 const CREATED_UTC = '2026-03-11T00:00:00Z';
-const APP_VERSION = '0.5.0';
+const APP_VERSION = '0.6.0';
 const TOOL_VERSION = '0.2.4';
 const NOW = '2026-03-11T00:00:00Z';
 
@@ -22,7 +23,10 @@ const authoredOnly = argv.includes('--authored-only');
 const appDirArg = argv.find((value) => value.startsWith('--app-dir='));
 const x07WasmArg = argv.find((value) => value.startsWith('--x07-wasm='));
 const traceFilterArg = argv.find((value) => value.startsWith('--filter='));
-const appDir = appDirArg ? appDirArg.slice('--app-dir='.length) : APP_DIR;
+const appDirEnv = process.env.CREWOPS_TRACE_APP_DIR;
+const appDir = appDirArg
+  ? appDirArg.slice('--app-dir='.length)
+  : (appDirEnv && appDirEnv.length > 0 ? appDirEnv : APP_DIR);
 const x07Wasm = x07WasmArg ? x07WasmArg.slice('--x07-wasm='.length) : X07_WASM;
 const traceFilter = traceFilterArg ? traceFilterArg.slice('--filter='.length) : null;
 
@@ -130,6 +134,16 @@ const sessionDefaults = {
   },
   manager: {
     user_id: 'user_manager_jonas',
+    branch_id: 'branch_north',
+    team_id: 'team_north_alpha',
+  },
+  portal_user: {
+    user_id: 'user_portal_morgan',
+    branch_id: 'branch_north',
+    team_id: 'team_north_alpha',
+  },
+  enterprise_admin: {
+    user_id: 'user_enterprise_iris',
     branch_id: 'branch_north',
     team_id: 'team_north_alpha',
   },
@@ -286,6 +300,12 @@ function defaultUi() {
     selected_contract_id: 'agreement_001',
     selected_recurring_plan_id: 'recurring_plan_001',
     selected_integration_endpoint_id: 'integration_endpoint_crm',
+    selected_tenant_id: 'tenant_northline',
+    selected_portal_account_id: 'portal_account_001',
+    selected_inventory_item_id: 'inventory_item_contact_cleaner',
+    selected_stock_location_id: 'stock_location_warehouse_north',
+    selected_purchase_order_id: 'purchase_order_002',
+    selected_connector_instance_id: 'connector_instance_ticketing',
     selected_branch_id: 'branch_north',
     selected_team_id: 'team_north_alpha',
     network_status: 'online',
@@ -315,6 +335,13 @@ function defaultUi() {
     export_kind: 'invoices',
     export_format: 'csv',
     export_status_filter: 'all',
+    portal_request_filter: 'open',
+    enterprise_workspace_filter: 'all',
+    inventory_status_filter: 'all',
+    inventory_location_filter: 'all',
+    procurement_status_filter: 'all',
+    connector_status_filter: 'all',
+    connector_provider_filter: 'all',
   };
 }
 
@@ -402,6 +429,28 @@ function defaultDrafts() {
       webhook_events_csv: 'estimate.approved,estimate.converted',
       mapping_source_key: 'customer.external_code',
       mapping_target_key: 'crm.account_id',
+    },
+    enterprise_ops: {
+      tenant_selected_id: 'tenant_northline',
+      workspace_filter: 'all',
+      tenant_role_assignment: 'enterprise_admin',
+      branding_primary_color: '#0f766e',
+      branding_secondary_color: '#f4a261',
+      portal_request_selected_id: 'service_request_001',
+      portal_request_title: 'Need revised access window',
+      portal_request_note: 'Customer requested after-hours service for rooftop unit.',
+      portal_estimate_revision: 'estimate_revision_est_004_v2',
+      inventory_selected_item_id: 'inventory_item_contact_cleaner',
+      inventory_selected_location_id: 'stock_location_warehouse_north',
+      inventory_move_quantity: '4',
+      inventory_adjust_reason: 'Truck replenishment',
+      cycle_count_quantity: '18',
+      purchase_order_selected_id: 'purchase_order_002',
+      purchase_order_status_filter: 'all',
+      receiving_quantity: '6',
+      connector_selected_id: 'connector_instance_ticketing',
+      connector_provider_filter: 'all',
+      connector_retry_delivery_id: 'connector_delivery_record_002',
     },
   };
 }
@@ -563,6 +612,12 @@ function runtimeStateForRole(role, options = {}, mutator = null) {
 }
 
 function routeForRole(role) {
+  if (role === 'portal_user') {
+    return 'portal';
+  }
+  if (role === 'enterprise_admin') {
+    return 'enterprise';
+  }
   if (role === 'dispatcher') {
     return 'dispatch';
   }
@@ -573,6 +628,44 @@ function routeForRole(role) {
     return 'manager';
   }
   return 'today';
+}
+
+function stateFromPayload(role, route, payload, options = {}, mutator = null) {
+  return runtimeStateForRole(role, { route, ...options }, (state) => {
+    if (payload?.entities != null) {
+      state.entities = clone(payload.entities);
+    }
+    if (payload?.indexes != null) {
+      state.indexes = clone(payload.indexes);
+    }
+    if (payload?.summary != null) {
+      state.summary = clone(payload.summary);
+    }
+    if (payload?.sync != null) {
+      const payloadSync = clone(payload.sync);
+      state.sync = {
+        ...(state.sync ?? {}),
+        ...payloadSync,
+        commercial_ops: {
+          ...((state.sync ?? {}).commercial_ops ?? {}),
+          ...(payloadSync.commercial_ops ?? {}),
+        },
+        enterprise_ops: {
+          ...((state.sync ?? {}).enterprise_ops ?? {}),
+          ...(payloadSync.enterprise_ops ?? {}),
+        },
+      };
+    }
+    if (payload?.diagnostics != null && typeof payload.diagnostics === 'object') {
+      state.diagnostics = {
+        ...(state.diagnostics ?? {}),
+        ...clone(payload.diagnostics),
+      };
+    }
+    if (mutator) {
+      mutator(state);
+    }
+  });
 }
 
 function syncDoc(cursor, status, overrides = {}) {
@@ -611,6 +704,18 @@ function syncDoc(cursor, status, overrides = {}) {
       stale_recurring_plan_id: null,
       delivery_retry_status: 'idle',
       stale_delivery_id: null,
+    },
+    enterprise_ops: {
+      portal_approval_status: 'idle',
+      stale_portal_request_id: null,
+      tenant_revision_status: 'idle',
+      stale_tenant_id: null,
+      inventory_movement_status: 'idle',
+      stale_stock_location_id: null,
+      receiving_status: 'idle',
+      stale_purchase_order_id: null,
+      connector_config_status: 'idle',
+      stale_connector_instance_id: null,
     },
     ...overrides,
   };
@@ -1136,6 +1241,30 @@ const integrationsApiKeyCreateDoc = demoSeedDoc('demo_seed.integrations_api_key_
 const integrationsWebhookCreateDoc = demoSeedDoc('demo_seed.integrations_webhook_create_body_v1');
 const integrationsDeliveryRetryDoc = demoSeedDoc('demo_seed.integrations_delivery_retry_body_v1');
 
+function enterpriseAdminDoc() {
+  return demoSeedDoc('demo_seed.enterprise_admin_body_v1');
+}
+
+function portalMeDoc() {
+  return demoSeedDoc('demo_seed.portal_me_body_v1');
+}
+
+function inventoryItemsDoc() {
+  return demoSeedDoc('demo_seed.inventory_items_body_v1');
+}
+
+function procurementOrdersDoc() {
+  return demoSeedDoc('demo_seed.procurement_orders_body_v1');
+}
+
+function vendorConnectorsDoc() {
+  return demoSeedDoc('demo_seed.connectors_vendor_body_v1');
+}
+
+function releaseReadinessDoc() {
+  return demoSeedDoc('demo_seed.release_readiness_body_v1');
+}
+
 function workOrderAssignDoc(workOrderId) {
   const workOrder = baseEntities.work_orders[workOrderId];
   return payloadWithOperationalSnapshot(
@@ -1567,6 +1696,15 @@ function mergeExistingGoldenFrames(doc, existingDoc) {
   return doc;
 }
 
+function emptyGoldenFrames(doc) {
+  doc.steps.forEach((item) => {
+    const state = item?.ui_frame?.state == null ? null : clone(item.ui_frame.state);
+    item.ui_frame = emptyFrame(state);
+    item.ui_frame.state = state;
+  });
+  return doc;
+}
+
 function writeTrace(tracePath, doc) {
   doc.steps.forEach((item, index) => {
     item.i = index;
@@ -1588,32 +1726,62 @@ function isSuccessfulGoldenUpdate(reportPath) {
   return stdoutJson?.failed === 0 && stdoutJson?.updated_golden === true;
 }
 
+function isRetryableGoldenFailure(reportPath) {
+  if (!fs.existsSync(reportPath)) {
+    return false;
+  }
+  const reportDoc = readJson(reportPath);
+  const diagnostics = Array.isArray(reportDoc?.diagnostics) ? reportDoc.diagnostics : [];
+  return diagnostics.some((item) => {
+    if (item == null || typeof item !== 'object') {
+      return false;
+    }
+    const code = item.code;
+    const message = typeof item.message === 'string' ? item.message : '';
+    if (code === 'X07WASM_APP_BUNDLE_MISSING' || code === 'X07WASM_APP_TEST_WASM_MISSING') {
+      return true;
+    }
+    return code === 'X07WASM_APP_TEST_BACKEND_HOST_INIT_FAILED' && message.includes('No such file or directory');
+  });
+}
+
+function sleepMs(milliseconds) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, milliseconds);
+}
+
 function updateGolden(tracePath) {
   const reportPath = path.join(REPORT_DIR, `${path.basename(tracePath, '.json')}.report.json`);
-  try {
-    execFileSync(
-      x07Wasm,
-      [
-        'app',
-        'test',
-        '--dir',
-        appDir,
-        '--trace',
-        tracePath,
-        '--update-golden',
-        '--json',
-        '--report-out',
-        reportPath,
-        '--quiet-json',
-        '--strict',
-      ],
-      { cwd: ROOT, stdio: 'pipe' },
-    );
-  } catch (error) {
-    if (isSuccessfulGoldenUpdate(reportPath)) {
+  for (let attempt = 1; attempt <= 10; attempt += 1) {
+    try {
+      execFileSync(
+        x07Wasm,
+        [
+          'app',
+          'test',
+          '--dir',
+          appDir,
+          '--trace',
+          tracePath,
+          '--update-golden',
+          '--json',
+          '--report-out',
+          reportPath,
+          '--quiet-json',
+          '--strict',
+        ],
+        { cwd: ROOT, stdio: 'pipe' },
+      );
       return;
+    } catch (error) {
+      if (isSuccessfulGoldenUpdate(reportPath)) {
+        return;
+      }
+      if (attempt < 10 && isRetryableGoldenFailure(reportPath)) {
+        sleepMs(1000);
+        continue;
+      }
+      throw error;
     }
-    throw error;
   }
 }
 
@@ -2383,13 +2551,261 @@ const traces = [
       return doc;
     },
   },
+  {
+    path: path.join(ROOT, 'tests/traces/portal_login_and_history_happy.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'portal_user');
+      pushNavLoad(doc, 'nav_portal', 'req_portal_me', '/api/portal/me', demoSeedDoc('demo_seed.portal_me_body_v1'));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/portal_approve_estimate.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'portal_user');
+      pushNavLoad(doc, 'nav_portal', 'req_portal_me', '/api/portal/me', demoSeedDoc('demo_seed.portal_me_body_v1'));
+      doc.steps.push(click('nav_portal', {
+        state: stateFromPayload('portal_user', 'portal', demoSeedDoc('demo_seed.portal_estimate_approve_body_v1')),
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/portal_request_to_office_conversion.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'portal_user');
+      pushNavLoad(doc, 'nav_portal', 'req_portal_me', '/api/portal/me', demoSeedDoc('demo_seed.portal_me_body_v1'));
+      doc.steps.push(click('nav_portal', {
+        state: stateFromPayload(
+          'portal_user',
+          'portal',
+          demoSeedMapEntry('demo_seed.portal_request_convert_map_body_v1', 'service_request_001'),
+        ),
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/branding_update_happy.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'enterprise_admin');
+      pushNavLoad(
+        doc,
+        'nav_enterprise',
+        'req_enterprise_admin',
+        '/api/admin/tenants',
+        demoSeedDoc('demo_seed.enterprise_admin_body_v1'),
+      );
+      doc.steps.push(click('nav_enterprise', {
+        state: stateFromPayload('enterprise_admin', 'enterprise', demoSeedDoc('demo_seed.admin_branding_update_body_v1')),
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/tenant_role_change.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'enterprise_admin');
+      pushNavLoad(
+        doc,
+        'nav_enterprise',
+        'req_enterprise_admin',
+        '/api/admin/tenants',
+        demoSeedDoc('demo_seed.enterprise_admin_body_v1'),
+      );
+      doc.steps.push(click('nav_enterprise', {
+        state: stateFromPayload('enterprise_admin', 'enterprise', demoSeedDoc('demo_seed.admin_role_create_body_v1')),
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/inventory_consume_and_reconcile.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(
+        doc,
+        'nav_inventory',
+        'req_inventory_items',
+        '/api/inventory/items',
+        demoSeedDoc('demo_seed.inventory_items_body_v1'),
+      );
+      doc.steps.push(click('nav_inventory', {
+        state: stateFromPayload('manager', 'inventory', demoSeedDoc('demo_seed.inventory_movement_body_v1')),
+      }));
+      doc.steps.push(click('nav_inventory', {
+        state: stateFromPayload('manager', 'inventory', demoSeedDoc('demo_seed.inventory_count_body_v1')),
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/purchase_order_receive_partial.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(
+        doc,
+        'nav_procurement',
+        'req_procurement_orders',
+        '/api/procurement/purchase-orders',
+        demoSeedDoc('demo_seed.procurement_orders_body_v1'),
+      );
+      doc.steps.push(click('nav_procurement', {
+        state: stateFromPayload('manager', 'procurement', demoSeedDoc('demo_seed.procurement_receive_body_v1')),
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/connector_sync_retry.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(
+        doc,
+        'nav_integration_dashboard',
+        'req_vendor_connectors',
+        '/api/connectors/vendor',
+        demoSeedDoc('demo_seed.connectors_vendor_body_v1'),
+      );
+      doc.steps.push(click('nav_integration_dashboard', {
+        state: stateFromPayload(
+          'manager',
+          'integration_dashboard',
+          demoSeedMapEntry('demo_seed.connectors_vendor_sync_map_body_v1', 'connector_instance_payments'),
+        ),
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/connector_config_revision_conflict.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(
+        doc,
+        'nav_integration_dashboard',
+        'req_vendor_connectors',
+        '/api/connectors/vendor',
+        demoSeedDoc('demo_seed.connectors_vendor_body_v1'),
+      );
+      doc.steps.push(click('nav_integration_dashboard', {
+        state: stateFromPayload(
+          'manager',
+          'integration_dashboard',
+          demoSeedMapEntry('demo_seed.connectors_vendor_sync_map_body_v1', 'connector_instance_ticketing'),
+        ),
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/traces/enterprise_dashboard_health.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'enterprise_admin');
+      pushNavLoad(
+        doc,
+        'nav_enterprise',
+        'req_enterprise_admin',
+        '/api/admin/tenants',
+        demoSeedDoc('demo_seed.enterprise_admin_body_v1'),
+      );
+      doc.steps.push(click('nav_enterprise', {
+        state: stateFromPayload('enterprise_admin', 'enterprise', demoSeedDoc('demo_seed.release_readiness_body_v1')),
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/regress/connector_delivery_failure.regress.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'manager');
+      pushNavLoad(doc, 'nav_integrations', 'req_integrations_center', '/api/integrations', integrationsCenterDoc());
+      doc.steps.push(click('action_integrations_deliveries', {
+        state: stateFromPayload('manager', 'integrations', integrationsDeliveriesDoc(), {}, (state) => {
+          state.sync.commercial_ops.delivery_retry_status = 'retry_required';
+          state.sync.commercial_ops.stale_delivery_id = 'delivery_002';
+        }),
+        http: [
+          exchange('req_integrations_deliveries', 'GET', '/api/integrations/deliveries', 200, integrationsDeliveriesDoc()),
+        ],
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(ROOT, 'tests/regress/portal_approval_revision_mismatch.regress.trace.json'),
+    build(doc) {
+      pushRoleLogin(doc, 'portal_user');
+      pushNavLoad(doc, 'nav_portal', 'req_portal_me', '/api/portal/me', demoSeedDoc('demo_seed.portal_me_body_v1'));
+      doc.steps.push(click('nav_portal', {
+        state: stateFromPayload('portal_user', 'portal', demoSeedDoc('demo_seed.portal_approval_conflict_body_v1')),
+      }));
+      return doc;
+    },
+  },
 ];
 
+const incidentTraces = [
+  {
+    path: path.join(INCIDENT_TRACE_DIR, 'portal_approval_revision_mismatch.trace.json'),
+    build(doc) {
+      doc.steps.push(click('nav_portal', {
+        state: runtimeStateForRole('portal_user', { route: 'portal' }, (state) => {
+          state.ui.selected_portal_account_id = 'portal_account_001';
+          state.sync = syncDoc('sync_cursor_2026_03_11_103', 'conflict', {
+            conflict_status: 'stale',
+            conflict_message: 'Portal approval requires refresh before retry.',
+            conflict_code: 'portal_approval_revision_mismatch',
+            conflict_entity_id: 'service_request_001',
+            enterprise_ops: {
+              portal_approval_status: 'mismatch',
+              stale_portal_request_id: 'service_request_001',
+              tenant_revision_status: 'idle',
+              stale_tenant_id: null,
+              inventory_movement_status: 'idle',
+              stale_stock_location_id: null,
+              receiving_status: 'idle',
+              stale_purchase_order_id: null,
+              connector_config_status: 'idle',
+              stale_connector_instance_id: null,
+            },
+          });
+        }),
+      }));
+      return doc;
+    },
+  },
+  {
+    path: path.join(INCIDENT_TRACE_DIR, 'connector_delivery_failure.trace.json'),
+    build(doc) {
+      doc.steps.push(click('nav_integrations', {
+        state: runtimeStateForRole('manager', { route: 'integrations' }, (state) => {
+          state.sync = syncDoc('sync_cursor_2026_03_11_103', 'accepted', {
+            commercial_ops: {
+              estimate_revision_status: 'idle',
+              stale_estimate_id: null,
+              agreement_revision_status: 'idle',
+              stale_agreement_id: null,
+              recurring_generation_status: 'idle',
+              stale_recurring_plan_id: null,
+              delivery_retry_status: 'retry_required',
+              stale_delivery_id: 'delivery_002',
+            },
+          });
+        }),
+      }));
+      return doc;
+    },
+  },
+];
 const selectedTraces = traceFilter == null
   ? traces
   : traces.filter((trace) => path.basename(trace.path).includes(traceFilter));
+const selectedIncidentTraces = traceFilter == null
+  ? incidentTraces
+  : incidentTraces.filter((trace) => path.basename(trace.path).includes(traceFilter));
 
-if (selectedTraces.length === 0) {
+if (selectedTraces.length === 0 && selectedIncidentTraces.length === 0) {
   process.stderr.write(`no traces matched filter: ${traceFilter}\n`);
   process.exit(1);
 }
@@ -2419,6 +2835,12 @@ for (const trace of selectedTraces) {
       });
     }
   }
+  process.stdout.write(`${path.relative(ROOT, trace.path)}\n`);
+}
+
+for (const trace of selectedIncidentTraces) {
+  const generatedDoc = emptyGoldenFrames(normalizeTraceStates(trace.build(traceDoc())));
+  writeTrace(trace.path, generatedDoc);
   process.stdout.write(`${path.relative(ROOT, trace.path)}\n`);
 }
 

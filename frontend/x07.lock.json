@@ -3,9 +3,9 @@
   "dependencies": [
     {
       "name": "std-web-ui",
-      "version": "0.2.3",
-      "path": ".x07/deps/std-web-ui/0.2.3",
-      "package_manifest_sha256": "3998c0f5a89d1d6f909659cbad811f9fbef1aeddf78ef15b06922c76071ee27c",
+      "version": "0.2.4",
+      "path": ".x07/deps/std-web-ui/0.2.4",
+      "package_manifest_sha256": "11c6578dc552f264a60327ce2d7ad34004bb22a1c1986f1eae7a11a0e26d5fd1",
       "module_root": "modules",
       "modules_sha256": {
         "std.web_ui.effects.device.audio": "467e95b51f117634e77a06502ac7e662e6901bdc0041328204af80782f40a786",

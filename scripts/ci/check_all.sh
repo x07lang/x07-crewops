@@ -6,6 +6,7 @@ BUILD_DIR="$ROOT/build/crewops_gate"
 REPORT_DIR="$BUILD_DIR/reports"
 DIST_DIR="$ROOT/dist/crewops_gate"
 APP_DEV_DIR="$DIST_DIR/app.crewops_dev"
+APP_TEST_DIR="$BUILD_DIR/app.crewops_test"
 APP_RELEASE_DIR="$DIST_DIR/app.crewops_release"
 APP_BUDGET_DIR="$DIST_DIR/app.crewops_budget"
 PACK_RELEASE_DIR="$DIST_DIR/pack.crewops_release"
@@ -18,8 +19,10 @@ ANDROID_PACKAGE_DIR="$DIST_DIR/device_android_dev_package"
 INCIDENTS_ROOT="$ROOT/.x07-wasm/incidents"
 GENERATED_BOOTSTRAP_REGRESSION_TRACE="$ROOT/tests/regress/bootstrap_api_error.trace.json"
 GENERATED_BOOTSTRAP_REGRESSION_UI="$ROOT/tests/regress/bootstrap_api_error.final.ui.json"
-GENERATED_PAYMENT_CONFLICT_REGRESSION_TRACE="$ROOT/tests/regress/payment_revision_conflict.trace.json"
-GENERATED_PAYMENT_CONFLICT_REGRESSION_UI="$ROOT/tests/regress/payment_revision_conflict.final.ui.json"
+GENERATED_CONNECTOR_DELIVERY_FAILURE_REGRESSION_TRACE="$ROOT/tests/regress/connector_delivery_failure.regress.trace.json"
+GENERATED_CONNECTOR_DELIVERY_FAILURE_REGRESSION_UI="$ROOT/tests/regress/connector_delivery_failure.regress.final.ui.json"
+GENERATED_PORTAL_APPROVAL_REVISION_MISMATCH_REGRESSION_TRACE="$ROOT/tests/regress/portal_approval_revision_mismatch.regress.trace.json"
+GENERATED_PORTAL_APPROVAL_REVISION_MISMATCH_REGRESSION_UI="$ROOT/tests/regress/portal_approval_revision_mismatch.regress.final.ui.json"
 PLATFORM_STATE_DIR="$BUILD_DIR/platform_state"
 PLATFORM_METRICS_DIR="$BUILD_DIR/platform_metrics"
 PLATFORM_TODO_REPORT="$REPORT_DIR/platform.smoke.todo.txt"
@@ -60,6 +63,21 @@ TRACE_FIXTURES=(
   "$ROOT/tests/traces/webhook_delivery_retry.trace.json"
   "$ROOT/tests/traces/renewal_dashboard_view.trace.json"
   "$ROOT/tests/traces/conversion_revision_conflict.trace.json"
+  "$ROOT/tests/traces/portal_login_and_history_happy.trace.json"
+  "$ROOT/tests/traces/portal_approve_estimate.trace.json"
+  "$ROOT/tests/traces/portal_request_to_office_conversion.trace.json"
+  "$ROOT/tests/traces/branding_update_happy.trace.json"
+  "$ROOT/tests/traces/tenant_role_change.trace.json"
+  "$ROOT/tests/traces/inventory_consume_and_reconcile.trace.json"
+  "$ROOT/tests/traces/purchase_order_receive_partial.trace.json"
+  "$ROOT/tests/traces/connector_sync_retry.trace.json"
+  "$ROOT/tests/traces/connector_config_revision_conflict.trace.json"
+  "$ROOT/tests/traces/enterprise_dashboard_health.trace.json"
+)
+
+INCIDENT_TRACE_FIXTURES=(
+  "$ROOT/tests/incidents/portal_approval_revision_mismatch.trace.json"
+  "$ROOT/tests/incidents/connector_delivery_failure.trace.json"
 )
 
 APP_SMOKE_TRACES=(
@@ -97,8 +115,20 @@ APP_REQUIRED_TRACES=(
   "$ROOT/tests/traces/webhook_delivery_retry.trace.json"
   "$ROOT/tests/traces/renewal_dashboard_view.trace.json"
   "$ROOT/tests/traces/conversion_revision_conflict.trace.json"
+  "$ROOT/tests/traces/portal_login_and_history_happy.trace.json"
+  "$ROOT/tests/traces/portal_approve_estimate.trace.json"
+  "$ROOT/tests/traces/portal_request_to_office_conversion.trace.json"
+  "$ROOT/tests/traces/branding_update_happy.trace.json"
+  "$ROOT/tests/traces/tenant_role_change.trace.json"
+  "$ROOT/tests/traces/inventory_consume_and_reconcile.trace.json"
+  "$ROOT/tests/traces/purchase_order_receive_partial.trace.json"
+  "$ROOT/tests/traces/connector_sync_retry.trace.json"
+  "$ROOT/tests/traces/connector_config_revision_conflict.trace.json"
+  "$ROOT/tests/traces/enterprise_dashboard_health.trace.json"
 )
 EXPECTED_BOOTSTRAP_FAILURE_TRACE="$ROOT/tests/traces/bootstrap_api_error.trace.json"
+EXPECTED_PORTAL_APPROVAL_REVISION_MISMATCH_TRACE="$ROOT/tests/incidents/portal_approval_revision_mismatch.trace.json"
+EXPECTED_CONNECTOR_DELIVERY_FAILURE_TRACE="$ROOT/tests/incidents/connector_delivery_failure.trace.json"
 
 cd "$ROOT"
 
@@ -108,6 +138,7 @@ mkdir -p \
   "$PACK_RELEASE_DIR" \
   "$DEPLOY_RELEASE_DIR" \
   "$ROOT/tests/regress" \
+  "$ROOT/tests/incidents" \
   "$INCIDENTS_ROOT"
 
 FAILURES=0
@@ -140,7 +171,18 @@ run_step() {
 run_json() {
   local report_path="$1"
   shift
-  "$@" --json --report-out "$report_path" --quiet-json
+  local attempt=1
+  while true; do
+    if "$@" --json --report-out "$report_path" --quiet-json; then
+      return 0
+    fi
+    if [ "$attempt" -ge 5 ] || ! report_has_retryable_artifact_error "$report_path"; then
+      return 1
+    fi
+    note "retrying after transient artifact lookup failure: $report_path"
+    sleep 1
+    attempt=$((attempt + 1))
+  done
 }
 
 resolve_python() {
@@ -251,9 +293,48 @@ resolve_path() {
 require_path() {
   local path="$1"
   local label="$2"
+  local attempt=1
+  while [ ! -e "$path" ] && [ "$attempt" -lt 8 ]; do
+    sleep 1
+    attempt=$((attempt + 1))
+  done
   if [ ! -e "$path" ]; then
     mark_failure "$label missing: $path"
   fi
+}
+
+report_has_retryable_artifact_error() {
+  local report_path="$1"
+  if [ ! -f "$report_path" ]; then
+    return 1
+  fi
+  "$PYTHON" - "$report_path" <<'PY'
+import json
+import pathlib
+import sys
+
+report = pathlib.Path(sys.argv[1])
+doc = json.loads(report.read_text(encoding="utf-8"))
+diagnostics = doc.get("diagnostics")
+if not isinstance(diagnostics, list):
+    raise SystemExit(1)
+
+retryable_codes = {
+    "X07WASM_APP_BUNDLE_MISSING",
+    "X07WASM_APP_TEST_WASM_MISSING",
+    "X07WASM_APP_PACK_BUNDLE_READ_FAILED",
+}
+for item in diagnostics:
+    if not isinstance(item, dict):
+        continue
+    code = item.get("code")
+    message = item.get("message", "")
+    if code in retryable_codes:
+        raise SystemExit(0)
+    if code == "X07WASM_APP_TEST_BACKEND_HOST_INIT_FAILED" and "No such file or directory" in message:
+        raise SystemExit(0)
+raise SystemExit(1)
+PY
 }
 
 validate_json_files() {
@@ -284,6 +365,55 @@ run_expect_failure_with_incident() {
     mark_failure "$name (missing incident_dir)"
   fi
   return 0
+}
+
+generate_and_replay_regression_from_incident() {
+  local label="$1"
+  local report_path="$2"
+  local source_trace="$3"
+  local generated_trace="$4"
+  local generated_ui="$5"
+  local regression_name="$6"
+  local replay_report="$7"
+
+  run_expect_failure_with_incident \
+    "x07-wasm app test ${label} (expected failure)" \
+    "$report_path" \
+    run_json \
+      "$report_path" \
+      "$X07_WASM_BIN" app test \
+      --dir "$APP_TEST_DIR" \
+      --trace "$source_trace" \
+      --strict
+
+  local incident_dir=""
+  incident_dir="$(report_incident_dir "$report_path" || true)"
+  if [ -z "$incident_dir" ]; then
+    note "skipping ${label} regression replay: incident bundle unavailable"
+    return 0
+  fi
+
+  incident_dir="$(resolve_path "$incident_dir")"
+  rm -f "$generated_trace" "$generated_ui"
+  run_step "x07-wasm app regress from-incident ${label}" \
+    run_json \
+      "$REPORT_DIR/app.regress.from_incident.${label}.json" \
+      "$X07_WASM_BIN" app regress from-incident \
+      "$incident_dir" \
+      --out-dir "$ROOT/tests/regress" \
+      --name "$regression_name" \
+      --strict
+  require_path "$generated_trace" "generated ${label} regression trace"
+  require_path "$generated_ui" "generated ${label} final UI"
+  if [ -f "$generated_trace" ]; then
+    run_step "x07-wasm app test generated ${label} regression" \
+      run_json \
+        "$replay_report" \
+        "$X07_WASM_BIN" app test \
+        --dir "$APP_TEST_DIR" \
+        --trace "$generated_trace" \
+        --strict
+  fi
 }
 
 resolve_x07_device_host_desktop() {
@@ -691,12 +821,20 @@ run_step "x07-wasm app serve smoke crewops_dev" \
     --mode smoke \
     --strict
 
-run_step "generate M6 app traces" \
-  "$NODE_BIN" "$TRACE_GENERATOR" --update-golden
+run_step "snapshot crewops_dev trace bundle" \
+  bash -c 'rm -rf "$1" && cp -R "$2" "$1"' -- "$APP_TEST_DIR" "$APP_DEV_DIR"
 
-run_step "validate M6 trace JSON fixtures" \
+run_step "generate M7 app traces" \
+  env CREWOPS_TRACE_APP_DIR="$APP_TEST_DIR" \
+    "$NODE_BIN" "$TRACE_GENERATOR" --update-golden
+
+run_step "validate M7 trace JSON fixtures" \
   validate_json_files \
     "${TRACE_FIXTURES[@]}"
+
+run_step "validate M7 incident trace JSON fixtures" \
+  validate_json_files \
+    "${INCIDENT_TRACE_FIXTURES[@]}"
 
 for trace_path in "${APP_SMOKE_TRACES[@]}"; do
   trace_name="$(basename "$trace_path" .trace.json)"
@@ -704,7 +842,7 @@ for trace_path in "${APP_SMOKE_TRACES[@]}"; do
     run_json \
       "$REPORT_DIR/app.test.${trace_name}.json" \
       "$X07_WASM_BIN" app test \
-      --dir "$APP_DEV_DIR" \
+      --dir "$APP_TEST_DIR" \
       --trace "$trace_path" \
       --strict
 done
@@ -715,60 +853,37 @@ for trace_path in "${APP_REQUIRED_TRACES[@]}"; do
     run_json \
       "$REPORT_DIR/app.test.${trace_name}.json" \
       "$X07_WASM_BIN" app test \
-      --dir "$APP_DEV_DIR" \
+      --dir "$APP_TEST_DIR" \
       --trace "$trace_path" \
       --strict
 done
 
-EXPECTED_FAILURE_REPORT="$REPORT_DIR/app.test.bootstrap_api_error.expected_failure.json"
-run_expect_failure_with_incident \
-  "x07-wasm app test bootstrap_api_error (expected failure)" \
-  "$EXPECTED_FAILURE_REPORT" \
-  run_json \
-    "$EXPECTED_FAILURE_REPORT" \
-    "$X07_WASM_BIN" app test \
-    --dir "$APP_DEV_DIR" \
-    --trace "$EXPECTED_BOOTSTRAP_FAILURE_TRACE" \
-    --strict
+generate_and_replay_regression_from_incident \
+  "bootstrap_api_error" \
+  "$REPORT_DIR/app.test.bootstrap_api_error.expected_failure.json" \
+  "$EXPECTED_BOOTSTRAP_FAILURE_TRACE" \
+  "$GENERATED_BOOTSTRAP_REGRESSION_TRACE" \
+  "$GENERATED_BOOTSTRAP_REGRESSION_UI" \
+  "bootstrap_api_error" \
+  "$REPORT_DIR/app.test.regress.bootstrap_api_error.json"
 
-INCIDENT_DIR="$(report_incident_dir "$EXPECTED_FAILURE_REPORT" || true)"
-if [ -n "$INCIDENT_DIR" ]; then
-  INCIDENT_DIR="$(resolve_path "$INCIDENT_DIR")"
-  rm -f "$GENERATED_BOOTSTRAP_REGRESSION_TRACE" "$GENERATED_BOOTSTRAP_REGRESSION_UI"
-  run_step "x07-wasm app regress from-incident bootstrap_api_error" \
-    run_json \
-      "$REPORT_DIR/app.regress.from_incident.bootstrap_api_error.json" \
-      "$X07_WASM_BIN" app regress from-incident \
-      "$INCIDENT_DIR" \
-      --out-dir "$ROOT/tests/regress" \
-      --name bootstrap_api_error \
-      --strict
-  require_path "$GENERATED_BOOTSTRAP_REGRESSION_TRACE" "generated bootstrap_api_error regression trace"
-  require_path "$GENERATED_BOOTSTRAP_REGRESSION_UI" "generated bootstrap_api_error final UI"
-  if [ -f "$GENERATED_BOOTSTRAP_REGRESSION_TRACE" ]; then
-    run_step "x07-wasm app test generated bootstrap_api_error regression" \
-      run_json \
-        "$REPORT_DIR/app.test.regress.bootstrap_api_error.json" \
-        "$X07_WASM_BIN" app test \
-        --dir "$APP_DEV_DIR" \
-        --trace "$GENERATED_BOOTSTRAP_REGRESSION_TRACE" \
-        --strict
-  fi
-else
-  note "skipping bootstrap_api_error regression replay: incident bundle unavailable"
-fi
+generate_and_replay_regression_from_incident \
+  "portal_approval_revision_mismatch" \
+  "$REPORT_DIR/app.test.portal_approval_revision_mismatch.expected_failure.json" \
+  "$EXPECTED_PORTAL_APPROVAL_REVISION_MISMATCH_TRACE" \
+  "$GENERATED_PORTAL_APPROVAL_REVISION_MISMATCH_REGRESSION_TRACE" \
+  "$GENERATED_PORTAL_APPROVAL_REVISION_MISMATCH_REGRESSION_UI" \
+  "portal_approval_revision_mismatch.regress" \
+  "$REPORT_DIR/app.test.regress.portal_approval_revision_mismatch.json"
 
-require_path "$GENERATED_PAYMENT_CONFLICT_REGRESSION_TRACE" "generated payment_revision_conflict regression trace"
-require_path "$GENERATED_PAYMENT_CONFLICT_REGRESSION_UI" "generated payment_revision_conflict final UI"
-if [ -f "$GENERATED_PAYMENT_CONFLICT_REGRESSION_TRACE" ]; then
-  run_step "x07-wasm app test generated payment_revision_conflict regression" \
-    run_json \
-      "$REPORT_DIR/app.test.regress.payment_revision_conflict.json" \
-      "$X07_WASM_BIN" app test \
-      --dir "$APP_DEV_DIR" \
-      --trace "$GENERATED_PAYMENT_CONFLICT_REGRESSION_TRACE" \
-      --strict
-fi
+generate_and_replay_regression_from_incident \
+  "connector_delivery_failure" \
+  "$REPORT_DIR/app.test.connector_delivery_failure.expected_failure.json" \
+  "$EXPECTED_CONNECTOR_DELIVERY_FAILURE_TRACE" \
+  "$GENERATED_CONNECTOR_DELIVERY_FAILURE_REGRESSION_TRACE" \
+  "$GENERATED_CONNECTOR_DELIVERY_FAILURE_REGRESSION_UI" \
+  "connector_delivery_failure.regress" \
+  "$REPORT_DIR/app.test.regress.connector_delivery_failure.json"
 
 require_path "$APP_RELEASE_DIR/app.bundle.json" "crewops_release app bundle manifest"
 

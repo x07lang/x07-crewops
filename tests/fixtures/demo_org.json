@@ -140,6 +140,29 @@
         "team_south_gamma"
       ],
       "branch_id": "branch_north"
+    },
+    "user_portal_morgan": {
+      "id": "user_portal_morgan",
+      "role": "portal_user",
+      "name": "Morgan Hale",
+      "team_ids": [],
+      "branch_id": "branch_north",
+      "customer_id": "cust_020",
+      "tenant_id": "tenant_northline",
+      "portal_account_id": "portal_account_001"
+    },
+    "user_enterprise_iris": {
+      "id": "user_enterprise_iris",
+      "role": "enterprise_admin",
+      "name": "Iris Bennett",
+      "team_ids": [],
+      "branch_id": "branch_north",
+      "tenant_id": "tenant_northline",
+      "workspace_ids": [
+        "workspace_hq",
+        "workspace_branch_north",
+        "workspace_branch_south"
+      ]
     }
   },
   "customers": {
@@ -6604,6 +6627,714 @@
       "skipped_occurrences": 0
     }
   },
+  "tenants": {
+    "tenant_northline": {
+      "id": "tenant_northline",
+      "status": "active",
+      "name": "Northline Facilities",
+      "display_name": "Northline CrewOps",
+      "kind": "enterprise_parent",
+      "workspace_ids": [
+        "workspace_hq",
+        "workspace_branch_north",
+        "workspace_branch_south"
+      ],
+      "branding_pack_id": "branding_pack_northline",
+      "portal_config": {
+        "title": "Northline Service Portal",
+        "allow_estimate_approval": true,
+        "allow_request_intake": true,
+        "show_invoice_balance": true
+      },
+      "feature_flags": {
+        "portal": true,
+        "inventory": true,
+        "procurement": true,
+        "connectors": true,
+        "white_label": true
+      },
+      "readiness_status": "ready",
+      "revision": 7
+    },
+    "tenant_northline_branch": {
+      "id": "tenant_northline_branch",
+      "status": "pilot",
+      "name": "Northline Northwest Franchise",
+      "display_name": "Northline Northwest",
+      "kind": "child_tenant",
+      "parent_tenant_id": "tenant_northline",
+      "workspace_ids": [
+        "workspace_branch_north"
+      ],
+      "branding_pack_id": "branding_pack_northwest",
+      "portal_config": {
+        "title": "Northwest Portal",
+        "allow_estimate_approval": true,
+        "allow_request_intake": true,
+        "show_invoice_balance": true
+      },
+      "feature_flags": {
+        "portal": true,
+        "inventory": true,
+        "procurement": true,
+        "connectors": true,
+        "white_label": true
+      },
+      "readiness_status": "config_incomplete",
+      "revision": 3
+    }
+  },
+  "workspaces": {
+    "workspace_hq": {
+      "id": "workspace_hq",
+      "tenant_id": "tenant_northline",
+      "kind": "hq",
+      "name": "Headquarters",
+      "branch_id": null
+    },
+    "workspace_branch_north": {
+      "id": "workspace_branch_north",
+      "tenant_id": "tenant_northline",
+      "kind": "branch",
+      "name": "North Branch Workspace",
+      "branch_id": "branch_north"
+    },
+    "workspace_branch_south": {
+      "id": "workspace_branch_south",
+      "tenant_id": "tenant_northline",
+      "kind": "branch",
+      "name": "South Branch Workspace",
+      "branch_id": "branch_south"
+    }
+  },
+  "org_hierarchy_nodes": {
+    "org_node_root": {
+      "id": "org_node_root",
+      "tenant_id": "tenant_northline",
+      "parent_id": null,
+      "kind": "tenant",
+      "label": "Northline Facilities",
+      "workspace_id": "workspace_hq"
+    },
+    "org_node_branch_north": {
+      "id": "org_node_branch_north",
+      "tenant_id": "tenant_northline",
+      "parent_id": "org_node_root",
+      "kind": "branch",
+      "label": "North Branch",
+      "workspace_id": "workspace_branch_north"
+    },
+    "org_node_branch_south": {
+      "id": "org_node_branch_south",
+      "tenant_id": "tenant_northline",
+      "parent_id": "org_node_root",
+      "kind": "branch",
+      "label": "South Branch",
+      "workspace_id": "workspace_branch_south"
+    }
+  },
+  "role_definitions": {
+    "role_enterprise_admin": {
+      "id": "role_enterprise_admin",
+      "tenant_id": "tenant_northline",
+      "label": "Enterprise Admin",
+      "scope_kind": "tenant",
+      "system_role": true
+    },
+    "role_branch_manager": {
+      "id": "role_branch_manager",
+      "tenant_id": "tenant_northline",
+      "label": "Branch Manager",
+      "scope_kind": "workspace",
+      "system_role": true
+    },
+    "role_inventory_coordinator": {
+      "id": "role_inventory_coordinator",
+      "tenant_id": "tenant_northline",
+      "label": "Inventory Coordinator",
+      "scope_kind": "workspace",
+      "system_role": false
+    },
+    "role_portal_user": {
+      "id": "role_portal_user",
+      "tenant_id": "tenant_northline",
+      "label": "Portal User",
+      "scope_kind": "customer",
+      "system_role": true
+    }
+  },
+  "permission_grants": {
+    "permission_grant_001": {
+      "id": "permission_grant_001",
+      "role_id": "role_enterprise_admin",
+      "scope_id": "tenant_northline",
+      "permissions": [
+        "tenant.manage",
+        "branding.manage",
+        "portal.manage",
+        "connector.manage"
+      ],
+      "assigned_user_ids": [
+        "user_enterprise_iris"
+      ]
+    },
+    "permission_grant_002": {
+      "id": "permission_grant_002",
+      "role_id": "role_branch_manager",
+      "scope_id": "workspace_branch_north",
+      "permissions": [
+        "inventory.view",
+        "procurement.view",
+        "dashboard.view"
+      ],
+      "assigned_user_ids": [
+        "user_manager_jonas"
+      ]
+    },
+    "permission_grant_003": {
+      "id": "permission_grant_003",
+      "role_id": "role_inventory_coordinator",
+      "scope_id": "workspace_branch_north",
+      "permissions": [
+        "inventory.manage",
+        "procurement.manage"
+      ],
+      "assigned_user_ids": [
+        "user_dispatch_rhea"
+      ]
+    }
+  },
+  "branding_packs": {
+    "branding_pack_northline": {
+      "id": "branding_pack_northline",
+      "tenant_id": "tenant_northline",
+      "display_name": "Northline CrewOps",
+      "accent_color": "#0b6f68",
+      "portal_title": "Northline Service Portal",
+      "invoice_branding_ref": "northline-core",
+      "navigation_sections": [
+        "portal",
+        "inventory",
+        "procurement",
+        "integration_dashboard"
+      ],
+      "revision": 7
+    },
+    "branding_pack_northwest": {
+      "id": "branding_pack_northwest",
+      "tenant_id": "tenant_northline_branch",
+      "display_name": "Northline Northwest",
+      "accent_color": "#8a5c23",
+      "portal_title": "Northwest Portal",
+      "invoice_branding_ref": "northline-northwest",
+      "navigation_sections": [
+        "portal",
+        "inventory",
+        "procurement"
+      ],
+      "revision": 3
+    }
+  },
+  "theme_overrides": {
+    "theme_override_northline": {
+      "id": "theme_override_northline",
+      "branding_pack_id": "branding_pack_northline",
+      "surface_color": "#f5efe6",
+      "text_color": "#1e2b28"
+    }
+  },
+  "portal_accounts": {
+    "portal_account_001": {
+      "id": "portal_account_001",
+      "tenant_id": "tenant_northline",
+      "customer_id": "cust_020",
+      "status": "active",
+      "email": "morgan.hale@example.test",
+      "display_name": "Morgan Hale",
+      "pending_estimate_id": "est_004",
+      "invoice_ids": [
+        "inv_004"
+      ],
+      "service_request_ids": [
+        "service_request_001"
+      ],
+      "timeline_event_ids": [
+        "timeline_event_001",
+        "timeline_event_002",
+        "timeline_event_003"
+      ],
+      "upcoming_visit_ids": [
+        "visit_018"
+      ]
+    },
+    "portal_account_002": {
+      "id": "portal_account_002",
+      "tenant_id": "tenant_northline_branch",
+      "customer_id": "cust_018",
+      "status": "invited",
+      "email": "ops.cust18@example.test",
+      "display_name": "Customer 18 Ops",
+      "pending_estimate_id": null,
+      "invoice_ids": [
+        "inv_004"
+      ],
+      "service_request_ids": [],
+      "timeline_event_ids": [],
+      "upcoming_visit_ids": []
+    }
+  },
+  "portal_sessions": {
+    "portal_session_001": {
+      "id": "portal_session_001",
+      "portal_account_id": "portal_account_001",
+      "status": "active",
+      "issued_at": "2026-03-11T08:45:00Z",
+      "expires_at": "2026-03-11T16:45:00Z"
+    }
+  },
+  "customer_timeline_events": {
+    "timeline_event_001": {
+      "id": "timeline_event_001",
+      "portal_account_id": "portal_account_001",
+      "service_request_id": "service_request_001",
+      "kind": "request_submitted",
+      "customer_message": "Submitted rooftop drain inspection request.",
+      "office_message": "Portal request created for branch triage.",
+      "created_at": "2026-03-10T14:10:00Z"
+    },
+    "timeline_event_002": {
+      "id": "timeline_event_002",
+      "portal_account_id": "portal_account_001",
+      "service_request_id": "service_request_001",
+      "kind": "estimate_ready",
+      "customer_message": "Estimate is ready for approval.",
+      "office_message": "Estimate est_004 linked to portal request.",
+      "created_at": "2026-03-11T08:20:00Z"
+    },
+    "timeline_event_003": {
+      "id": "timeline_event_003",
+      "portal_account_id": "portal_account_001",
+      "service_request_id": "service_request_001",
+      "kind": "visit_scheduled",
+      "customer_message": "Service visit scheduled for March 20.",
+      "office_message": "Dispatch linked portal request to visit_018.",
+      "created_at": "2026-03-11T09:00:00Z"
+    }
+  },
+  "service_requests": {
+    "service_request_001": {
+      "id": "service_request_001",
+      "tenant_id": "tenant_northline",
+      "portal_account_id": "portal_account_001",
+      "customer_id": "cust_020",
+      "status": "triaged",
+      "priority": "high",
+      "summary": "Roof drain inspection and leak check",
+      "structured_intake": {
+        "site_id": "site_020",
+        "asset_id": "asset_020",
+        "requested_window": "2026-03-20",
+        "issue_kind": "roof_drain"
+      },
+      "converted_work_order_id": "wo_018",
+      "estimate_id": "est_004",
+      "connector_reference": "crm_ticket_2044",
+      "revision": 2
+    },
+    "service_request_002": {
+      "id": "service_request_002",
+      "tenant_id": "tenant_northline_branch",
+      "portal_account_id": "portal_account_002",
+      "customer_id": "cust_018",
+      "status": "submitted",
+      "priority": "medium",
+      "summary": "Door closer calibration",
+      "structured_intake": {
+        "site_id": "site_018",
+        "asset_id": "asset_018",
+        "requested_window": "2026-03-19",
+        "issue_kind": "door_adjustment"
+      },
+      "converted_work_order_id": null,
+      "estimate_id": null,
+      "connector_reference": null,
+      "revision": 1
+    }
+  },
+  "inventory_items": {
+    "inventory_item_filter_merv13": {
+      "id": "inventory_item_filter_merv13",
+      "tenant_id": "tenant_northline",
+      "part_catalog_id": "part_filter_merv13",
+      "sku": "FLT-MERV13-20x25x2",
+      "name": "MERV 13 Filter",
+      "status": "active",
+      "primary_location_id": "stock_location_warehouse_north",
+      "on_hand": 42,
+      "reserved": 6,
+      "reorder_threshold": 18,
+      "preferred_vendor_id": "vendor_supply_hub"
+    },
+    "inventory_item_belt_a42": {
+      "id": "inventory_item_belt_a42",
+      "tenant_id": "tenant_northline",
+      "part_catalog_id": "part_belt_a42",
+      "sku": "BLT-A42",
+      "name": "Drive Belt A42",
+      "status": "active",
+      "primary_location_id": "stock_location_warehouse_north",
+      "on_hand": 16,
+      "reserved": 4,
+      "reorder_threshold": 10,
+      "preferred_vendor_id": "vendor_supply_hub"
+    },
+    "inventory_item_contact_cleaner": {
+      "id": "inventory_item_contact_cleaner",
+      "tenant_id": "tenant_northline",
+      "part_catalog_id": "part_contact_cleaner",
+      "sku": "CLN-CNT-001",
+      "name": "Contact Cleaner",
+      "status": "active",
+      "primary_location_id": "stock_location_warehouse_south",
+      "on_hand": 9,
+      "reserved": 1,
+      "reorder_threshold": 8,
+      "preferred_vendor_id": "vendor_supply_hub"
+    },
+    "inventory_item_roof_seal": {
+      "id": "inventory_item_roof_seal",
+      "tenant_id": "tenant_northline",
+      "part_catalog_id": null,
+      "sku": "SLN-ROOF-2G",
+      "name": "Roof Sealant 2G",
+      "status": "active",
+      "primary_location_id": "stock_location_warehouse_north",
+      "on_hand": 5,
+      "reserved": 2,
+      "reorder_threshold": 6,
+      "preferred_vendor_id": "vendor_roofline"
+    }
+  },
+  "stock_locations": {
+    "stock_location_warehouse_north": {
+      "id": "stock_location_warehouse_north",
+      "tenant_id": "tenant_northline",
+      "kind": "warehouse",
+      "label": "North Warehouse",
+      "branch_id": "branch_north"
+    },
+    "stock_location_warehouse_south": {
+      "id": "stock_location_warehouse_south",
+      "tenant_id": "tenant_northline",
+      "kind": "warehouse",
+      "label": "South Warehouse",
+      "branch_id": "branch_south"
+    },
+    "stock_location_van_alpha": {
+      "id": "stock_location_van_alpha",
+      "tenant_id": "tenant_northline",
+      "kind": "vehicle",
+      "label": "Van Alpha",
+      "branch_id": "branch_north"
+    },
+    "stock_location_van_gamma": {
+      "id": "stock_location_van_gamma",
+      "tenant_id": "tenant_northline",
+      "kind": "vehicle",
+      "label": "Van Gamma",
+      "branch_id": "branch_south"
+    }
+  },
+  "vehicle_stock": {
+    "vehicle_stock_alpha_filter": {
+      "id": "vehicle_stock_alpha_filter",
+      "location_id": "stock_location_van_alpha",
+      "inventory_item_id": "inventory_item_filter_merv13",
+      "on_hand": 6,
+      "reserved": 2
+    },
+    "vehicle_stock_gamma_cleaner": {
+      "id": "vehicle_stock_gamma_cleaner",
+      "location_id": "stock_location_van_gamma",
+      "inventory_item_id": "inventory_item_contact_cleaner",
+      "on_hand": 3,
+      "reserved": 0
+    }
+  },
+  "stock_movements": {
+    "stock_movement_001": {
+      "id": "stock_movement_001",
+      "tenant_id": "tenant_northline",
+      "inventory_item_id": "inventory_item_filter_merv13",
+      "location_id": "stock_location_van_alpha",
+      "kind": "consume",
+      "quantity": 2,
+      "status": "posted",
+      "reason": "Used on quarterly PM visit.",
+      "source_work_order_id": "wo_013",
+      "revision": 1
+    },
+    "stock_movement_002": {
+      "id": "stock_movement_002",
+      "tenant_id": "tenant_northline",
+      "inventory_item_id": "inventory_item_roof_seal",
+      "location_id": "stock_location_warehouse_north",
+      "kind": "transfer",
+      "quantity": 1,
+      "status": "posted",
+      "reason": "Moved to van stock for leak follow-up.",
+      "source_work_order_id": "wo_018",
+      "revision": 2
+    }
+  },
+  "cycle_counts": {
+    "cycle_count_001": {
+      "id": "cycle_count_001",
+      "tenant_id": "tenant_northline",
+      "location_id": "stock_location_warehouse_north",
+      "status": "variance",
+      "scheduled_date": "2026-03-12",
+      "variance_item_ids": [
+        "inventory_item_roof_seal"
+      ]
+    }
+  },
+  "vendors": {
+    "vendor_supply_hub": {
+      "id": "vendor_supply_hub",
+      "tenant_id": "tenant_northline",
+      "status": "active",
+      "name": "Supply Hub NW",
+      "payment_terms": "Net 30"
+    },
+    "vendor_roofline": {
+      "id": "vendor_roofline",
+      "tenant_id": "tenant_northline",
+      "status": "active",
+      "name": "Roofline Supply Co.",
+      "payment_terms": "Net 15"
+    }
+  },
+  "vendor_catalog_items": {
+    "vendor_catalog_001": {
+      "id": "vendor_catalog_001",
+      "vendor_id": "vendor_supply_hub",
+      "inventory_item_id": "inventory_item_filter_merv13",
+      "vendor_sku": "SUP-FLT-13",
+      "unit_cost": 18.5
+    },
+    "vendor_catalog_002": {
+      "id": "vendor_catalog_002",
+      "vendor_id": "vendor_supply_hub",
+      "inventory_item_id": "inventory_item_contact_cleaner",
+      "vendor_sku": "SUP-CLN-1",
+      "unit_cost": 9.25
+    },
+    "vendor_catalog_003": {
+      "id": "vendor_catalog_003",
+      "vendor_id": "vendor_roofline",
+      "inventory_item_id": "inventory_item_roof_seal",
+      "vendor_sku": "RF-SLN-2G",
+      "unit_cost": 41.0
+    }
+  },
+  "purchase_orders": {
+    "purchase_order_001": {
+      "id": "purchase_order_001",
+      "tenant_id": "tenant_northline",
+      "vendor_id": "vendor_supply_hub",
+      "status": "open",
+      "branch_id": "branch_north",
+      "expected_delivery_date": "2026-03-14",
+      "line_ids": [
+        "purchase_order_line_001",
+        "purchase_order_line_002"
+      ],
+      "revision": 2
+    },
+    "purchase_order_002": {
+      "id": "purchase_order_002",
+      "tenant_id": "tenant_northline",
+      "vendor_id": "vendor_roofline",
+      "status": "partial",
+      "branch_id": "branch_south",
+      "expected_delivery_date": "2026-03-13",
+      "line_ids": [
+        "purchase_order_line_003"
+      ],
+      "revision": 3
+    }
+  },
+  "purchase_order_lines": {
+    "purchase_order_line_001": {
+      "id": "purchase_order_line_001",
+      "purchase_order_id": "purchase_order_001",
+      "inventory_item_id": "inventory_item_filter_merv13",
+      "expected_quantity": 24,
+      "received_quantity": 0
+    },
+    "purchase_order_line_002": {
+      "id": "purchase_order_line_002",
+      "purchase_order_id": "purchase_order_001",
+      "inventory_item_id": "inventory_item_belt_a42",
+      "expected_quantity": 12,
+      "received_quantity": 0
+    },
+    "purchase_order_line_003": {
+      "id": "purchase_order_line_003",
+      "purchase_order_id": "purchase_order_002",
+      "inventory_item_id": "inventory_item_roof_seal",
+      "expected_quantity": 8,
+      "received_quantity": 3
+    }
+  },
+  "receiving_records": {
+    "receiving_record_001": {
+      "id": "receiving_record_001",
+      "purchase_order_id": "purchase_order_002",
+      "status": "partial",
+      "received_at": "2026-03-10T15:20:00Z",
+      "mismatch": true,
+      "line_receipts": [
+        {
+          "line_id": "purchase_order_line_003",
+          "expected_quantity": 8,
+          "received_quantity": 3
+        }
+      ]
+    }
+  },
+  "reorder_suggestions": {
+    "reorder_suggestion_001": {
+      "id": "reorder_suggestion_001",
+      "tenant_id": "tenant_northline",
+      "inventory_item_id": "inventory_item_roof_seal",
+      "location_id": "stock_location_warehouse_north",
+      "recommended_quantity": 12,
+      "reason": "Projected demand exceeds on-hand stock."
+    },
+    "reorder_suggestion_002": {
+      "id": "reorder_suggestion_002",
+      "tenant_id": "tenant_northline",
+      "inventory_item_id": "inventory_item_contact_cleaner",
+      "location_id": "stock_location_warehouse_south",
+      "recommended_quantity": 8,
+      "reason": "South branch low-stock threshold crossed."
+    }
+  },
+  "connector_instances": {
+    "connector_instance_accounting": {
+      "id": "connector_instance_accounting",
+      "tenant_id": "tenant_northline",
+      "provider_class": "accounting",
+      "provider_name": "LedgerCloud",
+      "status": "healthy",
+      "config_revision": 4,
+      "last_success_at": "2026-03-11T06:45:00Z",
+      "mapping_ids": [
+        "connector_mapping_002"
+      ]
+    },
+    "connector_instance_payments": {
+      "id": "connector_instance_payments",
+      "tenant_id": "tenant_northline",
+      "provider_class": "payments",
+      "provider_name": "PayArc",
+      "status": "retry_required",
+      "config_revision": 2,
+      "last_success_at": "2026-03-10T18:15:00Z",
+      "mapping_ids": []
+    },
+    "connector_instance_crm": {
+      "id": "connector_instance_crm",
+      "tenant_id": "tenant_northline",
+      "provider_class": "crm",
+      "provider_name": "Orbit CRM",
+      "status": "degraded",
+      "config_revision": 5,
+      "last_success_at": "2026-03-11T05:10:00Z",
+      "mapping_ids": [
+        "connector_mapping_001"
+      ]
+    },
+    "connector_instance_ticketing": {
+      "id": "connector_instance_ticketing",
+      "tenant_id": "tenant_northline_branch",
+      "provider_class": "ticketing",
+      "provider_name": "FieldDesk",
+      "status": "config_stale",
+      "config_revision": 3,
+      "last_success_at": "2026-03-09T14:00:00Z",
+      "mapping_ids": []
+    }
+  },
+  "connector_sync_jobs": {
+    "connector_sync_job_001": {
+      "id": "connector_sync_job_001",
+      "connector_instance_id": "connector_instance_accounting",
+      "provider_class": "accounting",
+      "status": "completed",
+      "started_at": "2026-03-11T06:30:00Z",
+      "completed_at": "2026-03-11T06:45:00Z"
+    },
+    "connector_sync_job_002": {
+      "id": "connector_sync_job_002",
+      "connector_instance_id": "connector_instance_crm",
+      "provider_class": "crm",
+      "status": "failed",
+      "started_at": "2026-03-11T05:00:00Z",
+      "completed_at": "2026-03-11T05:07:00Z"
+    },
+    "connector_sync_job_003": {
+      "id": "connector_sync_job_003",
+      "connector_instance_id": "connector_instance_ticketing",
+      "provider_class": "ticketing",
+      "status": "stale_config",
+      "started_at": "2026-03-10T11:00:00Z",
+      "completed_at": "2026-03-10T11:03:00Z"
+    }
+  },
+  "connector_delivery_records": {
+    "connector_delivery_record_001": {
+      "id": "connector_delivery_record_001",
+      "connector_instance_id": "connector_instance_crm",
+      "status": "failed",
+      "entity_kind": "service_request",
+      "entity_id": "service_request_001",
+      "response_summary": "CRM rejected stale mapping revision.",
+      "retryable": true
+    }
+  },
+  "tenant_health_snapshots": {
+    "tenant_health_northline": {
+      "id": "tenant_health_northline",
+      "tenant_id": "tenant_northline",
+      "portal_conversion_rate": 0.67,
+      "connector_failure_count": 2,
+      "low_stock_count": 2,
+      "po_backlog_count": 1,
+      "readiness_status": "ready"
+    },
+    "tenant_health_northline_branch": {
+      "id": "tenant_health_northline_branch",
+      "tenant_id": "tenant_northline_branch",
+      "portal_conversion_rate": 0.5,
+      "connector_failure_count": 1,
+      "low_stock_count": 1,
+      "po_backlog_count": 1,
+      "readiness_status": "config_incomplete"
+    }
+  },
+  "portal_adoption_rollups": {
+    "portal_adoption_northline": {
+      "id": "portal_adoption_northline",
+      "tenant_id": "tenant_northline",
+      "active_accounts": 1,
+      "invited_accounts": 1,
+      "request_conversion_rate": 0.5,
+      "approval_conversion_rate": 1.0
+    }
+  },
   "indexes": {
     "work_orders_by_status": {
       "draft": [
@@ -7143,8 +7874,14 @@
       "dispatcher": [
         "user_dispatch_rhea"
       ],
+      "enterprise_admin": [
+        "user_enterprise_iris"
+      ],
       "manager": [
         "user_manager_jonas"
+      ],
+      "portal_user": [
+        "user_portal_morgan"
       ],
       "supervisor": [
         "user_supervisor_nadia"
@@ -7504,6 +8241,194 @@
       "webhook_002": [
         "delivery_002"
       ]
+    },
+    "workspaces_by_tenant": {
+      "tenant_northline": [
+        "workspace_hq",
+        "workspace_branch_north",
+        "workspace_branch_south"
+      ]
+    },
+    "portal_accounts_by_tenant": {
+      "tenant_northline": [
+        "portal_account_001"
+      ],
+      "tenant_northline_branch": [
+        "portal_account_002"
+      ]
+    },
+    "portal_accounts_by_status": {
+      "active": [
+        "portal_account_001"
+      ],
+      "invited": [
+        "portal_account_002"
+      ]
+    },
+    "service_requests_by_tenant": {
+      "tenant_northline": [
+        "service_request_001"
+      ],
+      "tenant_northline_branch": [
+        "service_request_002"
+      ]
+    },
+    "service_requests_by_status": {
+      "submitted": [
+        "service_request_002"
+      ],
+      "triaged": [
+        "service_request_001"
+      ]
+    },
+    "inventory_items_by_tenant": {
+      "tenant_northline": [
+        "inventory_item_filter_merv13",
+        "inventory_item_belt_a42",
+        "inventory_item_contact_cleaner",
+        "inventory_item_roof_seal"
+      ]
+    },
+    "inventory_items_by_status": {
+      "active": [
+        "inventory_item_filter_merv13",
+        "inventory_item_belt_a42",
+        "inventory_item_contact_cleaner",
+        "inventory_item_roof_seal"
+      ]
+    },
+    "inventory_items_by_location": {
+      "stock_location_warehouse_north": [
+        "inventory_item_filter_merv13",
+        "inventory_item_belt_a42",
+        "inventory_item_roof_seal"
+      ],
+      "stock_location_warehouse_south": [
+        "inventory_item_contact_cleaner"
+      ]
+    },
+    "stock_locations_by_tenant": {
+      "tenant_northline": [
+        "stock_location_warehouse_north",
+        "stock_location_warehouse_south",
+        "stock_location_van_alpha",
+        "stock_location_van_gamma"
+      ]
+    },
+    "stock_movements_by_location": {
+      "stock_location_van_alpha": [
+        "stock_movement_001"
+      ],
+      "stock_location_warehouse_north": [
+        "stock_movement_002"
+      ]
+    },
+    "stock_movements_by_status": {
+      "posted": [
+        "stock_movement_001",
+        "stock_movement_002"
+      ]
+    },
+    "vendors_by_tenant": {
+      "tenant_northline": [
+        "vendor_supply_hub",
+        "vendor_roofline"
+      ]
+    },
+    "purchase_orders_by_tenant": {
+      "tenant_northline": [
+        "purchase_order_001",
+        "purchase_order_002"
+      ]
+    },
+    "purchase_orders_by_status": {
+      "open": [
+        "purchase_order_001"
+      ],
+      "partial": [
+        "purchase_order_002"
+      ]
+    },
+    "purchase_orders_by_vendor": {
+      "vendor_roofline": [
+        "purchase_order_002"
+      ],
+      "vendor_supply_hub": [
+        "purchase_order_001"
+      ]
+    },
+    "receiving_records_by_purchase_order": {
+      "purchase_order_002": [
+        "receiving_record_001"
+      ]
+    },
+    "reorder_suggestions_by_location": {
+      "stock_location_warehouse_north": [
+        "reorder_suggestion_001"
+      ],
+      "stock_location_warehouse_south": [
+        "reorder_suggestion_002"
+      ]
+    },
+    "connector_instances_by_tenant": {
+      "tenant_northline": [
+        "connector_instance_accounting",
+        "connector_instance_payments",
+        "connector_instance_crm"
+      ],
+      "tenant_northline_branch": [
+        "connector_instance_ticketing"
+      ]
+    },
+    "connector_instances_by_status": {
+      "config_stale": [
+        "connector_instance_ticketing"
+      ],
+      "degraded": [
+        "connector_instance_crm"
+      ],
+      "healthy": [
+        "connector_instance_accounting"
+      ],
+      "retry_required": [
+        "connector_instance_payments"
+      ]
+    },
+    "connector_instances_by_provider": {
+      "accounting": [
+        "connector_instance_accounting"
+      ],
+      "crm": [
+        "connector_instance_crm"
+      ],
+      "payments": [
+        "connector_instance_payments"
+      ],
+      "ticketing": [
+        "connector_instance_ticketing"
+      ]
+    },
+    "connector_sync_jobs_by_status": {
+      "completed": [
+        "connector_sync_job_001"
+      ],
+      "failed": [
+        "connector_sync_job_002"
+      ],
+      "stale_config": [
+        "connector_sync_job_003"
+      ]
+    },
+    "connector_sync_jobs_by_provider": {
+      "accounting": [
+        "connector_sync_job_001"
+      ],
+      "crm": [
+        "connector_sync_job_002"
+      ],
+      "ticketing": [
+        "connector_sync_job_003"
+      ]
     }
   },
   "summary": {
@@ -7514,6 +8439,8 @@
       "dispatchers": 1,
       "supervisors": 1,
       "managers": 1,
+      "portal_users": 2,
+      "enterprise_admins": 1,
       "customers": 20,
       "sites": 30,
       "assets": 60,
@@ -7528,7 +8455,19 @@
       "service_agreements": 3,
       "recurring_plans": 3,
       "webhook_subscriptions": 2,
-      "webhook_deliveries": 3
+      "webhook_deliveries": 3,
+      "tenants": 2,
+      "workspaces": 3,
+      "portal_accounts": 2,
+      "service_requests": 2,
+      "inventory_items": 4,
+      "stock_locations": 4,
+      "stock_movements": 2,
+      "vendors": 2,
+      "purchase_orders": 2,
+      "receiving_records": 1,
+      "connector_instances": 4,
+      "connector_sync_jobs": 3
     },
     "status_counts": {
       "draft": 1,
@@ -7824,6 +8763,82 @@
       "failed_deliveries": 1,
       "duplicate_deliveries": 1,
       "active_webhooks": 1
+    },
+    "tenant_health_overview": {
+      "tenant_northline": {
+        "id": "tenant_health_northline",
+        "tenant_id": "tenant_northline",
+        "portal_conversion_rate": 0.67,
+        "connector_failure_count": 2,
+        "low_stock_count": 2,
+        "po_backlog_count": 1,
+        "readiness_status": "ready"
+      },
+      "tenant_northline_branch": {
+        "id": "tenant_health_northline_branch",
+        "tenant_id": "tenant_northline_branch",
+        "portal_conversion_rate": 0.5,
+        "connector_failure_count": 1,
+        "low_stock_count": 1,
+        "po_backlog_count": 1,
+        "readiness_status": "config_incomplete"
+      }
+    },
+    "portal_adoption_summary": {
+      "id": "portal_adoption_northline",
+      "tenant_id": "tenant_northline",
+      "active_accounts": 1,
+      "invited_accounts": 1,
+      "request_conversion_rate": 0.5,
+      "approval_conversion_rate": 1.0
+    },
+    "inventory_summary": {
+      "low_stock_item_ids": [
+        "inventory_item_roof_seal"
+      ],
+      "cycle_count_ids": [
+        "cycle_count_001"
+      ],
+      "movement_ids": [
+        "stock_movement_001",
+        "stock_movement_002"
+      ],
+      "vehicle_location_ids": [
+        "stock_location_van_alpha",
+        "stock_location_van_gamma"
+      ]
+    },
+    "procurement_summary": {
+      "open_purchase_order_ids": [
+        "purchase_order_001"
+      ],
+      "partial_purchase_order_ids": [
+        "purchase_order_002"
+      ],
+      "receiving_mismatch_ids": [
+        "receiving_record_001"
+      ],
+      "reorder_suggestion_ids": [
+        "reorder_suggestion_001",
+        "reorder_suggestion_002"
+      ]
+    },
+    "connector_health_summary": {
+      "healthy_connector_ids": [
+        "connector_instance_accounting"
+      ],
+      "retry_required_connector_ids": [
+        "connector_instance_payments"
+      ],
+      "stale_connector_ids": [
+        "connector_instance_ticketing"
+      ],
+      "degraded_connector_ids": [
+        "connector_instance_crm"
+      ],
+      "failed_sync_job_ids": [
+        "connector_sync_job_002"
+      ]
     }
   }
 }

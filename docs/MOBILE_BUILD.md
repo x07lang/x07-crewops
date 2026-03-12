@@ -1,6 +1,6 @@
 # CrewOps Mobile Build
 
-CrewOps `v0.5.0` ships the same M6 reducer across desktop, iOS, and Android. The frontend dependency baseline is `std-web-ui@0.2.3`, and the checked-in device profiles carry the `0.5.0` release version.
+CrewOps `v0.6.0` ships the same M7 reducer across desktop, iOS, and Android. The frontend dependency baseline is `std-web-ui@0.2.4`, and the checked-in device profiles carry the `0.6.0` release version.
 
 ## Prereqs
 
@@ -23,8 +23,6 @@ From the repo root:
 ```sh
 mkdir -p build/reports
 
-x07-wasm web-ui build --project frontend/x07.json --index arch/web_ui/index.x07webui.json --profile web_ui_debug --out-dir dist/web_ui/web_ui_debug --clean --json --report-out build/reports/web_ui.build.debug.json --quiet-json
-
 x07-wasm device build --index arch/device/index.x07device.json --profile device_desktop_dev --out-dir dist/device/device_desktop_dev --clean --json --report-out build/reports/device.build.desktop.json --quiet-json
 x07-wasm device verify --dir dist/device/device_desktop_dev --json --report-out build/reports/device.verify.desktop.json --quiet-json
 x07-wasm device run --bundle dist/device/device_desktop_dev --target desktop --headless-smoke --json --report-out build/reports/device.run.desktop.json --quiet-json
@@ -46,10 +44,10 @@ Current profile ids from [`arch/device/index.x07device.json`](../arch/device/ind
 - `device_ios_dev`
 - `device_android_dev`
 
-Current M6 packaging intent:
+Current M7 packaging intent:
 
 - desktop is the local smoke and operator demo profile
-- iOS and Android package the same reducer for technician, dispatch, review, manager, finance, receivables, exports, estimates, contracts, recurring, and integrations
+- iOS and Android package the same reducer for operations, finance, portal, enterprise admin, inventory, procurement, and connector-health routes
 - all profiles keep dynamic code loading disabled
 
 ## Capability State
@@ -67,15 +65,6 @@ Mobile dev profile behavior:
 - both require a real backend `base_url` and `allowed_hosts` before simulator or device packaging
 - mobile capabilities enable `camera.photo`, `files.pick`, `blob_store`, `location.foreground`, and `notifications.local`
 
-Before pointing a mobile package at a real backend:
-
-1. Edit the relevant device profile.
-2. Set `backend.base_url` and `backend.allowed_hosts`.
-3. Keep the referenced capabilities allowlist aligned.
-4. Rebuild and repackage.
-
 ## CI And Release Notes
 
-[`scripts/ci/check_all.sh`](../scripts/ci/check_all.sh) remains the canonical CrewOps gate for the `v0.5.0` line, including replay, generated regressions, pack, verify, provenance, SLO, desktop smoke, and mobile package generation.
-
-The app still ships as one deterministic bundle. Do not rely on runtime WASM replacement or dynamic code loading.
+[`scripts/ci/check_all.sh`](../scripts/ci/check_all.sh) remains the canonical CrewOps gate for the `v0.6.0` line, including trace replay, generated regressions, pack, verify, provenance, deploy-plan, desktop smoke, and mobile package generation.

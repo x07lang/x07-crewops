@@ -1,4 +1,10 @@
 {
+  "schema_version": "x07.x07ast@0.5.0",
+  "kind": "module",
+  "module_id": "sync",
+  "imports": [
+    "std.vec"
+  ],
   "decls": [
     {
       "kind": "export",
@@ -9,688 +15,115 @@
       ]
     },
     {
-      "body": [
-        "bytes.lit",
-        "{\"cursor\":null,\"pending_ops\":[],\"last_pull_at\":null,\"last_push_at\":null,\"last_server_event_at\":null,\"status\":\"idle\",\"last_error\":null,\"conflict_status\":\"idle\",\"conflict_message\":\"\",\"conflict_code\":null,\"conflict_entity_id\":null,\"invoice_lock_status\":\"idle\",\"invoice_lock_message\":\"\",\"stale_invoice_id\":null,\"payment_revision_status\":\"idle\",\"pricing_revision_status\":\"idle\",\"stale_price_book_id\":null,\"export_status\":\"idle\",\"finance_revision\":null,\"unread_alerts\":0,\"unread_activity\":0,\"commercial_ops\":{\"estimate_revision_status\":\"idle\",\"stale_estimate_id\":null,\"agreement_revision_status\":\"idle\",\"stale_agreement_id\":null,\"recurring_generation_status\":\"idle\",\"stale_recurring_plan_id\":null,\"delivery_retry_status\":\"idle\",\"stale_delivery_id\":null}}"
-      ],
       "kind": "defn",
       "name": "sync.default_json_v1",
       "params": [],
-      "result": "bytes"
+      "result": "bytes",
+      "body": [
+        "bytes.lit",
+        "{\"cursor\":null,\"pending_ops\":[],\"last_pull_at\":null,\"last_push_at\":null,\"last_server_event_at\":null,\"status\":\"idle\",\"last_error\":null,\"conflict_status\":\"idle\",\"conflict_message\":\"\",\"conflict_code\":null,\"conflict_entity_id\":null,\"invoice_lock_status\":\"idle\",\"invoice_lock_message\":\"\",\"stale_invoice_id\":null,\"payment_revision_status\":\"idle\",\"pricing_revision_status\":\"idle\",\"stale_price_book_id\":null,\"export_status\":\"idle\",\"finance_revision\":null,\"unread_alerts\":0,\"unread_activity\":0,\"commercial_ops\":{\"estimate_revision_status\":\"idle\",\"stale_estimate_id\":null,\"agreement_revision_status\":\"idle\",\"stale_agreement_id\":null,\"recurring_generation_status\":\"idle\",\"stale_recurring_plan_id\":null,\"delivery_retry_status\":\"idle\",\"stale_delivery_id\":null},\"enterprise_ops\":{\"portal_approval_status\":\"idle\",\"stale_portal_request_id\":null,\"tenant_revision_status\":\"idle\",\"stale_tenant_id\":null,\"inventory_movement_status\":\"idle\",\"stale_stock_location_id\":null,\"receiving_status\":\"idle\",\"stale_purchase_order_id\":null,\"connector_config_status\":\"idle\",\"stale_connector_instance_id\":null}}"
+      ]
     },
     {
-      "body": [
-        "begin",
-        [
-          "let",
-          "out",
-          [
-            "std.vec.with_capacity",
-            1536
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              "{\"cursor\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "cursor_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"pending_ops\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "pending_ops_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"last_pull_at\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "last_pull_at_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"last_push_at\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "last_push_at_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"last_server_event_at\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "last_server_event_at_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"status\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "status_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"last_error\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "last_error_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"conflict_status\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "conflict_status_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"conflict_message\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "conflict_message_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"conflict_code\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "conflict_code_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"conflict_entity_id\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "conflict_entity_id_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"invoice_lock_status\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "invoice_lock_status_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"invoice_lock_message\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "invoice_lock_message_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"stale_invoice_id\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "stale_invoice_id_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"payment_revision_status\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "payment_revision_status_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"pricing_revision_status\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "pricing_revision_status_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"stale_price_book_id\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "stale_price_book_id_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"export_status\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "export_status_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"finance_revision\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "finance_revision_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"unread_alerts\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "unread_alerts_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"unread_activity\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "unread_activity_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"commercial_ops\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "commercial_ops_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              "}"
-            ]
-          ]
-        ],
-        [
-          "std.vec.as_bytes",
-          "out"
-        ]
-      ],
       "kind": "defn",
       "name": "sync.doc_v1",
       "params": [
-        {
-          "name": "cursor_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "pending_ops_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "last_pull_at_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "last_push_at_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "last_server_event_at_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "status_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "last_error_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "conflict_status_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "conflict_message_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "conflict_code_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "conflict_entity_id_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "invoice_lock_status_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "invoice_lock_message_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "stale_invoice_id_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "payment_revision_status_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "pricing_revision_status_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "stale_price_book_id_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "export_status_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "finance_revision_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "unread_alerts_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "unread_activity_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "commercial_ops_json",
-          "ty": "bytes_view"
-        }
+        { "name": "cursor_json", "ty": "bytes_view" },
+        { "name": "pending_ops_json", "ty": "bytes_view" },
+        { "name": "last_pull_at_json", "ty": "bytes_view" },
+        { "name": "last_push_at_json", "ty": "bytes_view" },
+        { "name": "last_server_event_at_json", "ty": "bytes_view" },
+        { "name": "status_json", "ty": "bytes_view" },
+        { "name": "last_error_json", "ty": "bytes_view" },
+        { "name": "conflict_status_json", "ty": "bytes_view" },
+        { "name": "conflict_message_json", "ty": "bytes_view" },
+        { "name": "conflict_code_json", "ty": "bytes_view" },
+        { "name": "conflict_entity_id_json", "ty": "bytes_view" },
+        { "name": "invoice_lock_status_json", "ty": "bytes_view" },
+        { "name": "invoice_lock_message_json", "ty": "bytes_view" },
+        { "name": "stale_invoice_id_json", "ty": "bytes_view" },
+        { "name": "payment_revision_status_json", "ty": "bytes_view" },
+        { "name": "pricing_revision_status_json", "ty": "bytes_view" },
+        { "name": "stale_price_book_id_json", "ty": "bytes_view" },
+        { "name": "export_status_json", "ty": "bytes_view" },
+        { "name": "finance_revision_json", "ty": "bytes_view" },
+        { "name": "unread_alerts_json", "ty": "bytes_view" },
+        { "name": "unread_activity_json", "ty": "bytes_view" },
+        { "name": "commercial_ops_json", "ty": "bytes_view" },
+        { "name": "enterprise_ops_json", "ty": "bytes_view" }
       ],
-      "result": "bytes"
-    },
-    {
+      "result": "bytes",
       "body": [
         "begin",
-        [
-          "let",
-          "out",
-          [
-            "std.vec.with_capacity",
-            1024
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              "{\"ops\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "pending_ops_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              ",\"finance_revision\":"
-            ]
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            "finance_revision_json"
-          ]
-        ],
-        [
-          "set",
-          "out",
-          [
-            "std.vec.extend_bytes",
-            "out",
-            [
-              "bytes.view_lit",
-              "}"
-            ]
-          ]
-        ],
-        [
-          "std.vec.as_bytes",
-          "out"
-        ]
-      ],
+        ["let", "out", ["std.vec.with_capacity", 1792]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", "{\"cursor\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "cursor_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"pending_ops\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "pending_ops_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"last_pull_at\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "last_pull_at_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"last_push_at\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "last_push_at_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"last_server_event_at\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "last_server_event_at_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"status\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "status_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"last_error\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "last_error_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"conflict_status\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "conflict_status_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"conflict_message\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "conflict_message_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"conflict_code\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "conflict_code_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"conflict_entity_id\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "conflict_entity_id_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"invoice_lock_status\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "invoice_lock_status_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"invoice_lock_message\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "invoice_lock_message_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"stale_invoice_id\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "stale_invoice_id_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"payment_revision_status\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "payment_revision_status_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"pricing_revision_status\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "pricing_revision_status_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"stale_price_book_id\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "stale_price_book_id_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"export_status\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "export_status_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"finance_revision\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "finance_revision_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"unread_alerts\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "unread_alerts_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"unread_activity\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "unread_activity_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"commercial_ops\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "commercial_ops_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"enterprise_ops\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "enterprise_ops_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", "}"]]],
+        ["std.vec.as_bytes", "out"]
+      ]
+    },
+    {
       "kind": "defn",
       "name": "sync.push_body_v1",
       "params": [
-        {
-          "name": "pending_ops_json",
-          "ty": "bytes_view"
-        },
-        {
-          "name": "finance_revision_json",
-          "ty": "bytes_view"
-        }
+        { "name": "pending_ops_json", "ty": "bytes_view" },
+        { "name": "finance_revision_json", "ty": "bytes_view" }
       ],
-      "result": "bytes"
+      "result": "bytes",
+      "body": [
+        "begin",
+        ["let", "out", ["std.vec.with_capacity", 1024]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", "{\"ops\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "pending_ops_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"finance_revision\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "finance_revision_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", "}"]]],
+        ["std.vec.as_bytes", "out"]
+      ]
     }
-  ],
-  "imports": [
-    "std.vec"
-  ],
-  "kind": "module",
-  "module_id": "sync",
-  "schema_version": "x07.x07ast@0.5.0"
+  ]
 }

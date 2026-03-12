@@ -1,6 +1,6 @@
 # CrewOps Data Model
 
-CrewOps `v0.5.0` ships an M6 seed that keeps the operations graph, retains the M5 finance layer, and adds estimate, contract, recurring-service, renewal, and integration entities. The canonical source is [`tests/fixtures/demo_org.json`](../tests/fixtures/demo_org.json), mirrored into deterministic backend payloads under [`backend/src/demo_seed.x07.json`](../backend/src/demo_seed.x07.json).
+CrewOps `v0.6.0` ships an M7 seed that keeps the original operations graph, retains the M5 and M6 finance and commercial layers, and adds tenant, portal, inventory, procurement, connector, and readiness entities. The canonical source is [`tests/fixtures/demo_org.json`](../tests/fixtures/demo_org.json), mirrored into deterministic backend payloads under [`backend/src/demo_seed.x07.json`](../backend/src/demo_seed.x07.json).
 
 ## Seed Scope
 
@@ -9,81 +9,48 @@ Core operations:
 - `1` organization
 - `2` branches
 - `3` teams
-- `11` users across technician, dispatcher, supervisor, and manager roles
+- `13` users across technician, dispatcher, supervisor, manager, portal, and enterprise-admin roles
 - `20` customers
 - `30` sites
 - `60` assets
 - `25` work orders
 - `25` visits
 - `25` assignments
-- `25` schedule windows
-- `3` review queue items
-- `1` review decision
-- `1` correction task
-- `1` correction response
-- `25` activity events
-- `4` alerts
-- `2` branch summaries
-- `3` team summaries
-- `1` dashboard rollup
-- `3` workload snapshots
 
-Commercial M5 and M6:
+Finance and commercial:
 
-- `3` price books
-- `6` price book items
-- `3` billing policies
-- `2` labor rate policies
-- `6` part rate policies
-- `2` tax rules
-- `3` discount rules
-- `9` invoices
-- `36` invoice lines
-- `7` invoice adjustments
-- `9` invoice artifacts
-- `9` service summary artifacts
-- `6` customer statements
-- `3` payment records
-- `3` payment allocations
-- `8` receivable summaries
-- `3` export jobs
-- `6` finance rollups
-- `6` profitability snapshots
-- `4` estimates
-- `6` estimate versions
-- `1` estimate approval
-- `4` proposal artifacts
-- `3` service agreements
-- `3` agreement lines
-- `3` recurring plans
-- `3` recurrence rules
-- `4` generated schedule items
-- `2` renewal records
-- `3` contract-health snapshots
-- `2` integration endpoints
-- `2` API key records
-- `2` webhook subscriptions
-- `3` webhook deliveries
-- `2` connector mappings
-- `2` import or sync jobs
-- `3` recurring-revenue rollups
+- price books, rate policies, billing policies, tax rules, discount rules
+- invoices, invoice lines, invoice adjustments, service summary artifacts
+- payment records, payment allocations, customer statements, receivable summaries
+- export jobs, finance rollups, profitability snapshots
+- estimates, estimate versions, estimate approvals, proposal artifacts
+- service agreements, agreement lines, recurring plans, recurrence rules, generated schedule items, renewal records, contract-health snapshots
+- integration endpoints, API keys, webhook subscriptions, webhook deliveries, connector mappings, import or sync jobs
+
+M7 enterprise and hosted:
+
+- tenants, workspaces, role definitions, permission grants
+- branding packs, theme overrides
+- portal accounts, portal sessions, customer timeline events, service requests
+- inventory items, stock locations, vehicle stock, stock movements, cycle counts
+- vendors, vendor catalog items, purchase orders, purchase order lines, receiving records, reorder suggestions
+- connector instances, connector sync jobs, connector delivery records
+- tenant health snapshots, portal adoption rollups
 
 ## Top-Level Entity Families
 
-The generated fixture includes:
+The generated fixture includes normalized families for:
 
 - organization, branches, teams, users
 - customers, sites, assets
 - work_orders, visits, templates, parts_catalog
 - assignments, schedule_windows
 - review_queue_items, review_decisions, correction_tasks, correction_responses
-- activity_events, alerts, sla_policies, dispatch_filters
+- activity_events, alerts, dispatch_filters, sla_policies
 - branch_summaries, team_summaries, dashboard_rollups, workload_snapshots
-- price_books, price_book_items
-- labor_rate_policies, part_rate_policies, billing_policies
+- price_books, price_book_items, labor_rate_policies, part_rate_policies, billing_policies
 - tax_rules, discount_rules
-- invoices, invoice_lines, invoice_adjustments
-- invoice_artifacts, service_summary_artifacts
+- invoices, invoice_lines, invoice_adjustments, invoice_artifacts, service_summary_artifacts
 - payment_records, payment_allocations
 - customer_statements, receivable_summaries
 - export_jobs, finance_rollups, profitability_snapshots
@@ -93,135 +60,58 @@ The generated fixture includes:
 - renewal_records, contract_health_snapshots
 - integration_endpoints, api_key_records, webhook_subscriptions, webhook_deliveries
 - connector_mappings, import_or_sync_jobs, recurring_revenue_rollups
+- tenants, workspaces, role_definitions, permission_grants, branding_packs, theme_overrides
+- portal_accounts, portal_sessions, customer_timeline_events, service_requests
+- inventory_items, stock_locations, vehicle_stock, stock_movements, cycle_counts
+- vendors, vendor_catalog_items, purchase_orders, purchase_order_lines, receiving_records, reorder_suggestions
+- connector_instances, connector_sync_jobs, connector_delivery_records
+- tenant_health_snapshots, portal_adoption_rollups
 - indexes, summary
 
-## Commercial Entity Shape
+## Indexes And Summary
 
-Pricing and finance stay normalized rather than embedded on work orders:
+The reducer reads normalized entities through precomputed indexes. M7 adds:
 
-- `price_books`
-- `price_book_items`
-- `billing_policies`
-- `labor_rate_policies`
-- `part_rate_policies`
-- `tax_rules`
-- `discount_rules`
-- `invoices`
-- `invoice_lines`
-- `invoice_adjustments`
-- `payment_records`
-- `payment_allocations`
-- `customer_statements`
-- `receivable_summaries`
-- `export_jobs`
-- `finance_rollups`
-- `profitability_snapshots`
+- `workspaces_by_tenant`
+- `portal_accounts_by_tenant`
+- `portal_accounts_by_status`
+- `service_requests_by_tenant`
+- `service_requests_by_status`
+- `inventory_items_by_tenant`
+- `inventory_items_by_status`
+- `inventory_items_by_location`
+- `stock_locations_by_tenant`
+- `stock_movements_by_location`
+- `stock_movements_by_status`
+- `vendors_by_tenant`
+- `purchase_orders_by_tenant`
+- `purchase_orders_by_status`
+- `purchase_orders_by_vendor`
+- `receiving_records_by_purchase_order`
+- `reorder_suggestions_by_location`
+- `connector_instances_by_tenant`
+- `connector_instances_by_status`
+- `connector_instances_by_provider`
+- `connector_sync_jobs_by_status`
+- `connector_sync_jobs_by_provider`
 
-M6 adds the contracted-service graph:
+The summary document now carries:
 
-- `estimates`
-- `estimate_versions`
-- `estimate_approvals`
-- `proposal_artifacts`
-- `service_agreements`
-- `agreement_lines`
-- `recurring_plans`
-- `recurrence_rules`
-- `generated_schedule_items`
-- `renewal_records`
-- `contract_health_snapshots`
-- `integration_endpoints`
-- `api_key_records`
-- `webhook_subscriptions`
-- `webhook_deliveries`
-- `connector_mappings`
-- `import_or_sync_jobs`
-- `recurring_revenue_rollups`
+- tenant health rollups
+- portal adoption rollups
+- inventory low-stock and cycle-count summaries
+- procurement backlog and receiving mismatch summaries
+- connector health and failed-sync summaries
 
-## Indexes And Summaries
+## Draft And Sync State
 
-The reducer reads normalized entities through precomputed indexes. M6 adds estimate, agreement, recurring-plan, renewal, API-key, and delivery indexes alongside the existing work-order, review, billing, and finance families.
+User-editable M7 inputs live under `drafts.enterprise_ops`, including tenant selection, branding colors, portal request details, inventory adjustments, receiving quantities, and connector retry selections.
 
-Current M6 index families include:
+Replay-safe enterprise conflict state lives under `sync.enterprise_ops`, including:
 
-- `estimates_by_status`
-- `estimates_by_customer`
-- `estimates_by_branch`
-- `agreements_by_status`
-- `agreements_by_customer`
-- `agreements_by_branch`
-- `recurring_plans_by_status`
-- `recurring_plans_by_agreement`
-- `generated_schedule_items_by_plan`
-- `renewal_records_by_status`
-- `api_keys_by_status`
-- `webhook_deliveries_by_status`
-- `webhook_deliveries_by_subscription`
-
-The `summary` branch now carries:
-
-- `manager_metrics`
-- `branch_rollups`
-- `team_rollups`
-- `dashboard_rollup`
-- `finance_metrics`
-- `invoice_status_counts`
-- `aging_buckets`
-- `receivables_overview`
-- `export_job_counts`
-- `profitability_summary`
-- `estimate_status_counts`
-- `agreement_status_counts`
-- `recurring_plan_status_counts`
-- `contract_health_overview`
-- `renewal_pipeline`
-- `recurring_revenue_summary`
-- `integration_summary`
-
-## Reducer Draft And Sync State
-
-The reducer keeps user-editable commercial inputs in `drafts`, including pricing labels, invoice fields, payment fields, export filters, and the M6 `commercial_ops` subtree for estimate, contract, recurring, and integration forms.
-
-The `sync` branch includes:
-
-- generic `conflict_status`, `conflict_code`, `conflict_entity_id`
-- `invoice_lock_status` and `invoice_lock_message`
-- `estimate_revision_status` and `stale_estimate_id`
-- `agreement_revision_status` and `stale_agreement_id`
-- `payment_revision_status`
-- `pricing_revision_status` and `stale_price_book_id`
-- `export_status`
-- `finance_revision`
-- nested recurring-generation and delivery-retry state used by the frontend reducer
-
-## Lifecycle Enums
-
-Estimate statuses in the seed:
-
-- `draft`
-- `sent`
-- `viewed`
-- `approved`
-
-Service agreement statuses in the seed:
-
-- `active`
-- `paused`
-- `renewal_pending`
-
-Recurring-plan statuses in the seed:
-
-- `active`
-- `paused`
-
-Invoice statuses in the seed:
-
-- `draft`
-- `pending_review`
-- `issued`
-- `sent`
-- `partially_paid`
-- `paid`
-- `overdue`
-- `voided`
-- `written_off`
+- `portal_approval_status`
+- `tenant_revision_status`
+- `inventory_movement_status`
+- `receiving_status`
+- `connector_config_status`
+- stale ids for portal requests, tenants, stock locations, purchase orders, and connector instances

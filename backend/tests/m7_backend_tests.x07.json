@@ -1,0 +1,208 @@
+{
+  "schema_version": "x07.x07ast@0.5.0",
+  "kind": "module",
+  "module_id": "m7_backend_tests",
+  "imports": [
+    "app",
+    "backend_helpers",
+    "demo_seed",
+    "errors",
+    "std.json",
+    "std.test",
+    "std.vec"
+  ],
+  "decls": [
+    {
+      "kind": "export",
+      "names": [
+        "m7_backend_tests.test_connectors_vendor_deliveries_route_v1",
+        "m7_backend_tests.test_enterprise_admin_route_v1",
+        "m7_backend_tests.test_inventory_movement_route_v1",
+        "m7_backend_tests.test_m7_summary_seed_v1",
+        "m7_backend_tests.test_m7_sync_seed_v1",
+        "m7_backend_tests.test_portal_request_convert_route_v1",
+        "m7_backend_tests.test_procurement_receive_route_v1",
+        "m7_backend_tests.test_release_readiness_route_v1"
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "m7_backend_tests._assert_path_eq_v1",
+      "params": [
+        { "name": "doc_json", "ty": "bytes_view" },
+        { "name": "path_json", "ty": "bytes_view" },
+        { "name": "want_json", "ty": "bytes_view" }
+      ],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "got_json", ["backend_helpers.extract_path_v1", "doc_json", "path_json"]],
+        ["try", ["std.test.assert_bytes_eq", "got_json", ["view.to_bytes", "want_json"], ["std.test.code_assert_bytes_eq"]]],
+        ["std.test.pass"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "m7_backend_tests._extract_v1",
+      "params": [
+        { "name": "doc_json", "ty": "bytes_view" },
+        { "name": "path_json", "ty": "bytes_view" }
+      ],
+      "result": "bytes",
+      "body": [
+        "begin",
+        ["let", "qv", ["std.vec.with_capacity", ["+", ["+", ["view.len", "doc_json"], ["view.len", "path_json"]], 8]]],
+        ["set", "qv", ["std.vec.extend_bytes", "qv", "doc_json"]],
+        ["set", "qv", ["std.vec.push", "qv", 0]],
+        ["set", "qv", ["std.vec.extend_bytes", "qv", "path_json"]],
+        ["let", "query", ["std.vec.as_bytes", "qv"]],
+        ["std.json.extract_path_canon_or_err", ["bytes.view", "query"]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "m7_backend_tests._assert_route_body_v1",
+      "params": [
+        { "name": "request_json", "ty": "bytes_view" },
+        { "name": "status_json", "ty": "bytes_view" },
+        { "name": "body_json", "ty": "bytes_view" }
+      ],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "response_json", ["app.solve", "request_json"]],
+        ["let", "expected_body_text_json", ["errors.json_string_v1", "body_json"]],
+        ["let", "got_status_json", ["m7_backend_tests._extract_v1", ["bytes.view", "response_json"], ["bytes.view_lit", "status"]]],
+        ["let", "got_body_text_json", ["m7_backend_tests._extract_v1", ["bytes.view", "response_json"], ["bytes.view_lit", "body.text"]]],
+        ["try", ["std.test.assert_bytes_eq", "got_status_json", ["view.to_bytes", "status_json"], ["std.test.code_assert_bytes_eq"]]],
+        ["try", ["std.test.assert_bytes_eq", "got_body_text_json", "expected_body_text_json", ["std.test.code_assert_bytes_eq"]]],
+        ["std.test.pass"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "m7_backend_tests._request_empty_v1",
+      "params": [
+        { "name": "id_json", "ty": "bytes_view" },
+        { "name": "method_json", "ty": "bytes_view" },
+        { "name": "path_json", "ty": "bytes_view" }
+      ],
+      "result": "bytes",
+      "body": [
+        "begin",
+        ["let", "out", ["std.vec.with_capacity", ["+", ["+", ["+", ["view.len", "id_json"], ["view.len", "method_json"]], ["view.len", "path_json"]], 96]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", "{\"id\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "id_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"method\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "method_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"path\":"]]],
+        ["set", "out", ["std.vec.extend_bytes", "out", "path_json"]],
+        ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"headers\":[],\"body\":{\"bytes_len\":0,\"text\":\"\"}}"]]],
+        ["std.vec.as_bytes", "out"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "m7_backend_tests.test_enterprise_admin_route_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "request_json", ["m7_backend_tests._request_empty_v1", ["bytes.view_lit", "\"req_enterprise_admin\""], ["bytes.view_lit", "\"GET\""], ["bytes.view_lit", "\"/api/admin/tenants\""]]],
+        ["let", "body_json", ["demo_seed.enterprise_admin_body_v1"]],
+        ["m7_backend_tests._assert_route_body_v1", ["bytes.view", "request_json"], ["bytes.view_lit", "200"], ["bytes.view", "body_json"]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "m7_backend_tests.test_portal_request_convert_route_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "request_json", ["m7_backend_tests._request_empty_v1", ["bytes.view_lit", "\"req_portal_convert\""], ["bytes.view_lit", "\"POST\""], ["bytes.view_lit", "\"/api/portal/requests/service_request_001/convert\""]]],
+        ["let", "convert_map_json", ["demo_seed.portal_request_convert_map_body_v1"]],
+        ["let", "body_json", ["backend_helpers.extract_map_entry_v1", ["bytes.view", "convert_map_json"], ["bytes.view_lit", "service_request_001"]]],
+        ["m7_backend_tests._assert_route_body_v1", ["bytes.view", "request_json"], ["bytes.view_lit", "200"], ["bytes.view", "body_json"]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "m7_backend_tests.test_inventory_movement_route_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "request_json", ["m7_backend_tests._request_empty_v1", ["bytes.view_lit", "\"req_inventory_movement\""], ["bytes.view_lit", "\"POST\""], ["bytes.view_lit", "\"/api/inventory/movements\""]]],
+        ["let", "body_json", ["demo_seed.inventory_movement_body_v1"]],
+        ["m7_backend_tests._assert_route_body_v1", ["bytes.view", "request_json"], ["bytes.view_lit", "201"], ["bytes.view", "body_json"]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "m7_backend_tests.test_procurement_receive_route_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "request_json", ["m7_backend_tests._request_empty_v1", ["bytes.view_lit", "\"req_procurement_receive\""], ["bytes.view_lit", "\"POST\""], ["bytes.view_lit", "\"/api/procurement/receiving\""]]],
+        ["let", "body_json", ["demo_seed.procurement_receive_body_v1"]],
+        ["m7_backend_tests._assert_route_body_v1", ["bytes.view", "request_json"], ["bytes.view_lit", "201"], ["bytes.view", "body_json"]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "m7_backend_tests.test_connectors_vendor_deliveries_route_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "request_json", ["m7_backend_tests._request_empty_v1", ["bytes.view_lit", "\"req_connectors_deliveries\""], ["bytes.view_lit", "\"GET\""], ["bytes.view_lit", "\"/api/connectors/vendor/connector_instance_crm/deliveries\""]]],
+        ["let", "deliveries_map_json", ["demo_seed.connectors_vendor_deliveries_map_body_v1"]],
+        ["let", "body_json", ["backend_helpers.extract_map_entry_v1", ["bytes.view", "deliveries_map_json"], ["bytes.view_lit", "connector_instance_crm"]]],
+        ["m7_backend_tests._assert_route_body_v1", ["bytes.view", "request_json"], ["bytes.view_lit", "200"], ["bytes.view", "body_json"]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "m7_backend_tests.test_release_readiness_route_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "request_json", ["m7_backend_tests._request_empty_v1", ["bytes.view_lit", "\"req_release_readiness\""], ["bytes.view_lit", "\"GET\""], ["bytes.view_lit", "\"/api/release/readiness\""]]],
+        ["let", "body_json", ["demo_seed.release_readiness_body_v1"]],
+        ["m7_backend_tests._assert_route_body_v1", ["bytes.view", "request_json"], ["bytes.view_lit", "200"], ["bytes.view", "body_json"]]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "m7_backend_tests.test_m7_summary_seed_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "summary_json", ["demo_seed.summary_body_v1"]],
+        ["try", ["m7_backend_tests._assert_path_eq_v1", ["bytes.view", "summary_json"], ["bytes.view_lit", "counts.tenants"], ["bytes.view_lit", "2"]]],
+        ["try", ["m7_backend_tests._assert_path_eq_v1", ["bytes.view", "summary_json"], ["bytes.view_lit", "inventory_summary.low_stock_item_ids"], ["bytes.view_lit", "[\"inventory_item_roof_seal\"]"]]],
+        ["try", ["m7_backend_tests._assert_path_eq_v1", ["bytes.view", "summary_json"], ["bytes.view_lit", "connector_health_summary.degraded_connector_ids"], ["bytes.view_lit", "[\"connector_instance_crm\"]"]]],
+        ["std.test.pass"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "m7_backend_tests.test_m7_sync_seed_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        ["let", "sync_pull_json", ["demo_seed.sync_pull_body_v1"]],
+        ["let", "sync_push_json", ["demo_seed.sync_push_body_v1"]],
+        ["try", ["m7_backend_tests._assert_path_eq_v1", ["bytes.view", "sync_pull_json"], ["bytes.view_lit", "server_policies.portal_approval_mode"], ["bytes.view_lit", "\"revision_sensitive\""]]],
+        ["try", ["m7_backend_tests._assert_path_eq_v1", ["bytes.view", "sync_push_json"], ["bytes.view_lit", "sync.enterprise_ops.portal_approval_status"], ["bytes.view_lit", "\"approved\""]]],
+        ["try", ["m7_backend_tests._assert_path_eq_v1", ["bytes.view", "sync_push_json"], ["bytes.view_lit", "sync.enterprise_ops.connector_config_status"], ["bytes.view_lit", "\"mismatch\""]]],
+        ["std.test.pass"]
+      ]
+    }
+  ]
+}

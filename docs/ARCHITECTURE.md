@@ -1,25 +1,30 @@
 # CrewOps Architecture
 
-CrewOps `v0.5.0` stays one repo, one deterministic reducer, and one seed-backed backend. M6 extends the operations and finance core with estimates, approvals, service agreements, recurring work generation, renewals, and integration control without splitting the app into separate products.
+CrewOps `v0.6.0` keeps one repo, one deterministic reducer, and one seed-backed backend. M7 extends the M6 operations and finance core with customer portal, tenant administration, inventory, procurement, vendor connectors, and hosted-readiness reporting without splitting the app into separate products.
 
 ## Repo Layers
 
 - [`frontend/`](../frontend)
-  - reducer modules, state defaults, and the `std-web-ui@0.2.3` dependency
+  - reducer modules, state defaults, route helpers, and the `std-web-ui@0.2.4` dependency
 - [`backend/`](../backend)
-  - deterministic API handlers for bootstrap, execution, dispatch, review, activity, sync, billing, estimates, contracts, recurrence, and integrations
+  - deterministic API handlers for bootstrap, execution, dispatch, review, finance, portal, enterprise admin, inventory, procurement, connectors, and readiness
 - [`arch/`](../arch)
   - app, web UI, device, SLO, and provenance profiles
 - [`tests/`](../tests)
-  - deterministic fixtures, traces, regressions, and harness manifests
+  - deterministic fixtures, traces, incidents, regressions, and harness manifests
 - [`scripts/ci/`](../scripts/ci)
-  - seed regeneration plus the canonical build and replay gate
+  - seed regeneration plus the canonical build, replay, and release gate
 
 ## Frontend Reducer
 
 The reducer entrypoint is [`frontend/src/app.x07.json`](../frontend/src/app.x07.json).
 
-CrewOps keeps one shared state tree rather than one reducer per role. M6 extends that tree with commercial contract state, recurring-service selections, integration filters, and revision or delivery conflict state.
+CrewOps keeps one shared state tree rather than one reducer per role. M7 extends that tree with:
+
+- portal, enterprise, inventory, procurement, and connector-health route handling
+- additional selected ids and filters for tenant, portal, inventory, purchasing, and connector surfaces
+- `enterprise_ops` draft data for tenant settings, branding, portal requests, inventory adjustments, receiving, and connector retry selections
+- `enterprise_ops` sync state for portal approval, tenant revision, inventory movement, receiving, and connector configuration status
 
 Current primary routes:
 
@@ -41,25 +46,30 @@ Current primary routes:
 - `contracts`
 - `recurring`
 - `integrations`
+- `portal`
+- `enterprise`
+- `inventory`
+- `procurement`
+- `integration_dashboard`
 
 Important state modules:
 
 - [`frontend/src/state.x07.json`](../frontend/src/state.x07.json)
-  - default UI, selected ids for the M6 commercial surfaces, and `0.5.0` app metadata
+  - default UI, selected ids for M6 and M7 surfaces, and `0.6.0` app metadata
 - [`frontend/src/entities.x07.json`](../frontend/src/entities.x07.json)
-  - normalized entity maps and indexes for ops, finance, estimates, agreements, recurring plans, and integrations
+  - normalized entity maps and indexes for operations, finance, portal, tenants, inventory, procurement, and connectors
 - [`frontend/src/drafts.x07.json`](../frontend/src/drafts.x07.json)
-  - intake, pricing, invoice, payment, export, and `commercial_ops` draft fields
+  - intake, pricing, invoice, payment, export, `commercial_ops`, and `enterprise_ops` draft fields
 - [`frontend/src/sync.x07.json`](../frontend/src/sync.x07.json)
-  - deterministic sync state for invoice, payment, pricing, estimate, agreement, recurrence, and delivery failures
+  - deterministic sync state for invoice, payment, pricing, estimate, agreement, recurrence, delivery, portal, tenant, stock, receiving, and connector conflicts
 - [`frontend/src/routes.x07.json`](../frontend/src/routes.x07.json)
-  - route selection for the full M6 nav surface
+  - route selection for both the legacy operations routes and the M7 enterprise surfaces
 
 ## Backend Surface
 
 The backend entrypoint is [`backend/src/app.x07.json`](../backend/src/app.x07.json).
 
-Operational handlers remain in the existing modules:
+Operations and finance keep their existing modules:
 
 - [`backend/src/bootstrap.x07.json`](../backend/src/bootstrap.x07.json)
 - [`backend/src/session.x07.json`](../backend/src/session.x07.json)
@@ -73,9 +83,7 @@ Operational handlers remain in the existing modules:
 - [`backend/src/visits.x07.json`](../backend/src/visits.x07.json)
 - [`backend/src/attachments.x07.json`](../backend/src/attachments.x07.json)
 - [`backend/src/sync.x07.json`](../backend/src/sync.x07.json)
-
-Commercial routes are grouped under [`backend/src/commercial_api.x07.json`](../backend/src/commercial_api.x07.json), which delegates to:
-
+- [`backend/src/commercial_api.x07.json`](../backend/src/commercial_api.x07.json)
 - [`backend/src/pricing.x07.json`](../backend/src/pricing.x07.json)
 - [`backend/src/invoices.x07.json`](../backend/src/invoices.x07.json)
 - [`backend/src/finance_summary.x07.json`](../backend/src/finance_summary.x07.json)
@@ -86,13 +94,30 @@ Commercial routes are grouped under [`backend/src/commercial_api.x07.json`](../b
 - [`backend/src/recurrence.x07.json`](../backend/src/recurrence.x07.json)
 - [`backend/src/integrations.x07.json`](../backend/src/integrations.x07.json)
 
+M7 adds dedicated deterministic handlers for:
+
+- [`backend/src/tenants.x07.json`](../backend/src/tenants.x07.json)
+- [`backend/src/enterprise_api.x07.json`](../backend/src/enterprise_api.x07.json)
+- [`backend/src/portal.x07.json`](../backend/src/portal.x07.json)
+- [`backend/src/inventory.x07.json`](../backend/src/inventory.x07.json)
+- [`backend/src/procurement.x07.json`](../backend/src/procurement.x07.json)
+- [`backend/src/connectors_vendor.x07.json`](../backend/src/connectors_vendor.x07.json)
+- [`backend/src/hosted_readiness.x07.json`](../backend/src/hosted_readiness.x07.json)
+
 ## Seed, Bootstrap, And Sync
 
-The canonical seed is generated by [`scripts/ci/seed_demo.sh`](../scripts/ci/seed_demo.sh) and mirrored into deterministic backend payloads. M6 expands that seed with estimate versions and approvals, proposal artifacts, service agreements, agreement lines, recurring plans and schedule items, renewal and contract-health records, and integration endpoint plus delivery data.
+The canonical seed is generated by [`scripts/ci/seed_demo.sh`](../scripts/ci/seed_demo.sh) and mirrored into deterministic backend payloads under [`backend/src/demo_seed.x07.json`](../backend/src/demo_seed.x07.json).
 
-Bootstrap still hydrates cache first and then HTTP when available. The cache key remains `crewops.bootstrap.snapshot.v2`.
+M7 expands the seed with:
 
-Sync remains deterministic and snapshot-based. The envelope now carries billing, estimate revision, agreement revision, recurring-generation, and delivery-retry state rather than introducing live workers or a database-backed queue.
+- tenants, workspaces, role definitions, permission grants, branding packs, and theme overrides
+- portal accounts, portal sessions, service requests, and customer timeline events
+- inventory items, stock locations, stock movements, vehicle stock, and cycle counts
+- vendors, purchase orders, receiving records, and reorder suggestions
+- connector instances, sync jobs, delivery records, and provider mappings
+- tenant health snapshots, portal adoption rollups, and release-readiness summaries
+
+Bootstrap still hydrates cache first and then HTTP when available. Sync remains deterministic and snapshot-based. Revision-sensitive workflows are represented through sync metadata and replayable incident traces rather than background workers or a database.
 
 ## Current Boundaries
 

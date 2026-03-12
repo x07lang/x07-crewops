@@ -2,7 +2,7 @@
   "meta": {
     "app": {
       "name": "x07_crewops",
-      "version": "0.4.0"
+      "version": "0.6.0"
     },
     "created_utc": "2026-03-11T00:00:00Z",
     "tool": {
@@ -3268,7 +3268,7 @@
             "status": "idle"
           },
           "diagnostics": {
-            "app_version": "0.4.0",
+            "app_version": "0.6.0",
             "build_profile": "dev",
             "last_event": "init",
             "target_kind": "web"

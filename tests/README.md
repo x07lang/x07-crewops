@@ -21,7 +21,7 @@ This directory holds the current CrewOps demo fixtures, replay traces, and regre
 - `tests/traces/attachment_retry_after_reconnect.trace.json`: offline evidence import followed by reconnect sync.
 - `tests/traces/blocked_visit_submit.trace.json`: blocked visit submission without signature.
 - `tests/traces/evidence_capture_upload_happy.trace.json`: successful capture, attachment register, and upload flow.
-- `tests/traces/estimate_create_happy.trace.json`: manager creates a draft estimate from the M6 commercial surface.
+- `tests/traces/estimate_create_happy.trace.json`: manager creates a draft estimate from the commercial surface.
 - `tests/traces/estimate_revision_then_send.trace.json`: manager revises a draft estimate and sends it to the customer.
 - `tests/traces/customer_approve_and_convert.trace.json`: manager replays approval and conversion on the seeded approved estimate path.
 - `tests/traces/stale_approval_blocked.trace.json`: stale estimate approval is rejected with deterministic conflict state.
@@ -31,6 +31,16 @@ This directory holds the current CrewOps demo fixtures, replay traces, and regre
 - `tests/traces/webhook_delivery_retry.trace.json`: integrations center delivery-log view and retry-state visibility.
 - `tests/traces/renewal_dashboard_view.trace.json`: contract health and renewal-pipeline surface on the contracts route.
 - `tests/traces/conversion_revision_conflict.trace.json`: stale estimate conversion is blocked with deterministic conflict payloads.
+- `tests/traces/portal_login_and_history_happy.trace.json`: portal user login and portal route hydration from the seeded customer account.
+- `tests/traces/portal_approve_estimate.trace.json`: portal route renders the approved estimate handoff state from the M7 payload.
+- `tests/traces/portal_request_to_office_conversion.trace.json`: portal request conversion state is replayed on the customer-facing route.
+- `tests/traces/branding_update_happy.trace.json`: enterprise admin route reflects the accepted branding update payload.
+- `tests/traces/tenant_role_change.trace.json`: enterprise admin route reflects tenant role and permission changes.
+- `tests/traces/inventory_consume_and_reconcile.trace.json`: inventory route replays movement acceptance and count variance states.
+- `tests/traces/purchase_order_receive_partial.trace.json`: procurement route replays partial receiving state.
+- `tests/traces/connector_sync_retry.trace.json`: connector health route reflects retry-required vendor sync state.
+- `tests/traces/connector_config_revision_conflict.trace.json`: connector health route reflects stale connector configuration state.
+- `tests/traces/enterprise_dashboard_health.trace.json`: enterprise route replays tenant health and readiness state.
 
 Run them against the current app bundle, for example:
 
@@ -45,6 +55,10 @@ x07-wasm app test --dir dist/app/crewops_dev --trace tests/traces/bootstrap_demo
 - `tests/regress/bootstrap_api_error.final.ui.json`: golden final UI snapshot for the generated regression.
 - `tests/regress/payment_revision_conflict.trace.json`: committed regression replay for the finance conflict path.
 - `tests/regress/payment_revision_conflict.final.ui.json`: golden final UI snapshot for that committed regression.
+- `tests/regress/connector_delivery_failure.regress.trace.json`: committed regression replay for connector delivery retry state.
+- `tests/regress/connector_delivery_failure.regress.final.ui.json`: golden final UI snapshot for that connector regression.
+- `tests/regress/portal_approval_revision_mismatch.regress.trace.json`: committed regression replay for portal approval mismatch state.
+- `tests/regress/portal_approval_revision_mismatch.regress.final.ui.json`: golden final UI snapshot for that portal regression.
 
 Typical flow:
 

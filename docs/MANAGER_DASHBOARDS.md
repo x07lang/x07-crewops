@@ -1,6 +1,6 @@
 # Manager Dashboards
 
-CrewOps `v0.5.0` keeps the manager dashboard and adds the M6 contracted-service control surface around it. Managers now move across operations, finance, receivables, exports, pricing, invoices, customer accounts, estimates, contracts, recurring plans, and integrations inside the same reducer.
+CrewOps `v0.6.0` keeps the manager dashboard and adds the M7 enterprise control surface around it. Managers now move across operations, finance, receivables, exports, pricing, invoices, customer accounts, estimates, contracts, recurring plans, integrations, tenant health, inventory risk, procurement backlog, and connector health inside the same reducer.
 
 ## Manager And Commercial Routes
 
@@ -18,6 +18,13 @@ Current manager-facing routes:
 - `contracts`
 - `recurring`
 - `integrations`
+
+Related M7 drill-down routes stay in the same app shell:
+
+- `enterprise`
+- `inventory`
+- `procurement`
+- `integration_dashboard`
 
 Current manager-facing APIs:
 
@@ -54,7 +61,7 @@ The manager route still reads the operational rollups:
 - `activity_unread`
 - `alert_unread`
 
-The commercial M6 routes add:
+The M6 and M7 routes add:
 
 - `finance_metrics`
 - `invoice_status_counts`
@@ -69,6 +76,11 @@ The commercial M6 routes add:
 - `renewal_pipeline`
 - `recurring_revenue_summary`
 - `integration_summary`
+- `tenant_health_overview`
+- `portal_adoption_summary`
+- `inventory_summary`
+- `procurement_summary`
+- `connector_health_summary`
 
 Those shapes are normalized in bootstrap and commercial API responses, so the UI does not need route-specific joins.
 
@@ -98,7 +110,7 @@ The combined manager and commercial surface is built around a short set of quest
 
 ## Release Coverage
 
-The `v0.5.0` manager release bar covers:
+The `v0.6.0` manager release bar covers:
 
 - operational summary bootstrap and drill-down
 - finance and profitability summary views
@@ -106,4 +118,5 @@ The `v0.5.0` manager release bar covers:
 - pricing and invoice control views
 - estimate, contract, renewal, and recurring-service dashboards
 - integrations center and delivery-log visibility
+- enterprise health, inventory, procurement, and connector-health drill-down
 - deterministic sync state for commercial conflicts and revisions

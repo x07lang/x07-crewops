@@ -1,6 +1,6 @@
 # Dispatch And Review
 
-CrewOps `v0.5.0` keeps dispatch and supervisor review as the front-line operational loop, then feeds the same work stream into billing, estimates, contracts, recurring maintenance, and integration surfaces without switching apps or data models.
+CrewOps `v0.6.0` keeps dispatch and supervisor review as the front-line operational loop, then feeds the same work stream into billing, estimates, contracts, recurring maintenance, portal handoff, inventory, procurement, and connector-health surfaces without switching apps or data models.
 
 ## Dispatcher Surface
 
@@ -57,9 +57,9 @@ Backend routes:
 - `POST /api/review/:visit_id/request-correction`
 - `POST /api/corrections/:id/resubmit`
 
-## Handoff To Commercial M6
+## Handoff To M7
 
-M6 does not replace dispatch or review. It extends the same workflow after work is completed, reviewed, or approved.
+M7 does not replace dispatch or review. It extends the same workflow after work is completed, reviewed, or approved.
 
 Downstream commercial surfaces read the same normalized tenant and snapshot updates through:
 
@@ -73,7 +73,7 @@ Downstream commercial surfaces read the same normalized tenant and snapshot upda
 - `GET /api/finance/summary`
 - `GET /api/integrations`
 
-That keeps dispatch, review, quoting, contracting, recurring service, billing, and finance aligned to one deterministic seed and one reducer state tree.
+That keeps dispatch, review, quoting, contracting, recurring service, billing, portal handoff, and enterprise follow-through aligned to one deterministic seed and one reducer state tree.
 
 ## Shared Activity And Sync
 
@@ -95,9 +95,17 @@ The sync branch now also surfaces contract and integration conflict state that o
 - `export_status`
 - recurring-generation and delivery-retry state
 
+M7 adds downstream enterprise replay state on the same snapshot:
+
+- `sync.enterprise_ops.portal_approval_status`
+- `sync.enterprise_ops.tenant_revision_status`
+- `sync.enterprise_ops.inventory_movement_status`
+- `sync.enterprise_ops.receiving_status`
+- `sync.enterprise_ops.connector_config_status`
+
 ## Release Coverage
 
-The `v0.5.0` dispatch and review release bar covers:
+The `v0.6.0` dispatch and review release bar covers:
 
 - dispatcher filtering, intake, assign, and reassign flows
 - supervisor approve, reject, and correction loops

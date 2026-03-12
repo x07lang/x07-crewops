@@ -12,7 +12,7 @@ from collections import defaultdict
 
 root = pathlib.Path(sys.argv[1])
 now = "2026-03-11T00:00:00Z"
-APP_VERSION = "0.5.0"
+APP_VERSION = "0.6.0"
 
 
 def clone_doc(doc):
@@ -105,6 +105,29 @@ users["user_manager_jonas"] = {
     "name": "Jonas Reed",
     "team_ids": [team["id"] for team in teams],
     "branch_id": "branch_north",
+}
+users["user_portal_morgan"] = {
+    "id": "user_portal_morgan",
+    "role": "portal_user",
+    "name": "Morgan Hale",
+    "team_ids": [],
+    "branch_id": "branch_north",
+    "customer_id": "cust_020",
+    "tenant_id": "tenant_northline",
+    "portal_account_id": "portal_account_001",
+}
+users["user_enterprise_iris"] = {
+    "id": "user_enterprise_iris",
+    "role": "enterprise_admin",
+    "name": "Iris Bennett",
+    "team_ids": [],
+    "branch_id": "branch_north",
+    "tenant_id": "tenant_northline",
+    "workspace_ids": [
+        "workspace_hq",
+        "workspace_branch_north",
+        "workspace_branch_south",
+    ],
 }
 
 customers = {}
@@ -2580,6 +2603,687 @@ import_or_sync_jobs = {
         "summary": "Retrying failed recurring-service deliveries.",
     },
 }
+tenants = {
+    "tenant_northline": {
+        "id": "tenant_northline",
+        "status": "active",
+        "name": "Northline Facilities",
+        "display_name": "Northline CrewOps",
+        "kind": "enterprise_parent",
+        "workspace_ids": [
+            "workspace_hq",
+            "workspace_branch_north",
+            "workspace_branch_south",
+        ],
+        "branding_pack_id": "branding_pack_northline",
+        "portal_config": {
+            "title": "Northline Service Portal",
+            "allow_estimate_approval": True,
+            "allow_request_intake": True,
+            "show_invoice_balance": True,
+        },
+        "feature_flags": {
+            "portal": True,
+            "inventory": True,
+            "procurement": True,
+            "connectors": True,
+            "white_label": True,
+        },
+        "readiness_status": "ready",
+        "revision": 7,
+    },
+    "tenant_northline_branch": {
+        "id": "tenant_northline_branch",
+        "status": "pilot",
+        "name": "Northline Northwest Franchise",
+        "display_name": "Northline Northwest",
+        "kind": "child_tenant",
+        "parent_tenant_id": "tenant_northline",
+        "workspace_ids": ["workspace_branch_north"],
+        "branding_pack_id": "branding_pack_northwest",
+        "portal_config": {
+            "title": "Northwest Portal",
+            "allow_estimate_approval": True,
+            "allow_request_intake": True,
+            "show_invoice_balance": True,
+        },
+        "feature_flags": {
+            "portal": True,
+            "inventory": True,
+            "procurement": True,
+            "connectors": True,
+            "white_label": True,
+        },
+        "readiness_status": "config_incomplete",
+        "revision": 3,
+    },
+}
+workspaces = {
+    "workspace_hq": {
+        "id": "workspace_hq",
+        "tenant_id": "tenant_northline",
+        "kind": "hq",
+        "name": "Headquarters",
+        "branch_id": None,
+    },
+    "workspace_branch_north": {
+        "id": "workspace_branch_north",
+        "tenant_id": "tenant_northline",
+        "kind": "branch",
+        "name": "North Branch Workspace",
+        "branch_id": "branch_north",
+    },
+    "workspace_branch_south": {
+        "id": "workspace_branch_south",
+        "tenant_id": "tenant_northline",
+        "kind": "branch",
+        "name": "South Branch Workspace",
+        "branch_id": "branch_south",
+    },
+}
+org_hierarchy_nodes = {
+    "org_node_root": {
+        "id": "org_node_root",
+        "tenant_id": "tenant_northline",
+        "parent_id": None,
+        "kind": "tenant",
+        "label": "Northline Facilities",
+        "workspace_id": "workspace_hq",
+    },
+    "org_node_branch_north": {
+        "id": "org_node_branch_north",
+        "tenant_id": "tenant_northline",
+        "parent_id": "org_node_root",
+        "kind": "branch",
+        "label": "North Branch",
+        "workspace_id": "workspace_branch_north",
+    },
+    "org_node_branch_south": {
+        "id": "org_node_branch_south",
+        "tenant_id": "tenant_northline",
+        "parent_id": "org_node_root",
+        "kind": "branch",
+        "label": "South Branch",
+        "workspace_id": "workspace_branch_south",
+    },
+}
+role_definitions = {
+    "role_enterprise_admin": {
+        "id": "role_enterprise_admin",
+        "tenant_id": "tenant_northline",
+        "label": "Enterprise Admin",
+        "scope_kind": "tenant",
+        "system_role": True,
+    },
+    "role_branch_manager": {
+        "id": "role_branch_manager",
+        "tenant_id": "tenant_northline",
+        "label": "Branch Manager",
+        "scope_kind": "workspace",
+        "system_role": True,
+    },
+    "role_inventory_coordinator": {
+        "id": "role_inventory_coordinator",
+        "tenant_id": "tenant_northline",
+        "label": "Inventory Coordinator",
+        "scope_kind": "workspace",
+        "system_role": False,
+    },
+    "role_portal_user": {
+        "id": "role_portal_user",
+        "tenant_id": "tenant_northline",
+        "label": "Portal User",
+        "scope_kind": "customer",
+        "system_role": True,
+    },
+}
+permission_grants = {
+    "permission_grant_001": {
+        "id": "permission_grant_001",
+        "role_id": "role_enterprise_admin",
+        "scope_id": "tenant_northline",
+        "permissions": [
+            "tenant.manage",
+            "branding.manage",
+            "portal.manage",
+            "connector.manage",
+        ],
+        "assigned_user_ids": ["user_enterprise_iris"],
+    },
+    "permission_grant_002": {
+        "id": "permission_grant_002",
+        "role_id": "role_branch_manager",
+        "scope_id": "workspace_branch_north",
+        "permissions": [
+            "inventory.view",
+            "procurement.view",
+            "dashboard.view",
+        ],
+        "assigned_user_ids": ["user_manager_jonas"],
+    },
+    "permission_grant_003": {
+        "id": "permission_grant_003",
+        "role_id": "role_inventory_coordinator",
+        "scope_id": "workspace_branch_north",
+        "permissions": [
+            "inventory.manage",
+            "procurement.manage",
+        ],
+        "assigned_user_ids": ["user_dispatch_rhea"],
+    },
+}
+branding_packs = {
+    "branding_pack_northline": {
+        "id": "branding_pack_northline",
+        "tenant_id": "tenant_northline",
+        "display_name": "Northline CrewOps",
+        "accent_color": "#0b6f68",
+        "portal_title": "Northline Service Portal",
+        "invoice_branding_ref": "northline-core",
+        "navigation_sections": [
+            "portal",
+            "inventory",
+            "procurement",
+            "integration_dashboard",
+        ],
+        "revision": 7,
+    },
+    "branding_pack_northwest": {
+        "id": "branding_pack_northwest",
+        "tenant_id": "tenant_northline_branch",
+        "display_name": "Northline Northwest",
+        "accent_color": "#8a5c23",
+        "portal_title": "Northwest Portal",
+        "invoice_branding_ref": "northline-northwest",
+        "navigation_sections": [
+            "portal",
+            "inventory",
+            "procurement",
+        ],
+        "revision": 3,
+    },
+}
+theme_overrides = {
+    "theme_override_northline": {
+        "id": "theme_override_northline",
+        "branding_pack_id": "branding_pack_northline",
+        "surface_color": "#f5efe6",
+        "text_color": "#1e2b28",
+    }
+}
+portal_accounts = {
+    "portal_account_001": {
+        "id": "portal_account_001",
+        "tenant_id": "tenant_northline",
+        "customer_id": "cust_020",
+        "status": "active",
+        "email": "morgan.hale@example.test",
+        "display_name": "Morgan Hale",
+        "pending_estimate_id": "est_004",
+        "invoice_ids": ["inv_004"],
+        "service_request_ids": ["service_request_001"],
+        "timeline_event_ids": [
+            "timeline_event_001",
+            "timeline_event_002",
+            "timeline_event_003",
+        ],
+        "upcoming_visit_ids": ["visit_018"],
+    },
+    "portal_account_002": {
+        "id": "portal_account_002",
+        "tenant_id": "tenant_northline_branch",
+        "customer_id": "cust_018",
+        "status": "invited",
+        "email": "ops.cust18@example.test",
+        "display_name": "Customer 18 Ops",
+        "pending_estimate_id": None,
+        "invoice_ids": ["inv_004"],
+        "service_request_ids": [],
+        "timeline_event_ids": [],
+        "upcoming_visit_ids": [],
+    },
+}
+portal_sessions = {
+    "portal_session_001": {
+        "id": "portal_session_001",
+        "portal_account_id": "portal_account_001",
+        "status": "active",
+        "issued_at": "2026-03-11T08:45:00Z",
+        "expires_at": "2026-03-11T16:45:00Z",
+    }
+}
+customer_timeline_events = {
+    "timeline_event_001": {
+        "id": "timeline_event_001",
+        "portal_account_id": "portal_account_001",
+        "service_request_id": "service_request_001",
+        "kind": "request_submitted",
+        "customer_message": "Submitted rooftop drain inspection request.",
+        "office_message": "Portal request created for branch triage.",
+        "created_at": "2026-03-10T14:10:00Z",
+    },
+    "timeline_event_002": {
+        "id": "timeline_event_002",
+        "portal_account_id": "portal_account_001",
+        "service_request_id": "service_request_001",
+        "kind": "estimate_ready",
+        "customer_message": "Estimate is ready for approval.",
+        "office_message": "Estimate est_004 linked to portal request.",
+        "created_at": "2026-03-11T08:20:00Z",
+    },
+    "timeline_event_003": {
+        "id": "timeline_event_003",
+        "portal_account_id": "portal_account_001",
+        "service_request_id": "service_request_001",
+        "kind": "visit_scheduled",
+        "customer_message": "Service visit scheduled for March 20.",
+        "office_message": "Dispatch linked portal request to visit_018.",
+        "created_at": "2026-03-11T09:00:00Z",
+    },
+}
+service_requests = {
+    "service_request_001": {
+        "id": "service_request_001",
+        "tenant_id": "tenant_northline",
+        "portal_account_id": "portal_account_001",
+        "customer_id": "cust_020",
+        "status": "triaged",
+        "priority": "high",
+        "summary": "Roof drain inspection and leak check",
+        "structured_intake": {
+            "site_id": "site_020",
+            "asset_id": "asset_020",
+            "requested_window": "2026-03-20",
+            "issue_kind": "roof_drain",
+        },
+        "converted_work_order_id": "wo_018",
+        "estimate_id": "est_004",
+        "connector_reference": "crm_ticket_2044",
+        "revision": 2,
+    },
+    "service_request_002": {
+        "id": "service_request_002",
+        "tenant_id": "tenant_northline_branch",
+        "portal_account_id": "portal_account_002",
+        "customer_id": "cust_018",
+        "status": "submitted",
+        "priority": "medium",
+        "summary": "Door closer calibration",
+        "structured_intake": {
+            "site_id": "site_018",
+            "asset_id": "asset_018",
+            "requested_window": "2026-03-19",
+            "issue_kind": "door_adjustment",
+        },
+        "converted_work_order_id": None,
+        "estimate_id": None,
+        "connector_reference": None,
+        "revision": 1,
+    },
+}
+inventory_items = {
+    "inventory_item_filter_merv13": {
+        "id": "inventory_item_filter_merv13",
+        "tenant_id": "tenant_northline",
+        "part_catalog_id": "part_filter_merv13",
+        "sku": "FLT-MERV13-20x25x2",
+        "name": "MERV 13 Filter",
+        "status": "active",
+        "primary_location_id": "stock_location_warehouse_north",
+        "on_hand": 42,
+        "reserved": 6,
+        "reorder_threshold": 18,
+        "preferred_vendor_id": "vendor_supply_hub",
+    },
+    "inventory_item_belt_a42": {
+        "id": "inventory_item_belt_a42",
+        "tenant_id": "tenant_northline",
+        "part_catalog_id": "part_belt_a42",
+        "sku": "BLT-A42",
+        "name": "Drive Belt A42",
+        "status": "active",
+        "primary_location_id": "stock_location_warehouse_north",
+        "on_hand": 16,
+        "reserved": 4,
+        "reorder_threshold": 10,
+        "preferred_vendor_id": "vendor_supply_hub",
+    },
+    "inventory_item_contact_cleaner": {
+        "id": "inventory_item_contact_cleaner",
+        "tenant_id": "tenant_northline",
+        "part_catalog_id": "part_contact_cleaner",
+        "sku": "CLN-CNT-001",
+        "name": "Contact Cleaner",
+        "status": "active",
+        "primary_location_id": "stock_location_warehouse_south",
+        "on_hand": 9,
+        "reserved": 1,
+        "reorder_threshold": 8,
+        "preferred_vendor_id": "vendor_supply_hub",
+    },
+    "inventory_item_roof_seal": {
+        "id": "inventory_item_roof_seal",
+        "tenant_id": "tenant_northline",
+        "part_catalog_id": None,
+        "sku": "SLN-ROOF-2G",
+        "name": "Roof Sealant 2G",
+        "status": "active",
+        "primary_location_id": "stock_location_warehouse_north",
+        "on_hand": 5,
+        "reserved": 2,
+        "reorder_threshold": 6,
+        "preferred_vendor_id": "vendor_roofline",
+    },
+}
+stock_locations = {
+    "stock_location_warehouse_north": {
+        "id": "stock_location_warehouse_north",
+        "tenant_id": "tenant_northline",
+        "kind": "warehouse",
+        "label": "North Warehouse",
+        "branch_id": "branch_north",
+    },
+    "stock_location_warehouse_south": {
+        "id": "stock_location_warehouse_south",
+        "tenant_id": "tenant_northline",
+        "kind": "warehouse",
+        "label": "South Warehouse",
+        "branch_id": "branch_south",
+    },
+    "stock_location_van_alpha": {
+        "id": "stock_location_van_alpha",
+        "tenant_id": "tenant_northline",
+        "kind": "vehicle",
+        "label": "Van Alpha",
+        "branch_id": "branch_north",
+    },
+    "stock_location_van_gamma": {
+        "id": "stock_location_van_gamma",
+        "tenant_id": "tenant_northline",
+        "kind": "vehicle",
+        "label": "Van Gamma",
+        "branch_id": "branch_south",
+    },
+}
+vehicle_stock = {
+    "vehicle_stock_alpha_filter": {
+        "id": "vehicle_stock_alpha_filter",
+        "location_id": "stock_location_van_alpha",
+        "inventory_item_id": "inventory_item_filter_merv13",
+        "on_hand": 6,
+        "reserved": 2,
+    },
+    "vehicle_stock_gamma_cleaner": {
+        "id": "vehicle_stock_gamma_cleaner",
+        "location_id": "stock_location_van_gamma",
+        "inventory_item_id": "inventory_item_contact_cleaner",
+        "on_hand": 3,
+        "reserved": 0,
+    },
+}
+stock_movements = {
+    "stock_movement_001": {
+        "id": "stock_movement_001",
+        "tenant_id": "tenant_northline",
+        "inventory_item_id": "inventory_item_filter_merv13",
+        "location_id": "stock_location_van_alpha",
+        "kind": "consume",
+        "quantity": 2,
+        "status": "posted",
+        "reason": "Used on quarterly PM visit.",
+        "source_work_order_id": "wo_013",
+        "revision": 1,
+    },
+    "stock_movement_002": {
+        "id": "stock_movement_002",
+        "tenant_id": "tenant_northline",
+        "inventory_item_id": "inventory_item_roof_seal",
+        "location_id": "stock_location_warehouse_north",
+        "kind": "transfer",
+        "quantity": 1,
+        "status": "posted",
+        "reason": "Moved to van stock for leak follow-up.",
+        "source_work_order_id": "wo_018",
+        "revision": 2,
+    },
+}
+cycle_counts = {
+    "cycle_count_001": {
+        "id": "cycle_count_001",
+        "tenant_id": "tenant_northline",
+        "location_id": "stock_location_warehouse_north",
+        "status": "variance",
+        "scheduled_date": "2026-03-12",
+        "variance_item_ids": ["inventory_item_roof_seal"],
+    }
+}
+vendors = {
+    "vendor_supply_hub": {
+        "id": "vendor_supply_hub",
+        "tenant_id": "tenant_northline",
+        "status": "active",
+        "name": "Supply Hub NW",
+        "payment_terms": "Net 30",
+    },
+    "vendor_roofline": {
+        "id": "vendor_roofline",
+        "tenant_id": "tenant_northline",
+        "status": "active",
+        "name": "Roofline Supply Co.",
+        "payment_terms": "Net 15",
+    },
+}
+vendor_catalog_items = {
+    "vendor_catalog_001": {
+        "id": "vendor_catalog_001",
+        "vendor_id": "vendor_supply_hub",
+        "inventory_item_id": "inventory_item_filter_merv13",
+        "vendor_sku": "SUP-FLT-13",
+        "unit_cost": 18.5,
+    },
+    "vendor_catalog_002": {
+        "id": "vendor_catalog_002",
+        "vendor_id": "vendor_supply_hub",
+        "inventory_item_id": "inventory_item_contact_cleaner",
+        "vendor_sku": "SUP-CLN-1",
+        "unit_cost": 9.25,
+    },
+    "vendor_catalog_003": {
+        "id": "vendor_catalog_003",
+        "vendor_id": "vendor_roofline",
+        "inventory_item_id": "inventory_item_roof_seal",
+        "vendor_sku": "RF-SLN-2G",
+        "unit_cost": 41.0,
+    },
+}
+purchase_orders = {
+    "purchase_order_001": {
+        "id": "purchase_order_001",
+        "tenant_id": "tenant_northline",
+        "vendor_id": "vendor_supply_hub",
+        "status": "open",
+        "branch_id": "branch_north",
+        "expected_delivery_date": "2026-03-14",
+        "line_ids": ["purchase_order_line_001", "purchase_order_line_002"],
+        "revision": 2,
+    },
+    "purchase_order_002": {
+        "id": "purchase_order_002",
+        "tenant_id": "tenant_northline",
+        "vendor_id": "vendor_roofline",
+        "status": "partial",
+        "branch_id": "branch_south",
+        "expected_delivery_date": "2026-03-13",
+        "line_ids": ["purchase_order_line_003"],
+        "revision": 3,
+    },
+}
+purchase_order_lines = {
+    "purchase_order_line_001": {
+        "id": "purchase_order_line_001",
+        "purchase_order_id": "purchase_order_001",
+        "inventory_item_id": "inventory_item_filter_merv13",
+        "expected_quantity": 24,
+        "received_quantity": 0,
+    },
+    "purchase_order_line_002": {
+        "id": "purchase_order_line_002",
+        "purchase_order_id": "purchase_order_001",
+        "inventory_item_id": "inventory_item_belt_a42",
+        "expected_quantity": 12,
+        "received_quantity": 0,
+    },
+    "purchase_order_line_003": {
+        "id": "purchase_order_line_003",
+        "purchase_order_id": "purchase_order_002",
+        "inventory_item_id": "inventory_item_roof_seal",
+        "expected_quantity": 8,
+        "received_quantity": 3,
+    },
+}
+receiving_records = {
+    "receiving_record_001": {
+        "id": "receiving_record_001",
+        "purchase_order_id": "purchase_order_002",
+        "status": "partial",
+        "received_at": "2026-03-10T15:20:00Z",
+        "mismatch": True,
+        "line_receipts": [
+            {
+                "line_id": "purchase_order_line_003",
+                "expected_quantity": 8,
+                "received_quantity": 3,
+            }
+        ],
+    }
+}
+reorder_suggestions = {
+    "reorder_suggestion_001": {
+        "id": "reorder_suggestion_001",
+        "tenant_id": "tenant_northline",
+        "inventory_item_id": "inventory_item_roof_seal",
+        "location_id": "stock_location_warehouse_north",
+        "recommended_quantity": 12,
+        "reason": "Projected demand exceeds on-hand stock.",
+    },
+    "reorder_suggestion_002": {
+        "id": "reorder_suggestion_002",
+        "tenant_id": "tenant_northline",
+        "inventory_item_id": "inventory_item_contact_cleaner",
+        "location_id": "stock_location_warehouse_south",
+        "recommended_quantity": 8,
+        "reason": "South branch low-stock threshold crossed.",
+    },
+}
+connector_instances = {
+    "connector_instance_accounting": {
+        "id": "connector_instance_accounting",
+        "tenant_id": "tenant_northline",
+        "provider_class": "accounting",
+        "provider_name": "LedgerCloud",
+        "status": "healthy",
+        "config_revision": 4,
+        "last_success_at": "2026-03-11T06:45:00Z",
+        "mapping_ids": ["connector_mapping_002"],
+    },
+    "connector_instance_payments": {
+        "id": "connector_instance_payments",
+        "tenant_id": "tenant_northline",
+        "provider_class": "payments",
+        "provider_name": "PayArc",
+        "status": "retry_required",
+        "config_revision": 2,
+        "last_success_at": "2026-03-10T18:15:00Z",
+        "mapping_ids": [],
+    },
+    "connector_instance_crm": {
+        "id": "connector_instance_crm",
+        "tenant_id": "tenant_northline",
+        "provider_class": "crm",
+        "provider_name": "Orbit CRM",
+        "status": "degraded",
+        "config_revision": 5,
+        "last_success_at": "2026-03-11T05:10:00Z",
+        "mapping_ids": ["connector_mapping_001"],
+    },
+    "connector_instance_ticketing": {
+        "id": "connector_instance_ticketing",
+        "tenant_id": "tenant_northline_branch",
+        "provider_class": "ticketing",
+        "provider_name": "FieldDesk",
+        "status": "config_stale",
+        "config_revision": 3,
+        "last_success_at": "2026-03-09T14:00:00Z",
+        "mapping_ids": [],
+    },
+}
+connector_sync_jobs = {
+    "connector_sync_job_001": {
+        "id": "connector_sync_job_001",
+        "connector_instance_id": "connector_instance_accounting",
+        "provider_class": "accounting",
+        "status": "completed",
+        "started_at": "2026-03-11T06:30:00Z",
+        "completed_at": "2026-03-11T06:45:00Z",
+    },
+    "connector_sync_job_002": {
+        "id": "connector_sync_job_002",
+        "connector_instance_id": "connector_instance_crm",
+        "provider_class": "crm",
+        "status": "failed",
+        "started_at": "2026-03-11T05:00:00Z",
+        "completed_at": "2026-03-11T05:07:00Z",
+    },
+    "connector_sync_job_003": {
+        "id": "connector_sync_job_003",
+        "connector_instance_id": "connector_instance_ticketing",
+        "provider_class": "ticketing",
+        "status": "stale_config",
+        "started_at": "2026-03-10T11:00:00Z",
+        "completed_at": "2026-03-10T11:03:00Z",
+    },
+}
+connector_delivery_records = {
+    "connector_delivery_record_001": {
+        "id": "connector_delivery_record_001",
+        "connector_instance_id": "connector_instance_crm",
+        "status": "failed",
+        "entity_kind": "service_request",
+        "entity_id": "service_request_001",
+        "response_summary": "CRM rejected stale mapping revision.",
+        "retryable": True,
+    }
+}
+tenant_health_snapshots = {
+    "tenant_health_northline": {
+        "id": "tenant_health_northline",
+        "tenant_id": "tenant_northline",
+        "portal_conversion_rate": 0.67,
+        "connector_failure_count": 2,
+        "low_stock_count": 2,
+        "po_backlog_count": 1,
+        "readiness_status": "ready",
+    },
+    "tenant_health_northline_branch": {
+        "id": "tenant_health_northline_branch",
+        "tenant_id": "tenant_northline_branch",
+        "portal_conversion_rate": 0.5,
+        "connector_failure_count": 1,
+        "low_stock_count": 1,
+        "po_backlog_count": 1,
+        "readiness_status": "config_incomplete",
+    },
+}
+portal_adoption_rollups = {
+    "portal_adoption_northline": {
+        "id": "portal_adoption_northline",
+        "tenant_id": "tenant_northline",
+        "active_accounts": 1,
+        "invited_accounts": 1,
+        "request_conversion_rate": 0.5,
+        "approval_conversion_rate": 1.0,
+    }
+}
 
 indexes = {
     "work_orders_by_status": {
@@ -2637,6 +3341,28 @@ indexes = {
     "api_keys_by_status": defaultdict(list),
     "webhook_deliveries_by_status": defaultdict(list),
     "webhook_deliveries_by_subscription": defaultdict(list),
+    "workspaces_by_tenant": defaultdict(list),
+    "portal_accounts_by_tenant": defaultdict(list),
+    "portal_accounts_by_status": defaultdict(list),
+    "service_requests_by_tenant": defaultdict(list),
+    "service_requests_by_status": defaultdict(list),
+    "inventory_items_by_tenant": defaultdict(list),
+    "inventory_items_by_status": defaultdict(list),
+    "inventory_items_by_location": defaultdict(list),
+    "stock_locations_by_tenant": defaultdict(list),
+    "stock_movements_by_location": defaultdict(list),
+    "stock_movements_by_status": defaultdict(list),
+    "vendors_by_tenant": defaultdict(list),
+    "purchase_orders_by_tenant": defaultdict(list),
+    "purchase_orders_by_status": defaultdict(list),
+    "purchase_orders_by_vendor": defaultdict(list),
+    "receiving_records_by_purchase_order": defaultdict(list),
+    "reorder_suggestions_by_location": defaultdict(list),
+    "connector_instances_by_tenant": defaultdict(list),
+    "connector_instances_by_status": defaultdict(list),
+    "connector_instances_by_provider": defaultdict(list),
+    "connector_sync_jobs_by_status": defaultdict(list),
+    "connector_sync_jobs_by_provider": defaultdict(list),
 }
 for work_order_id, work_order in work_orders.items():
     indexes["work_orders_by_status"][work_order["status"]].append(work_order_id)
@@ -2703,6 +3429,56 @@ for api_key_id, api_key in api_key_records.items():
 for delivery_id, delivery in webhook_deliveries.items():
     indexes["webhook_deliveries_by_status"][delivery["status"]].append(delivery_id)
     indexes["webhook_deliveries_by_subscription"][delivery["subscription_id"]].append(delivery_id)
+for workspace_id, workspace in workspaces.items():
+    indexes["workspaces_by_tenant"][workspace["tenant_id"]].append(workspace_id)
+for portal_account_id, portal_account in portal_accounts.items():
+    indexes["portal_accounts_by_tenant"][portal_account["tenant_id"]].append(portal_account_id)
+    indexes["portal_accounts_by_status"][portal_account["status"]].append(portal_account_id)
+for service_request_id, service_request in service_requests.items():
+    indexes["service_requests_by_tenant"][service_request["tenant_id"]].append(service_request_id)
+    indexes["service_requests_by_status"][service_request["status"]].append(service_request_id)
+for inventory_item_id, inventory_item in inventory_items.items():
+    indexes["inventory_items_by_tenant"][inventory_item["tenant_id"]].append(inventory_item_id)
+    indexes["inventory_items_by_status"][inventory_item["status"]].append(inventory_item_id)
+    indexes["inventory_items_by_location"][inventory_item["primary_location_id"]].append(
+        inventory_item_id
+    )
+for stock_location_id, stock_location in stock_locations.items():
+    indexes["stock_locations_by_tenant"][stock_location["tenant_id"]].append(stock_location_id)
+for stock_movement_id, stock_movement in stock_movements.items():
+    indexes["stock_movements_by_location"][stock_movement["location_id"]].append(stock_movement_id)
+    indexes["stock_movements_by_status"][stock_movement["status"]].append(stock_movement_id)
+for vendor_id, vendor in vendors.items():
+    indexes["vendors_by_tenant"][vendor["tenant_id"]].append(vendor_id)
+for purchase_order_id, purchase_order in purchase_orders.items():
+    indexes["purchase_orders_by_tenant"][purchase_order["tenant_id"]].append(purchase_order_id)
+    indexes["purchase_orders_by_status"][purchase_order["status"]].append(purchase_order_id)
+    indexes["purchase_orders_by_vendor"][purchase_order["vendor_id"]].append(purchase_order_id)
+for receiving_record_id, receiving_record in receiving_records.items():
+    indexes["receiving_records_by_purchase_order"][receiving_record["purchase_order_id"]].append(
+        receiving_record_id
+    )
+for reorder_suggestion_id, reorder_suggestion in reorder_suggestions.items():
+    indexes["reorder_suggestions_by_location"][reorder_suggestion["location_id"]].append(
+        reorder_suggestion_id
+    )
+for connector_instance_id, connector_instance in connector_instances.items():
+    indexes["connector_instances_by_tenant"][connector_instance["tenant_id"]].append(
+        connector_instance_id
+    )
+    indexes["connector_instances_by_status"][connector_instance["status"]].append(
+        connector_instance_id
+    )
+    indexes["connector_instances_by_provider"][connector_instance["provider_class"]].append(
+        connector_instance_id
+    )
+for connector_sync_job_id, connector_sync_job in connector_sync_jobs.items():
+    indexes["connector_sync_jobs_by_status"][connector_sync_job["status"]].append(
+        connector_sync_job_id
+    )
+    indexes["connector_sync_jobs_by_provider"][connector_sync_job["provider_class"]].append(
+        connector_sync_job_id
+    )
 indexes = {
     key: {
         inner_key: value
@@ -2721,6 +3497,8 @@ summary = {
         "dispatchers": 1,
         "supervisors": 1,
         "managers": 1,
+        "portal_users": len(portal_accounts),
+        "enterprise_admins": 1,
         "customers": len(customers),
         "sites": len(sites),
         "assets": len(assets),
@@ -2736,6 +3514,18 @@ summary = {
         "recurring_plans": len(recurring_plans),
         "webhook_subscriptions": len(webhook_subscriptions),
         "webhook_deliveries": len(webhook_deliveries),
+        "tenants": len(tenants),
+        "workspaces": len(workspaces),
+        "portal_accounts": len(portal_accounts),
+        "service_requests": len(service_requests),
+        "inventory_items": len(inventory_items),
+        "stock_locations": len(stock_locations),
+        "stock_movements": len(stock_movements),
+        "vendors": len(vendors),
+        "purchase_orders": len(purchase_orders),
+        "receiving_records": len(receiving_records),
+        "connector_instances": len(connector_instances),
+        "connector_sync_jobs": len(connector_sync_jobs),
     },
     "status_counts": {
         key: len(value) for key, value in indexes["work_orders_by_status"].items()
@@ -2848,6 +3638,51 @@ summary = {
             ]
         ),
     },
+    "tenant_health_overview": {
+        tenant_id: snapshot
+        for tenant_id, snapshot in (
+            (tenant_health_snapshot["tenant_id"], tenant_health_snapshot)
+            for tenant_health_snapshot in tenant_health_snapshots.values()
+        )
+    },
+    "portal_adoption_summary": portal_adoption_rollups["portal_adoption_northline"],
+    "inventory_summary": {
+        "low_stock_item_ids": [
+            inventory_item_id
+            for inventory_item_id, inventory_item in inventory_items.items()
+            if inventory_item["on_hand"] <= inventory_item["reorder_threshold"]
+        ],
+        "cycle_count_ids": list(cycle_counts),
+        "movement_ids": list(stock_movements),
+        "vehicle_location_ids": [
+            stock_location_id
+            for stock_location_id, stock_location in stock_locations.items()
+            if stock_location["kind"] == "vehicle"
+        ],
+    },
+    "procurement_summary": {
+        "open_purchase_order_ids": indexes["purchase_orders_by_status"].get("open", []),
+        "partial_purchase_order_ids": indexes["purchase_orders_by_status"].get("partial", []),
+        "receiving_mismatch_ids": [
+            receiving_record_id
+            for receiving_record_id, receiving_record in receiving_records.items()
+            if receiving_record["mismatch"]
+        ],
+        "reorder_suggestion_ids": list(reorder_suggestions),
+    },
+    "connector_health_summary": {
+        "healthy_connector_ids": indexes["connector_instances_by_status"].get("healthy", []),
+        "retry_required_connector_ids": indexes["connector_instances_by_status"].get(
+            "retry_required", []
+        ),
+        "stale_connector_ids": indexes["connector_instances_by_status"].get(
+            "config_stale", []
+        ),
+        "degraded_connector_ids": indexes["connector_instances_by_status"].get(
+            "degraded", []
+        ),
+        "failed_sync_job_ids": indexes["connector_sync_jobs_by_status"].get("failed", []),
+    },
 }
 
 fixture = {
@@ -2914,6 +3749,33 @@ fixture = {
     "connector_mappings": connector_mappings,
     "import_or_sync_jobs": import_or_sync_jobs,
     "recurring_revenue_rollups": recurring_revenue_rollups,
+    "tenants": tenants,
+    "workspaces": workspaces,
+    "org_hierarchy_nodes": org_hierarchy_nodes,
+    "role_definitions": role_definitions,
+    "permission_grants": permission_grants,
+    "branding_packs": branding_packs,
+    "theme_overrides": theme_overrides,
+    "portal_accounts": portal_accounts,
+    "portal_sessions": portal_sessions,
+    "customer_timeline_events": customer_timeline_events,
+    "service_requests": service_requests,
+    "inventory_items": inventory_items,
+    "stock_locations": stock_locations,
+    "vehicle_stock": vehicle_stock,
+    "stock_movements": stock_movements,
+    "cycle_counts": cycle_counts,
+    "vendors": vendors,
+    "vendor_catalog_items": vendor_catalog_items,
+    "purchase_orders": purchase_orders,
+    "purchase_order_lines": purchase_order_lines,
+    "receiving_records": receiving_records,
+    "reorder_suggestions": reorder_suggestions,
+    "connector_instances": connector_instances,
+    "connector_sync_jobs": connector_sync_jobs,
+    "connector_delivery_records": connector_delivery_records,
+    "tenant_health_snapshots": tenant_health_snapshots,
+    "portal_adoption_rollups": portal_adoption_rollups,
     "indexes": indexes,
     "summary": summary,
 }
@@ -2982,6 +3844,33 @@ base_entities = {
     "connector_mappings": connector_mappings,
     "import_or_sync_jobs": import_or_sync_jobs,
     "recurring_revenue_rollups": recurring_revenue_rollups,
+    "tenants": tenants,
+    "workspaces": workspaces,
+    "org_hierarchy_nodes": org_hierarchy_nodes,
+    "role_definitions": role_definitions,
+    "permission_grants": permission_grants,
+    "branding_packs": branding_packs,
+    "theme_overrides": theme_overrides,
+    "portal_accounts": portal_accounts,
+    "portal_sessions": portal_sessions,
+    "customer_timeline_events": customer_timeline_events,
+    "service_requests": service_requests,
+    "inventory_items": inventory_items,
+    "stock_locations": stock_locations,
+    "vehicle_stock": vehicle_stock,
+    "stock_movements": stock_movements,
+    "cycle_counts": cycle_counts,
+    "vendors": vendors,
+    "vendor_catalog_items": vendor_catalog_items,
+    "purchase_orders": purchase_orders,
+    "purchase_order_lines": purchase_order_lines,
+    "receiving_records": receiving_records,
+    "reorder_suggestions": reorder_suggestions,
+    "connector_instances": connector_instances,
+    "connector_sync_jobs": connector_sync_jobs,
+    "connector_delivery_records": connector_delivery_records,
+    "tenant_health_snapshots": tenant_health_snapshots,
+    "portal_adoption_rollups": portal_adoption_rollups,
 }
 bootstrap_work_order_ids = [
     "wo_001",
@@ -3090,6 +3979,16 @@ def sync_doc(
     stale_price_book_id=None,
     export_status="idle",
     finance_revision="finance_rev_2026_03_11_001",
+    portal_approval_status="idle",
+    stale_portal_request_id=None,
+    tenant_revision_status="idle",
+    stale_tenant_id=None,
+    inventory_movement_status="idle",
+    stale_stock_location_id=None,
+    receiving_status="idle",
+    stale_purchase_order_id=None,
+    connector_config_status="idle",
+    stale_connector_instance_id=None,
 ):
     return {
         "cursor": cursor,
@@ -3121,6 +4020,18 @@ def sync_doc(
         "finance_revision": finance_revision,
         "unread_alerts": 4,
         "unread_activity": 6,
+        "enterprise_ops": {
+            "portal_approval_status": portal_approval_status,
+            "stale_portal_request_id": stale_portal_request_id,
+            "tenant_revision_status": tenant_revision_status,
+            "stale_tenant_id": stale_tenant_id,
+            "inventory_movement_status": inventory_movement_status,
+            "stale_stock_location_id": stale_stock_location_id,
+            "receiving_status": receiving_status,
+            "stale_purchase_order_id": stale_purchase_order_id,
+            "connector_config_status": connector_config_status,
+            "stale_connector_instance_id": stale_connector_instance_id,
+        },
     }
 
 
@@ -3154,6 +4065,19 @@ def payload_with_snapshot_state(extra, entities_snapshot, indexes_snapshot, summ
     out["entities"] = clone_doc(entities_snapshot)
     out["indexes"] = clone_doc(indexes_snapshot)
     out["summary"] = clone_doc(summary_snapshot)
+    return out
+
+
+def payload_with_full_state(
+    extra,
+    entities_snapshot=None,
+    indexes_snapshot=None,
+    summary_snapshot=None,
+):
+    out = dict(extra)
+    out["entities"] = clone_doc(base_entities if entities_snapshot is None else entities_snapshot)
+    out["indexes"] = clone_doc(indexes if indexes_snapshot is None else indexes_snapshot)
+    out["summary"] = clone_doc(summary if summary_snapshot is None else summary_snapshot)
     return out
 
 
@@ -3220,6 +4144,16 @@ bootstrap_doc = {
             "user_id": "user_manager_jonas",
             "branch_id": "branch_north",
             "team_id": "team_north_alpha",
+        },
+        "portal_user": {
+            "user_id": "user_portal_morgan",
+            "branch_id": "branch_north",
+            "team_id": None,
+        },
+        "enterprise_admin": {
+            "user_id": "user_enterprise_iris",
+            "branch_id": "branch_north",
+            "team_id": None,
         },
     },
     "bootstrap": {
@@ -4361,6 +5295,583 @@ integrations_delivery_retry_doc = payload_with_snapshot_state(
     delivery_retry_summary,
 )
 
+enterprise_admin_doc = payload_with_full_state(
+    {
+        "tenant_ids": list(tenants),
+        "workspace_ids": list(workspaces),
+        "hierarchy_node_ids": list(org_hierarchy_nodes),
+        "role_ids": list(role_definitions),
+        "branding_pack_ids": list(branding_packs),
+        "tenant_health_ids": list(tenant_health_snapshots),
+        "readiness": {
+            "status": "ready",
+            "hosted_profile": "crewops_release",
+            "pack_ready": True,
+            "device_profiles_ready": False,
+        },
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+admin_roles_doc = payload_with_full_state(
+    {
+        "role_ids": list(role_definitions),
+        "permission_grant_ids": list(permission_grants),
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+admin_tenant_create_entities = clone_doc(base_entities)
+admin_tenant_create_indexes = clone_doc(indexes)
+admin_tenant_create_summary = clone_doc(summary)
+admin_tenant_create_entities["tenants"]["tenant_lakeside"] = {
+    "id": "tenant_lakeside",
+    "status": "draft",
+    "name": "Lakeside Service Group",
+    "display_name": "Lakeside Service",
+    "kind": "child_tenant",
+    "parent_tenant_id": "tenant_northline",
+    "workspace_ids": [],
+    "branding_pack_id": None,
+    "portal_config": {
+        "title": "Lakeside Portal",
+        "allow_estimate_approval": True,
+        "allow_request_intake": True,
+        "show_invoice_balance": False,
+    },
+    "feature_flags": {
+        "portal": True,
+        "inventory": False,
+        "procurement": False,
+        "connectors": False,
+        "white_label": True,
+    },
+    "readiness_status": "draft",
+    "revision": 1,
+}
+admin_tenant_create_summary["counts"]["tenants"] = admin_tenant_create_summary["counts"]["tenants"] + 1
+admin_tenant_create_doc = payload_with_full_state(
+    {
+        "status": "created",
+        "message": "Created tenant draft and queued branding setup.",
+        "tenant_id": "tenant_lakeside",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "accepted",
+            tenant_revision_status="accepted",
+        ),
+    },
+    admin_tenant_create_entities,
+    admin_tenant_create_indexes,
+    admin_tenant_create_summary,
+)
+
+admin_tenant_patch_map = {
+    tenant_id: payload_with_full_state(
+        {
+            "status": "updated",
+            "message": "Updated tenant settings and readiness snapshot.",
+            "tenant_id": tenant_id,
+            "sync": sync_doc(
+                "sync_cursor_2026_03_11_103",
+                "accepted",
+                tenant_revision_status="accepted",
+                stale_tenant_id=tenant_id,
+            ),
+        }
+    )
+    for tenant_id in tenants
+}
+
+admin_role_create_entities = clone_doc(base_entities)
+admin_role_create_indexes = clone_doc(indexes)
+admin_role_create_summary = clone_doc(summary)
+admin_role_create_entities["role_definitions"]["role_dispatch_lead"] = {
+    "id": "role_dispatch_lead",
+    "tenant_id": "tenant_northline",
+    "label": "Dispatch Lead",
+    "scope_kind": "workspace",
+    "system_role": False,
+}
+admin_role_create_entities["permission_grants"]["permission_grant_004"] = {
+    "id": "permission_grant_004",
+    "role_id": "role_dispatch_lead",
+    "scope_id": "workspace_branch_north",
+    "permissions": ["dispatch.manage", "dashboard.view"],
+    "assigned_user_ids": ["user_dispatch_rhea"],
+}
+admin_role_create_doc = payload_with_full_state(
+    {
+        "status": "created",
+        "message": "Created scoped dispatch-lead role and grant.",
+        "role_id": "role_dispatch_lead",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "accepted",
+            tenant_revision_status="accepted",
+        ),
+    },
+    admin_role_create_entities,
+    admin_role_create_indexes,
+    admin_role_create_summary,
+)
+
+admin_branding_update_entities = clone_doc(base_entities)
+admin_branding_update_indexes = clone_doc(indexes)
+admin_branding_update_summary = clone_doc(summary)
+admin_branding_update_entities["branding_packs"]["branding_pack_northline"]["accent_color"] = "#9a4a1f"
+admin_branding_update_entities["branding_packs"]["branding_pack_northline"]["portal_title"] = "Northline Customer Care Portal"
+admin_branding_update_entities["branding_packs"]["branding_pack_northline"]["revision"] = 8
+admin_branding_update_doc = payload_with_full_state(
+    {
+        "status": "updated",
+        "message": "Updated tenant branding pack and refreshed portal theme preview.",
+        "branding_pack_id": "branding_pack_northline",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "accepted",
+            tenant_revision_status="accepted",
+            stale_tenant_id="tenant_northline",
+        ),
+    },
+    admin_branding_update_entities,
+    admin_branding_update_indexes,
+    admin_branding_update_summary,
+)
+
+portal_session_doc = payload_with_full_state(
+    {
+        "session": {
+            "token": "portal_user_token",
+            "role": "portal_user",
+            "user_id": "user_portal_morgan",
+            "branch_id": "branch_north",
+            "team_id": None,
+            "status": "ready",
+        },
+        "portal_account_id": "portal_account_001",
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+portal_me_doc = payload_with_full_state(
+    {
+        "portal_account_id": "portal_account_001",
+        "tenant_id": "tenant_northline",
+        "pending_estimate_id": "est_004",
+        "invoice_ids": portal_accounts["portal_account_001"]["invoice_ids"],
+        "upcoming_visit_ids": portal_accounts["portal_account_001"]["upcoming_visit_ids"],
+        "timeline_event_ids": portal_accounts["portal_account_001"]["timeline_event_ids"],
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+portal_invoices_doc = payload_with_full_state(
+    {
+        "portal_account_id": "portal_account_001",
+        "invoice_ids": portal_accounts["portal_account_001"]["invoice_ids"],
+        "invoices": {
+            invoice_id: invoices[invoice_id]
+            for invoice_id in portal_accounts["portal_account_001"]["invoice_ids"]
+        },
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+portal_service_history_doc = payload_with_full_state(
+    {
+        "portal_account_id": "portal_account_001",
+        "timeline_event_ids": portal_accounts["portal_account_001"]["timeline_event_ids"],
+        "timeline_events": customer_timeline_events,
+        "service_request_ids": portal_accounts["portal_account_001"]["service_request_ids"],
+        "upcoming_visit_ids": portal_accounts["portal_account_001"]["upcoming_visit_ids"],
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+portal_request_create_entities = clone_doc(base_entities)
+portal_request_create_indexes = clone_doc(indexes)
+portal_request_create_summary = clone_doc(summary)
+portal_request_create_entities["service_requests"]["service_request_003"] = {
+    "id": "service_request_003",
+    "tenant_id": "tenant_northline",
+    "portal_account_id": "portal_account_001",
+    "customer_id": "cust_020",
+    "status": "submitted",
+    "priority": "high",
+    "summary": "Lobby drain backup and odor check",
+    "structured_intake": {
+        "site_id": "site_020",
+        "asset_id": "asset_020",
+        "requested_window": "2026-03-22",
+        "issue_kind": "drain_backup",
+    },
+    "converted_work_order_id": None,
+    "estimate_id": None,
+    "connector_reference": None,
+    "revision": 1,
+}
+portal_request_create_indexes["service_requests_by_tenant"]["tenant_northline"].append("service_request_003")
+portal_request_create_indexes["service_requests_by_status"].setdefault("submitted", []).append("service_request_003")
+portal_request_create_summary["counts"]["service_requests"] = (
+    portal_request_create_summary["counts"]["service_requests"] + 1
+)
+portal_request_create_doc = payload_with_full_state(
+    {
+        "status": "created",
+        "message": "Submitted portal request and queued office triage.",
+        "service_request_id": "service_request_003",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "accepted",
+            portal_approval_status="accepted",
+            stale_portal_request_id="service_request_003",
+        ),
+    },
+    portal_request_create_entities,
+    portal_request_create_indexes,
+    portal_request_create_summary,
+)
+
+portal_request_convert_entities = clone_doc(portal_request_create_entities)
+portal_request_convert_indexes = clone_doc(portal_request_create_indexes)
+portal_request_convert_summary = clone_doc(portal_request_create_summary)
+portal_request_convert_entities["service_requests"]["service_request_001"]["status"] = "converted"
+portal_request_convert_entities["service_requests"]["service_request_001"]["converted_work_order_id"] = "wo_024"
+portal_request_convert_entities["service_requests"]["service_request_001"]["connector_reference"] = "crm_ticket_442"
+portal_request_convert_entities["customer_timeline_events"]["timeline_event_005"] = {
+    "id": "timeline_event_005",
+    "tenant_id": "tenant_northline",
+    "portal_account_id": "portal_account_001",
+    "kind": "request_converted",
+    "summary": "Office triage converted the request into work order WO-1224.",
+    "visible_to_customer": True,
+    "source_request_id": "service_request_001",
+    "work_order_id": "wo_024",
+    "connector_reference": "crm_ticket_442",
+    "created_at": "2026-03-11T10:45:00Z",
+}
+portal_request_convert_entities["portal_accounts"]["portal_account_001"]["timeline_event_ids"].append(
+    "timeline_event_005"
+)
+portal_request_convert_indexes["service_requests_by_status"].setdefault("converted", []).append(
+    "service_request_001"
+)
+portal_request_convert_summary["counts"]["customer_timeline_events"] = (
+    portal_request_convert_summary["counts"].get("customer_timeline_events", len(customer_timeline_events))
+    + 1
+)
+portal_request_convert_map = {
+    "service_request_001": payload_with_full_state(
+        {
+            "status": "converted",
+            "message": "Converted portal request into an office work order and linked the customer timeline.",
+            "service_request_id": "service_request_001",
+            "work_order_id": "wo_024",
+            "connector_reference": "crm_ticket_442",
+            "sync": sync_doc(
+                "sync_cursor_2026_03_11_103",
+                "accepted",
+                portal_approval_status="accepted",
+                stale_portal_request_id="service_request_001",
+            ),
+        },
+        portal_request_convert_entities,
+        portal_request_convert_indexes,
+        portal_request_convert_summary,
+    )
+}
+
+portal_estimate_approve_doc = payload_with_full_state(
+    {
+        "status": "approved",
+        "message": "Recorded portal estimate approval and linked it to the office timeline.",
+        "estimate_id": "est_004",
+        "service_request_id": "service_request_001",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "accepted",
+            portal_approval_status="approved",
+            stale_portal_request_id="service_request_001",
+        ),
+    }
+)
+
+portal_approval_conflict_doc = payload_with_full_state(
+    {
+        "status": "conflict",
+        "message": "Portal approval targeted a stale estimate revision.",
+        "estimate_id": "est_004",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "conflict",
+            conflict_status="stale",
+            conflict_message="Refresh portal approval state before retrying.",
+            conflict_code="portal_approval_revision_mismatch",
+            conflict_entity_id="est_004",
+            portal_approval_status="mismatch",
+            stale_portal_request_id="service_request_001",
+        ),
+    }
+)
+
+inventory_items_doc = payload_with_full_state(
+    {
+        "inventory_item_ids": list(inventory_items),
+        "stock_location_ids": list(stock_locations),
+        "movement_ids": list(stock_movements),
+        "cycle_count_ids": list(cycle_counts),
+        "low_stock_item_ids": summary["inventory_summary"]["low_stock_item_ids"],
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+inventory_movement_entities = clone_doc(base_entities)
+inventory_movement_indexes = clone_doc(indexes)
+inventory_movement_summary = clone_doc(summary)
+inventory_movement_entities["stock_movements"]["stock_movement_003"] = {
+    "id": "stock_movement_003",
+    "tenant_id": "tenant_northline",
+    "inventory_item_id": "inventory_item_contact_cleaner",
+    "location_id": "stock_location_van_gamma",
+    "kind": "consume",
+    "quantity": 1,
+    "status": "posted",
+    "reason": "Consumed during panel reset follow-up.",
+    "source_work_order_id": "wo_024",
+    "revision": 1,
+}
+inventory_movement_indexes["stock_movements_by_location"].setdefault(
+    "stock_location_van_gamma", []
+).append("stock_movement_003")
+inventory_movement_indexes["stock_movements_by_status"].setdefault("posted", []).append(
+    "stock_movement_003"
+)
+inventory_movement_summary["counts"]["stock_movements"] = (
+    inventory_movement_summary["counts"]["stock_movements"] + 1
+)
+inventory_movement_doc = payload_with_full_state(
+    {
+        "status": "posted",
+        "message": "Recorded stock consumption and updated variance diagnostics.",
+        "stock_movement_id": "stock_movement_003",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "accepted",
+            inventory_movement_status="accepted",
+            stale_stock_location_id="stock_location_van_gamma",
+        ),
+    },
+    inventory_movement_entities,
+    inventory_movement_indexes,
+    inventory_movement_summary,
+)
+
+inventory_count_doc = payload_with_full_state(
+    {
+        "status": "count_recorded",
+        "message": "Recorded cycle-count variance for north warehouse.",
+        "cycle_count_id": "cycle_count_001",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "accepted",
+            inventory_movement_status="variance",
+            stale_stock_location_id="stock_location_warehouse_north",
+        ),
+    }
+)
+
+procurement_orders_doc = payload_with_full_state(
+    {
+        "vendor_ids": list(vendors),
+        "purchase_order_ids": list(purchase_orders),
+        "reorder_suggestion_ids": list(reorder_suggestions),
+        "receiving_record_ids": list(receiving_records),
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+procurement_po_create_entities = clone_doc(base_entities)
+procurement_po_create_indexes = clone_doc(indexes)
+procurement_po_create_summary = clone_doc(summary)
+procurement_po_create_entities["purchase_orders"]["purchase_order_003"] = {
+    "id": "purchase_order_003",
+    "tenant_id": "tenant_northline",
+    "vendor_id": "vendor_supply_hub",
+    "status": "draft",
+    "branch_id": "branch_north",
+    "expected_delivery_date": "2026-03-18",
+    "line_ids": [],
+    "revision": 1,
+}
+procurement_po_create_indexes["purchase_orders_by_tenant"]["tenant_northline"].append(
+    "purchase_order_003"
+)
+procurement_po_create_indexes["purchase_orders_by_status"].setdefault("draft", []).append(
+    "purchase_order_003"
+)
+procurement_po_create_indexes["purchase_orders_by_vendor"]["vendor_supply_hub"].append(
+    "purchase_order_003"
+)
+procurement_po_create_summary["counts"]["purchase_orders"] = (
+    procurement_po_create_summary["counts"]["purchase_orders"] + 1
+)
+procurement_po_create_doc = payload_with_full_state(
+    {
+        "status": "created",
+        "message": "Created purchase order draft from replenishment queue.",
+        "purchase_order_id": "purchase_order_003",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "accepted",
+            receiving_status="draft",
+            stale_purchase_order_id="purchase_order_003",
+        ),
+    },
+    procurement_po_create_entities,
+    procurement_po_create_indexes,
+    procurement_po_create_summary,
+)
+
+procurement_receive_doc = payload_with_full_state(
+    {
+        "status": "received",
+        "message": "Recorded partial receiving and preserved PO variance history.",
+        "purchase_order_id": "purchase_order_002",
+        "receiving_record_id": "receiving_record_001",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "accepted",
+            receiving_status="partial",
+            stale_purchase_order_id="purchase_order_002",
+        ),
+    }
+)
+
+connectors_vendor_doc = payload_with_full_state(
+    {
+        "connector_instance_ids": list(connector_instances),
+        "connector_sync_job_ids": list(connector_sync_jobs),
+        "connector_delivery_record_ids": list(connector_delivery_records),
+        "provider_classes": ["accounting", "payments", "crm", "ticketing"],
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
+connectors_vendor_create_entities = clone_doc(base_entities)
+connectors_vendor_create_indexes = clone_doc(indexes)
+connectors_vendor_create_summary = clone_doc(summary)
+connectors_vendor_create_entities["connector_instances"]["connector_instance_payables"] = {
+    "id": "connector_instance_payables",
+    "tenant_id": "tenant_northline",
+    "provider_class": "accounting",
+    "provider_name": "LedgerCloud AP",
+    "status": "healthy",
+    "config_revision": 1,
+    "last_success_at": None,
+    "mapping_ids": [],
+}
+connectors_vendor_create_indexes["connector_instances_by_tenant"]["tenant_northline"].append(
+    "connector_instance_payables"
+)
+connectors_vendor_create_indexes["connector_instances_by_status"].setdefault("healthy", []).append(
+    "connector_instance_payables"
+)
+connectors_vendor_create_indexes["connector_instances_by_provider"].setdefault(
+    "accounting", []
+).append("connector_instance_payables")
+connectors_vendor_create_summary["counts"]["connector_instances"] = (
+    connectors_vendor_create_summary["counts"]["connector_instances"] + 1
+)
+connectors_vendor_create_doc = payload_with_full_state(
+    {
+        "status": "created",
+        "message": "Created vendor connector instance with safe display metadata only.",
+        "connector_instance_id": "connector_instance_payables",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "accepted",
+            connector_config_status="accepted",
+            stale_connector_instance_id="connector_instance_payables",
+        ),
+    },
+    connectors_vendor_create_entities,
+    connectors_vendor_create_indexes,
+    connectors_vendor_create_summary,
+)
+
+connectors_vendor_sync_map = {
+    connector_instance_id: payload_with_full_state(
+        {
+            "status": "sync_requested",
+            "message": "Queued provider-specific sync and preserved audit history.",
+            "connector_instance_id": connector_instance_id,
+            "sync": sync_doc(
+                "sync_cursor_2026_03_11_103",
+                "accepted",
+                connector_config_status="accepted",
+                stale_connector_instance_id=connector_instance_id,
+            ),
+        }
+    )
+    for connector_instance_id in connector_instances
+}
+connectors_vendor_sync_map["connector_instance_ticketing"] = payload_with_full_state(
+    {
+        "status": "conflict",
+        "message": "Connector config revision is stale and must be refreshed before sync.",
+        "connector_instance_id": "connector_instance_ticketing",
+        "sync": sync_doc(
+            "sync_cursor_2026_03_11_103",
+            "conflict",
+            conflict_status="stale",
+            conflict_message="Refresh connector config before retrying sync.",
+            conflict_code="connector_config_revision_mismatch",
+            conflict_entity_id="connector_instance_ticketing",
+            connector_config_status="mismatch",
+            stale_connector_instance_id="connector_instance_ticketing",
+        ),
+    }
+)
+
+connectors_vendor_deliveries_map = {
+    connector_instance_id: payload_with_full_state(
+        {
+            "connector_instance_id": connector_instance_id,
+            "delivery_record_ids": [
+                delivery_record_id
+                for delivery_record_id, delivery_record in connector_delivery_records.items()
+                if delivery_record["connector_instance_id"] == connector_instance_id
+            ],
+            "delivery_records": {
+                delivery_record_id: delivery_record
+                for delivery_record_id, delivery_record in connector_delivery_records.items()
+                if delivery_record["connector_instance_id"] == connector_instance_id
+            },
+            "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+        }
+    )
+    for connector_instance_id in connector_instances
+}
+
+release_readiness_doc = payload_with_full_state(
+    {
+        "readiness": {
+            "app_profile": "crewops_release",
+            "pack_ready": True,
+            "desktop_profile_ready": True,
+            "mobile_base_url_configured": False,
+            "hosted_prep_smoke": "non_blocking",
+            "connector_artifact_handling": "ready",
+        },
+        "todo_items": [
+            "Configure real iOS/Android backend base_url.",
+            "Promote hosted prep smoke from profile sanity to live probe once environment is configured.",
+        ],
+        "sync": sync_doc("sync_cursor_2026_03_11_101", "idle"),
+    }
+)
+
 created_entities = clone_doc(base_entities)
 created_indexes = clone_doc(indexes)
 created_summary = clone_doc(summary)
@@ -4676,6 +6187,26 @@ sync_pull_doc = {
             "entity_id": "delivery_002",
             "work_order_id": "wo_018",
         },
+        {
+            "kind": "portal_request",
+            "entity_id": "service_request_001",
+            "work_order_id": "wo_018",
+        },
+        {
+            "kind": "inventory_movement",
+            "entity_id": "stock_movement_002",
+            "work_order_id": "wo_018",
+        },
+        {
+            "kind": "purchase_order",
+            "entity_id": "purchase_order_002",
+            "work_order_id": "wo_018",
+        },
+        {
+            "kind": "connector_instance",
+            "entity_id": "connector_instance_ticketing",
+            "work_order_id": "wo_018",
+        },
     ],
     "status": "idle",
     "received_at": now,
@@ -4689,6 +6220,11 @@ sync_pull_doc = {
         "agreement_renewal_mode": "append_history",
         "recurring_generation_mode": "dedupe_by_plan_revision",
         "delivery_retry_mode": "append_only",
+        "portal_approval_mode": "revision_sensitive",
+        "tenant_revision_mode": "revision_sensitive",
+        "inventory_movement_mode": "append_only",
+        "receiving_mode": "append_history",
+        "connector_config_mode": "revision_sensitive",
     },
     "entities": {
         "assignments": assignments,
@@ -4723,6 +6259,27 @@ sync_pull_doc = {
         "connector_mappings": connector_mappings,
         "import_or_sync_jobs": import_or_sync_jobs,
         "recurring_revenue_rollups": recurring_revenue_rollups,
+        "tenants": tenants,
+        "workspaces": workspaces,
+        "role_definitions": role_definitions,
+        "permission_grants": permission_grants,
+        "branding_packs": branding_packs,
+        "portal_accounts": portal_accounts,
+        "service_requests": service_requests,
+        "customer_timeline_events": customer_timeline_events,
+        "inventory_items": inventory_items,
+        "stock_locations": stock_locations,
+        "stock_movements": stock_movements,
+        "vendors": vendors,
+        "purchase_orders": purchase_orders,
+        "purchase_order_lines": purchase_order_lines,
+        "receiving_records": receiving_records,
+        "reorder_suggestions": reorder_suggestions,
+        "connector_instances": connector_instances,
+        "connector_sync_jobs": connector_sync_jobs,
+        "connector_delivery_records": connector_delivery_records,
+        "tenant_health_snapshots": tenant_health_snapshots,
+        "portal_adoption_rollups": portal_adoption_rollups,
     },
     "indexes": indexes,
     "summary": summary,
@@ -4742,6 +6299,10 @@ sync_push_doc = {
         "op_contract_pause_agreement_002",
         "op_recurring_skip_plan_002",
         "op_webhook_retry_delivery_002",
+        "op_portal_approve_estimate_004",
+        "op_inventory_consume_contact_cleaner",
+        "op_procurement_receive_po_002",
+        "op_connector_sync_ticketing",
     ],
     "conflicts": [
         {
@@ -4755,6 +6316,12 @@ sync_push_doc = {
             "entity_id": "delivery_002",
             "code": "webhook_delivery_retry_required",
             "message": "Delivery remains failed after retry; inspect the delivery log.",
+        },
+        {
+            "kind": "connector_instance",
+            "entity_id": "connector_instance_ticketing",
+            "code": "connector_config_revision_mismatch",
+            "message": "Connector config rotated while stale local state remained.",
         },
     ],
     "status": "accepted",
@@ -4779,6 +6346,15 @@ sync_push_doc = {
         "renewal_records": renewal_records,
         "webhook_deliveries": webhook_deliveries,
         "api_key_records": api_key_records,
+        "service_requests": service_requests,
+        "customer_timeline_events": customer_timeline_events,
+        "inventory_items": inventory_items,
+        "stock_locations": stock_locations,
+        "stock_movements": stock_movements,
+        "purchase_orders": purchase_orders,
+        "receiving_records": receiving_records,
+        "connector_instances": connector_instances,
+        "connector_sync_jobs": connector_sync_jobs,
     },
     "indexes": indexes,
     "summary": summary,
@@ -4796,6 +6372,16 @@ sync_push_doc = {
         payment_revision_status="accepted",
         export_status="running",
         finance_revision="finance_rev_2026_03_11_002",
+        portal_approval_status="approved",
+        stale_portal_request_id="service_request_001",
+        tenant_revision_status="accepted",
+        stale_tenant_id="tenant_northline",
+        inventory_movement_status="accepted",
+        stale_stock_location_id="stock_location_van_gamma",
+        receiving_status="partial",
+        stale_purchase_order_id="purchase_order_002",
+        connector_config_status="mismatch",
+        stale_connector_instance_id="connector_instance_ticketing",
     ),
 }
 
@@ -4863,7 +6449,9 @@ module = {
                 "demo_seed.entities_body_v1",
                 "demo_seed.indexes_body_v1",
                 "demo_seed.login_dispatcher_body_v1",
+                "demo_seed.login_enterprise_admin_body_v1",
                 "demo_seed.login_manager_body_v1",
+                "demo_seed.login_portal_user_body_v1",
                 "demo_seed.login_supervisor_body_v1",
                 "demo_seed.login_technician_body_v1",
                 "demo_seed.meta_body_v1",
@@ -4923,6 +6511,31 @@ module = {
                 "demo_seed.integrations_api_key_create_body_v1",
                 "demo_seed.integrations_webhook_create_body_v1",
                 "demo_seed.integrations_delivery_retry_body_v1",
+                "demo_seed.enterprise_admin_body_v1",
+                "demo_seed.admin_roles_body_v1",
+                "demo_seed.admin_tenant_create_body_v1",
+                "demo_seed.admin_tenant_patch_map_body_v1",
+                "demo_seed.admin_role_create_body_v1",
+                "demo_seed.admin_branding_update_body_v1",
+                "demo_seed.portal_session_body_v1",
+                "demo_seed.portal_me_body_v1",
+                "demo_seed.portal_invoices_body_v1",
+                "demo_seed.portal_service_history_body_v1",
+                "demo_seed.portal_request_create_body_v1",
+                "demo_seed.portal_request_convert_map_body_v1",
+                "demo_seed.portal_estimate_approve_body_v1",
+                "demo_seed.portal_approval_conflict_body_v1",
+                "demo_seed.inventory_items_body_v1",
+                "demo_seed.inventory_movement_body_v1",
+                "demo_seed.inventory_count_body_v1",
+                "demo_seed.procurement_orders_body_v1",
+                "demo_seed.procurement_po_create_body_v1",
+                "demo_seed.procurement_receive_body_v1",
+                "demo_seed.connectors_vendor_body_v1",
+                "demo_seed.connectors_vendor_create_body_v1",
+                "demo_seed.connectors_vendor_sync_map_body_v1",
+                "demo_seed.connectors_vendor_deliveries_map_body_v1",
+                "demo_seed.release_readiness_body_v1",
                 "demo_seed.work_order_create_body_v1",
                 "demo_seed.work_order_patch_body_v1",
                 "demo_seed.work_order_patch_map_body_v1",
@@ -4975,6 +6588,15 @@ module = {
             ),
         ),
         bytes_defn(
+            "demo_seed.login_enterprise_admin_body_v1",
+            login_doc(
+                "enterprise_admin",
+                "user_enterprise_iris",
+                "branch_north",
+                None,
+            ),
+        ),
+        bytes_defn(
             "demo_seed.login_supervisor_body_v1",
             login_doc(
                 "supervisor",
@@ -4990,6 +6612,15 @@ module = {
                 "user_manager_jonas",
                 "branch_north",
                 "team_north_alpha",
+            ),
+        ),
+        bytes_defn(
+            "demo_seed.login_portal_user_body_v1",
+            login_doc(
+                "portal_user",
+                "user_portal_morgan",
+                "branch_north",
+                None,
             ),
         ),
         bytes_defn("demo_seed.meta_body_v1", meta_doc),
@@ -5094,6 +6725,40 @@ module = {
             "demo_seed.integrations_delivery_retry_body_v1",
             integrations_delivery_retry_doc,
         ),
+        bytes_defn("demo_seed.enterprise_admin_body_v1", enterprise_admin_doc),
+        bytes_defn("demo_seed.admin_roles_body_v1", admin_roles_doc),
+        bytes_defn("demo_seed.admin_tenant_create_body_v1", admin_tenant_create_doc),
+        bytes_defn("demo_seed.admin_tenant_patch_map_body_v1", admin_tenant_patch_map),
+        bytes_defn("demo_seed.admin_role_create_body_v1", admin_role_create_doc),
+        bytes_defn("demo_seed.admin_branding_update_body_v1", admin_branding_update_doc),
+        bytes_defn("demo_seed.portal_session_body_v1", portal_session_doc),
+        bytes_defn("demo_seed.portal_me_body_v1", portal_me_doc),
+        bytes_defn("demo_seed.portal_invoices_body_v1", portal_invoices_doc),
+        bytes_defn("demo_seed.portal_service_history_body_v1", portal_service_history_doc),
+        bytes_defn("demo_seed.portal_request_create_body_v1", portal_request_create_doc),
+        bytes_defn(
+            "demo_seed.portal_request_convert_map_body_v1",
+            portal_request_convert_map,
+        ),
+        bytes_defn("demo_seed.portal_estimate_approve_body_v1", portal_estimate_approve_doc),
+        bytes_defn("demo_seed.portal_approval_conflict_body_v1", portal_approval_conflict_doc),
+        bytes_defn("demo_seed.inventory_items_body_v1", inventory_items_doc),
+        bytes_defn("demo_seed.inventory_movement_body_v1", inventory_movement_doc),
+        bytes_defn("demo_seed.inventory_count_body_v1", inventory_count_doc),
+        bytes_defn("demo_seed.procurement_orders_body_v1", procurement_orders_doc),
+        bytes_defn("demo_seed.procurement_po_create_body_v1", procurement_po_create_doc),
+        bytes_defn("demo_seed.procurement_receive_body_v1", procurement_receive_doc),
+        bytes_defn("demo_seed.connectors_vendor_body_v1", connectors_vendor_doc),
+        bytes_defn("demo_seed.connectors_vendor_create_body_v1", connectors_vendor_create_doc),
+        bytes_defn(
+            "demo_seed.connectors_vendor_sync_map_body_v1",
+            connectors_vendor_sync_map,
+        ),
+        bytes_defn(
+            "demo_seed.connectors_vendor_deliveries_map_body_v1",
+            connectors_vendor_deliveries_map,
+        ),
+        bytes_defn("demo_seed.release_readiness_body_v1", release_readiness_doc),
         bytes_defn("demo_seed.work_order_create_body_v1", work_order_create_doc),
         bytes_defn("demo_seed.work_order_patch_body_v1", work_order_patch_doc),
         bytes_defn("demo_seed.work_order_patch_map_body_v1", work_order_patch_map),
