@@ -26,6 +26,25 @@ CrewOps `v0.6.0` is the M7 field-operations showcase. One deterministic `std-web
 - Sync subtrees: `commercial_ops` and `enterprise_ops`
 - Bootstrap cache key: `crewops.bootstrap.snapshot.v2`
 
+## Main User Flows
+
+These are the shortest demo paths that show what CrewOps can actually do for each role:
+
+1. Technician field completion on `today`.
+   Start from `WO-1201`, check in, record labor and parts, capture or import evidence, save a draft, complete the visit, and check out with offline-safe sync state visible in the same screen.
+2. Dispatcher scheduling on `dispatch`.
+   Use the seeded board to create or update work orders, assign or reassign technicians, and watch route, branch, and team filters keep the queue organized around the same live demo seed.
+3. Supervisor QA on `review`.
+   Approve clean visits, reject exceptions, request corrections, and replay correction resubmission without leaving the deterministic review queue.
+4. Manager operations and finance on `manager`, `finance`, `pricing`, `invoices`, `receivables`, and `exports`.
+   Review branch rollups, SLA risk, receivables, profitability, pricing controls, invoice issuance, payment capture, and export retry flows from one commercial workspace.
+5. Commercial growth on `estimates`, `contracts`, `recurring`, and `integrations`.
+   Build an estimate, send it for approval, convert approved work into an agreement, manage recurring service generation, and inspect webhook or API delivery health.
+6. Customer self-service on `portal`.
+   Log in as the seeded portal account `portal_account_001`, review service history, see invoice and estimate status, and convert a portal request into office follow-up.
+7. Enterprise operations on `enterprise`, `inventory`, `procurement`, and `integration_dashboard`.
+   Switch to `tenant_northline`, review tenant readiness, low-stock state, partial receiving on `purchase_order_002`, and connector health for `connector_instance_ticketing`.
+
 ## Backend Surface
 
 CrewOps exposes deterministic `/api` routes for:

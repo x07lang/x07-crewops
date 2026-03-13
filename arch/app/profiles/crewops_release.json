@@ -18,7 +18,7 @@
     "api_prefix": "/api"
   },
   "budgets": {
-    "max_dispatch_bytes": 262144,
+    "max_dispatch_bytes": 1048576,
     "max_frame_bytes": 16777216,
     "max_http_body_bytes": 1048576,
     "max_concurrency": 64,

@@ -420,6 +420,8 @@ resolve_x07_device_host_desktop() {
   local repo_root="$1"
   local snapshot_path="${repo_root}/vendor/x07-device-host/host_abi.snapshot.json"
   local expected_hash=""
+  local toolchain_bin_dir=""
+  local direct_candidate=""
 
   if [ -f "${snapshot_path}" ]; then
     expected_hash="$("$PYTHON" - "${snapshot_path}" <<'PY'
@@ -441,7 +443,51 @@ PY
   local abi_hash=""
 
   if [ -n "${X07_DEVICE_HOST_DESKTOP:-}" ]; then
-    candidates+=("${X07_DEVICE_HOST_DESKTOP}")
+    direct_candidate="${X07_DEVICE_HOST_DESKTOP}"
+    if abi_hash="$("${direct_candidate}" --host-abi-hash 2>/dev/null)"; then
+      case "${abi_hash}" in
+        [0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]*)
+          if [ "${#abi_hash}" -eq 64 ]; then
+            printf '%s\n' "${direct_candidate}"
+            return 0
+          fi
+          ;;
+      esac
+    fi
+  fi
+
+  if [ -n "${X07_WASM_BIN:-}" ]; then
+    toolchain_bin_dir="$(cd "$(dirname "${X07_WASM_BIN}")" && pwd)"
+    if [ -x "${toolchain_bin_dir}/x07-device-host-desktop" ]; then
+      direct_candidate="${toolchain_bin_dir}/x07-device-host-desktop"
+      if abi_hash="$("${direct_candidate}" --host-abi-hash 2>/dev/null)"; then
+        case "${abi_hash}" in
+          [0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]*)
+            if [ "${#abi_hash}" -eq 64 ]; then
+              printf '%s\n' "${direct_candidate}"
+              return 0
+            fi
+            ;;
+        esac
+      fi
+    fi
+  fi
+
+  if [ -n "${X07_BIN:-}" ]; then
+    toolchain_bin_dir="$(cd "$(dirname "${X07_BIN}")" && pwd)"
+    if [ -x "${toolchain_bin_dir}/x07-device-host-desktop" ]; then
+      direct_candidate="${toolchain_bin_dir}/x07-device-host-desktop"
+      if abi_hash="$("${direct_candidate}" --host-abi-hash 2>/dev/null)"; then
+        case "${abi_hash}" in
+          [0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]*)
+            if [ "${#abi_hash}" -eq 64 ]; then
+              printf '%s\n' "${direct_candidate}"
+              return 0
+            fi
+            ;;
+        esac
+      fi
+    fi
   fi
 
   if command -v x07-device-host-desktop >/dev/null 2>&1; then

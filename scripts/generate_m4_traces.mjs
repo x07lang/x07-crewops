@@ -1723,7 +1723,11 @@ function isSuccessfulGoldenUpdate(reportPath) {
   }
   const reportDoc = readJson(reportPath);
   const stdoutJson = reportDoc?.result?.stdout_json;
-  return stdoutJson?.failed === 0 && stdoutJson?.updated_golden === true;
+  const cases = Array.isArray(stdoutJson?.cases) ? stdoutJson.cases : [];
+  return reportDoc?.ok === true
+    && stdoutJson?.failed === 0
+    && stdoutJson?.updated_golden === true
+    && cases.every((item) => item?.ok === true);
 }
 
 function isRetryableGoldenFailure(reportPath) {
