@@ -14,7 +14,7 @@ const APP_DIR = path.join(ROOT, 'dist/crewops_gate/app.crewops_dev');
 const X07_WASM = path.join(ROOT, '../x07-wasm-backend/target/debug/x07-wasm');
 const CREATED_UTC = '2026-03-11T00:00:00Z';
 const APP_VERSION = '0.6.0';
-const TOOL_VERSION = '0.2.4';
+const TOOL_VERSION = '0.2.7';
 const NOW = '2026-03-11T00:00:00Z';
 
 const argv = process.argv.slice(2);

@@ -6,7 +6,7 @@ Use this repo as the CrewOps `v0.6.0` M7 showcase. The active product shape is o
 
 - Frontend: [`frontend/src/app.x07.json`](frontend/src/app.x07.json) is the `std-web-ui` reducer.
 - Backend: [`backend/src/app.x07.json`](backend/src/app.x07.json) is the deterministic WASI HTTP proxy component.
-- Frontend package baseline: [`frontend/x07.json`](frontend/x07.json) is locked to `std-web-ui@0.2.4`.
+- Frontend package baseline: [`frontend/x07.json`](frontend/x07.json) is locked to `std-web-ui@0.2.5`.
 - App profiles: `crewops_dev`, `crewops_release`, `crewops_budget`
 - Device profiles: `device_desktop_dev`, `device_ios_dev`, `device_android_dev`
 - Roles: `technician`, `dispatcher`, `supervisor`, `manager`, `portal_user`, `enterprise_admin`
@@ -25,5 +25,5 @@ Use this repo as the CrewOps `v0.6.0` M7 showcase. The active product shape is o
 - Treat [`scripts/ci/check_all.sh`](scripts/ci/check_all.sh) as the canonical CrewOps gate.
 - Regenerate demo data through [`scripts/ci/seed_demo.sh`](scripts/ci/seed_demo.sh); do not hand-edit generated payloads.
 - Keep authored traces and generated regressions aligned with the current M7 ids, routes, and sync schema.
-- Keep docs and release notes aligned to the `v0.6.0` release line and the `std-web-ui@0.2.4` dependency baseline.
+- Keep docs and release notes aligned to the `v0.6.0` release line and the `std-web-ui@0.2.5` dependency baseline.
 - Keep schema usage aligned with the published `x07-project.v0.3.0` and `x07ast.v0.5.0` surfaces.

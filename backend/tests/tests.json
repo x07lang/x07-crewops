@@ -104,6 +104,12 @@
       "world": "solve-pure"
     },
     {
+      "entry": "m7_backend_tests.test_login_route_base64_body_v1",
+      "expect": "pass",
+      "id": "backend/m7-login-route-base64-body",
+      "world": "solve-pure"
+    },
+    {
       "entry": "m7_backend_tests.test_enterprise_admin_route_v1",
       "expect": "pass",
       "id": "backend/m7-enterprise-admin-route",

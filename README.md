@@ -19,7 +19,7 @@ CrewOps `v0.6.0` is the M7 field-operations showcase. One deterministic `std-web
 ## Current Shape
 
 - Release line: `v0.6.0`
-- Frontend dependency baseline: [`frontend/x07.json`](frontend/x07.json) uses `std-web-ui@0.2.4`
+- Frontend dependency baseline: [`frontend/x07.json`](frontend/x07.json) uses `std-web-ui@0.2.5`
 - Roles: `technician`, `dispatcher`, `supervisor`, `manager`, `portal_user`, `enterprise_admin`
 - Primary routes: `today`, `dispatch`, `review`, `manager`, `finance`, `pricing`, `invoices`, `activity`, `customers`, `receivables`, `exports`, `sites`, `assets`, `settings`, `estimates`, `contracts`, `recurring`, `integrations`, `portal`, `enterprise`, `inventory`, `procurement`, `integration_dashboard`
 - Shared reducer branches: `session`, `bootstrap`, `ui`, `entities`, `indexes`, `sync`, `settings`, `diagnostics`, `summary`, `drafts`, `template`, `execution`, `meta`

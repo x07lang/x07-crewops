@@ -5,7 +5,7 @@ CrewOps `v0.6.0` keeps one repo, one deterministic reducer, and one seed-backed 
 ## Repo Layers
 
 - [`frontend/`](../frontend)
-  - reducer modules, state defaults, route helpers, and the `std-web-ui@0.2.4` dependency
+  - reducer modules, state defaults, route helpers, and the `std-web-ui@0.2.5` dependency
 - [`backend/`](../backend)
   - deterministic API handlers for bootstrap, execution, dispatch, review, finance, portal, enterprise admin, inventory, procurement, connectors, and readiness
 - [`arch/`](../arch)

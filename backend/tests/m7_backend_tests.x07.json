@@ -18,6 +18,7 @@
         "m7_backend_tests.test_connectors_vendor_deliveries_route_v1",
         "m7_backend_tests.test_enterprise_admin_route_v1",
         "m7_backend_tests.test_inventory_movement_route_v1",
+        "m7_backend_tests.test_login_route_base64_body_v1",
         "m7_backend_tests.test_m7_summary_seed_v1",
         "m7_backend_tests.test_m7_sync_seed_v1",
         "m7_backend_tests.test_portal_request_convert_route_v1",
@@ -99,6 +100,45 @@
         ["set", "out", ["std.vec.extend_bytes", "out", "path_json"]],
         ["set", "out", ["std.vec.extend_bytes", "out", ["bytes.view_lit", ",\"headers\":[],\"body\":{\"bytes_len\":0,\"text\":\"\"}}"]]],
         ["std.vec.as_bytes", "out"]
+      ]
+    },
+    {
+      "kind": "defn",
+      "name": "m7_backend_tests.test_login_route_base64_body_v1",
+      "params": [],
+      "result": "result_i32",
+      "body": [
+        "begin",
+        [
+          "let",
+          "request_json",
+          [
+            "bytes.lit",
+            "{\"id\":\"req_portal_login\",\"method\":\"POST\",\"path\":\"/api/session/dev-login\",\"headers\":[],\"body\":{\"bytes_len\":53,\"base64\":\"eyJyb2xlIjoicG9ydGFsX3VzZXIiLCJ1c2VyX2lkIjoidXNlcl9wb3J0YWxfbW9yZ2FuIn0=\"}}"
+          ]
+        ],
+        [
+          "let",
+          "body_json",
+          [
+            "demo_seed.login_portal_user_body_v1"
+          ]
+        ],
+        [
+          "m7_backend_tests._assert_route_body_v1",
+          [
+            "bytes.view",
+            "request_json"
+          ],
+          [
+            "bytes.view_lit",
+            "200"
+          ],
+          [
+            "bytes.view",
+            "body_json"
+          ]
+        ]
       ]
     },
     {

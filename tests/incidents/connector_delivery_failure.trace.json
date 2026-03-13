@@ -3,7 +3,7 @@
   "meta": {
     "tool": {
       "name": "x07-wasm",
-      "version": "0.2.4"
+      "version": "0.2.7"
     },
     "app": {
       "name": "x07_crewops",

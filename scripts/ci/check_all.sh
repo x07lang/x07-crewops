@@ -813,6 +813,12 @@ run_step "x07-wasm app build crewops_budget" \
     --clean \
     --strict
 
+run_step "postprocess x07-wasm app hosts" \
+  "$NODE_BIN" "$ROOT/scripts/postprocess_app_host.mjs" \
+    "$APP_DEV_DIR" \
+    "$APP_RELEASE_DIR" \
+    "$APP_BUDGET_DIR"
+
 run_step "x07-wasm app serve smoke crewops_dev" \
   run_json \
     "$REPORT_DIR/app.serve.crewops_dev.smoke.json" \

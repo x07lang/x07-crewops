@@ -56,6 +56,54 @@
       "world": "solve-pure"
     },
     {
+      "entry": "frontend_tests.test_m7_role_login_requests_v1",
+      "expect": "pass",
+      "id": "frontend/m7-role-login-requests",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "frontend_tests.test_login_error_response_v1",
+      "expect": "pass",
+      "id": "frontend/login-error-response",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "frontend_tests.test_m7_login_success_route_requests_v1",
+      "expect": "pass",
+      "id": "frontend/m7-login-success-route-requests",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "frontend_tests.test_m7_route_bundle_response_reducer_v1",
+      "expect": "pass",
+      "id": "frontend/m7-route-bundle-response-reducer",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "frontend_tests.test_bootstrap_response_body_decode_v1",
+      "expect": "pass",
+      "id": "frontend/bootstrap-response-body-decode",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "frontend_tests.test_bootstrap_response_dispatch_extract_v1",
+      "expect": "pass",
+      "id": "frontend/bootstrap-response-dispatch-extract",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "frontend_tests.test_bootstrap_response_reducer_v1",
+      "expect": "pass",
+      "id": "frontend/bootstrap-response-reducer",
+      "world": "solve-pure"
+    },
+    {
+      "entry": "frontend_tests.test_storage_set_ack_preserves_bootstrap_v1",
+      "expect": "pass",
+      "id": "frontend/storage-set-ack-preserves-bootstrap",
+      "world": "solve-pure"
+    },
+    {
       "entry": "frontend_tests.test_invoice_rate_reducer_v1",
       "expect": "pass",
       "id": "frontend/invoice-rate-reducer",
@@ -77,6 +125,24 @@
       "entry": "frontend_tests.test_receivable_aging_reducer_v1",
       "expect": "pass",
       "id": "frontend/receivable-aging-reducer",
+      "world": "solve-pure"
+    },
+    {
+      "id": "frontend/office-nav-manager-visibility",
+      "entry": "frontend_tests.test_office_nav_manager_visibility_v1",
+      "expect": "pass",
+      "world": "solve-pure"
+    },
+    {
+      "id": "frontend/record-select-active-class",
+      "entry": "frontend_tests.test_record_select_active_class_v1",
+      "expect": "pass",
+      "world": "solve-pure"
+    },
+    {
+      "id": "frontend/office-role-switcher-helper",
+      "entry": "frontend_tests.test_office_role_switcher_helper_v1",
+      "expect": "pass",
       "world": "solve-pure"
     },
     {

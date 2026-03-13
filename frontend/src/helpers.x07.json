@@ -477,70 +477,11 @@
         "begin",
         [
           "let",
-          "qv",
-          [
-            "std.vec.with_capacity",
-            [
-              "+",
-              [
-                "+",
-                [
-                  "view.len",
-                  "doc_json"
-                ],
-                [
-                  "view.len",
-                  "path"
-                ]
-              ],
-              8
-            ]
-          ]
-        ],
-        [
-          "set",
-          "qv",
-          [
-            "std.vec.extend_bytes",
-            "qv",
-            "doc_json"
-          ]
-        ],
-        [
-          "set",
-          "qv",
-          [
-            "std.vec.push",
-            "qv",
-            0
-          ]
-        ],
-        [
-          "set",
-          "qv",
-          [
-            "std.vec.extend_bytes",
-            "qv",
-            "path"
-          ]
-        ],
-        [
-          "let",
-          "query",
-          [
-            "std.vec.as_bytes",
-            "qv"
-          ]
-        ],
-        [
-          "let",
           "value",
           [
-            "std.json.extract_path_canon_or_err",
-            [
-              "bytes.view",
-              "query"
-            ]
+            "backend_helpers.extract_path_v1",
+            "doc_json",
+            "path"
           ]
         ],
         [
@@ -2003,8 +1944,8 @@
     }
   ],
   "imports": [
+    "backend_helpers",
     "std.fmt",
-    "std.json",
     "std.parse",
     "std.vec"
   ],

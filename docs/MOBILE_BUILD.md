@@ -1,6 +1,6 @@
 # CrewOps Mobile Build
 
-CrewOps `v0.6.0` ships the same M7 reducer across desktop, iOS, and Android. The frontend dependency baseline is `std-web-ui@0.2.4`, and the checked-in device profiles carry the `0.6.0` release version.
+CrewOps `v0.6.0` ships the same M7 reducer across desktop, iOS, and Android. The frontend dependency baseline is `std-web-ui@0.2.5`, and the checked-in device profiles carry the `0.6.0` release version.
 
 ## Prereqs
 

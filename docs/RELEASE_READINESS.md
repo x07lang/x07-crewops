@@ -63,7 +63,7 @@ The M7 release line is expected to produce these local artifacts:
 ## Operator Checklist
 
 - Confirm `PROMPT.md`, `README.md`, and the local phase docs match the `v0.6.0` M7 route set.
-- Confirm `frontend/x07.json` stays on `std-web-ui@0.2.4`.
+- Confirm `frontend/x07.json` stays on `std-web-ui@0.2.5`.
 - Confirm schema references stay on the published `x07.project@0.3.0` and `x07.x07ast@0.5.0` surfaces.
 - Confirm `scripts/ci/seed_demo.sh` and generated `backend/src/demo_seed.x07.json` stay in sync.
 - Confirm M7 sync fields for portal approval, tenant revision, inventory movement, receiving, and connector configuration are present in the seed and replay fixtures.
