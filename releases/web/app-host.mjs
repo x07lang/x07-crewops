@@ -581,6 +581,14 @@ const TAG_ALLOWLIST = new Set([
   "thead",
   "tr",
   "ul",
+  "article",
+  "aside",
+  "footer",
+  "header",
+  "main",
+  "nav",
+  "section",
+  "style",
 ]);
 
 const GLOBAL_ATTR_ALLOWLIST = new Set([

@@ -10,9 +10,9 @@
   "frontend": {
     "artifacts": [
       {
-        "bytes_len": 110035,
+        "bytes_len": 110126,
         "path": "frontend/app-host.mjs",
-        "sha256": "d19ddee14f20f90ec051532da0dce5f07df00bfa7de3eaab17d33f1b435a7759"
+        "sha256": "ec405c7d0bd79a314aeb51033042a77087446ea9c9dd6d3ef8f4c3f30bb583ac"
       },
       {
         "bytes_len": 159,
