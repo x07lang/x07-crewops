@@ -21,7 +21,7 @@
       "foreground": false
     },
     "notifications": {
-      "local": false,
+      "local": true,
       "push": false
     }
   }

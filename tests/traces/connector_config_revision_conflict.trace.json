@@ -31763,7 +31763,7 @@
                 "customer_id": "cust_020",
                 "id": "asset_020",
                 "kind": "pump",
-                "name": "Asset 020",
+                "name": "Domestic Booster Pump B-14",
                 "service_level": "critical",
                 "site_id": "site_020"
               },
@@ -32464,7 +32464,7 @@
             "branding_packs": {
               "branding_pack_northline": {
                 "accent_color": "#0b6f68",
-                "display_name": "Northline CrewOps",
+                "display_name": "Northline Enterprise",
                 "id": "branding_pack_northline",
                 "invoice_branding_ref": "northline-core",
                 "navigation_sections": [
@@ -32544,7 +32544,7 @@
                 "last_success_at": "2026-03-09T14:00:00Z",
                 "mapping_ids": [],
                 "provider_class": "ticketing",
-                "provider_name": "FieldDesk",
+                "provider_name": "ServicePilot",
                 "status": "config_stale",
                 "tenant_id": "tenant_northline_branch"
               }
@@ -32797,10 +32797,10 @@
               },
               "timeline_event_003": {
                 "created_at": "2026-03-11T09:00:00Z",
-                "customer_message": "Service visit scheduled for March 20.",
+                "customer_message": "Service visit confirmed for March 15.",
                 "id": "timeline_event_003",
                 "kind": "visit_scheduled",
-                "office_message": "Dispatch linked portal request to visit_018.",
+                "office_message": "Dispatch linked portal request to visit_020.",
                 "portal_account_id": "portal_account_001",
                 "service_request_id": "service_request_001"
               }
@@ -32809,121 +32809,121 @@
               "cust_001": {
                 "branch_id": "branch_north",
                 "id": "cust_001",
-                "name": "Customer 01",
+                "name": "Aurora Fitness Club",
                 "segment": "commercial"
               },
               "cust_002": {
                 "branch_id": "branch_south",
                 "id": "cust_002",
-                "name": "Customer 02",
+                "name": "Maple Street Bakery",
                 "segment": "commercial"
               },
               "cust_003": {
                 "branch_id": "branch_north",
                 "id": "cust_003",
-                "name": "Customer 03",
+                "name": "Riverview Offices",
                 "segment": "municipal"
               },
               "cust_004": {
                 "branch_id": "branch_south",
                 "id": "cust_004",
-                "name": "Customer 04",
+                "name": "Lakeside Dental Group",
                 "segment": "commercial"
               },
               "cust_005": {
                 "branch_id": "branch_north",
                 "id": "cust_005",
-                "name": "Customer 05",
+                "name": "West Harbor Storage",
                 "segment": "commercial"
               },
               "cust_006": {
                 "branch_id": "branch_south",
                 "id": "cust_006",
-                "name": "Customer 06",
+                "name": "Cedar Glen Apartments",
                 "segment": "municipal"
               },
               "cust_007": {
                 "branch_id": "branch_north",
                 "id": "cust_007",
-                "name": "Customer 07",
+                "name": "Brightstone Hotel",
                 "segment": "commercial"
               },
               "cust_008": {
                 "branch_id": "branch_south",
                 "id": "cust_008",
-                "name": "Customer 08",
+                "name": "Hillcrest Library",
                 "segment": "commercial"
               },
               "cust_009": {
                 "branch_id": "branch_north",
                 "id": "cust_009",
-                "name": "Customer 09",
+                "name": "Fairview School District",
                 "segment": "municipal"
               },
               "cust_010": {
                 "branch_id": "branch_south",
                 "id": "cust_010",
-                "name": "Customer 10",
+                "name": "Oakline Logistics",
                 "segment": "commercial"
               },
               "cust_011": {
                 "branch_id": "branch_north",
                 "id": "cust_011",
-                "name": "Customer 11",
+                "name": "Meridian Design Center",
                 "segment": "commercial"
               },
               "cust_012": {
                 "branch_id": "branch_south",
                 "id": "cust_012",
-                "name": "Customer 12",
+                "name": "Cedar Point Retail",
                 "segment": "municipal"
               },
               "cust_013": {
                 "branch_id": "branch_north",
                 "id": "cust_013",
-                "name": "Customer 13",
+                "name": "Redwood Commerce Park",
                 "segment": "commercial"
               },
               "cust_014": {
                 "branch_id": "branch_south",
                 "id": "cust_014",
-                "name": "Customer 14",
+                "name": "Pine & Mercer Labs",
                 "segment": "commercial"
               },
               "cust_015": {
                 "branch_id": "branch_north",
                 "id": "cust_015",
-                "name": "Customer 15",
+                "name": "Ironwood Distribution Center",
                 "segment": "municipal"
               },
               "cust_016": {
                 "branch_id": "branch_south",
                 "id": "cust_016",
-                "name": "Customer 16",
+                "name": "Harborview Medical Plaza",
                 "segment": "commercial"
               },
               "cust_017": {
                 "branch_id": "branch_north",
                 "id": "cust_017",
-                "name": "Customer 17",
+                "name": "Summit Market Hall",
                 "segment": "commercial"
               },
               "cust_018": {
                 "branch_id": "branch_south",
                 "id": "cust_018",
-                "name": "Customer 18",
+                "name": "Granite Harbor Campus",
                 "segment": "municipal"
               },
               "cust_019": {
                 "branch_id": "branch_north",
                 "id": "cust_019",
-                "name": "Customer 19",
+                "name": "Alder Ridge Offices",
                 "segment": "commercial"
               },
               "cust_020": {
                 "branch_id": "branch_south",
                 "id": "cust_020",
-                "name": "Customer 20",
+                "name": "Atlas Commerce Center",
                 "segment": "commercial"
               }
             },
@@ -33289,7 +33289,7 @@
                 "travel_total": 28
               },
               "estimate_version_est_002_r1": {
-                "billing_policy_id": "billing_policy_branch_north",
+                "billing_policy_id": "billing_policy_branch_south",
                 "created_at": "2026-03-08T11:25:00Z",
                 "created_by_user_id": "user_manager_jonas",
                 "discount_rule_id": "discount_rule_loyalty",
@@ -33306,13 +33306,13 @@
                 "margin_note": "Keep labor fixed for trust-building.",
                 "notes": "Lobby door preventative service.",
                 "parts_subtotal": 18.5,
-                "price_book_id": "price_book_branch_north",
+                "price_book_id": "price_book_branch_south",
                 "revision": 1,
                 "service_fee_total": 210,
                 "shared_at": "2026-03-09T18:00:00Z",
                 "state": "sent",
                 "subtotal": 504.5,
-                "tax_rule_id": "tax_rule_wa",
+                "tax_rule_id": "tax_rule_or",
                 "tax_total": 49.94,
                 "terms": "Approval reserves a next-week service window.",
                 "total": 544.35,
@@ -33379,7 +33379,7 @@
                 "travel_total": 44
               },
               "estimate_version_est_004_r1": {
-                "billing_policy_id": "billing_policy_branch_north",
+                "billing_policy_id": "billing_policy_branch_south",
                 "created_at": "2026-03-04T14:30:00Z",
                 "created_by_user_id": "user_manager_jonas",
                 "discount_rule_id": "discount_rule_loyalty",
@@ -33396,13 +33396,13 @@
                 "margin_note": "Anchor with predictable quarterly cadence.",
                 "notes": "Quarterly rooftop maintenance agreement.",
                 "parts_subtotal": 98,
-                "price_book_id": "price_book_branch_north",
+                "price_book_id": "price_book_branch_south",
                 "revision": 1,
                 "service_fee_total": 2080,
                 "shared_at": "2026-03-05T18:00:00Z",
                 "state": "approved",
                 "subtotal": 2748,
-                "tax_rule_id": "tax_rule_wa",
+                "tax_rule_id": "tax_rule_or",
                 "tax_total": 263.67,
                 "terms": "Twelve-month service agreement billed quarterly.",
                 "total": 2874.27,
@@ -33458,7 +33458,7 @@
                 "approved_at": null,
                 "approved_version_id": null,
                 "asset_id": "asset_011",
-                "billing_policy_id": "billing_policy_branch_north",
+                "billing_policy_id": "billing_policy_branch_south",
                 "branch_id": "branch_north",
                 "converted_at": null,
                 "created_at": "2026-03-08T11:25:00Z",
@@ -33474,7 +33474,7 @@
                 "linked_work_order_id": null,
                 "number": "EST-6002",
                 "origin": "backoffice",
-                "price_book_id": "price_book_branch_north",
+                "price_book_id": "price_book_branch_south",
                 "proposal_artifact_id": "proposal_artifact_est_002",
                 "rejected_at": null,
                 "sent_at": "2026-03-09T18:00:00Z",
@@ -33483,7 +33483,7 @@
                 "source_work_order_id": null,
                 "status": "sent",
                 "subtotal": 504.5,
-                "tax_rule_id": "tax_rule_wa",
+                "tax_rule_id": "tax_rule_or",
                 "tax_total": 49.94,
                 "team_id": "team_north_alpha",
                 "total": 544.35,
@@ -33543,8 +33543,8 @@
                 "approved_at": "2026-03-06T08:00:00Z",
                 "approved_version_id": "estimate_version_est_004_r1",
                 "asset_id": "asset_020",
-                "billing_policy_id": "billing_policy_branch_north",
-                "branch_id": "branch_north",
+                "billing_policy_id": "billing_policy_branch_south",
+                "branch_id": "branch_south",
                 "converted_at": null,
                 "created_at": "2026-03-04T14:30:00Z",
                 "currency": "USD",
@@ -33559,7 +33559,7 @@
                 "linked_work_order_id": "wo_020",
                 "number": "EST-6004",
                 "origin": "backoffice",
-                "price_book_id": "price_book_branch_north",
+                "price_book_id": "price_book_branch_south",
                 "proposal_artifact_id": "proposal_artifact_est_004",
                 "rejected_at": null,
                 "sent_at": "2026-03-05T18:00:00Z",
@@ -33568,9 +33568,9 @@
                 "source_work_order_id": "wo_020",
                 "status": "approved",
                 "subtotal": 2748,
-                "tax_rule_id": "tax_rule_wa",
+                "tax_rule_id": "tax_rule_or",
                 "tax_total": 263.67,
-                "team_id": "team_north_beta",
+                "team_id": "team_south_gamma",
                 "total": 2874.27,
                 "updated_at": "2026-03-06T08:00:00Z",
                 "version_ids": [
@@ -34551,7 +34551,7 @@
                 ],
                 "aging_bucket": "current",
                 "balance_due": 404.07,
-                "billing_policy_id": "billing_policy_branch_north",
+                "billing_policy_id": "billing_policy_branch_south",
                 "branch_id": "branch_north",
                 "currency": "USD",
                 "customer_id": "cust_013",
@@ -34574,7 +34574,7 @@
                 "paid_at": null,
                 "paid_total": 0,
                 "payment_ids": [],
-                "price_book_id": "price_book_branch_north",
+                "price_book_id": "price_book_branch_south",
                 "revision": 1,
                 "sent_at": null,
                 "service_summary_artifact_id": "service_summary_inv_001",
@@ -34586,7 +34586,7 @@
                 ],
                 "status": "draft",
                 "subtotal": 367,
-                "tax_rule_id": "tax_rule_wa",
+                "tax_rule_id": "tax_rule_or",
                 "tax_total": 37.07,
                 "team_id": "team_north_alpha",
                 "total": 404.07,
@@ -34600,7 +34600,7 @@
                 ],
                 "aging_bucket": "current",
                 "balance_due": 431.59,
-                "billing_policy_id": "billing_policy_branch_north",
+                "billing_policy_id": "billing_policy_branch_south",
                 "branch_id": "branch_north",
                 "currency": "USD",
                 "customer_id": "cust_014",
@@ -34623,7 +34623,7 @@
                 "paid_at": null,
                 "paid_total": 0,
                 "payment_ids": [],
-                "price_book_id": "price_book_branch_north",
+                "price_book_id": "price_book_branch_south",
                 "revision": 1,
                 "sent_at": null,
                 "service_summary_artifact_id": "service_summary_inv_002",
@@ -34635,7 +34635,7 @@
                 ],
                 "status": "pending_review",
                 "subtotal": 410,
-                "tax_rule_id": "tax_rule_wa",
+                "tax_rule_id": "tax_rule_or",
                 "tax_total": 39.59,
                 "team_id": "team_north_beta",
                 "total": 431.59,
@@ -34692,10 +34692,10 @@
                 "adjustment_ids": [],
                 "aging_bucket": "current",
                 "balance_due": 280,
-                "billing_policy_id": "billing_policy_customer_cust_018",
+                "billing_policy_id": "billing_policy_branch_south",
                 "branch_id": "branch_south",
                 "currency": "USD",
-                "customer_id": "cust_018",
+                "customer_id": "cust_020",
                 "discount_rule_id": null,
                 "discount_total": 0,
                 "due_date": "2026-03-23",
@@ -34710,12 +34710,12 @@
                 ],
                 "lock_reason": null,
                 "lock_status": "revision_sensitive",
-                "memo": "Sent under contracted South branch customer override.",
+                "memo": "Portal-approved drain repair and follow-up service for Atlas Commerce Center.",
                 "number": "INV-4004",
                 "paid_at": null,
                 "paid_total": 0,
                 "payment_ids": [],
-                "price_book_id": "price_book_customer_cust_018",
+                "price_book_id": "price_book_branch_south",
                 "revision": 1,
                 "sent_at": "2026-03-13T16:30:00Z",
                 "service_summary_artifact_id": "service_summary_inv_004",
@@ -34741,7 +34741,7 @@
                 ],
                 "aging_bucket": "1_30",
                 "balance_due": 233.94,
-                "billing_policy_id": "billing_policy_branch_north",
+                "billing_policy_id": "billing_policy_branch_south",
                 "branch_id": "branch_north",
                 "currency": "USD",
                 "customer_id": "cust_019",
@@ -34766,7 +34766,7 @@
                 "payment_ids": [
                   "payment_005_a"
                 ],
-                "price_book_id": "price_book_branch_north",
+                "price_book_id": "price_book_branch_south",
                 "revision": 1,
                 "sent_at": "2026-03-14T18:00:00Z",
                 "service_summary_artifact_id": "service_summary_inv_005",
@@ -34778,7 +34778,7 @@
                 ],
                 "status": "partially_paid",
                 "subtotal": 434,
-                "tax_rule_id": "tax_rule_wa",
+                "tax_rule_id": "tax_rule_or",
                 "tax_total": 41.64,
                 "team_id": "team_north_alpha",
                 "total": 453.94,
@@ -34839,7 +34839,7 @@
                 ],
                 "aging_bucket": "31_60",
                 "balance_due": 488.58,
-                "billing_policy_id": "billing_policy_branch_north",
+                "billing_policy_id": "billing_policy_branch_south",
                 "branch_id": "branch_north",
                 "currency": "USD",
                 "customer_id": "cust_013",
@@ -34865,7 +34865,7 @@
                 "payment_ids": [
                   "payment_007_a"
                 ],
-                "price_book_id": "price_book_branch_north",
+                "price_book_id": "price_book_branch_south",
                 "revision": 1,
                 "sent_at": "2026-02-05T15:30:00Z",
                 "service_summary_artifact_id": "service_summary_inv_007",
@@ -34879,7 +34879,7 @@
                 ],
                 "status": "overdue",
                 "subtotal": 525.5,
-                "tax_rule_id": "tax_rule_wa",
+                "tax_rule_id": "tax_rule_or",
                 "tax_total": 53.08,
                 "team_id": "team_north_alpha",
                 "total": 578.58,
@@ -35001,7 +35001,7 @@
             "org": {
               "org_demo": {
                 "id": "org_demo",
-                "name": "Northline Facilities",
+                "name": "Northline Facility Services",
                 "vertical": "property_maintenance"
               }
             },
@@ -35201,7 +35201,7 @@
               "portal_account_001": {
                 "customer_id": "cust_020",
                 "display_name": "Morgan Hale",
-                "email": "morgan.hale@example.test",
+                "email": "morgan.hale@atlascommerce.example.com",
                 "id": "portal_account_001",
                 "invoice_ids": [
                   "inv_004"
@@ -35218,17 +35218,15 @@
                   "timeline_event_003"
                 ],
                 "upcoming_visit_ids": [
-                  "visit_018"
+                  "visit_020"
                 ]
               },
               "portal_account_002": {
                 "customer_id": "cust_018",
-                "display_name": "Customer 18 Ops",
-                "email": "ops.cust18@example.test",
+                "display_name": "Alicia Vaughn",
+                "email": "alicia.vaughn@graniteharbor.example.com",
                 "id": "portal_account_002",
-                "invoice_ids": [
-                  "inv_004"
-                ],
+                "invoice_ids": [],
                 "pending_estimate_id": null,
                 "service_request_ids": [],
                 "status": "invited",
@@ -35350,7 +35348,7 @@
                 "customer_id": "cust_018",
                 "effective_at": "2026-03-05T00:00:00Z",
                 "id": "price_book_customer_cust_018",
-                "name": "Customer 18 Contract Override",
+                "name": "Granite Harbor Campus Contract Override",
                 "revision": 4,
                 "scope": "customer",
                 "tax_rule_id": "tax_rule_or"
@@ -36082,7 +36080,7 @@
                   "agreement_line_001_service"
                 ],
                 "annual_value": 2880,
-                "branch_id": "branch_north",
+                "branch_id": "branch_south",
                 "covered_asset_ids": [
                   "asset_020"
                 ],
@@ -36114,7 +36112,7 @@
                 "source_estimate_version_id": "estimate_version_est_004_r1",
                 "start_date": "2026-03-15",
                 "status": "active",
-                "team_id": "team_north_beta"
+                "team_id": "team_south_gamma"
               },
               "agreement_002": {
                 "agreement_line_ids": [
@@ -36197,7 +36195,7 @@
             "service_requests": {
               "service_request_001": {
                 "connector_reference": "crm_ticket_2044",
-                "converted_work_order_id": "wo_018",
+                "converted_work_order_id": "wo_020",
                 "customer_id": "cust_020",
                 "estimate_id": "est_004",
                 "id": "service_request_001",
@@ -36208,10 +36206,10 @@
                 "structured_intake": {
                   "asset_id": "asset_020",
                   "issue_kind": "roof_drain",
-                  "requested_window": "2026-03-20",
+                  "requested_window": "2026-03-15 14:00",
                   "site_id": "site_020"
                 },
-                "summary": "Roof drain inspection and leak check",
+                "summary": "Roof drain inspection and recurring leak check",
                 "tenant_id": "tenant_northline"
               },
               "service_request_002": {
@@ -36530,7 +36528,7 @@
                 "city": "Portland",
                 "customer_id": "cust_020",
                 "id": "site_020",
-                "name": "Site 20",
+                "name": "Atlas Commerce Center - Portland",
                 "sla_tier": "platinum"
               },
               "site_021": {
@@ -36860,7 +36858,7 @@
             "tenants": {
               "tenant_northline": {
                 "branding_pack_id": "branding_pack_northline",
-                "display_name": "Northline CrewOps",
+                "display_name": "Northline Enterprise",
                 "feature_flags": {
                   "connectors": true,
                   "inventory": true,
@@ -36870,12 +36868,12 @@
                 },
                 "id": "tenant_northline",
                 "kind": "enterprise_parent",
-                "name": "Northline Facilities",
+                "name": "Northline Facility Services",
                 "portal_config": {
                   "allow_estimate_approval": true,
                   "allow_request_intake": true,
                   "show_invoice_balance": true,
-                  "title": "Northline Service Portal"
+                  "title": "Northline Customer Portal"
                 },
                 "readiness_status": "ready",
                 "revision": 7,
@@ -36898,13 +36896,13 @@
                 },
                 "id": "tenant_northline_branch",
                 "kind": "child_tenant",
-                "name": "Northline Northwest Franchise",
+                "name": "Northline Northwest Region",
                 "parent_tenant_id": "tenant_northline",
                 "portal_config": {
                   "allow_estimate_approval": true,
                   "allow_request_intake": true,
                   "show_invoice_balance": true,
-                  "title": "Northwest Portal"
+                  "title": "Northwest Customer Portal"
                 },
                 "readiness_status": "config_incomplete",
                 "revision": 3,
@@ -36959,7 +36957,7 @@
                 ]
               },
               "user_portal_morgan": {
-                "branch_id": "branch_north",
+                "branch_id": "branch_south",
                 "customer_id": "cust_020",
                 "id": "user_portal_morgan",
                 "name": "Morgan Hale",
@@ -37517,7 +37515,7 @@
                 "work_order_id": "wo_017"
               },
               "visit_018": {
-                "asset_id": "asset_018",
+                "asset_id": "asset_020",
                 "branch_id": "branch_south",
                 "execution": {
                   "attachments": [],
@@ -37533,11 +37531,11 @@
                 "id": "visit_018",
                 "planned_start": "2026-03-13T10:00:00Z",
                 "review_state": "approved",
-                "site_id": "site_018",
+                "site_id": "site_020",
                 "state": "logged",
                 "team_id": "team_south_gamma",
                 "template_id": "tmpl_closeout",
-                "user_id": "user_tech_noah",
+                "user_id": "user_tech_omar",
                 "work_order_id": "wo_018"
               },
               "visit_019": {
@@ -37566,7 +37564,7 @@
               },
               "visit_020": {
                 "asset_id": "asset_020",
-                "branch_id": "branch_north",
+                "branch_id": "branch_south",
                 "execution": {
                   "attachments": [],
                   "autosave_status": "idle",
@@ -37580,12 +37578,12 @@
                 },
                 "id": "visit_020",
                 "planned_start": "2026-03-15T14:00:00Z",
-                "review_state": "not_required",
+                "review_state": "not_ready",
                 "site_id": "site_020",
                 "state": "logged",
-                "team_id": "team_north_beta",
+                "team_id": "team_south_gamma",
                 "template_id": "tmpl_pm",
-                "user_id": "user_tech_liam",
+                "user_id": "user_tech_omar",
                 "work_order_id": "wo_020"
               },
               "visit_021": {
@@ -37769,7 +37767,7 @@
                 ],
                 "created_at": "2026-02-25T09:35:00Z",
                 "endpoint_id": "integration_endpoint_crm",
-                "endpoint_url": "https://example.test/hooks/crm",
+                "endpoint_url": "https://northline.example.com/hooks/crm",
                 "event_types": [
                   "estimate.approved",
                   "contract.renewed"
@@ -37787,7 +37785,7 @@
                 ],
                 "created_at": "2026-02-20T12:10:00Z",
                 "endpoint_id": "integration_endpoint_accounting",
-                "endpoint_url": "https://example.test/hooks/schedule",
+                "endpoint_url": "https://northline.example.com/hooks/schedule",
                 "event_types": [
                   "recurring.generated",
                   "invoice.issued",
@@ -38317,8 +38315,8 @@
                 "allowed_part_ids": [
                   "part_filter_merv13"
                 ],
-                "asset_id": "asset_018",
-                "assignee_user_id": "user_tech_noah",
+                "asset_id": "asset_020",
+                "assignee_user_id": "user_tech_omar",
                 "assignment_revision": 1,
                 "branch_id": "branch_south",
                 "completion_policy": {
@@ -38326,7 +38324,7 @@
                   "location_capture_optional": true,
                   "signature_required_on_complete": true
                 },
-                "customer_id": "cust_018",
+                "customer_id": "cust_020",
                 "id": "wo_018",
                 "latest_assignment_id": "assignment_018",
                 "number": "WO-1218",
@@ -38334,12 +38332,12 @@
                 "review_state": "approved",
                 "schedule_window_id": "schedule_window_018",
                 "scheduled_day": "2026-03-13",
-                "site_id": "site_018",
+                "site_id": "site_020",
                 "sla_bucket": "attention",
                 "status": "invoiced",
                 "team_id": "team_south_gamma",
                 "template_id": "tmpl_closeout",
-                "title": "Roof drain check",
+                "title": "Roof drain repair follow-up",
                 "window": "13:00-15:00"
               },
               "wo_019": {
@@ -38379,9 +38377,9 @@
                   "part_contact_cleaner"
                 ],
                 "asset_id": "asset_020",
-                "assignee_user_id": "user_tech_liam",
+                "assignee_user_id": "user_tech_omar",
                 "assignment_revision": 1,
-                "branch_id": "branch_north",
+                "branch_id": "branch_south",
                 "completion_policy": {
                   "block_reason_required": true,
                   "location_capture_optional": true,
@@ -38392,15 +38390,15 @@
                 "latest_assignment_id": "assignment_020",
                 "number": "WO-1220",
                 "priority": "low",
-                "review_state": "not_required",
+                "review_state": "not_ready",
                 "schedule_window_id": "schedule_window_020",
                 "scheduled_day": "2026-03-15",
                 "site_id": "site_020",
                 "sla_bucket": "on_track",
-                "status": "canceled",
-                "team_id": "team_north_beta",
+                "status": "scheduled",
+                "team_id": "team_south_gamma",
                 "template_id": "tmpl_pm",
-                "title": "Quarterly PM",
+                "title": "Quarterly rooftop mechanical service",
                 "window": "08:00-10:00"
               },
               "wo_021": {
@@ -38581,21 +38579,21 @@
                 "branch_id": "branch_north",
                 "id": "workspace_branch_north",
                 "kind": "branch",
-                "name": "North Branch Workspace",
+                "name": "Seattle Service Hub",
                 "tenant_id": "tenant_northline"
               },
               "workspace_branch_south": {
                 "branch_id": "branch_south",
                 "id": "workspace_branch_south",
                 "kind": "branch",
-                "name": "South Branch Workspace",
+                "name": "Portland Service Hub",
                 "tenant_id": "tenant_northline"
               },
               "workspace_hq": {
                 "branch_id": null,
                 "id": "workspace_hq",
                 "kind": "hq",
-                "name": "Headquarters",
+                "name": "Operations HQ",
                 "tenant_id": "tenant_northline"
               }
             }
@@ -38674,11 +38672,11 @@
             },
             "agreements_by_branch": {
               "branch_north": [
-                "agreement_001",
                 "agreement_002"
               ],
               "branch_south": [
-                "agreement_003"
+                "agreement_003",
+                "agreement_001"
               ]
             },
             "agreements_by_customer": {
@@ -38909,12 +38907,12 @@
             },
             "estimates_by_branch": {
               "branch_north": [
-                "est_002",
-                "est_004"
+                "est_002"
               ],
               "branch_south": [
                 "est_001",
-                "est_003"
+                "est_003",
+                "est_004"
               ]
             },
             "estimates_by_customer": {
@@ -39044,11 +39042,12 @@
                 "inv_003",
                 "inv_008"
               ],
-              "cust_018": [
-                "inv_004"
-              ],
+              "cust_018": [],
               "cust_019": [
                 "inv_005"
+              ],
+              "cust_020": [
+                "inv_004"
               ]
             },
             "invoices_by_status": {
@@ -39472,8 +39471,7 @@
               ],
               "user_tech_liam": [
                 "wo_004",
-                "wo_012",
-                "wo_020"
+                "wo_012"
               ],
               "user_tech_mila": [
                 "wo_005",
@@ -39482,13 +39480,14 @@
               ],
               "user_tech_noah": [
                 "wo_002",
-                "wo_010",
-                "wo_018"
+                "wo_010"
               ],
               "user_tech_omar": [
                 "wo_006",
                 "wo_014",
-                "wo_022"
+                "wo_022",
+                "wo_020",
+                "wo_018"
               ],
               "user_tech_zoe": [
                 "wo_003",
@@ -39511,7 +39510,6 @@
                 "wo_016",
                 "wo_017",
                 "wo_019",
-                "wo_020",
                 "wo_022",
                 "wo_023",
                 "wo_025"
@@ -39524,7 +39522,8 @@
                 "wo_015",
                 "wo_018",
                 "wo_021",
-                "wo_024"
+                "wo_024",
+                "wo_020"
               ]
             },
             "work_orders_by_day": {
@@ -39632,10 +39631,10 @@
                 "wo_011",
                 "wo_012",
                 "wo_022",
-                "wo_023"
+                "wo_023",
+                "wo_020"
               ],
               "not_required": [
-                "wo_020",
                 "wo_021"
               ],
               "resubmitted": [
@@ -39647,9 +39646,7 @@
                 "wo_011",
                 "wo_012"
               ],
-              "canceled": [
-                "wo_020"
-              ],
+              "canceled": [],
               "closed": [
                 "wo_019"
               ],
@@ -39688,7 +39685,8 @@
                 "wo_001",
                 "wo_002",
                 "wo_003",
-                "wo_022"
+                "wo_022",
+                "wo_020"
               ]
             },
             "work_orders_by_team": {
@@ -39710,7 +39708,6 @@
                 "wo_011",
                 "wo_014",
                 "wo_017",
-                "wo_020",
                 "wo_023"
               ],
               "team_south_gamma": [
@@ -39721,7 +39718,8 @@
                 "wo_015",
                 "wo_018",
                 "wo_021",
-                "wo_024"
+                "wo_024",
+                "wo_020"
               ]
             },
             "workspaces_by_tenant": {
@@ -39902,7 +39900,7 @@
               "running": 1
             },
             "finance_metrics": {
-              "average_ticket": 323.08,
+              "average_ticket": "323.08",
               "branch_id": null,
               "id": "finance_global",
               "invoice_status_counts": {
@@ -39916,16 +39914,16 @@
                 "voided": 1,
                 "written_off": 1
               },
-              "overdue_total": 1039.02,
-              "paid_total": 677.5,
-              "receivable_total": 2773.68,
+              "overdue_total": "1039.02",
+              "paid_total": "677.50",
+              "receivable_total": "2773.68",
               "revenue_breakdown": {
-                "labor": 1642,
-                "parts": 248.5,
-                "service_fee": 1245,
-                "travel": 208
+                "labor": "1642.00",
+                "parts": "248.50",
+                "service_fee": "1245.00",
+                "travel": "208.00"
               },
-              "revenue_total": 2907.68,
+              "revenue_total": "2907.68",
               "scope": "global",
               "team_id": null
             },
@@ -39972,10 +39970,12 @@
             },
             "portal_adoption_summary": {
               "active_accounts": 1,
-              "approval_conversion_rate": 1,
+              "approval_conversion_rate": "1.00",
               "id": "portal_adoption_northline",
               "invited_accounts": 1,
-              "request_conversion_rate": 0.5,
+              "pending_approvals": 0,
+              "request_backlog": 0,
+              "request_conversion_rate": "0.50",
               "tenant_id": "tenant_northline"
             },
             "procurement_summary": {
@@ -39995,18 +39995,18 @@
             },
             "profitability_summary": {
               "branch_id": null,
-              "estimated_cost_total": 1085.68,
-              "gross_margin_pct": 62.66,
-              "gross_margin_total": 1822,
+              "estimated_cost_total": "1085.68",
+              "gross_margin_pct": "62.66",
+              "gross_margin_total": "1822.00",
               "id": "finance_global",
-              "revenue_total": 2907.68,
+              "revenue_total": "2907.68",
               "scope": "global",
               "team_id": null
             },
             "receivables_overview": {
               "customer_count": 6,
-              "overdue_balance": 1039.02,
-              "total_open_balance": 2773.68
+              "overdue_balance": "1039.02",
+              "total_open_balance": "2773.68"
             },
             "recurring_plan_status_counts": {
               "active": 2,
@@ -40014,10 +40014,10 @@
             },
             "recurring_revenue_summary": {
               "active_agreements": 1,
-              "annual_contract_value": 6580,
+              "annual_contract_value": "6580.00",
               "branch_id": null,
               "id": "recurring_revenue_global",
-              "monthly_recurring_revenue": 548.33,
+              "monthly_recurring_revenue": "548.33",
               "paused_agreements": 1,
               "renewal_pending_count": 1,
               "scope": "global",
@@ -40037,7 +40037,7 @@
             },
             "status_counts": {
               "blocked": 2,
-              "canceled": 1,
+              "canceled": 0,
               "closed": 1,
               "completed": 4,
               "dispatched": 4,
@@ -40046,7 +40046,7 @@
               "invoiced": 1,
               "needs_review": 3,
               "on_site": 2,
-              "scheduled": 4
+              "scheduled": 5
             },
             "supervisor_metrics": {
               "awaiting_review": 1,
@@ -40094,8 +40094,7 @@
               ],
               "user_tech_liam": [
                 "wo_004",
-                "wo_012",
-                "wo_020"
+                "wo_012"
               ],
               "user_tech_mila": [
                 "wo_005",
@@ -40104,13 +40103,14 @@
               ],
               "user_tech_noah": [
                 "wo_002",
-                "wo_010",
-                "wo_018"
+                "wo_010"
               ],
               "user_tech_omar": [
                 "wo_006",
                 "wo_014",
-                "wo_022"
+                "wo_022",
+                "wo_020",
+                "wo_018"
               ],
               "user_tech_zoe": [
                 "wo_003",
@@ -40124,7 +40124,7 @@
                 "id": "tenant_health_northline",
                 "low_stock_count": 2,
                 "po_backlog_count": 1,
-                "portal_conversion_rate": 0.67,
+                "portal_conversion_rate": "0.67",
                 "readiness_status": "ready",
                 "tenant_id": "tenant_northline"
               },
@@ -40133,7 +40133,7 @@
                 "id": "tenant_health_northline_branch",
                 "low_stock_count": 1,
                 "po_backlog_count": 1,
-                "portal_conversion_rate": 0.5,
+                "portal_conversion_rate": "0.50",
                 "readiness_status": "config_incomplete",
                 "tenant_id": "tenant_northline_branch"
               }
@@ -41791,7 +41791,7 @@
                                       {
                                         "k": "text",
                                         "key": "m7_card_one_line_one_text",
-                                        "text": "Connector: FieldDesk / Config review needed"
+                                        "text": "Connector: ServicePilot / Config review needed"
                                       }
                                     ],
                                     "k": "el",
@@ -42018,7 +42018,7 @@
                                       {
                                         "k": "text",
                                         "key": "m7_card_two_line_three_text",
-                                        "text": "Needs review: FieldDesk"
+                                        "text": "Needs review: ServicePilot"
                                       }
                                     ],
                                     "k": "el",
@@ -42903,7 +42903,7 @@
                 "customer_id": "cust_020",
                 "id": "asset_020",
                 "kind": "pump",
-                "name": "Asset 020",
+                "name": "Domestic Booster Pump B-14",
                 "service_level": "critical",
                 "site_id": "site_020"
               },
@@ -43604,7 +43604,7 @@
             "branding_packs": {
               "branding_pack_northline": {
                 "accent_color": "#0b6f68",
-                "display_name": "Northline CrewOps",
+                "display_name": "Northline Enterprise",
                 "id": "branding_pack_northline",
                 "invoice_branding_ref": "northline-core",
                 "navigation_sections": [
@@ -43684,7 +43684,7 @@
                 "last_success_at": "2026-03-09T14:00:00Z",
                 "mapping_ids": [],
                 "provider_class": "ticketing",
-                "provider_name": "FieldDesk",
+                "provider_name": "ServicePilot",
                 "status": "config_stale",
                 "tenant_id": "tenant_northline_branch"
               }
@@ -43937,10 +43937,10 @@
               },
               "timeline_event_003": {
                 "created_at": "2026-03-11T09:00:00Z",
-                "customer_message": "Service visit scheduled for March 20.",
+                "customer_message": "Service visit confirmed for March 15.",
                 "id": "timeline_event_003",
                 "kind": "visit_scheduled",
-                "office_message": "Dispatch linked portal request to visit_018.",
+                "office_message": "Dispatch linked portal request to visit_020.",
                 "portal_account_id": "portal_account_001",
                 "service_request_id": "service_request_001"
               }
@@ -43949,121 +43949,121 @@
               "cust_001": {
                 "branch_id": "branch_north",
                 "id": "cust_001",
-                "name": "Customer 01",
+                "name": "Aurora Fitness Club",
                 "segment": "commercial"
               },
               "cust_002": {
                 "branch_id": "branch_south",
                 "id": "cust_002",
-                "name": "Customer 02",
+                "name": "Maple Street Bakery",
                 "segment": "commercial"
               },
               "cust_003": {
                 "branch_id": "branch_north",
                 "id": "cust_003",
-                "name": "Customer 03",
+                "name": "Riverview Offices",
                 "segment": "municipal"
               },
               "cust_004": {
                 "branch_id": "branch_south",
                 "id": "cust_004",
-                "name": "Customer 04",
+                "name": "Lakeside Dental Group",
                 "segment": "commercial"
               },
               "cust_005": {
                 "branch_id": "branch_north",
                 "id": "cust_005",
-                "name": "Customer 05",
+                "name": "West Harbor Storage",
                 "segment": "commercial"
               },
               "cust_006": {
                 "branch_id": "branch_south",
                 "id": "cust_006",
-                "name": "Customer 06",
+                "name": "Cedar Glen Apartments",
                 "segment": "municipal"
               },
               "cust_007": {
                 "branch_id": "branch_north",
                 "id": "cust_007",
-                "name": "Customer 07",
+                "name": "Brightstone Hotel",
                 "segment": "commercial"
               },
               "cust_008": {
                 "branch_id": "branch_south",
                 "id": "cust_008",
-                "name": "Customer 08",
+                "name": "Hillcrest Library",
                 "segment": "commercial"
               },
               "cust_009": {
                 "branch_id": "branch_north",
                 "id": "cust_009",
-                "name": "Customer 09",
+                "name": "Fairview School District",
                 "segment": "municipal"
               },
               "cust_010": {
                 "branch_id": "branch_south",
                 "id": "cust_010",
-                "name": "Customer 10",
+                "name": "Oakline Logistics",
                 "segment": "commercial"
               },
               "cust_011": {
                 "branch_id": "branch_north",
                 "id": "cust_011",
-                "name": "Customer 11",
+                "name": "Meridian Design Center",
                 "segment": "commercial"
               },
               "cust_012": {
                 "branch_id": "branch_south",
                 "id": "cust_012",
-                "name": "Customer 12",
+                "name": "Cedar Point Retail",
                 "segment": "municipal"
               },
               "cust_013": {
                 "branch_id": "branch_north",
                 "id": "cust_013",
-                "name": "Customer 13",
+                "name": "Redwood Commerce Park",
                 "segment": "commercial"
               },
               "cust_014": {
                 "branch_id": "branch_south",
                 "id": "cust_014",
-                "name": "Customer 14",
+                "name": "Pine & Mercer Labs",
                 "segment": "commercial"
               },
               "cust_015": {
                 "branch_id": "branch_north",
                 "id": "cust_015",
-                "name": "Customer 15",
+                "name": "Ironwood Distribution Center",
                 "segment": "municipal"
               },
               "cust_016": {
                 "branch_id": "branch_south",
                 "id": "cust_016",
-                "name": "Customer 16",
+                "name": "Harborview Medical Plaza",
                 "segment": "commercial"
               },
               "cust_017": {
                 "branch_id": "branch_north",
                 "id": "cust_017",
-                "name": "Customer 17",
+                "name": "Summit Market Hall",
                 "segment": "commercial"
               },
               "cust_018": {
                 "branch_id": "branch_south",
                 "id": "cust_018",
-                "name": "Customer 18",
+                "name": "Granite Harbor Campus",
                 "segment": "municipal"
               },
               "cust_019": {
                 "branch_id": "branch_north",
                 "id": "cust_019",
-                "name": "Customer 19",
+                "name": "Alder Ridge Offices",
                 "segment": "commercial"
               },
               "cust_020": {
                 "branch_id": "branch_south",
                 "id": "cust_020",
-                "name": "Customer 20",
+                "name": "Atlas Commerce Center",
                 "segment": "commercial"
               }
             },
@@ -44429,7 +44429,7 @@
                 "travel_total": 28
               },
               "estimate_version_est_002_r1": {
-                "billing_policy_id": "billing_policy_branch_north",
+                "billing_policy_id": "billing_policy_branch_south",
                 "created_at": "2026-03-08T11:25:00Z",
                 "created_by_user_id": "user_manager_jonas",
                 "discount_rule_id": "discount_rule_loyalty",
@@ -44446,13 +44446,13 @@
                 "margin_note": "Keep labor fixed for trust-building.",
                 "notes": "Lobby door preventative service.",
                 "parts_subtotal": 18.5,
-                "price_book_id": "price_book_branch_north",
+                "price_book_id": "price_book_branch_south",
                 "revision": 1,
                 "service_fee_total": 210,
                 "shared_at": "2026-03-09T18:00:00Z",
                 "state": "sent",
                 "subtotal": 504.5,
-                "tax_rule_id": "tax_rule_wa",
+                "tax_rule_id": "tax_rule_or",
                 "tax_total": 49.94,
                 "terms": "Approval reserves a next-week service window.",
                 "total": 544.35,
@@ -44519,7 +44519,7 @@
                 "travel_total": 44
               },
               "estimate_version_est_004_r1": {
-                "billing_policy_id": "billing_policy_branch_north",
+                "billing_policy_id": "billing_policy_branch_south",
                 "created_at": "2026-03-04T14:30:00Z",
                 "created_by_user_id": "user_manager_jonas",
                 "discount_rule_id": "discount_rule_loyalty",
@@ -44536,13 +44536,13 @@
                 "margin_note": "Anchor with predictable quarterly cadence.",
                 "notes": "Quarterly rooftop maintenance agreement.",
                 "parts_subtotal": 98,
-                "price_book_id": "price_book_branch_north",
+                "price_book_id": "price_book_branch_south",
                 "revision": 1,
                 "service_fee_total": 2080,
                 "shared_at": "2026-03-05T18:00:00Z",
                 "state": "approved",
                 "subtotal": 2748,
-                "tax_rule_id": "tax_rule_wa",
+                "tax_rule_id": "tax_rule_or",
                 "tax_total": 263.67,
                 "terms": "Twelve-month service agreement billed quarterly.",
                 "total": 2874.27,
@@ -44598,7 +44598,7 @@
                 "approved_at": null,
                 "approved_version_id": null,
                 "asset_id": "asset_011",
-                "billing_policy_id": "billing_policy_branch_north",
+                "billing_policy_id": "billing_policy_branch_south",
                 "branch_id": "branch_north",
                 "converted_at": null,
                 "created_at": "2026-03-08T11:25:00Z",
@@ -44614,7 +44614,7 @@
                 "linked_work_order_id": null,
                 "number": "EST-6002",
                 "origin": "backoffice",
-                "price_book_id": "price_book_branch_north",
+                "price_book_id": "price_book_branch_south",
                 "proposal_artifact_id": "proposal_artifact_est_002",
                 "rejected_at": null,
                 "sent_at": "2026-03-09T18:00:00Z",
@@ -44623,7 +44623,7 @@
                 "source_work_order_id": null,
                 "status": "sent",
                 "subtotal": 504.5,
-                "tax_rule_id": "tax_rule_wa",
+                "tax_rule_id": "tax_rule_or",
                 "tax_total": 49.94,
                 "team_id": "team_north_alpha",
                 "total": 544.35,
@@ -44683,8 +44683,8 @@
                 "approved_at": "2026-03-06T08:00:00Z",
                 "approved_version_id": "estimate_version_est_004_r1",
                 "asset_id": "asset_020",
-                "billing_policy_id": "billing_policy_branch_north",
-                "branch_id": "branch_north",
+                "billing_policy_id": "billing_policy_branch_south",
+                "branch_id": "branch_south",
                 "converted_at": null,
                 "created_at": "2026-03-04T14:30:00Z",
                 "currency": "USD",
@@ -44699,7 +44699,7 @@
                 "linked_work_order_id": "wo_020",
                 "number": "EST-6004",
                 "origin": "backoffice",
-                "price_book_id": "price_book_branch_north",
+                "price_book_id": "price_book_branch_south",
                 "proposal_artifact_id": "proposal_artifact_est_004",
                 "rejected_at": null,
                 "sent_at": "2026-03-05T18:00:00Z",
@@ -44708,9 +44708,9 @@
                 "source_work_order_id": "wo_020",
                 "status": "approved",
                 "subtotal": 2748,
-                "tax_rule_id": "tax_rule_wa",
+                "tax_rule_id": "tax_rule_or",
                 "tax_total": 263.67,
-                "team_id": "team_north_beta",
+                "team_id": "team_south_gamma",
                 "total": 2874.27,
                 "updated_at": "2026-03-06T08:00:00Z",
                 "version_ids": [
@@ -45691,7 +45691,7 @@
                 ],
                 "aging_bucket": "current",
                 "balance_due": 404.07,
-                "billing_policy_id": "billing_policy_branch_north",
+                "billing_policy_id": "billing_policy_branch_south",
                 "branch_id": "branch_north",
                 "currency": "USD",
                 "customer_id": "cust_013",
@@ -45714,7 +45714,7 @@
                 "paid_at": null,
                 "paid_total": 0,
                 "payment_ids": [],
-                "price_book_id": "price_book_branch_north",
+                "price_book_id": "price_book_branch_south",
                 "revision": 1,
                 "sent_at": null,
                 "service_summary_artifact_id": "service_summary_inv_001",
@@ -45726,7 +45726,7 @@
                 ],
                 "status": "draft",
                 "subtotal": 367,
-                "tax_rule_id": "tax_rule_wa",
+                "tax_rule_id": "tax_rule_or",
                 "tax_total": 37.07,
                 "team_id": "team_north_alpha",
                 "total": 404.07,
@@ -45740,7 +45740,7 @@
                 ],
                 "aging_bucket": "current",
                 "balance_due": 431.59,
-                "billing_policy_id": "billing_policy_branch_north",
+                "billing_policy_id": "billing_policy_branch_south",
                 "branch_id": "branch_north",
                 "currency": "USD",
                 "customer_id": "cust_014",
@@ -45763,7 +45763,7 @@
                 "paid_at": null,
                 "paid_total": 0,
                 "payment_ids": [],
-                "price_book_id": "price_book_branch_north",
+                "price_book_id": "price_book_branch_south",
                 "revision": 1,
                 "sent_at": null,
                 "service_summary_artifact_id": "service_summary_inv_002",
@@ -45775,7 +45775,7 @@
                 ],
                 "status": "pending_review",
                 "subtotal": 410,
-                "tax_rule_id": "tax_rule_wa",
+                "tax_rule_id": "tax_rule_or",
                 "tax_total": 39.59,
                 "team_id": "team_north_beta",
                 "total": 431.59,
@@ -45832,10 +45832,10 @@
                 "adjustment_ids": [],
                 "aging_bucket": "current",
                 "balance_due": 280,
-                "billing_policy_id": "billing_policy_customer_cust_018",
+                "billing_policy_id": "billing_policy_branch_south",
                 "branch_id": "branch_south",
                 "currency": "USD",
-                "customer_id": "cust_018",
+                "customer_id": "cust_020",
                 "discount_rule_id": null,
                 "discount_total": 0,
                 "due_date": "2026-03-23",
@@ -45850,12 +45850,12 @@
                 ],
                 "lock_reason": null,
                 "lock_status": "revision_sensitive",
-                "memo": "Sent under contracted South branch customer override.",
+                "memo": "Portal-approved drain repair and follow-up service for Atlas Commerce Center.",
                 "number": "INV-4004",
                 "paid_at": null,
                 "paid_total": 0,
                 "payment_ids": [],
-                "price_book_id": "price_book_customer_cust_018",
+                "price_book_id": "price_book_branch_south",
                 "revision": 1,
                 "sent_at": "2026-03-13T16:30:00Z",
                 "service_summary_artifact_id": "service_summary_inv_004",
@@ -45881,7 +45881,7 @@
                 ],
                 "aging_bucket": "1_30",
                 "balance_due": 233.94,
-                "billing_policy_id": "billing_policy_branch_north",
+                "billing_policy_id": "billing_policy_branch_south",
                 "branch_id": "branch_north",
                 "currency": "USD",
                 "customer_id": "cust_019",
@@ -45906,7 +45906,7 @@
                 "payment_ids": [
                   "payment_005_a"
                 ],
-                "price_book_id": "price_book_branch_north",
+                "price_book_id": "price_book_branch_south",
                 "revision": 1,
                 "sent_at": "2026-03-14T18:00:00Z",
                 "service_summary_artifact_id": "service_summary_inv_005",
@@ -45918,7 +45918,7 @@
                 ],
                 "status": "partially_paid",
                 "subtotal": 434,
-                "tax_rule_id": "tax_rule_wa",
+                "tax_rule_id": "tax_rule_or",
                 "tax_total": 41.64,
                 "team_id": "team_north_alpha",
                 "total": 453.94,
@@ -45979,7 +45979,7 @@
                 ],
                 "aging_bucket": "31_60",
                 "balance_due": 488.58,
-                "billing_policy_id": "billing_policy_branch_north",
+                "billing_policy_id": "billing_policy_branch_south",
                 "branch_id": "branch_north",
                 "currency": "USD",
                 "customer_id": "cust_013",
@@ -46005,7 +46005,7 @@
                 "payment_ids": [
                   "payment_007_a"
                 ],
-                "price_book_id": "price_book_branch_north",
+                "price_book_id": "price_book_branch_south",
                 "revision": 1,
                 "sent_at": "2026-02-05T15:30:00Z",
                 "service_summary_artifact_id": "service_summary_inv_007",
@@ -46019,7 +46019,7 @@
                 ],
                 "status": "overdue",
                 "subtotal": 525.5,
-                "tax_rule_id": "tax_rule_wa",
+                "tax_rule_id": "tax_rule_or",
                 "tax_total": 53.08,
                 "team_id": "team_north_alpha",
                 "total": 578.58,
@@ -46141,7 +46141,7 @@
             "org": {
               "org_demo": {
                 "id": "org_demo",
-                "name": "Northline Facilities",
+                "name": "Northline Facility Services",
                 "vertical": "property_maintenance"
               }
             },
@@ -46341,7 +46341,7 @@
               "portal_account_001": {
                 "customer_id": "cust_020",
                 "display_name": "Morgan Hale",
-                "email": "morgan.hale@example.test",
+                "email": "morgan.hale@atlascommerce.example.com",
                 "id": "portal_account_001",
                 "invoice_ids": [
                   "inv_004"
@@ -46358,17 +46358,15 @@
                   "timeline_event_003"
                 ],
                 "upcoming_visit_ids": [
-                  "visit_018"
+                  "visit_020"
                 ]
               },
               "portal_account_002": {
                 "customer_id": "cust_018",
-                "display_name": "Customer 18 Ops",
-                "email": "ops.cust18@example.test",
+                "display_name": "Alicia Vaughn",
+                "email": "alicia.vaughn@graniteharbor.example.com",
                 "id": "portal_account_002",
-                "invoice_ids": [
-                  "inv_004"
-                ],
+                "invoice_ids": [],
                 "pending_estimate_id": null,
                 "service_request_ids": [],
                 "status": "invited",
@@ -46490,7 +46488,7 @@
                 "customer_id": "cust_018",
                 "effective_at": "2026-03-05T00:00:00Z",
                 "id": "price_book_customer_cust_018",
-                "name": "Customer 18 Contract Override",
+                "name": "Granite Harbor Campus Contract Override",
                 "revision": 4,
                 "scope": "customer",
                 "tax_rule_id": "tax_rule_or"
@@ -47222,7 +47220,7 @@
                   "agreement_line_001_service"
                 ],
                 "annual_value": 2880,
-                "branch_id": "branch_north",
+                "branch_id": "branch_south",
                 "covered_asset_ids": [
                   "asset_020"
                 ],
@@ -47254,7 +47252,7 @@
                 "source_estimate_version_id": "estimate_version_est_004_r1",
                 "start_date": "2026-03-15",
                 "status": "active",
-                "team_id": "team_north_beta"
+                "team_id": "team_south_gamma"
               },
               "agreement_002": {
                 "agreement_line_ids": [
@@ -47337,7 +47335,7 @@
             "service_requests": {
               "service_request_001": {
                 "connector_reference": "crm_ticket_2044",
-                "converted_work_order_id": "wo_018",
+                "converted_work_order_id": "wo_020",
                 "customer_id": "cust_020",
                 "estimate_id": "est_004",
                 "id": "service_request_001",
@@ -47348,10 +47346,10 @@
                 "structured_intake": {
                   "asset_id": "asset_020",
                   "issue_kind": "roof_drain",
-                  "requested_window": "2026-03-20",
+                  "requested_window": "2026-03-15 14:00",
                   "site_id": "site_020"
                 },
-                "summary": "Roof drain inspection and leak check",
+                "summary": "Roof drain inspection and recurring leak check",
                 "tenant_id": "tenant_northline"
               },
               "service_request_002": {
@@ -47670,7 +47668,7 @@
                 "city": "Portland",
                 "customer_id": "cust_020",
                 "id": "site_020",
-                "name": "Site 20",
+                "name": "Atlas Commerce Center - Portland",
                 "sla_tier": "platinum"
               },
               "site_021": {
@@ -48000,7 +47998,7 @@
             "tenants": {
               "tenant_northline": {
                 "branding_pack_id": "branding_pack_northline",
-                "display_name": "Northline CrewOps",
+                "display_name": "Northline Enterprise",
                 "feature_flags": {
                   "connectors": true,
                   "inventory": true,
@@ -48010,12 +48008,12 @@
                 },
                 "id": "tenant_northline",
                 "kind": "enterprise_parent",
-                "name": "Northline Facilities",
+                "name": "Northline Facility Services",
                 "portal_config": {
                   "allow_estimate_approval": true,
                   "allow_request_intake": true,
                   "show_invoice_balance": true,
-                  "title": "Northline Service Portal"
+                  "title": "Northline Customer Portal"
                 },
                 "readiness_status": "ready",
                 "revision": 7,
@@ -48038,13 +48036,13 @@
                 },
                 "id": "tenant_northline_branch",
                 "kind": "child_tenant",
-                "name": "Northline Northwest Franchise",
+                "name": "Northline Northwest Region",
                 "parent_tenant_id": "tenant_northline",
                 "portal_config": {
                   "allow_estimate_approval": true,
                   "allow_request_intake": true,
                   "show_invoice_balance": true,
-                  "title": "Northwest Portal"
+                  "title": "Northwest Customer Portal"
                 },
                 "readiness_status": "config_incomplete",
                 "revision": 3,
@@ -48099,7 +48097,7 @@
                 ]
               },
               "user_portal_morgan": {
-                "branch_id": "branch_north",
+                "branch_id": "branch_south",
                 "customer_id": "cust_020",
                 "id": "user_portal_morgan",
                 "name": "Morgan Hale",
@@ -48657,7 +48655,7 @@
                 "work_order_id": "wo_017"
               },
               "visit_018": {
-                "asset_id": "asset_018",
+                "asset_id": "asset_020",
                 "branch_id": "branch_south",
                 "execution": {
                   "attachments": [],
@@ -48673,11 +48671,11 @@
                 "id": "visit_018",
                 "planned_start": "2026-03-13T10:00:00Z",
                 "review_state": "approved",
-                "site_id": "site_018",
+                "site_id": "site_020",
                 "state": "logged",
                 "team_id": "team_south_gamma",
                 "template_id": "tmpl_closeout",
-                "user_id": "user_tech_noah",
+                "user_id": "user_tech_omar",
                 "work_order_id": "wo_018"
               },
               "visit_019": {
@@ -48706,7 +48704,7 @@
               },
               "visit_020": {
                 "asset_id": "asset_020",
-                "branch_id": "branch_north",
+                "branch_id": "branch_south",
                 "execution": {
                   "attachments": [],
                   "autosave_status": "idle",
@@ -48720,12 +48718,12 @@
                 },
                 "id": "visit_020",
                 "planned_start": "2026-03-15T14:00:00Z",
-                "review_state": "not_required",
+                "review_state": "not_ready",
                 "site_id": "site_020",
                 "state": "logged",
-                "team_id": "team_north_beta",
+                "team_id": "team_south_gamma",
                 "template_id": "tmpl_pm",
-                "user_id": "user_tech_liam",
+                "user_id": "user_tech_omar",
                 "work_order_id": "wo_020"
               },
               "visit_021": {
@@ -48909,7 +48907,7 @@
                 ],
                 "created_at": "2026-02-25T09:35:00Z",
                 "endpoint_id": "integration_endpoint_crm",
-                "endpoint_url": "https://example.test/hooks/crm",
+                "endpoint_url": "https://northline.example.com/hooks/crm",
                 "event_types": [
                   "estimate.approved",
                   "contract.renewed"
@@ -48927,7 +48925,7 @@
                 ],
                 "created_at": "2026-02-20T12:10:00Z",
                 "endpoint_id": "integration_endpoint_accounting",
-                "endpoint_url": "https://example.test/hooks/schedule",
+                "endpoint_url": "https://northline.example.com/hooks/schedule",
                 "event_types": [
                   "recurring.generated",
                   "invoice.issued",
@@ -49457,8 +49455,8 @@
                 "allowed_part_ids": [
                   "part_filter_merv13"
                 ],
-                "asset_id": "asset_018",
-                "assignee_user_id": "user_tech_noah",
+                "asset_id": "asset_020",
+                "assignee_user_id": "user_tech_omar",
                 "assignment_revision": 1,
                 "branch_id": "branch_south",
                 "completion_policy": {
@@ -49466,7 +49464,7 @@
                   "location_capture_optional": true,
                   "signature_required_on_complete": true
                 },
-                "customer_id": "cust_018",
+                "customer_id": "cust_020",
                 "id": "wo_018",
                 "latest_assignment_id": "assignment_018",
                 "number": "WO-1218",
@@ -49474,12 +49472,12 @@
                 "review_state": "approved",
                 "schedule_window_id": "schedule_window_018",
                 "scheduled_day": "2026-03-13",
-                "site_id": "site_018",
+                "site_id": "site_020",
                 "sla_bucket": "attention",
                 "status": "invoiced",
                 "team_id": "team_south_gamma",
                 "template_id": "tmpl_closeout",
-                "title": "Roof drain check",
+                "title": "Roof drain repair follow-up",
                 "window": "13:00-15:00"
               },
               "wo_019": {
@@ -49519,9 +49517,9 @@
                   "part_contact_cleaner"
                 ],
                 "asset_id": "asset_020",
-                "assignee_user_id": "user_tech_liam",
+                "assignee_user_id": "user_tech_omar",
                 "assignment_revision": 1,
-                "branch_id": "branch_north",
+                "branch_id": "branch_south",
                 "completion_policy": {
                   "block_reason_required": true,
                   "location_capture_optional": true,
@@ -49532,15 +49530,15 @@
                 "latest_assignment_id": "assignment_020",
                 "number": "WO-1220",
                 "priority": "low",
-                "review_state": "not_required",
+                "review_state": "not_ready",
                 "schedule_window_id": "schedule_window_020",
                 "scheduled_day": "2026-03-15",
                 "site_id": "site_020",
                 "sla_bucket": "on_track",
-                "status": "canceled",
-                "team_id": "team_north_beta",
+                "status": "scheduled",
+                "team_id": "team_south_gamma",
                 "template_id": "tmpl_pm",
-                "title": "Quarterly PM",
+                "title": "Quarterly rooftop mechanical service",
                 "window": "08:00-10:00"
               },
               "wo_021": {
@@ -49721,21 +49719,21 @@
                 "branch_id": "branch_north",
                 "id": "workspace_branch_north",
                 "kind": "branch",
-                "name": "North Branch Workspace",
+                "name": "Seattle Service Hub",
                 "tenant_id": "tenant_northline"
               },
               "workspace_branch_south": {
                 "branch_id": "branch_south",
                 "id": "workspace_branch_south",
                 "kind": "branch",
-                "name": "South Branch Workspace",
+                "name": "Portland Service Hub",
                 "tenant_id": "tenant_northline"
               },
               "workspace_hq": {
                 "branch_id": null,
                 "id": "workspace_hq",
                 "kind": "hq",
-                "name": "Headquarters",
+                "name": "Operations HQ",
                 "tenant_id": "tenant_northline"
               }
             }
@@ -49814,11 +49812,11 @@
             },
             "agreements_by_branch": {
               "branch_north": [
-                "agreement_001",
                 "agreement_002"
               ],
               "branch_south": [
-                "agreement_003"
+                "agreement_003",
+                "agreement_001"
               ]
             },
             "agreements_by_customer": {
@@ -50049,12 +50047,12 @@
             },
             "estimates_by_branch": {
               "branch_north": [
-                "est_002",
-                "est_004"
+                "est_002"
               ],
               "branch_south": [
                 "est_001",
-                "est_003"
+                "est_003",
+                "est_004"
               ]
             },
             "estimates_by_customer": {
@@ -50184,11 +50182,12 @@
                 "inv_003",
                 "inv_008"
               ],
-              "cust_018": [
-                "inv_004"
-              ],
+              "cust_018": [],
               "cust_019": [
                 "inv_005"
+              ],
+              "cust_020": [
+                "inv_004"
               ]
             },
             "invoices_by_status": {
@@ -50612,8 +50611,7 @@
               ],
               "user_tech_liam": [
                 "wo_004",
-                "wo_012",
-                "wo_020"
+                "wo_012"
               ],
               "user_tech_mila": [
                 "wo_005",
@@ -50622,13 +50620,14 @@
               ],
               "user_tech_noah": [
                 "wo_002",
-                "wo_010",
-                "wo_018"
+                "wo_010"
               ],
               "user_tech_omar": [
                 "wo_006",
                 "wo_014",
-                "wo_022"
+                "wo_022",
+                "wo_020",
+                "wo_018"
               ],
               "user_tech_zoe": [
                 "wo_003",
@@ -50651,7 +50650,6 @@
                 "wo_016",
                 "wo_017",
                 "wo_019",
-                "wo_020",
                 "wo_022",
                 "wo_023",
                 "wo_025"
@@ -50664,7 +50662,8 @@
                 "wo_015",
                 "wo_018",
                 "wo_021",
-                "wo_024"
+                "wo_024",
+                "wo_020"
               ]
             },
             "work_orders_by_day": {
@@ -50772,10 +50771,10 @@
                 "wo_011",
                 "wo_012",
                 "wo_022",
-                "wo_023"
+                "wo_023",
+                "wo_020"
               ],
               "not_required": [
-                "wo_020",
                 "wo_021"
               ],
               "resubmitted": [
@@ -50787,9 +50786,7 @@
                 "wo_011",
                 "wo_012"
               ],
-              "canceled": [
-                "wo_020"
-              ],
+              "canceled": [],
               "closed": [
                 "wo_019"
               ],
@@ -50828,7 +50825,8 @@
                 "wo_001",
                 "wo_002",
                 "wo_003",
-                "wo_022"
+                "wo_022",
+                "wo_020"
               ]
             },
             "work_orders_by_team": {
@@ -50850,7 +50848,6 @@
                 "wo_011",
                 "wo_014",
                 "wo_017",
-                "wo_020",
                 "wo_023"
               ],
               "team_south_gamma": [
@@ -50861,7 +50858,8 @@
                 "wo_015",
                 "wo_018",
                 "wo_021",
-                "wo_024"
+                "wo_024",
+                "wo_020"
               ]
             },
             "workspaces_by_tenant": {
@@ -51042,7 +51040,7 @@
               "running": 1
             },
             "finance_metrics": {
-              "average_ticket": 323.08,
+              "average_ticket": "323.08",
               "branch_id": null,
               "id": "finance_global",
               "invoice_status_counts": {
@@ -51056,16 +51054,16 @@
                 "voided": 1,
                 "written_off": 1
               },
-              "overdue_total": 1039.02,
-              "paid_total": 677.5,
-              "receivable_total": 2773.68,
+              "overdue_total": "1039.02",
+              "paid_total": "677.50",
+              "receivable_total": "2773.68",
               "revenue_breakdown": {
-                "labor": 1642,
-                "parts": 248.5,
-                "service_fee": 1245,
-                "travel": 208
+                "labor": "1642.00",
+                "parts": "248.50",
+                "service_fee": "1245.00",
+                "travel": "208.00"
               },
-              "revenue_total": 2907.68,
+              "revenue_total": "2907.68",
               "scope": "global",
               "team_id": null
             },
@@ -51112,10 +51110,12 @@
             },
             "portal_adoption_summary": {
               "active_accounts": 1,
-              "approval_conversion_rate": 1,
+              "approval_conversion_rate": "1.00",
               "id": "portal_adoption_northline",
               "invited_accounts": 1,
-              "request_conversion_rate": 0.5,
+              "pending_approvals": 0,
+              "request_backlog": 0,
+              "request_conversion_rate": "0.50",
               "tenant_id": "tenant_northline"
             },
             "procurement_summary": {
@@ -51135,18 +51135,18 @@
             },
             "profitability_summary": {
               "branch_id": null,
-              "estimated_cost_total": 1085.68,
-              "gross_margin_pct": 62.66,
-              "gross_margin_total": 1822,
+              "estimated_cost_total": "1085.68",
+              "gross_margin_pct": "62.66",
+              "gross_margin_total": "1822.00",
               "id": "finance_global",
-              "revenue_total": 2907.68,
+              "revenue_total": "2907.68",
               "scope": "global",
               "team_id": null
             },
             "receivables_overview": {
               "customer_count": 6,
-              "overdue_balance": 1039.02,
-              "total_open_balance": 2773.68
+              "overdue_balance": "1039.02",
+              "total_open_balance": "2773.68"
             },
             "recurring_plan_status_counts": {
               "active": 2,
@@ -51154,10 +51154,10 @@
             },
             "recurring_revenue_summary": {
               "active_agreements": 1,
-              "annual_contract_value": 6580,
+              "annual_contract_value": "6580.00",
               "branch_id": null,
               "id": "recurring_revenue_global",
-              "monthly_recurring_revenue": 548.33,
+              "monthly_recurring_revenue": "548.33",
               "paused_agreements": 1,
               "renewal_pending_count": 1,
               "scope": "global",
@@ -51177,7 +51177,7 @@
             },
             "status_counts": {
               "blocked": 2,
-              "canceled": 1,
+              "canceled": 0,
               "closed": 1,
               "completed": 4,
               "dispatched": 4,
@@ -51186,7 +51186,7 @@
               "invoiced": 1,
               "needs_review": 3,
               "on_site": 2,
-              "scheduled": 4
+              "scheduled": 5
             },
             "supervisor_metrics": {
               "awaiting_review": 1,
@@ -51234,8 +51234,7 @@
               ],
               "user_tech_liam": [
                 "wo_004",
-                "wo_012",
-                "wo_020"
+                "wo_012"
               ],
               "user_tech_mila": [
                 "wo_005",
@@ -51244,13 +51243,14 @@
               ],
               "user_tech_noah": [
                 "wo_002",
-                "wo_010",
-                "wo_018"
+                "wo_010"
               ],
               "user_tech_omar": [
                 "wo_006",
                 "wo_014",
-                "wo_022"
+                "wo_022",
+                "wo_020",
+                "wo_018"
               ],
               "user_tech_zoe": [
                 "wo_003",
@@ -51264,7 +51264,7 @@
                 "id": "tenant_health_northline",
                 "low_stock_count": 2,
                 "po_backlog_count": 1,
-                "portal_conversion_rate": 0.67,
+                "portal_conversion_rate": "0.67",
                 "readiness_status": "ready",
                 "tenant_id": "tenant_northline"
               },
@@ -51273,7 +51273,7 @@
                 "id": "tenant_health_northline_branch",
                 "low_stock_count": 1,
                 "po_backlog_count": 1,
-                "portal_conversion_rate": 0.5,
+                "portal_conversion_rate": "0.50",
                 "readiness_status": "config_incomplete",
                 "tenant_id": "tenant_northline_branch"
               }
@@ -52915,7 +52915,7 @@
                                   {
                                     "k": "text",
                                     "key": "m7_card_one_line_one_text",
-                                    "text": "Connector: FieldDesk / Config review needed"
+                                    "text": "Connector: ServicePilot / Config review needed"
                                   }
                                 ],
                                 "k": "el",
@@ -53142,7 +53142,7 @@
                                   {
                                     "k": "text",
                                     "key": "m7_card_two_line_three_text",
-                                    "text": "Needs review: FieldDesk"
+                                    "text": "Needs review: ServicePilot"
                                   }
                                 ],
                                 "k": "el",

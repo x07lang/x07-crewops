@@ -2,17 +2,17 @@
   "backend": {
     "adapter": "wasi_http_proxy_v1",
     "artifact": {
-      "bytes_len": 10441031,
+      "bytes_len": 10483751,
       "path": "backend/app.http.component.wasm",
-      "sha256": "552f83293b7e2f2665b8ce92b04afff413a71faabd318fc01bd2fb8ed0e42965"
+      "sha256": "717b2d9c1842f2e370b54edc5e07511e281ff2b63c2e3864128a2004fb9c1fc4"
     }
   },
   "frontend": {
     "artifacts": [
       {
-        "bytes_len": 110046,
+        "bytes_len": 110035,
         "path": "frontend/app-host.mjs",
-        "sha256": "663410a0758618a729c744923ae36ff5f32a82dcdd3d42dfb8be9b067b22fdcd"
+        "sha256": "d19ddee14f20f90ec051532da0dce5f07df00bfa7de3eaab17d33f1b435a7759"
       },
       {
         "bytes_len": 159,
@@ -20,14 +20,14 @@
         "sha256": "cc7889e2c4699a4e8a195093e0d1c0775c279613ffb764e9bf3037f8dbb987bd"
       },
       {
-        "bytes_len": 335351,
+        "bytes_len": 335364,
         "path": "frontend/app.wasm",
-        "sha256": "0f38d797c569288555ea5d6cccb0a9585af5ec289b98fb65c001071c3d735336"
+        "sha256": "7d64a29bd809fd63981b497d6b54c5502a1212e9000e9d937ab20ee3d98c6e9f"
       },
       {
         "bytes_len": 2044,
         "path": "frontend/app.wasm.manifest.json",
-        "sha256": "080d60f7e452fd252e963421b1a4b1c10505a2c486f20ad4190b4d1eaf143990"
+        "sha256": "7c0bcbd2b64e309189a7cf9c19175ed060eaff73e071b23d2bf9b7e566fd24c0"
       },
       {
         "bytes_len": 8171,

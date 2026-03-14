@@ -572,7 +572,6 @@ const TAG_ALLOWLIST = new Set([
   "small",
   "span",
   "strong",
-  "style",
   "table",
   "tbody",
   "td",
