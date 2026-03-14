@@ -4,7 +4,7 @@
 
 > **This is a technology demo, not a production product.** CrewOps uses deterministic seed data and a stateless backend to demonstrate X07's capabilities. The goal is to prove that a single language and runtime can power a serious multi-role business application across every target surface — browser, desktop shell, and mobile WebView — without React Native, Flutter, Electron, or any framework-specific rewrites.
 
-![CrewOps Operations Console](docs/screenshots/x07-crewops-home.png)
+![CrewOps Operations Console — Supervisor role with work order queue, persona switcher, and route navigation](docs/screenshots/x07-crewops-demo.png)
 
 ## What This Demo Proves
 
@@ -90,16 +90,6 @@ Switch to the Portal User role. Log in as `portal_account_001`. Review service h
 ### 7. Enterprise Operations
 
 Switch to the Enterprise Admin role. Open `enterprise` to review tenant `tenant_northline`, update branding, and check tenant health. Navigate to `inventory` for stock levels and movement, `procurement` for purchase orders and partial receiving on `purchase_order_002`, and `integration_dashboard` for connector health and the stale configuration case on `connector_instance_ticketing`.
-
-## Screenshots
-
-| View | Description |
-|------|-------------|
-| ![Home](docs/screenshots/x07-crewops-home.png) | Technician home — assigned work orders with status, priority, template, and sync state |
-| ![Platform Apps](docs/screenshots/x07-platform-apps.png) | x07-platform Command Center — deployment state, incidents, and kill-switch controls |
-| ![Device Releases](docs/screenshots/x07-platform-device-releases-updated.png) | Device release rollout — iOS/Android release executions with readiness gates |
-| ![Release Detail](docs/screenshots/x07-platform-device-release-detail-fixed.png) | Release execution detail — rollout progress, native health, and regression state |
-| ![Incident](docs/screenshots/x07-platform-incident-fixed.png) | Incident detail — captured incidents with regression generation and artifact links |
 
 ## Getting Started
 
