@@ -1,20 +1,35 @@
 # x07 CrewOps
 
-**CrewOps** is a production-ready field-operations management app built entirely in [X07](https://github.com/x07lang/x07) and compiled to WebAssembly. One codebase, one deterministic reducer, and one seed-backed backend power technician, dispatcher, supervisor, manager, portal, and enterprise-admin workflows — shipping as a **web app**, **desktop app**, and **iOS/Android mobile app** from the same source.
+**CrewOps** is a demo application that showcases the ability of [X07](https://github.com/x07lang/x07) to build real, multi-target WASM UI applications from a single codebase. One X07 program compiles to WebAssembly and ships as a **web app**, **desktop app** (macOS/Windows/Linux), and **native mobile app** (iOS/Android) — with zero platform-specific code.
 
-CrewOps is the flagship showcase for the X07 application platform. It proves that a single X07 program can run a serious multi-role business application across every target surface without framework-specific rewrites or platform-specific code.
+> **This is a technology demo, not a production product.** CrewOps uses deterministic seed data and a stateless backend to demonstrate X07's capabilities. The goal is to prove that a single language and runtime can power a serious multi-role business application across every target surface — browser, desktop shell, and mobile WebView — without React Native, Flutter, Electron, or any framework-specific rewrites.
 
 ![CrewOps Operations Console](docs/screenshots/x07-crewops-home.png)
 
-## Why X07 + WASM
+## What This Demo Proves
 
-Traditional field-service apps require separate codebases for web, desktop, iOS, and Android — each with its own state management, build system, and deployment pipeline. CrewOps eliminates that entirely:
+CrewOps exists to answer one question: **can a single language compile to WASM and run a real application on every platform?**
 
-- **One language, every target.** The X07 reducer compiles to a single `.wasm` module that runs identically in browsers, desktop shells (macOS/Windows/Linux), and mobile WebView containers (iOS/Android). No React Native, no Flutter, no Electron — just WebAssembly.
-- **Deterministic by default.** Every user interaction produces the same state transition given the same inputs. This makes the app fully replayable: the entire test suite runs as deterministic trace replay, not flaky integration tests.
-- **Offline-first without plugins.** The reducer owns all application state in-process. Field technicians can complete visits, capture evidence, and queue sync operations while disconnected. Reconnect flushes queued ops deterministically.
-- **Sealed artifact deployment.** The app compiles into a cryptographically signed pack that deploys through [x07-platform](https://github.com/x07lang/x07-platform) with rollout controls, incident capture, and regression generation — the same lifecycle whether running locally or on a hosted target.
-- **No runtime dependencies.** No Node.js server, no database, no Redis. The backend is a deterministic WASI HTTP component that serves structured JSON from a seed. The frontend is a WASM module that renders through `std-web-ui`. Both ship as sealed artifacts.
+| Capability | How CrewOps demonstrates it |
+|---|---|
+| **One binary, every target** | The same `.wasm` reducer runs in the browser, inside a desktop system-WebView shell, and inside iOS/Android WebView containers — bit-for-bit identical |
+| **Real UI, not a toy** | 6 user roles, 23 routes, 170+ reducer functions, production CSS with gradients/shadows/transitions/responsive layout |
+| **Deterministic replay** | Every interaction produces the same state. The full test suite is 42 deterministic trace replays, not flaky browser tests |
+| **Offline-first by design** | The reducer owns all state in-process. Field work completes offline; reconnect flushes queued ops deterministically |
+| **Sealed deployment** | The app compiles into a signed pack that deploys through [x07-platform](https://github.com/x07lang/x07-platform) with rollout gates, incident capture, and regression generation |
+| **Zero runtime dependencies** | No Node.js, no database, no Redis. The backend is a WASI HTTP component serving seed data. The frontend is a WASM module rendering through `std-web-ui` |
+
+### Targets built from the same source
+
+```
+x07-crewops/
+  frontend/src/app.x07.json   -->  app.wasm  -->  Browser (any modern browser)
+                                              -->  Desktop (macOS / Windows / Linux)
+                                              -->  iOS (Xcode project + WebView)
+                                              -->  Android (Gradle project + WebView)
+```
+
+No conditional compilation, no `#ifdef MOBILE`, no platform adapters. The same reducer, the same state machine, the same UI.
 
 ## What CrewOps Does
 
@@ -178,16 +193,16 @@ The same sealed pack deploys to local targets today and to self-hosted or manage
 
 ## Release Artifacts
 
-Pre-built release artifacts are available in the [`releases/`](releases/) directory:
+Pre-built demo artifacts from the same source are in [`releases/`](releases/):
 
-| Target | Artifact | Description |
-|--------|----------|-------------|
-| Web | `releases/web/` | Static web app — serve with any HTTP server |
-| Desktop | `releases/desktop/` | Desktop device bundle for macOS/Windows/Linux |
-| iOS | `releases/ios/` | Xcode project ready for simulator or device build |
-| Android | `releases/android/` | Gradle project ready for emulator or device build |
+| Target | Artifact | What it proves |
+|--------|----------|----------------|
+| **Web** | `releases/web/` | Static files — serve with any HTTP server, runs in any modern browser |
+| **Desktop** | `releases/desktop/` | System-WebView shell — same reducer, native window, file import, local notifications |
+| **iOS** | `releases/ios/` | Xcode project — same reducer inside a WKWebView with camera, location, blob storage |
+| **Android** | `releases/android/` | Gradle project — same reducer inside an Android WebView with the same native bridges |
 
-All targets run the same WASM reducer and produce identical state transitions.
+Every target runs the **exact same `.wasm` binary** and produces **identical state transitions** given the same inputs. The only difference is the native capability surface exposed by each host.
 
 ## Architecture
 
@@ -226,6 +241,17 @@ x07-crewops/
 | [`docs/MOBILE_BUILD.md`](docs/MOBILE_BUILD.md) | Device profiles, capabilities, and packaging |
 | [`docs/RELEASE_READINESS.md`](docs/RELEASE_READINESS.md) | Gate requirements and release checklist |
 | [`docs/HOSTED_READINESS.md`](docs/HOSTED_READINESS.md) | Hosted deployment readiness surface |
+
+## Demo Limitations
+
+CrewOps is a technology demo, not a production deployment:
+
+- **Seed data only** — the backend serves deterministic JSON from a generated seed, not a database
+- **No authentication** — role switching is instant via demo persona buttons
+- **No persistent storage** — state resets on page reload
+- **Mobile profiles need a real backend URL** — iOS/Android dev profiles point at `example.invalid` by default
+
+These are intentional. The demo proves the platform capability (one WASM binary, every target, deterministic replay); a production app would add a real database, auth, and backend infrastructure on top of the same reducer.
 
 ## Current Version
 
