@@ -6,6 +6,42 @@
 
 ![CrewOps Operations Console — Supervisor role with work order queue, persona switcher, and route navigation](docs/screenshots/x07-crewops-demo.png)
 
+## What Is In This Repo
+
+This repo contains one complete showcase app for the X07 ecosystem:
+
+- a shared X07 frontend reducer that renders the same product across web, desktop, iOS, and Android
+- a deterministic X07 backend used for demo APIs and replayable test flows
+- app, web-ui, device, provenance, and release profiles under `arch/`
+- deterministic traces, incidents, and regression fixtures under `tests/`
+- release-ready demo artifacts and walkthrough docs under `releases/` and `docs/`
+
+## Vision
+
+CrewOps exists to make the whole X07 story concrete for end users.
+
+The vision is simple: if X07 claims that an agent can build one serious application, keep it memory-safe and deterministic, and ship it across browser and device targets without rewriting the app for every platform, CrewOps should prove that claim in a form people can run and inspect.
+
+## How CrewOps Fits The X07 Ecosystem
+
+CrewOps is not the language itself. It is the "whole product" example that ties the ecosystem together:
+
+- [`x07`](https://github.com/x07lang/x07) provides the language, toolchain, diagnostics, and canonical docs
+- [`x07-web-ui`](https://github.com/x07lang/x07-web-ui) provides the reducer-based UI contracts
+- [`x07-wasm-backend`](https://github.com/x07lang/x07-wasm-backend) builds the WASM app, web, and device bundles
+- [`x07-device-host`](https://github.com/x07lang/x07-device-host) runs the same reducer inside desktop and mobile system WebViews
+- [`x07-platform`](https://github.com/x07lang/x07-platform) turns the app pack into a staged release with deploy, incident, and regression workflows
+
+If someone asks, "What does the full x07 stack look like when it becomes a real app?", CrewOps is the answer in this repo.
+
+## Practical Usage
+
+CrewOps is useful in three ways:
+
+- as a product demo for teams evaluating whether X07 can power a serious line-of-business app
+- as a reference repo for agents and developers building a cross-target web-ui/device app
+- as an end-to-end validation target for the wider X07 release train
+
 ## What This Demo Proves
 
 CrewOps exists to answer one question: **can a single language compile to WASM and run a real application on every platform?**
@@ -108,6 +144,16 @@ Or build from source and add the workspace binaries to `PATH`:
 export PATH="<x07-repo>/target/debug:<x07-wasm-backend-repo>/target/debug:$PATH"
 ```
 
+### Use CrewOps As Part Of The X07 Ecosystem
+
+The normal ecosystem path is:
+
+1. Install the core toolchain from [`x07`](https://github.com/x07lang/x07).
+2. Add the WASM component with `x07up component add wasm`.
+3. Build and test the app here with `x07-wasm`.
+4. Package desktop or mobile targets with the device flow.
+5. Promote the sealed artifact through [`x07-platform`](https://github.com/x07lang/x07-platform) when you want the lifecycle story.
+
 ### Build and Run Locally
 
 From the repo root:
@@ -180,6 +226,16 @@ The deployment flow:
 6. Device releases (iOS/Android) go through a separate staged release pipeline with native health checks
 
 The same sealed pack deploys to local targets today and to self-hosted or managed targets without app-code changes.
+
+## Install And Use The Repo Itself
+
+If you only want to inspect the app locally, you do not need the whole release loop:
+
+- install X07 and the WASM component
+- run the local build commands in this README
+- open the served app in a browser, or run the desktop/device packaging flow
+
+If you want the full release story, pair this repo with `x07-platform` and the related packaging/runtime repos listed above.
 
 ## Release Artifacts
 
