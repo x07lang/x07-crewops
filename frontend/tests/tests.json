@@ -104,6 +104,12 @@
       "world": "solve-pure"
     },
     {
+      "entry": "frontend_tests.test_effect_ack_skips_click_reentry_v1",
+      "expect": "pass",
+      "id": "frontend/effect-ack-skips-click-reentry",
+      "world": "solve-pure"
+    },
+    {
       "entry": "frontend_tests.test_invoice_rate_reducer_v1",
       "expect": "pass",
       "id": "frontend/invoice-rate-reducer",
