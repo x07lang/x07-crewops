@@ -1,0 +1,36 @@
+{
+  "bundle_digest": "89b5e14c63104d3fda512f18246a929391934a3146f6042747d6ed62bfc6b2da",
+  "capabilities": {
+    "bytes_len": 554,
+    "path": "profile/device.capabilities.json",
+    "sha256": "ffa81f9585e256757bce120a90e886c1c5532c275ab42912064069fd65d65069"
+  },
+  "host": {
+    "abi_name": "webview_host_v1",
+    "abi_version": "0.1.0",
+    "host_abi_hash": "fc4c041aae079ce6c0573538ecd62b306467d0889c1b07154a3973008d2b23a9",
+    "kind": "webview_v1"
+  },
+  "kind": "device_bundle",
+  "profile": {
+    "file": {
+      "bytes_len": 1104,
+      "path": "profile/device.profile.json",
+      "sha256": "945842e62f270bad94b80b25e18f09dbfb4ce063175123c1635d7b88adea17b7"
+    },
+    "id": "device_desktop_dev",
+    "v": 1
+  },
+  "schema_version": "x07.device.bundle.manifest@0.1.0",
+  "target": "desktop",
+  "telemetry_profile": {
+    "bytes_len": 599,
+    "path": "profile/device.telemetry.profile.json",
+    "sha256": "dbccdfdf56dcf67213d68f462049256515052ccaa4b68fcd4ea814723eae4b45"
+  },
+  "ui_wasm": {
+    "bytes_len": 89750,
+    "path": "ui/reducer.wasm",
+    "sha256": "9c83d45f375568ed1e807cb46253211c5c47824bd5897c91b02d27803febc4f2"
+  }
+}

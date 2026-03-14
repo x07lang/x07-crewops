@@ -4265,11 +4265,6 @@
           }
         ],
         "state": {
-          "__x07_storage": {
-            "set": {
-              "ok": true
-            }
-          },
           "bootstrap": {
             "last_loaded_at": "2026-03-11T00:00:00Z",
             "source": "http",
@@ -27478,11 +27473,6 @@
           }
         ],
         "state": {
-          "__x07_storage": {
-            "set": {
-              "ok": true
-            }
-          },
           "bootstrap": {
             "last_loaded_at": "2026-03-11T00:00:00Z",
             "source": "http",
@@ -27771,7 +27761,7 @@
             "labor_cycles": "0",
             "labor_minutes": "0",
             "labor_running": false,
-            "last_action": null,
+            "last_action": "ready",
             "location_status": "idle",
             "note": "",
             "parts_qty": "0",
@@ -37752,11 +37742,6 @@
           }
         ],
         "state": {
-          "__x07_storage": {
-            "set": {
-              "ok": true
-            }
-          },
           "bootstrap": {
             "last_loaded_at": "2026-03-11T00:00:00Z",
             "source": "http",
@@ -50098,11 +50083,6 @@
           }
         ],
         "state": {
-          "__x07_storage": {
-            "set": {
-              "ok": true
-            }
-          },
           "bootstrap": {
             "last_loaded_at": "2026-03-11T00:00:00Z",
             "source": "http",
@@ -62444,11 +62424,6 @@
           }
         ],
         "state": {
-          "__x07_storage": {
-            "set": {
-              "ok": true
-            }
-          },
           "bootstrap": {
             "last_loaded_at": "2026-03-11T00:00:00Z",
             "source": "http",
@@ -74816,11 +74791,6 @@
           }
         ],
         "state": {
-          "__x07_storage": {
-            "set": {
-              "ok": true
-            }
-          },
           "bootstrap": {
             "last_loaded_at": "2026-03-11T00:00:00Z",
             "source": "http",
@@ -75109,7 +75079,7 @@
             "labor_cycles": "0",
             "labor_minutes": "0",
             "labor_running": false,
-            "last_action": null,
+            "last_action": "ready",
             "location_status": "idle",
             "note": "",
             "parts_qty": "0",

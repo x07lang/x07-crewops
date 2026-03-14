@@ -1,0 +1,36 @@
+{
+  "bundle_digest": "f03236866c3fb24e574b48aa7709e53c243b1643011dde6e94f93ba43785ffd7",
+  "capabilities": {
+    "bytes_len": 544,
+    "path": "profile/device.capabilities.json",
+    "sha256": "4bef6298f39ab1075a2b66aa33eb4fe551387e97d83191cd74a1a6b0b911c401"
+  },
+  "host": {
+    "abi_name": "webview_host_v1",
+    "abi_version": "0.1.0",
+    "host_abi_hash": "32deeb58901cf0ca6340b503e9f1310354182d7bfe75069c4adee3ac0854668b",
+    "kind": "webview_v1"
+  },
+  "kind": "device_bundle",
+  "profile": {
+    "file": {
+      "bytes_len": 1155,
+      "path": "profile/device.profile.json",
+      "sha256": "bb5ee2bacc527d2c26b29f876848269bc2f4190f389a4b22408450bf644e1975"
+    },
+    "id": "device_android_dev",
+    "v": 1
+  },
+  "schema_version": "x07.device.bundle.manifest@0.1.0",
+  "target": "android",
+  "telemetry_profile": {
+    "bytes_len": 599,
+    "path": "profile/device.telemetry.profile.json",
+    "sha256": "c19f70de13c784a367ce66b0f5fac5f04267904a354204187cb9f10217872a9e"
+  },
+  "ui_wasm": {
+    "bytes_len": 335351,
+    "path": "ui/reducer.wasm",
+    "sha256": "0f38d797c569288555ea5d6cccb0a9585af5ec289b98fb65c001071c3d735336"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "backend": {
+    "adapter": "wasi_http_proxy_v1",
+    "artifact": {
+      "bytes_len": 10441031,
+      "path": "backend/app.http.component.wasm",
+      "sha256": "552f83293b7e2f2665b8ce92b04afff413a71faabd318fc01bd2fb8ed0e42965"
+    }
+  },
+  "frontend": {
+    "artifacts": [
+      {
+        "bytes_len": 110046,
+        "path": "frontend/app-host.mjs",
+        "sha256": "663410a0758618a729c744923ae36ff5f32a82dcdd3d42dfb8be9b067b22fdcd"
+      },
+      {
+        "bytes_len": 159,
+        "path": "frontend/app.manifest.json",
+        "sha256": "cc7889e2c4699a4e8a195093e0d1c0775c279613ffb764e9bf3037f8dbb987bd"
+      },
+      {
+        "bytes_len": 335351,
+        "path": "frontend/app.wasm",
+        "sha256": "0f38d797c569288555ea5d6cccb0a9585af5ec289b98fb65c001071c3d735336"
+      },
+      {
+        "bytes_len": 2044,
+        "path": "frontend/app.wasm.manifest.json",
+        "sha256": "080d60f7e452fd252e963421b1a4b1c10505a2c486f20ad4190b4d1eaf143990"
+      },
+      {
+        "bytes_len": 8171,
+        "path": "frontend/bootstrap.js",
+        "sha256": "e5ddb36e10154a4db8e40e083c1daaa8c08594cce2fcb3ab7c95617e03d47de9"
+      },
+      {
+        "bytes_len": 1502,
+        "path": "frontend/index.html",
+        "sha256": "95781e9bcca7332548b8a80cb3349afcae5cf62361ad493fc60ed3fd0f8f10c3"
+      },
+      {
+        "bytes_len": 100,
+        "path": "frontend/main.mjs",
+        "sha256": "254f54e73c2c3afea1b7b29aabded8fcd64fbe5f4f9f7fc07757b0d62a1272f0"
+      },
+      {
+        "bytes_len": 1208,
+        "path": "frontend/wasm.profile.json",
+        "sha256": "8b0a74169de4b30557550b72b7ab07b18f4bc51eff24ecbcef954047bf1cc056"
+      },
+      {
+        "bytes_len": 390,
+        "path": "frontend/web-ui.profile.json",
+        "sha256": "82ed2ea5d78b949e991abfe2013f66495e7df7f088ffb271aaf3c34f3fc96475"
+      }
+    ],
+    "dir_rel": "frontend",
+    "format": "core_wasm_v1"
+  },
+  "profile_id": "crewops_release",
+  "schema_version": "x07.app.bundle@0.1.0"
+}

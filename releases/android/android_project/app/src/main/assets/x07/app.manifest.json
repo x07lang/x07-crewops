@@ -1,0 +1,8 @@
+{
+  "wasmUrl": "./ui/reducer.wasm",
+  "webUi": {
+    "arenaCapBytes": 50331648,
+    "maxInputBytes": 131072,
+    "maxOutputBytes": 2097152
+  }
+}

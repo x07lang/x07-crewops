@@ -1,0 +1,29 @@
+{
+  "bundle_manifest_sha256": "738b5e92e9c6aaa08489e081c32827a1ce4ec91f6f09ed630111534933318579",
+  "capabilities": {
+    "bytes_len": 544,
+    "path": "profile/device.capabilities.json",
+    "sha256": "4bef6298f39ab1075a2b66aa33eb4fe551387e97d83191cd74a1a6b0b911c401"
+  },
+  "kind": "device_package",
+  "package": {
+    "kind": "dir",
+    "path": "android_project"
+  },
+  "profile": {
+    "file": {
+      "bytes_len": 1155,
+      "path": "profile/device.profile.json",
+      "sha256": "bb5ee2bacc527d2c26b29f876848269bc2f4190f389a4b22408450bf644e1975"
+    },
+    "id": "device_android_dev",
+    "v": 1
+  },
+  "schema_version": "x07.device.package.manifest@0.1.0",
+  "target": "android",
+  "telemetry_profile": {
+    "bytes_len": 599,
+    "path": "profile/device.telemetry.profile.json",
+    "sha256": "c19f70de13c784a367ce66b0f5fac5f04267904a354204187cb9f10217872a9e"
+  }
+}
