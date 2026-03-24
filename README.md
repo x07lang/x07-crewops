@@ -227,6 +227,8 @@ The deployment flow:
 
 The same sealed pack deploys to local targets today and to self-hosted or managed targets without app-code changes.
 
+For a command-by-command walkthrough (local + self-hosted wasmCloud), see [`docs/DEPLOY_WITH_X07_PLATFORM.md`](docs/DEPLOY_WITH_X07_PLATFORM.md).
+
 ## Install And Use The Repo Itself
 
 If you only want to inspect the app locally, you do not need the whole release loop:
@@ -285,6 +287,7 @@ x07-crewops/
 | [`docs/INVENTORY_AND_PROCUREMENT.md`](docs/INVENTORY_AND_PROCUREMENT.md) | Stock tracking and purchase orders |
 | [`docs/VENDOR_CONNECTORS.md`](docs/VENDOR_CONNECTORS.md) | Connector health and delivery monitoring |
 | [`docs/MOBILE_BUILD.md`](docs/MOBILE_BUILD.md) | Device profiles, capabilities, and packaging |
+| [`docs/DEPLOY_WITH_X07_PLATFORM.md`](docs/DEPLOY_WITH_X07_PLATFORM.md) | Step-by-step x07-platform deploy tutorial (local + self-hosted wasmCloud) |
 | [`docs/RELEASE_READINESS.md`](docs/RELEASE_READINESS.md) | Gate requirements and release checklist |
 | [`docs/HOSTED_READINESS.md`](docs/HOSTED_READINESS.md) | Hosted deployment readiness surface |
 
