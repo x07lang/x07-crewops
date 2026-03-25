@@ -5,3 +5,10 @@ frontend/.x07/
 target/
 frontend/target/
 .DS_Store
+
+# SvelteKit web app
+web/node_modules/
+web/.svelte-kit/
+web/build/
+web/scripts/crewops-desktop
+.vite/

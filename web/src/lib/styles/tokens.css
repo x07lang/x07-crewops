@@ -1,0 +1,116 @@
+:root {
+	/* Typography */
+	--font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
+		'Apple Color Emoji', 'Segoe UI Emoji';
+	--font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+		'Courier New', monospace;
+
+	--text-xs: 12px;
+	--text-sm: 13px;
+	--text-md: 14px;
+	--text-lg: 16px;
+	--text-xl: 18px;
+	--text-2xl: 22px;
+
+	--weight-regular: 400;
+	--weight-medium: 500;
+	--weight-semibold: 600;
+
+	/* Spacing */
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-5: 20px;
+	--space-6: 24px;
+	--space-7: 32px;
+	--space-8: 40px;
+
+	/* Radii */
+	--radius-sm: 6px;
+	--radius-md: 10px;
+	--radius-lg: 14px;
+	--radius-xl: 18px;
+	--radius-pill: 999px;
+
+	/* Shadows */
+	--shadow-1: 0 1px 2px rgba(15, 23, 42, 0.08);
+	--shadow-2: 0 6px 18px rgba(15, 23, 42, 0.1);
+
+	/* Layout */
+	--sidebar-width: 272px;
+	--sidebar-width-collapsed: 56px;
+	--topbar-height: 56px;
+	--content-max: 1280px;
+
+	/* Core colors */
+	--c-bg: hsl(220 20% 98%);
+	--c-surface: hsl(0 0% 100%);
+	--c-surface-2: hsl(220 14% 96%);
+	--c-surface-3: hsl(220 12% 92%);
+	--c-border: hsl(220 13% 88%);
+	--c-border-strong: hsl(220 13% 82%);
+
+	--c-text: hsl(222 28% 16%);
+	--c-text-muted: hsl(220 10% 42%);
+	--c-text-faint: hsl(220 9% 55%);
+
+	/* Primary */
+	--c-primary: hsl(221 83% 53%);
+	--c-primary-hover: hsl(221 83% 48%);
+	--c-primary-wash: hsl(221 83% 53% / 0.12);
+	--c-on-primary: hsl(0 0% 100%);
+
+	/* Status */
+	--c-success: hsl(142 72% 30%);
+	--c-success-wash: hsl(142 72% 30% / 0.1);
+
+	--c-warning: hsl(38 92% 38%);
+	--c-warning-wash: hsl(38 92% 38% / 0.12);
+
+	--c-danger: hsl(0 72% 46%);
+	--c-danger-wash: hsl(0 72% 46% / 0.12);
+
+	--c-info: hsl(199 89% 42%);
+	--c-info-wash: hsl(199 89% 42% / 0.1);
+
+	/* Field-service status aliases */
+	--c-active: var(--c-info);
+	--c-active-wash: var(--c-info-wash);
+	--c-overdue: var(--c-danger);
+	--c-overdue-wash: var(--c-danger-wash);
+	--c-sla-risk: var(--c-warning);
+	--c-sla-risk-wash: var(--c-warning-wash);
+	--c-draft: var(--c-text-faint);
+	--c-draft-wash: hsl(220 9% 55% / 0.1);
+
+	/* Controls */
+	--control-bg: var(--c-surface);
+	--control-border: var(--c-border);
+	--control-border-hover: var(--c-border-strong);
+	--control-focus-ring: 0 0 0 3px hsl(221 83% 53% / 0.25);
+
+	/* Tables */
+	--table-row-hover: hsl(220 14% 96%);
+	--table-row-selected: hsl(221 83% 53% / 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--c-bg: hsl(222 23% 10%);
+		--c-surface: hsl(222 20% 14%);
+		--c-surface-2: hsl(222 18% 16%);
+		--c-surface-3: hsl(222 16% 20%);
+		--c-border: hsl(222 14% 26%);
+		--c-border-strong: hsl(222 14% 32%);
+
+		--c-text: hsl(0 0% 96%);
+		--c-text-muted: hsl(220 10% 74%);
+		--c-text-faint: hsl(220 8% 62%);
+
+		--shadow-1: 0 1px 2px rgba(0, 0, 0, 0.3);
+		--shadow-2: 0 10px 30px rgba(0, 0, 0, 0.4);
+
+		--table-row-hover: hsl(222 18% 18%);
+	}
+}

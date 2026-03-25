@@ -4,7 +4,11 @@
 
 > **This is a technology demo, not a production product.** CrewOps uses deterministic seed data and a stateless backend to demonstrate X07's capabilities. The goal is to prove that a single language and runtime can power a serious multi-role business application across every target surface — browser, desktop shell, and mobile WebView — without React Native, Flutter, Electron, or any framework-specific rewrites.
 
-![CrewOps Operations Console — Supervisor role with work order queue, persona switcher, and route navigation](docs/screenshots/x07-crewops-demo.png)
+![CrewOps — Technician daily queue with work orders, status badges, and role-aware sidebar](docs/screenshots/x07-crewops-today.png)
+
+![CrewOps — Dispatch board with status filters, branch filters, and assignment actions](docs/screenshots/x07-crewops-dispatch.png)
+
+![CrewOps — Operations dashboard with KPI cards and status breakdown](docs/screenshots/x07-crewops-dashboard.png)
 
 ## What Is In This Repo
 
