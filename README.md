@@ -1,5 +1,9 @@
 # x07 CrewOps
 
+## Agent Entrypoint
+
+Start here: https://x07lang.org/docs/getting-started/agent-quickstart
+
 **CrewOps** is a demo application that showcases the ability of [X07](https://github.com/x07lang/x07) to build real, multi-target WASM UI applications from a single codebase. One X07 program compiles to WebAssembly and ships as a **web app**, **desktop app** (macOS/Windows/Linux), and **native mobile app** (iOS/Android) — with zero platform-specific code.
 
 > **This is a technology demo, not a production product.** CrewOps uses deterministic seed data and a stateless backend to demonstrate X07's capabilities. The goal is to prove that a single language and runtime can power a serious multi-role business application across every target surface — browser, desktop shell, and mobile WebView — without React Native, Flutter, Electron, or any framework-specific rewrites.
