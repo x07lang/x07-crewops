@@ -57,9 +57,9 @@ Backend routes:
 - `POST /api/review/:visit_id/request-correction`
 - `POST /api/corrections/:id/resubmit`
 
-## Handoff To M7
+## Handoff To Enterprise And Portal
 
-M7 does not replace dispatch or review. It extends the same workflow after work is completed, reviewed, or approved.
+The enterprise and portal surfaces do not replace dispatch or review. They extend the same workflow after work is completed, reviewed, or approved.
 
 Downstream commercial surfaces read the same normalized tenant and snapshot updates through:
 
@@ -95,7 +95,7 @@ The sync branch now also surfaces contract and integration conflict state that o
 - `export_status`
 - recurring-generation and delivery-retry state
 
-M7 adds downstream enterprise replay state on the same snapshot:
+CrewOps also adds downstream enterprise replay state on the same snapshot:
 
 - `sync.enterprise_ops.portal_approval_status`
 - `sync.enterprise_ops.tenant_revision_status`

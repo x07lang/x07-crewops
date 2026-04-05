@@ -1,6 +1,6 @@
 # CrewOps Portal
 
-The M7 portal surface is the external customer entry point inside the same deterministic app and seed-backed backend.
+The portal surface is the external customer entry point inside the same deterministic app and seed-backed backend.
 
 ## Routes And Data
 

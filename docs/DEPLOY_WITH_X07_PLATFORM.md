@@ -178,7 +178,7 @@ $LP accept \
   --target __local__ \
   --pack-dir "$CREWOPS_ROOT/dist/crewops_gate/pack.crewops_release" \
   --pack-manifest app.pack.json \
-  --change "$PLATFORM_ROOT/spec/fixtures/phaseA/change_request.min.json" \
+  --change "$PLATFORM_ROOT/spec/fixtures/baseline/change_request.min.json" \
   --state-dir "$STATE_DIR" \
   --json >"$STATE_DIR/accept.json"
 ```
@@ -300,7 +300,7 @@ Accept the CrewOps pack remotely:
 $LP accept \
   --target oss-wasmcloud \
   --pack-manifest "$CREWOPS_ROOT/dist/crewops_gate/pack.crewops_release/app.pack.json" \
-  --change "$PLATFORM_ROOT/spec/fixtures/phaseA/change_request.min.json" \
+  --change "$PLATFORM_ROOT/spec/fixtures/baseline/change_request.min.json" \
   --json >"$RUN_DIR/remote.accept.json"
 ```
 
@@ -371,4 +371,3 @@ cd "$CREWOPS_ROOT"
 ```
 
 Explanation: this is the canonical CrewOps release gate; it exercises the x07-platform local deploy flow as part of the pipeline.
-

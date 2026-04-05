@@ -1,6 +1,6 @@
-# CrewOps M7 Demo Walkthrough
+# CrewOps Demo Walkthrough
 
-This walkthrough is the shortest operator demo that exercises the M7 enterprise and portal surface without leaving the deterministic seed.
+This walkthrough is the shortest operator demo that exercises the enterprise and portal surfaces without leaving the deterministic seed.
 
 ## Recommended Flow
 
@@ -15,11 +15,11 @@ This walkthrough is the shortest operator demo that exercises the M7 enterprise 
 5. Open `integration_dashboard`.
    Show connector health counts and the stale connector configuration case.
 6. Close on `manager` or `finance`.
-   Use finance, contract-health, receivables, and connector summaries to show that the M7 enterprise layer stays integrated with the existing commercial and operations layers.
+   Use finance, contract-health, receivables, and connector summaries to show that the enterprise layer stays integrated with the existing commercial and operations layers.
 
 ## Supporting Traces
 
-These authored traces mirror the M7 walkthrough:
+These authored traces mirror the walkthrough:
 
 - `tests/traces/portal_login_and_history_happy.trace.json`
 - `tests/traces/portal_approve_estimate.trace.json`

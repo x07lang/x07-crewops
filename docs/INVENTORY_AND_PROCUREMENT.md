@@ -1,6 +1,6 @@
 # CrewOps Inventory And Procurement
 
-M7 adds inventory and procurement without introducing a second app or a database-backed warehouse service.
+CrewOps adds inventory and procurement without introducing a second app or a database-backed warehouse service.
 
 ## Routes And Data
 

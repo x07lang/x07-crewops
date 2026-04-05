@@ -1,6 +1,6 @@
 # CrewOps Mobile Build
 
-CrewOps `v0.6.0` ships the same M7 reducer across desktop, iOS, and Android. The frontend dependency baseline is `std-web-ui@0.2.5`, and the checked-in device profiles carry the `0.6.0` release version.
+CrewOps `v0.6.0` ships the same reducer across desktop, iOS, and Android. The frontend dependency baseline is `std-web-ui@0.2.5`, and the checked-in device profiles carry the `0.6.0` release version.
 
 ## Prereqs
 
@@ -44,7 +44,7 @@ Current profile ids from [`arch/device/index.x07device.json`](../arch/device/ind
 - `device_ios_dev`
 - `device_android_dev`
 
-Current M7 packaging intent:
+Current packaging intent:
 
 - desktop is the local smoke and operator demo profile
 - iOS and Android package the same reducer for operations, finance, portal, enterprise admin, inventory, procurement, and connector-health routes

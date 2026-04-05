@@ -1,6 +1,6 @@
-# CrewOps M7 Release Readiness
+# CrewOps Release Readiness
 
-This note captures the local release bar for the `v0.6.0` M7 line.
+This note captures the local release bar for the `v0.6.0` release line.
 
 ## Canonical Gate
 
@@ -20,9 +20,9 @@ The gate is the source of truth for:
 - app pack, verify, provenance, deploy-plan, and desktop smoke checks
 - iOS and Android device package generation
 
-## Required M7 Replay Coverage
+## Required Replay Coverage
 
-The M7 release line is not ready unless these authored traces are green:
+The release line is not ready unless these authored traces are green:
 
 - `tests/traces/portal_login_and_history_happy.trace.json`
 - `tests/traces/portal_approve_estimate.trace.json`
@@ -50,7 +50,7 @@ The incident-source traces are:
 
 ## Release Artifacts
 
-The M7 release line is expected to produce these local artifacts:
+The release line is expected to produce these local artifacts:
 
 - `dist/crewops_gate/app.crewops_dev`
 - `dist/crewops_gate/app.crewops_release`
@@ -62,8 +62,8 @@ The M7 release line is expected to produce these local artifacts:
 
 ## Operator Checklist
 
-- Confirm `PROMPT.md`, `README.md`, and the local phase docs match the `v0.6.0` M7 route set.
+- Confirm `PROMPT.md`, `README.md`, and the local gate docs match the `v0.6.0` route set.
 - Confirm `frontend/x07.json` stays on `std-web-ui@0.2.5`.
 - Confirm schema references stay on the published `x07.project@0.3.0` and `x07.x07ast@0.5.0` surfaces.
 - Confirm `scripts/ci/seed_demo.sh` and generated `backend/src/demo_seed.x07.json` stay in sync.
-- Confirm M7 sync fields for portal approval, tenant revision, inventory movement, receiving, and connector configuration are present in the seed and replay fixtures.
+- Confirm sync fields for portal approval, tenant revision, inventory movement, receiving, and connector configuration are present in the seed and replay fixtures.

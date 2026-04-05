@@ -1,6 +1,6 @@
 # CrewOps Data Model
 
-CrewOps `v0.6.0` ships an M7 seed that keeps the original operations graph, retains the M5 and M6 finance and commercial layers, and adds tenant, portal, inventory, procurement, connector, and readiness entities. The canonical source is [`tests/fixtures/demo_org.json`](../tests/fixtures/demo_org.json), mirrored into deterministic backend payloads under [`backend/src/demo_seed.x07.json`](../backend/src/demo_seed.x07.json).
+CrewOps `v0.6.0` ships a seed that keeps the original operations graph, retains the finance and commercial layers, and adds tenant, portal, inventory, procurement, connector, and readiness entities. The canonical source is [`tests/fixtures/demo_org.json`](../tests/fixtures/demo_org.json), mirrored into deterministic backend payloads under [`backend/src/demo_seed.x07.json`](../backend/src/demo_seed.x07.json).
 
 ## Seed Scope
 
@@ -27,7 +27,7 @@ Finance and commercial:
 - service agreements, agreement lines, recurring plans, recurrence rules, generated schedule items, renewal records, contract-health snapshots
 - integration endpoints, API keys, webhook subscriptions, webhook deliveries, connector mappings, import or sync jobs
 
-M7 enterprise and hosted:
+Enterprise and hosted:
 
 - tenants, workspaces, role definitions, permission grants
 - branding packs, theme overrides
@@ -70,7 +70,7 @@ The generated fixture includes normalized families for:
 
 ## Indexes And Summary
 
-The reducer reads normalized entities through precomputed indexes. M7 adds:
+The reducer reads normalized entities through precomputed indexes. It adds:
 
 - `workspaces_by_tenant`
 - `portal_accounts_by_tenant`
@@ -105,7 +105,7 @@ The summary document now carries:
 
 ## Draft And Sync State
 
-User-editable M7 inputs live under `drafts.enterprise_ops`, including tenant selection, branding colors, portal request details, inventory adjustments, receiving quantities, and connector retry selections.
+User-editable enterprise inputs live under `drafts.enterprise_ops`, including tenant selection, branding colors, portal request details, inventory adjustments, receiving quantities, and connector retry selections.
 
 Replay-safe enterprise conflict state lives under `sync.enterprise_ops`, including:
 

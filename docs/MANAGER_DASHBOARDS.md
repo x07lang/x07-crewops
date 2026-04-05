@@ -1,6 +1,6 @@
 # Manager Dashboards
 
-CrewOps `v0.6.0` keeps the manager dashboard and adds the M7 enterprise control surface around it. Managers now move across operations, finance, receivables, exports, pricing, invoices, customer accounts, estimates, contracts, recurring plans, integrations, tenant health, inventory risk, procurement backlog, and connector health inside the same reducer.
+CrewOps `v0.6.0` keeps the manager dashboard and adds the enterprise control surface around it. Managers now move across operations, finance, receivables, exports, pricing, invoices, customer accounts, estimates, contracts, recurring plans, integrations, tenant health, inventory risk, procurement backlog, and connector health inside the same reducer.
 
 ## Manager And Commercial Routes
 
@@ -19,7 +19,7 @@ Current manager-facing routes:
 - `recurring`
 - `integrations`
 
-Related M7 drill-down routes stay in the same app shell:
+Related drill-down routes stay in the same app shell:
 
 - `enterprise`
 - `inventory`
@@ -61,7 +61,7 @@ The manager route still reads the operational rollups:
 - `activity_unread`
 - `alert_unread`
 
-The M6 and M7 routes add:
+The finance, enterprise, and portal routes add:
 
 - `finance_metrics`
 - `invoice_status_counts`

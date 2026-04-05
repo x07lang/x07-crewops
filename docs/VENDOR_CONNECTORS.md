@@ -1,6 +1,6 @@
 # CrewOps Vendor Connectors
 
-M7 adds tenant-scoped vendor connector health and delivery visibility on top of the existing integrations surface. `integration_dashboard` complements `integrations`; it does not replace the original API key and webhook controls.
+CrewOps adds tenant-scoped vendor connector health and delivery visibility on top of the existing integrations surface. `integration_dashboard` complements `integrations`; it does not replace the original API key and webhook controls.
 
 ## Routes And Data
 

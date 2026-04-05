@@ -1,6 +1,6 @@
 # CrewOps Enterprise Admin
 
-The M7 enterprise admin surface keeps tenant administration, branding, and rollout health inside CrewOps rather than a separate control plane.
+The enterprise admin surface keeps tenant administration, branding, and rollout health inside CrewOps rather than a separate control plane.
 
 ## Routes And Data
 

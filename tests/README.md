@@ -32,7 +32,7 @@ This directory holds the current CrewOps demo fixtures, replay traces, and regre
 - `tests/traces/renewal_dashboard_view.trace.json`: contract health and renewal-pipeline surface on the contracts route.
 - `tests/traces/conversion_revision_conflict.trace.json`: stale estimate conversion is blocked with deterministic conflict payloads.
 - `tests/traces/portal_login_and_history_happy.trace.json`: portal user login and portal route hydration from the seeded customer account.
-- `tests/traces/portal_approve_estimate.trace.json`: portal route renders the approved estimate handoff state from the M7 payload.
+- `tests/traces/portal_approve_estimate.trace.json`: portal route renders the approved estimate handoff state from the seeded payload.
 - `tests/traces/portal_request_to_office_conversion.trace.json`: portal request conversion state is replayed on the customer-facing route.
 - `tests/traces/branding_update_happy.trace.json`: enterprise admin route reflects the accepted branding update payload.
 - `tests/traces/tenant_role_change.trace.json`: enterprise admin route reflects tenant role and permission changes.

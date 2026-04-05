@@ -1,6 +1,6 @@
 # CrewOps Hosted Readiness
 
-M7 adds a deterministic hosted-readiness surface so release state and tenant rollout completeness can be replayed locally.
+CrewOps adds a deterministic hosted-readiness surface so release state and tenant rollout completeness can be replayed locally.
 
 ## Backend Surface
 
